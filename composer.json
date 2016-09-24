@@ -1,0 +1,26 @@
+{
+    "name": "freidcreations/QueryMule",
+    "type" : "library",
+    "description": "A query builder and database access layer (DAL) built on top of PDO. This package aims to makes it easy to create complex and efficient queries, by seamlessly moving away from raw SQL. Developers writing applications in PHP can use this package on its own or in conjunction with a framework.",
+    "keywords" : [
+        "sql"
+    ],
+    "authors": [
+        {
+            "name": "Fraser Reid",
+            "email": "freid001@hotmail.co.uk",
+            "homepage": "http://freidcreations.atwebpages.com/"
+        }
+    ],
+    "license": "BSD-2-Clause",
+    "require": {
+        "php": ">=7"
+    },
+    "autoload": {
+        "psr-4": {
+            "freidcreations\\QueryMule\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "version" : "1.0.0"
+}

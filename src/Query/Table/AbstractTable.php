@@ -23,11 +23,6 @@ abstract class AbstractTable implements QueryInterface
     /**
      * @var array
      */
-    protected static $tables = [];
-
-    /**
-     * @var array
-     */
     private $property = [
         'statement' => null,
         'table'     => null
@@ -38,33 +33,33 @@ abstract class AbstractTable implements QueryInterface
      * @param $databaseConnectionKey
      * @param $name
      */
-    private function __construct($databaseConnectionKey,$name){
-        $this->property['table'] = Table::table($databaseConnectionKey,$name);
+    public function __construct($databaseConnectionKey,$name){
+        $this->property['table'] = new Table($databaseConnectionKey,$name);
     }
 
-    /**
-     * Table
-     * @param $databaseConnectionKey
-     * @param $name
-     * @return table|self
-     */
-    protected static function table($databaseConnectionKey,$name){
-        if (!isset(static::$tables[$databaseConnectionKey][$name])) {
-            self::$tables[$databaseConnectionKey][$name] = new static($databaseConnectionKey,$name);
-        }
-        return self::$tables[$databaseConnectionKey][$name];
-    }
+//    /**
+//     * Table
+//     * @param $databaseConnectionKey
+//     * @param $name
+//     * @return table|self
+//     */
+//    protected static function table($databaseConnectionKey,$name){
+//        if (!isset(static::$tables[$databaseConnectionKey][$name])) {
+//            self::$tables[$databaseConnectionKey][$name] = new static($databaseConnectionKey,$name);
+//        }
+//        return self::$tables[$databaseConnectionKey][$name];
+//    }
 
     /**
      * @param $key
      * @return table|statement|select|insert|update|delete|null
      */
-    public function __get( $key ){
-        if( array_key_exists( $key, $this->property ) ){
-            return $this->property[ $key ];
-        }
-        return null;
-    }
+//    public function __get( $key ){
+//        if( array_key_exists( $key, $this->property ) ){
+//            return $this->property[ $key ];
+//        }
+//        return null;
+//    }
 
     /**
      * Inherit a statement
@@ -82,14 +77,7 @@ abstract class AbstractTable implements QueryInterface
      */
     final public function create(\Closure $columns) : TableCreate
     {
-        switch(TableCreate::instance($this->table)->activeDrive()) {
-
-            case AbstractDatabase::DRIVE_MYSQL:
-                return $this->property['statement'] = \freidcreations\QueryMule\Builder\Sql\Mysql\TableCreate::instance($this->table)->reset()->create($columns);
-
-            default:
-                throw new \Exception('Database driver not currently supported!');
-        }
+        return $this->property['statement'] = TableCreate::make($this->property['table'])->reset()->create($columns);
     }
 
     /**
@@ -98,14 +86,7 @@ abstract class AbstractTable implements QueryInterface
      */
     final public function alter() : TableAlter
     {
-        switch(TableAlter::instance($this->table)->activeDrive()) {
-
-            case AbstractDatabase::DRIVE_MYSQL:
-                return $this->property['statement'] = TableAlter::instance($this->table)->reset()->alter();
-
-            default:
-                throw new \Exception('Database driver not currently supported!');
-        }
+        return $this->property['statement'] = TableAlter::make($this->property['table'])->reset()->alter();
     }
 
 

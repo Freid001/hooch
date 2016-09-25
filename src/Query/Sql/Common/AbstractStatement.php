@@ -1,13 +1,13 @@
 <?php namespace freidcreations\QueryMule\Query\Sql\Common;
-use freidcreations\QueryMule\Query\Connection\AbstractDatabase;
+use freidcreations\QueryMule\Builder\Connection\Database;
 use freidcreations\QueryMule\Builder\Sql\Table;
 use freidcreations\QueryMule\Builder\Sql\Sql;
 
 /**
- * Class Statement
- * @package freidcreations\QueryMule\Builder\Sql\Mysql
+ * Class AbstractStatement
+ * @package freidcreations\QueryMule\Query\Sql\Common
  */
-abstract class AbstractStatement extends AbstractDatabase
+abstract class AbstractStatement //implements StatementInterface
 {
     const ADD = 'ADD';
     const ALTER_TABLE = 'ALTER TABLE';
@@ -55,18 +55,12 @@ abstract class AbstractStatement extends AbstractDatabase
     protected $table;
 
     /**
-     * @var array
-     */
-    protected static $instances = [];
-
-    /**
      * Statement constructor.
      * @param Table $table
      */
     protected function __construct(Table $table)
     {
         $this->table = $table;
-        parent::$active = $this->table->databaseConnectionKey();
     }
 
     /**
@@ -82,6 +76,7 @@ abstract class AbstractStatement extends AbstractDatabase
 
     /**
      * Reset SQL
+     * @return $this
      */
     public function reset()
     {
@@ -102,8 +97,8 @@ abstract class AbstractStatement extends AbstractDatabase
         foreach($items as $key => $item){
             $dot = ($key != (count($items)-1)) ? '.' : '';
 
-            switch(self::activeDrive()){
-                case self::DRIVE_POST_GRE_SQL:
+            switch($this->table->dbh()->driver()){
+                case Database::DRIVE_POST_GRE_SQL:
                     if($tableName) {
                         $return .= '"' . $item . '"';
                     }else {
@@ -120,7 +115,6 @@ abstract class AbstractStatement extends AbstractDatabase
 
     /**
      * Execute
-     *
      * @return \PDOStatement
      * @throws \Exception
      */
@@ -129,22 +123,16 @@ abstract class AbstractStatement extends AbstractDatabase
         //Build SQL
         $sql = $this->build();
 
-        var_dump($sql->sql());
-        echo "<br /><br />";
-        var_dump($sql->parameters());
-        echo "<br /><br />";
-        die('exit');
-
         //Execute query
-        $query = self::dbh()->prepare($sql->sql());
+        $query = $this->table->dbh()->connection()->prepare($sql->sql());
         $query->execute($sql->parameters());
 
         //Any errors?
-        if($query->errorCode() != 0) {
+        //if($query->errorCode() != 0) {
 //            if(config::detectEnvironment() == 'local'){
                 throw new \Exception( $query->errorInfo()[2] );
 //            }
-        }
+        //}
 
         //If debugging then dump params
         //if($this->debug){
@@ -161,7 +149,7 @@ abstract class AbstractStatement extends AbstractDatabase
      *
      * @return sql
      */
-    private function build()
+    public function build()
     {
         //Build order for query
         $buildOrder = [

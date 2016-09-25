@@ -70,7 +70,7 @@ class Database extends AbstractConsole
         if(in_array($driver,['pgsql','mysql'])) {
             $connection['driver'] = $driver;
         }else {
-            $this->output("Driver not found, please use a currently supported driver: pgsql or mysql.",self::BACKGROUND_RED,3,true);
+            $this->output("Driver not found, please use a currently supported driver: pgsql, mysql or sqlite.",self::BACKGROUND_RED,3,true);
             return false;
         }
 
@@ -121,7 +121,7 @@ class Database extends AbstractConsole
         }
 
         //Write new connections.php
-        $resource = $this->fetchResource( $this->configPath . "\\Connections.php", "w" );
+        $resource = $this->fetchResource( $this->configPath . "/Connections.php", "w" );
 
         //Store config path for this application
         $this->writeResource(

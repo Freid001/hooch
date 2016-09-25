@@ -35,17 +35,14 @@ class TableCreate extends AbstractStatement implements TableColumnHandlerInterfa
     private $indexs = [];
 
     /**
-     * Instance
+     * Make
      *
      * @param Table $table
      * @return self
      */
-    public static function instance(Table $table)
+    public static function make(Table $table)
     {
-        if (!isset(static::$instances[self::CREATE_TABLE.'_'.$table->name()])) {
-            self::$instances[self::CREATE_TABLE.'_'.$table->name()] = new self($table);
-        }
-        return self::$instances[self::CREATE_TABLE.'_'.$table->name()];
+        return new self($table);
     }
 
     /**
@@ -58,7 +55,7 @@ class TableCreate extends AbstractStatement implements TableColumnHandlerInterfa
     public function create(\Closure $columns, $temporary = false, $ifNotExists = true)
     {
         //Set columns
-        $columns(new TableColumnDataType($this));
+        $columns(new TableColumnAdd($this));
 
         //Is temporary?
         if($temporary) {
@@ -147,6 +144,14 @@ class TableCreate extends AbstractStatement implements TableColumnHandlerInterfa
         Sql::raw(self::CREATE_TABLE)->add(')',$parameters);
 
         return $this;
+    }
+
+    /**
+     * Handle Modify
+     * @param $column
+     */
+    public function handleModify($column){
+        //nothing
     }
 
     /**

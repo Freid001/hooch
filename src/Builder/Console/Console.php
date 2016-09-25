@@ -16,6 +16,15 @@ class Console extends AbstractConsole
     const LICENSE = 'license';
 
     /**
+     * Console constructor.
+     * @param $path
+     */
+    public function __construct($path)
+    {
+        $this->path = $path;
+    }
+
+    /**
      * Run
      * @param $args
      * @return bool
@@ -178,7 +187,7 @@ class Console extends AbstractConsole
      */
     private function license()
     {
-        $resource = $this->fetchResource(__DIR__."\\..\\..\\..\\LICENSE","r");
+        $resource = $this->fetchResource($this->path."LICENSE","r");
         echo stream_get_contents($resource);
     }
 
@@ -187,7 +196,7 @@ class Console extends AbstractConsole
      */
     private function version()
     {
-        $resource = $this->fetchResource(__DIR__."\\..\\..\\..\\composer.json","r");
+        $resource = $this->fetchResource($this->path."composer.json","r");
         $content = (array)json_decode($this->getResourceContents($resource));
 
         if(isset($content['version'])){
@@ -207,7 +216,7 @@ class Console extends AbstractConsole
 
         //Path
         $inputPath = $this->input("\\") . "\\";
-        $realPath = dirname(__FILE__) . '\\..\\..\\..\\..\\..\\..\\' . $inputPath;
+        $realPath = $this->path . $inputPath;
 
         //New line for spacing
         $this->newLines(1);
@@ -241,10 +250,7 @@ class Console extends AbstractConsole
                 //Add new database connection
                 $this->output("Configure database connection.\t\t\t\t\t\t",self::BACKGROUND_BLUE);
 
-                if(!$this->database($realPath)->run('add')){
-                    $this->output('Configuration failed, see errors.',self::BACKGROUND_RED,1,true);
-                    return false;
-                }
+                $this->database($realPath)->run('add');
             }
 
             //Store config path for this application
@@ -254,7 +260,7 @@ class Console extends AbstractConsole
             );
 
             //Composer namespace
-            $composer = $this->fetchResource(__DIR__ . "\\..\\..\\..\\..\\..\\..\\composer.json", "r");
+            $composer = $this->fetchResource($this->path."composer.json", "r");
             if(!$composer){
                 $this->output("Notice: Could not find project composer.json file, please ensure your project root contains a composer.json file.\t", self::BACKGROUND_YELLOW);
                 $this->output("QueryMule has not configured correctly and may not run as expected, see warnings.\t\t\t\t\t", self::BACKGROUND_YELLOW);
@@ -276,7 +282,7 @@ class Console extends AbstractConsole
             $composer['autoload']['psr-4']['QueryMule\\'] = ltrim(implode("/",$arrayPath), "/");
             $this->output("+ Writing QueryMule PSR-4 namespace to project composer.json file.");
             $this->writeResource(
-                $this->fetchResource(__DIR__ . "\\..\\..\\..\\..\\..\\..\\composer.json", "w"),
+                $this->fetchResource($this->path."composer.json", "w"),
                 json_encode($composer,JSON_PRETTY_PRINT)
             );
 
@@ -415,6 +421,4 @@ class Console extends AbstractConsole
 
         return false;
     }
-
-    //'freidcreations\\QueryMule\\' => array($vendorDir . '/freidcreations/QueryMule/src'),
 }

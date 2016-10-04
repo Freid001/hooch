@@ -58,10 +58,10 @@ class TableColumnDataType implements TableColumnDataTypeInterface
     /**
      * Rename
      */
-    public function rename()
-    {
-        $this->table->handleColumn(new TableColumnDefinition($this->column, null, $this->type),$this->type);
-    }
+//    public function rename()
+//    {
+//        $this->table->handleColumn(new TableColumnDefinition($this->column, null, $this->type),$this->type);
+//    }
 
     /**
      * Boolean

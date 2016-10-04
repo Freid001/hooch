@@ -3,7 +3,7 @@
     "type": "library",
     "description": "A query builder and database access layer (DAL) built on top of PDO. This package aims to makes it easy to create complex and efficient queries, by seamlessly moving away from raw SQL. Developers writing applications in PHP can use this package on its own or in conjunction with a framework.",
     "keywords": [
-        "sql"
+        "query builder", "data access layer", "sql"
     ],
     "authors": [
         {

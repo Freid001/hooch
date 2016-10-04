@@ -41,17 +41,14 @@ class TableAlter extends AbstractStatement implements TableColumnHandlerInterfac
     private $modify = null;
 
     /**
-     * Instance
+     * Make
      *
      * @param Table $table
      * @return self
      */
-    public static function instance(Table $table)
+    public static function make(Table $table)
     {
-        if (!isset(static::$instances[self::ALTER_TABLE.'_'.$table->name()])) {
-            self::$instances[self::ALTER_TABLE.'_'.$table->name()] = new self($table);
-        }
-        return self::$instances[self::ALTER_TABLE.'_'.$table->name()];
+        return new self($table);
     }
 
     /**
@@ -72,7 +69,7 @@ class TableAlter extends AbstractStatement implements TableColumnHandlerInterfac
     public function add(\Closure $columns)
     {
         //Set columns
-        $columns(new TableColumnDataType($this, 'add'));
+        $columns(new TableColumnAdd($this,'add'));
 
         //Add columns
         $parameters = [];
@@ -171,29 +168,30 @@ class TableAlter extends AbstractStatement implements TableColumnHandlerInterfac
 
             $index = 0;
             foreach ($this->columns['modify'] as $name => $column) {
-                if($column instanceof TableColumnDefinition){
+                if ($column instanceof TableColumnDefinition) {
 
                     //Modify column name
-                    if(isset($this->modify[$index]) &&
-                            $this->modify[$index] != $column->getAttribute('name')){
+                    if (isset($this->modify[$index]) &&
+                        $this->modify[$index] != $column->getAttribute('name')
+                    ) {
                         sql::raw(self::MODIFY)->add(self::CHANGE . ' ' . $this->addAccent($this->modify[$index]) . ' ' . $this->addAccent($column->getAttribute('name')));
-                    }else {
+                    } else {
                         sql::raw(self::MODIFY)->add(self::MODIFY_COLUMN . ' ' . $this->addAccent($column->getAttribute('name')));
                     }
 
                     //Modify column definition
-                    foreach([
-                                'data_type',
-                                'null',
-                                'not_null',
-                                'default',
-                                'auto_increment',
-                                'comment',
-                                'first',
-                                'after',
-                                'rename',
-                                'drop'
-                            ] as $attribute){
+                    foreach ([
+                                 'data_type',
+                                 'null',
+                                 'not_null',
+                                 'default',
+                                 'auto_increment',
+                                 'comment',
+                                 'first',
+                                 'after',
+                                 'rename',
+                                 'drop'
+                             ] as $attribute) {
                         if ($column->getAttribute($attribute)) {
 
                             //Has Attribute?
@@ -209,41 +207,50 @@ class TableAlter extends AbstractStatement implements TableColumnHandlerInterfac
                     }
 
                     //Is primary key?
-                    if($column->getAttribute('primary_key')){
+                    if ($column->getAttribute('primary_key')) {
                         $primary[] = $this->addAccent($column->getAttribute('name'));
                     }
 
                     //Is unique key?
-                    if($column->getAttribute('unique_key')){
+                    if ($column->getAttribute('unique_key')) {
                         $unique[] = $this->addAccent($column->getAttribute('name'));
                     }
 
                     //Do we need to add a comer?
-                    if ($name != $keys[count($keys)-1]) {
+                    if ($name != $keys[count($keys) - 1]) {
                         sql::raw(self::MODIFY)->add(', ');
                     }
                 }
 
                 $index++;
             }
+        }
 
-            //Add primary keys
-            foreach( $this->primaryKeys as $primary){
+        //Add primary keys
+        foreach( $this->primaryKeys as $primary){
+            if($this->columns) {
                 sql::raw(self::MODIFY)->add(', ');
-                sql::raw(self::MODIFY)->add(self::ADD . ' ' . TableColumnDefinition::PRIMARY_KEY . "(" . implode(", ", $primary) . ")");
             }
 
-            //Add unique
-            foreach( $this->uniqueKeys as $unique){
+            sql::raw(self::MODIFY)->add(self::ADD . ' ' . TableColumnDefinition::PRIMARY_KEY . "(" . implode(", ", $primary) . ")");
+        }
+
+        //Add unique
+        foreach( $this->uniqueKeys as $name => $unique){
+            if($this->columns) {
                 sql::raw(self::MODIFY)->add(', ');
-                sql::raw(self::MODIFY)->add(self::ADD . ' ' . TableColumnDefinition::UNIQUE_KEY . "(" . implode(", ", $unique) . ")");
             }
 
-            //Add index
-            foreach( $this->indexs as $index){
+            sql::raw(self::MODIFY)->add(self::ADD . ' ' . self::CONSTRAINT . ' ' . $name . ' ' . TableColumnDefinition::UNIQUE_KEY . "(" . implode(", ", $unique) . ")");
+        }
+
+        //Add index
+        foreach( $this->indexs as $name => $index){
+            if($this->columns) {
                 sql::raw(self::MODIFY)->add(', ');
-                sql::raw(self::MODIFY)->add(self::ADD . ' ' . TableColumnDefinition::INDEX . "(" . implode(", ", $index) . ")");
             }
+
+            sql::raw(self::MODIFY)->add(self::ADD . ' ' . TableColumnDefinition::INDEX . ' ' . $name . ' (' . implode(", ", $index) . ')');
         }
 
         return $this;
@@ -293,12 +300,13 @@ class TableAlter extends AbstractStatement implements TableColumnHandlerInterfac
 
     /**
      * Handle Unique Key
+     * @param $name
      * @param array $columns
      * @return void
      */
-    public function handleUniqueKey(array $columns)
+    public function handleUniqueKey($name,array $columns)
     {
-        $this->uniqueKeys[] = $columns;
+        $this->uniqueKeys[$name] = $columns;
     }
 
     /**
@@ -306,17 +314,9 @@ class TableAlter extends AbstractStatement implements TableColumnHandlerInterfac
      * @param array $columns
      * @return void
      */
-    public function handleIndex(array $columns)
+    public function handleIndex($name,array $columns)
     {
-        $this->indexs[] = $columns;
-    }
-
-    /**
-     * Make Query
-     */
-    private function makeQuery()
-    {
-
+        $this->indexs[$name] = $columns;
     }
 }
 

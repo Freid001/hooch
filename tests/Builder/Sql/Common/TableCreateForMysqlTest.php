@@ -19,7 +19,7 @@ class TableCreateForMysqlTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $database->expects($this->any())->method('driver')->will($this->returnValue('mysql')); //pgsql
+        $database->expects($this->any())->method('driver')->will($this->returnValue('mysql'));
 
         $table = $this->getMock('freidcreations\QueryMule\Builder\Sql\Table',[],[
             'some_database_connection_key',
@@ -179,5 +179,32 @@ class TableCreateForMysqlTest extends \PHPUnit_Framework_TestCase
         $this->table->create(function(TableColumnAdd $table){
             $table->add('some_column')->varchar(50)->after('another_column');
         },false,false);
+    }
+
+    public function testCreateTableWithPrimaryKey()
+    {
+        $this->table->create(function(TableColumnAdd $table){
+            $table->primaryKey(['some_column','another_column']);
+        },false,false);
+
+        $this->assertEquals('CREATE TABLE `some_table_name` ( PRIMARY KEY(some_column, another_column) )',trim($this->table->build()->sql()));
+    }
+
+    public function testCreateTableWithUniqueKey()
+    {
+        $this->table->create(function(TableColumnAdd $table){
+            $table->uniqueKey('some_unique',['some_column']);
+        },false,false);
+
+        $this->assertEquals('CREATE TABLE `some_table_name` ( UNIQUE KEY some_unique (some_column) )',trim($this->table->build()->sql()));
+    }
+
+    public function testCreateTableWithIndex()
+    {
+        $this->table->create(function(TableColumnAdd $table){
+            $table->index('some_index',['some_column', 'another_column']);
+        },false,false);
+
+        $this->assertEquals('CREATE TABLE `some_table_name` ( INDEX some_index (some_column, another_column) )',trim($this->table->build()->sql()));
     }
 }

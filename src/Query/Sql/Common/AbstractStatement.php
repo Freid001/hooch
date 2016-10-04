@@ -15,6 +15,7 @@ abstract class AbstractStatement //implements StatementInterface
     const CREATE_TABLE = 'CREATE TABLE';
     const COLS = 'COL';
     const COL_AS = 'AS';
+    const CONSTRAINT = 'CONSTRAINT';
     const COUNT = 'COUNT';
     const DELETE = 'DELETE';
     const DISTINCT = 'DISTINCT';

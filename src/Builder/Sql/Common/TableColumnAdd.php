@@ -58,12 +58,11 @@ class TableColumnAdd
 
     /**
      * Index
+     * @param $name
      * @param array $columns
      */
-    public function index(array $columns)
+    public function index($name,array $columns)
     {
-        $this->table->handleIndex($columns);
+        $this->table->handleIndex($name,$columns);
     }
 }
-
-

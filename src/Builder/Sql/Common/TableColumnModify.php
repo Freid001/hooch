@@ -65,7 +65,6 @@ class TableColumnModify
      */
     public function primaryKey(array $columns)
     {
-        $this->table->dropPrimaryKey();
         $this->table->handlePrimaryKey($columns);
     }
 
@@ -76,7 +75,6 @@ class TableColumnModify
      */
     public function uniqueKey($name,array $columns)
     {
-        $this->table->dropIndex($name);
         $this->table->handleUniqueKey($name, $columns);
     }
 
@@ -86,7 +84,6 @@ class TableColumnModify
      */
     public function index(array $columns)
     {
-        $this->table->dropIndex($name);
         $this->table->handleIndex($columns);
     }
 }

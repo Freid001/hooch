@@ -29,16 +29,17 @@ interface TableColumnHandlerInterface
 
     /**
      * Handle Unique Key
+     * @param $name
      * @param array $columns
      * @return void
      */
-    public function handleUniqueKey(array $columns);
+    public function handleUniqueKey($name,array $columns);
 
     /**
      * Handle Index
+     * @param $name
      * @param array $columns
      * @return void
      */
-    public function handleIndex(array $columns);
-
+    public function handleIndex($name,array $columns);
 }

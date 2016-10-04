@@ -77,68 +77,77 @@ class TableCreate extends AbstractStatement implements TableColumnHandlerInterfa
             $keys = array_keys($this->columns);
 
             foreach ($this->columns as $name => $column) {
-                if($column instanceof TableColumnDefinition){
+                if ($column instanceof TableColumnDefinition) {
 
                     //Add column name
                     sql::raw(self::CREATE_TABLE)->add($this->addAccent($column->getAttribute('name')));
 
                     //Add column definition
-                    foreach([
-                        'data_type',
-                        'null',
-                        'not_null',
-                        'default',
-                        'auto_increment',
-                        'comment',
-                            ] as $attribute){
-                        if($column->getAttribute($attribute)) {
+                    foreach ([
+                                 'data_type',
+                                 'null',
+                                 'not_null',
+                                 'default',
+                                 'auto_increment',
+                                 'comment',
+                             ] as $attribute) {
+                        if ($column->getAttribute($attribute)) {
 
                             //Has Attribute?
-                            if($column->hasAttribute($attribute)) {
+                            if ($column->hasAttribute($attribute)) {
                                 sql::raw(self::CREATE_TABLE)->add($column->getAttribute($attribute));
 
                                 //Has Parameters?
                                 if ($column->hasParameter($attribute)) {
-                                    $parameters[] = $column->getParameter( $attribute );
+                                    $parameters[] = $column->getParameter($attribute);
                                 }
                             }
                         }
                     }
 
                     //Is primary key?
-                    if($column->getAttribute('primary_key')){
+                    if ($column->getAttribute('primary_key')) {
                         $primary[] = $this->addAccent($column->getAttribute('name'));
                     }
 
                     //Is unique key?
-                    if($column->getAttribute('unique_key')){
+                    if ($column->getAttribute('unique_key')) {
                         $unique[] = $this->addAccent($column->getAttribute('name'));
                     }
 
                     //Do we need to add a comer?
-                    if ($name != $keys[count($keys)-1]) {
+                    if ($name != $keys[count($keys) - 1]) {
                         sql::raw(self::CREATE_TABLE)->add(', ');
                     }
                 }
             }
+        }
 
-            //Add primary keys
-            foreach( $this->primaryKeys as $primary){
+        //Add primary keys
+        foreach($this->primaryKeys as $primary){
+            if($this->columns) {
                 sql::raw(self::CREATE_TABLE)->add(', ');
-                sql::raw(self::CREATE_TABLE)->add(TableColumnDefinition::PRIMARY_KEY . "(" . implode(", ", $primary) . ")");
             }
 
-            //Add unique keys
-            foreach( $this->uniqueKeys as $unique){
+            sql::raw(self::CREATE_TABLE)->add(TableColumnDefinition::PRIMARY_KEY . "(" . implode(", ", $primary) . ")");
+        }
+
+        //Add unique keys
+        foreach($this->uniqueKeys as $name => $unique){
+            if($this->columns) {
                 sql::raw(self::CREATE_TABLE)->add(', ');
-                sql::raw(self::CREATE_TABLE)->add(TableColumnDefinition::UNIQUE_KEY . "(" . implode(", ", $unique) . ")");
             }
 
-            //Add index
-            foreach( $this->indexs as $index){
+            sql::raw(self::CREATE_TABLE)->add(TableColumnDefinition::UNIQUE_KEY . " " . $name . " (" . implode(", ", $unique) . ")");
+        }
+
+        //Add index
+        foreach($this->indexs as $name => $index){
+            if($this->columns) {
                 sql::raw(self::CREATE_TABLE)->add(', ');
-                sql::raw(self::CREATE_TABLE)->add(TableColumnDefinition::INDEX . "(" . implode(", ", $index) . ")");
             }
+            
+            sql::raw(self::CREATE_TABLE)->add(TableColumnDefinition::INDEX . " " . $name . " (" . implode(", ", $index) . ")");
         }
 
         Sql::raw(self::CREATE_TABLE)->add(')',$parameters);
@@ -176,22 +185,24 @@ class TableCreate extends AbstractStatement implements TableColumnHandlerInterfa
 
     /**
      * Handle Unique Key
+     * @param $name
      * @param array $columns
      * @return void
      */
-    public function handleUniqueKey(array $columns)
+    public function handleUniqueKey($name,array $columns)
     {
-        $this->uniqueKeys[] = $columns;
+        $this->uniqueKeys[$name] = $columns;
     }
 
     /**
      * Handle Index
+     * @param $name
      * @param array $columns
      * @return void
      */
-    public function handleIndex(array $columns)
+    public function handleIndex($name,array $columns)
     {
-        $this->indexs[] = $columns;
+        $this->indexs[$name] = $columns;
     }
 }
 

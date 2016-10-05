@@ -7,7 +7,7 @@ use freidcreations\QueryMule\Builder\Sql\Sql;
  * Class AbstractStatement
  * @package freidcreations\QueryMule\Query\Sql\Common
  */
-abstract class AbstractStatement //implements StatementInterface
+abstract class AbstractStatement
 {
     const ADD = 'ADD';
     const ALTER_TABLE = 'ALTER TABLE';
@@ -83,35 +83,6 @@ abstract class AbstractStatement //implements StatementInterface
     {
         Sql::reset();
         return $this;
-    }
-
-    /**
-     * Add accent
-     * @param $string
-     * @param bool|false $tableName
-     * @return string
-     */
-    protected function addAccent($string, $tableName = false)
-    {
-        $items = explode('.',$string);
-        $return = '';
-        foreach($items as $key => $item){
-            $dot = ($key != (count($items)-1)) ? '.' : '';
-
-            switch($this->table->dbh()->driver()){
-                case Database::DRIVE_POST_GRE_SQL:
-                    if($tableName) {
-                        $return .= '"' . $item . '"';
-                    }else {
-                        $return .= '"' . $item . '"' . $dot;
-                    }
-                    break;
-
-                default:
-                    $return .= '`' . $item . '`' . $dot;
-            }
-        }
-        return $return;
     }
 
     /**

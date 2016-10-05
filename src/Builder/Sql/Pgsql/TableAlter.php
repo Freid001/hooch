@@ -1,4 +1,4 @@
-<?php namespace freidcreations\QueryMule\Builder\Sql\Common;
+<?php namespace freidcreations\QueryMule\Builder\Sql\Pgsql;
 use freidcreations\QueryMule\Query\Sql\Common\AbstractStatement;
 use freidcreations\QueryMule\Query\Sql\Common\TableColumnHandlerInterface;
 use freidcreations\QueryMule\Builder\Sql\Sql;
@@ -227,7 +227,7 @@ class TableAlter extends AbstractStatement implements TableColumnHandlerInterfac
         }
 
         //Add primary keys
-        foreach( $this->primaryKeys as $primary){
+        foreach($this->primaryKeys as $primary){
             if($this->columns) {
                 sql::raw(self::MODIFY)->add(', ');
             }
@@ -236,7 +236,7 @@ class TableAlter extends AbstractStatement implements TableColumnHandlerInterfac
         }
 
         //Add unique
-        foreach( $this->uniqueKeys as $name => $unique){
+        foreach($this->uniqueKeys as $name => $unique){
             if($this->columns) {
                 sql::raw(self::MODIFY)->add(', ');
             }
@@ -245,7 +245,7 @@ class TableAlter extends AbstractStatement implements TableColumnHandlerInterfac
         }
 
         //Add index
-        foreach( $this->indexs as $name => $index){
+        foreach($this->indexs as $name => $index){
             if($this->columns) {
                 sql::raw(self::MODIFY)->add(', ');
             }

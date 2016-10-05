@@ -1,5 +1,7 @@
-<?php namespace freidcreations\QueryMule\Builder\Sql\Mysql;
+<?php namespace freidcreations\QueryMule\Builder\Sql\Pgsql;
 use freidcreations\QueryMule\Builder\Sql\Common\HasTableColumn;
+use freidcreations\QueryMule\Builder\Sql\Pgsql\Adapter\TableColumnDataTypeIncrementAdapter;
+use freidcreations\QueryMule\Builder\Sql\Pgsql\Adapter\TableColumnDataTypeIntAdapter;
 use freidcreations\QueryMule\Builder\Sql\Sql;
 use freidcreations\QueryMule\Builder\Sql\Table;
 use freidcreations\QueryMule\Builder\Sql\Common\TableColumnAdd;
@@ -7,15 +9,15 @@ use freidcreations\QueryMule\Builder\Sql\Common\TableColumnDefinition;
 use freidcreations\QueryMule\Query\Sql\Common\AbstractStatement;
 use freidcreations\QueryMule\Query\Sql\Common\TableColumnHandlerInterface;
 use freidcreations\QueryMule\Builder\Sql\Common\TableColumnDataTypeAttribute;
-use freidcreations\QueryMule\Builder\Sql\Common\HasAccent;
 
 /**
  * Class TableCreate
- * @package freidcreations\QueryMule\Builder\Sql\Mysql
+ * @package freidcreations\QueryMule\Builder\Sql\Pgsql
  */
 class TableCreate extends AbstractStatement implements TableColumnHandlerInterface
 {
     use HasTableColumn;
+
 
     const CREATE_TEMPORARY_TABLE  = 'CREATE TEMPORARY TABLE';
     const IF_NOT_EXISTS = 'IF NOT EXISTS';
@@ -34,11 +36,6 @@ class TableCreate extends AbstractStatement implements TableColumnHandlerInterfa
      * @var array
      */
     private $uniqueKeys = [];
-
-    /**
-     * @var array
-     */
-    private $indexs = [];
 
     /**
      * Make
@@ -81,8 +78,10 @@ class TableCreate extends AbstractStatement implements TableColumnHandlerInterfa
         $parameters = $this->generateColumns(self::CREATE_TABLE,$this->table,$this->columns,[
             'null',
             'not_null',
-            'default',
-            'comment'
+            'default'
+        ],[
+            'increment' => new TableColumnDataTypeIncrementAdapter(),
+            'int' => new TableColumnDataTypeIntAdapter()
         ]);
 
         //Add primary keys
@@ -101,15 +100,6 @@ class TableCreate extends AbstractStatement implements TableColumnHandlerInterfa
             }
 
             sql::raw(self::CREATE_TABLE)->add(TableColumnDefinition::UNIQUE_KEY . " " . $name . " (" . implode(", ", $unique) . ")");
-        }
-
-        //Add index
-        foreach($this->indexs as $name => $index){
-            if($this->columns) {
-                sql::raw(self::CREATE_TABLE)->add(', ');
-            }
-            
-            sql::raw(self::CREATE_TABLE)->add(TableColumnDefinition::INDEX . " " . $name . " (" . implode(", ", $index) . ")");
         }
 
         Sql::raw(self::CREATE_TABLE)->add(')',$parameters);
@@ -161,9 +151,6 @@ class TableCreate extends AbstractStatement implements TableColumnHandlerInterfa
      * @param array $columns
      * @return void
      */
-    public function handleIndex($name,array $columns)
-    {
-        $this->indexs[$name] = $columns;
-    }
+    public function handleIndex($name,array $columns){}
 }
 

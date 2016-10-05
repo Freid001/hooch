@@ -32,6 +32,7 @@ class TableColumnDataType implements TableColumnDataTypeInterface
     const DATA_TYPE_TINY_TIMESTAMP = 'TIMESTAMP';
     const DATA_TYPE_UUID = 'UUID';
     const DATA_TYPE_VARCHAR = 'VARCHAR';
+    const AUTO_INCREMENT = 'AUTO_INCREMENT';
 
     /**
      * @var TableColumnHandlerInterface
@@ -44,9 +45,10 @@ class TableColumnDataType implements TableColumnDataTypeInterface
     private $type;
 
     /**
-     * TableColumnsDataType constructor.
+     * TableColumnDataType constructor.
      * @param TableColumnHandlerInterface $table
-     * @param string $type
+     * @param $column
+     * @param bool|false $type
      */
     public function __construct(TableColumnHandlerInterface $table, $column, $type = false)
     {
@@ -56,22 +58,16 @@ class TableColumnDataType implements TableColumnDataTypeInterface
     }
 
     /**
-     * Rename
-     */
-//    public function rename()
-//    {
-//        $this->table->handleColumn(new TableColumnDefinition($this->column, null, $this->type),$this->type);
-//    }
-
-    /**
      * Boolean
      * @return TableColumnDefinitionInterface
      */
     public function boolean() : TableColumnDefinitionInterface
     {
-        $column = new TableColumnDefinition($this->column, self::DATA_TYPE_BOOLEAN, $this->type);
+        $column = new TableColumnDataTypeAttribute($this->column, self::DATA_TYPE_BOOLEAN, $this->type,'boolean');
+
         $this->table->handleColumn($column,$this->type);
-        return $column;
+
+        return $column->definition();
     }
 
     /**
@@ -82,9 +78,13 @@ class TableColumnDataType implements TableColumnDataTypeInterface
      */
     public function decimal($precision, $scale) : TableColumnDefinitionInterface
     {
-        $column = new TableColumnDefinition($this->column, self::DATA_TYPE_DECIMAL."(".$precision.",".$scale.")", $this->type);
+        $column = new TableColumnDataTypeAttribute($this->column, self::DATA_TYPE_DECIMAL, $this->type,'decimal');
+        $column->parameter($precision);
+        $column->parameter($scale);
+
         $this->table->handleColumn($column,$this->type);
-        return $column;
+
+        return $column->definition();
     }
 
     /**
@@ -94,9 +94,26 @@ class TableColumnDataType implements TableColumnDataTypeInterface
      */
     public function int($length = 11) : TableColumnDefinitionInterface
     {
-        $column = new TableColumnDefinition($this->column, self::DATA_TYPE_INT."(".$length.")", $this->type);
+        $column = new TableColumnDataTypeAttribute($this->column, self::DATA_TYPE_INT, $this->type,'int');
+        $column->parameter($length);
+
         $this->table->handleColumn($column,$this->type);
-        return $column;
+
+        return $column->definition();
+    }
+
+    /**
+     * Increment
+     * @param $length
+     * @return TableColumnDefinitionInterface
+     */
+    public function increment($length = 11)
+    {
+        $column = new TableColumnDataTypeAttribute($this->column, self::DATA_TYPE_INT, $this->type,'increment');
+        $column->parameter($length);
+        $column->after(self::AUTO_INCREMENT);
+
+        $this->table->handleColumn($column,$this->type);
     }
 
     /**
@@ -105,9 +122,11 @@ class TableColumnDataType implements TableColumnDataTypeInterface
      */
     public function text() : TableColumnDefinitionInterface
     {
-        $column = new TableColumnDefinition($this->column, self::DATA_TYPE_TEXT, $this->type);
+        $column = new TableColumnDataTypeAttribute($this->column, self::DATA_TYPE_TEXT, $this->type,'text');
+
         $this->table->handleColumn($column,$this->type);
-        return $column;
+
+        return $column->definition();
     }
 
     /**
@@ -117,8 +136,11 @@ class TableColumnDataType implements TableColumnDataTypeInterface
      */
     public function varchar($length = 225) : TableColumnDefinitionInterface
     {
-        $column = new TableColumnDefinition($this->column, self::DATA_TYPE_VARCHAR."(".$length.")", $this->type);
+        $column = new TableColumnDataTypeAttribute($this->column, self::DATA_TYPE_VARCHAR, $this->type,'varchar');
+        $column->parameter($length);
+
         $this->table->handleColumn($column,$this->type);
-        return $column;
+
+        return $column->definition();
     }
 }

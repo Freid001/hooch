@@ -10,7 +10,6 @@ class TableColumnDefinition implements TableColumnDefinitionInterface
     const NULL = 'NULL';
     const NOTNULL = 'NOT NULL';
     const DEFAULT = 'DEFAULT';
-    const AUTO_INCREMENT = 'AUTO_INCREMENT';
     const PRIMARY_KEY = 'PRIMARY KEY';
     const UNIQUE_KEY = 'UNIQUE KEY';
     const COMMENT = 'COMMENT';
@@ -123,16 +122,6 @@ class TableColumnDefinition implements TableColumnDefinitionInterface
     }
 
     /**
-     * AutoIncrement
-     * @return $this
-     */
-    public function autoIncrement()
-    {
-        $this->attributes['auto_increment'] = self::AUTO_INCREMENT;
-        return $this;
-    }
-
-    /**
      * Comment
      * @param $comment
      * @return $this
@@ -175,10 +164,5 @@ class TableColumnDefinition implements TableColumnDefinitionInterface
         }
 
         $this->attributes['first'] = 'FIRST';
-    }
-
-    public function drop()
-    {
-
     }
 }

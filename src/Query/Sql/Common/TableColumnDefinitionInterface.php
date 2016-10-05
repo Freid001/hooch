@@ -54,12 +54,6 @@ interface TableColumnDefinitionInterface
     public function default($value);
 
     /**
-     * AutoIncrement
-     * @return $this
-     */
-    public function autoIncrement();
-
-    /**
      * Comment
      * @param $comment
      * @return $this

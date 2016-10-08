@@ -22,10 +22,11 @@ interface TableColumnHandlerInterface
 
     /**
      * Handle Primary Key
+     * @param $name
      * @param array $columns
      * @return void
      */
-    public function handlePrimaryKey(array $columns);
+    public function handlePrimaryKey($name,array $columns);
 
     /**
      * Handle Unique Key

@@ -7,14 +7,6 @@ use freidcreations\QueryMule\Query\Sql\Common\TableColumnDefinitionInterface;
  */
 class TableColumnDefinition implements TableColumnDefinitionInterface
 {
-    const NULL = 'NULL';
-    const NOTNULL = 'NOT NULL';
-    const DEFAULT = 'DEFAULT';
-    const PRIMARY_KEY = 'PRIMARY KEY';
-    const UNIQUE_KEY = 'UNIQUE KEY';
-    const COMMENT = 'COMMENT';
-    const INDEX = 'INDEX';
-
     /**
      * @var array
      */

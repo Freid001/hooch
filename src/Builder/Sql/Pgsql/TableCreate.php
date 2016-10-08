@@ -1,26 +1,28 @@
 <?php namespace freidcreations\QueryMule\Builder\Sql\Pgsql;
-use freidcreations\QueryMule\Builder\Sql\Common\HasTableColumn;
+use freidcreations\QueryMule\Query\Sql\Common\HasTableColumn;
 use freidcreations\QueryMule\Builder\Sql\Pgsql\Adapter\TableColumnDataTypeIncrementAdapter;
 use freidcreations\QueryMule\Builder\Sql\Pgsql\Adapter\TableColumnDataTypeIntAdapter;
 use freidcreations\QueryMule\Builder\Sql\Sql;
 use freidcreations\QueryMule\Builder\Sql\Table;
 use freidcreations\QueryMule\Builder\Sql\Common\TableColumnAdd;
 use freidcreations\QueryMule\Builder\Sql\Common\TableColumnDefinition;
-use freidcreations\QueryMule\Query\Sql\Common\AbstractStatement;
+use freidcreations\QueryMule\Query\Sql\Common\QueryBuilderInterface;
 use freidcreations\QueryMule\Query\Sql\Common\TableColumnHandlerInterface;
 use freidcreations\QueryMule\Builder\Sql\Common\TableColumnDataTypeAttribute;
+use freidcreations\QueryMule\Query\Sql\Common\HasAccent;
+use freidcreations\QueryMule\Query\Sql\Common\HasBuilder;
 
 /**
  * Class TableCreate
  * @package freidcreations\QueryMule\Builder\Sql\Pgsql
  */
-class TableCreate extends AbstractStatement implements TableColumnHandlerInterface
+class TableCreate implements QueryBuilderInterface, TableColumnHandlerInterface
 {
+    use HasAccent;
     use HasTableColumn;
+    use HasBuilder;
 
-
-    const CREATE_TEMPORARY_TABLE  = 'CREATE TEMPORARY TABLE';
-    const IF_NOT_EXISTS = 'IF NOT EXISTS';
+    const UNIQUE = 'UNIQUE';
 
     /**
      * @var array
@@ -38,14 +40,34 @@ class TableCreate extends AbstractStatement implements TableColumnHandlerInterfa
     private $uniqueKeys = [];
 
     /**
+     * TableCreate constructor.
+     * @param Table $table
+     */
+    public function __construct(Table $table)
+    {
+        $this->table = $table;
+        $this->makeAccent($this);
+        $this->makeTableColumn($this);
+        $this->makeBuilder($this);
+    }
+
+    /**
      * Make
-     *
      * @param Table $table
      * @return self
      */
     public static function make(Table $table)
     {
         return new self($table);
+    }
+
+    /**
+     * Table
+     * @return Table
+     */
+    public function table() : Table
+    {
+        return $this->table;
     }
 
     /**
@@ -69,13 +91,13 @@ class TableCreate extends AbstractStatement implements TableColumnHandlerInterfa
 
         //If not exists?
         if($ifNotExists){
-            Sql::raw(self::CREATE_TABLE)->add(self::IF_NOT_EXISTS . ' ' . $this->addAccent($this->table,$this->table->name()) . ' (');
+            Sql::raw(self::CREATE_TABLE)->add(self::IF_NOT_EXISTS . ' ' . $this->accent($this->table->name()) . ' (');
         }else {
-            Sql::raw(self::CREATE_TABLE)->add($this->addAccent($this->table,$this->table->name()) . ' (');
+            Sql::raw(self::CREATE_TABLE)->add($this->accent($this->table->name()) . ' (');
         }
 
         //Generate columns for this table
-        $parameters = $this->generateColumns(self::CREATE_TABLE,$this->table,$this->columns,[
+        $parameters = $this->generateColumns(self::CREATE_TABLE,$this->columns,[
             'null',
             'not_null',
             'default'
@@ -84,23 +106,13 @@ class TableCreate extends AbstractStatement implements TableColumnHandlerInterfa
             'int' => new TableColumnDataTypeIntAdapter()
         ]);
 
-        //Add primary keys
-        foreach($this->primaryKeys as $primary){
-            if($this->columns) {
-                sql::raw(self::CREATE_TABLE)->add(', ');
-            }
+        $this->generateConstraint($this->primaryKeys,true,function($name,$column){
+            return self::CONSTRAINT . " " . $this->accent($name) . " " . TableColumnDefinition::PRIMARY_KEY . " (" . $column . ")";
+        });
 
-            sql::raw(self::CREATE_TABLE)->add(TableColumnDefinition::PRIMARY_KEY . "(" . implode(", ", $primary) . ")");
-        }
-
-        //Add unique keys
-        foreach($this->uniqueKeys as $name => $unique){
-            if($this->columns) {
-                sql::raw(self::CREATE_TABLE)->add(', ');
-            }
-
-            sql::raw(self::CREATE_TABLE)->add(TableColumnDefinition::UNIQUE_KEY . " " . $name . " (" . implode(", ", $unique) . ")");
-        }
+        $this->generateConstraint($this->uniqueKeys,true,function($name,$column){
+            return self::CONSTRAINT . " " . $this->accent($name) . " " . self::UNIQUE . " (" . $column . ")";
+        });
 
         Sql::raw(self::CREATE_TABLE)->add(')',$parameters);
 
@@ -126,12 +138,13 @@ class TableCreate extends AbstractStatement implements TableColumnHandlerInterfa
 
     /**
      * Handle Primary Key
+     * @param $name
      * @param array $columns
      * @return void
      */
-    public function handlePrimaryKey(array $columns)
+    public function handlePrimaryKey($name,array $columns)
     {
-        $this->primaryKeys[] = $columns;
+        $this->primaryKeys[$name] = $columns;
     }
 
     /**

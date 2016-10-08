@@ -6,6 +6,14 @@
  */
 interface TableColumnDefinitionInterface
 {
+    const NULL = 'NULL';
+    const NOTNULL = 'NOT NULL';
+    const DEFAULT = 'DEFAULT';
+    const PRIMARY_KEY = 'PRIMARY KEY';
+    const UNIQUE_KEY = 'UNIQUE KEY';
+    const COMMENT = 'COMMENT';
+    const INDEX = 'INDEX';
+
     /**
      * Has Attribute
      * @param $key

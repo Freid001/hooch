@@ -39,11 +39,12 @@ class TableColumnAdd
 
     /**
      * Primary Key
+     * @param $name
      * @param array $columns
      */
-    public function primaryKey(array $columns)
+    public function primaryKey($name,array $columns)
     {
-        $this->table->handlePrimaryKey($columns);
+        $this->table->handlePrimaryKey($name,$columns);
     }
 
     /**

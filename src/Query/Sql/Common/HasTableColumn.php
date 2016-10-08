@@ -1,7 +1,7 @@
-<?php  namespace freidcreations\QueryMule\Builder\Sql\Common;
+<?php  namespace freidcreations\QueryMule\Query\Sql\Common;
 use freidcreations\QueryMule\Builder\Sql\Sql;
 use freidcreations\QueryMule\Builder\Sql\Table;
-use freidcreations\QueryMule\Query\Sql\Common\TableColumnDataTypeAdapterInterface;
+use freidcreations\QueryMule\Query\Sql\Common\TableColumnDataTypeAttributeInterface;
 
 /**
  * Class HasTableColumn
@@ -9,7 +9,19 @@ use freidcreations\QueryMule\Query\Sql\Common\TableColumnDataTypeAdapterInterfac
  */
 trait HasTableColumn
 {
-    use HasAccent;
+    /**
+     * @var HasAccent
+     */
+    private $builder;
+
+    /**
+     * Make Table Column
+     * @param QueryBuilderInterface $builder
+     */
+    public function makeTableColumn(QueryBuilderInterface $builder)
+    {
+        $this->builder = $builder;
+    }
 
     /**
      * Generate Columns
@@ -22,21 +34,19 @@ trait HasTableColumn
      */
     public function generateColumns(
         $key,
-        Table $table,
         array $columns,
         array $definitions,
         array $adapters = []
-    )
-    {
+    ){
         $parameters = [];
         if($columns) {
             $keys = array_keys($columns);
 
             foreach ($columns as $name => $column) {
-                if ($column instanceof TableColumnDataTypeAttribute) {
+                if ($column instanceof TableColumnDataTypeAttributeInterface) {
 
                     //Add column name
-                    sql::raw($key)->add($this->addAccent($table,$column->column_name));
+                    sql::raw($key)->add($this->builder->accent($column->column_name));
 
                     //Add data type or use data type adapter
                     if(isset($adapters[$column->method])) {
@@ -83,5 +93,28 @@ trait HasTableColumn
         }
 
         return $parameters;
+    }
+
+    /**
+     * Generate Constraint
+     * @param $keys
+     * @param $append
+     * @param \Closure $add
+     */
+    public function generateConstraint($keys, $append,\Closure $add)
+    {
+        foreach($keys as $name=>$columns){
+            if($append) {
+                sql::raw(QueryBuilderInterface::CREATE_TABLE)->add(', ');
+            }
+
+            foreach($columns as &$row){
+                $row = $this->builder->accent($row);
+            }
+
+            sql::raw(QueryBuilderInterface::CREATE_TABLE)->add(
+                $add($name,implode(",",$columns))
+            );
+        }
     }
 }

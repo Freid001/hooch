@@ -21,7 +21,7 @@ class TableColumnDataTypeIncrementAdapter implements TableColumnDataTypeAdapterI
      * @param TableColumnDataTypeAttribute $column
      * @return void
      */
-    public function setTableColumnDataTypeAttribute(TableColumnDataTypeAttribute $column)
+    public function setTableColumnDataTypeAttribute(TableColumnDataTypeAttributeInterface $column)
     {
         $this->column = $column;
     }

@@ -184,27 +184,33 @@ class TableCreateForMysqlTest extends \PHPUnit_Framework_TestCase
     public function testCreateTableWithPrimaryKey()
     {
         $this->table->create(function(TableColumnAdd $table){
-            $table->primaryKey(['some_column','another_column']);
+            $table->add('some_column')->int();
+            $table->add('another_column')->int();
+            $table->primaryKey('some_primary_key',['some_column','another_column']);
         },false,false);
 
-        $this->assertEquals('CREATE TABLE `some_table_name` ( PRIMARY KEY(some_column, another_column) )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE `some_table_name` ( `some_column` INT(11) ,  `another_column` INT(11) ,  PRIMARY KEY `some_primary_key` (`some_column`,`another_column`) )',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableWithUniqueKey()
     {
         $this->table->create(function(TableColumnAdd $table){
-            $table->uniqueKey('some_unique',['some_column']);
+            $table->add('some_column')->int();
+            $table->add('another_column')->int();
+            $table->uniqueKey('some_unique',['some_column','another_column']);
         },false,false);
 
-        $this->assertEquals('CREATE TABLE `some_table_name` ( UNIQUE KEY some_unique (some_column) )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE `some_table_name` ( `some_column` INT(11) ,  `another_column` INT(11) ,  UNIQUE KEY `some_unique` (`some_column`,`another_column`) )',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableWithIndex()
     {
         $this->table->create(function(TableColumnAdd $table){
+            $table->add('some_column')->int();
+            $table->add('another_column')->int();
             $table->index('some_index',['some_column', 'another_column']);
         },false,false);
 
-        $this->assertEquals('CREATE TABLE `some_table_name` ( INDEX some_index (some_column, another_column) )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE `some_table_name` ( `some_column` INT(11) ,  `another_column` INT(11) ,  INDEX `some_index` (`some_column`,`another_column`) )',trim($this->table->build()->sql()));
     }
 }

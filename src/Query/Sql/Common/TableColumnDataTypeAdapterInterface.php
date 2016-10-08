@@ -11,5 +11,5 @@ interface TableColumnDataTypeAdapterInterface
      * @param TableColumnDataTypeAttribute $table
      * @return mixed
      */
-    public function setTableColumnDataTypeAttribute(TableColumnDataTypeAttribute $table);
+    public function setTableColumnDataTypeAttribute(TableColumnDataTypeAttributeInterface $table);
 }

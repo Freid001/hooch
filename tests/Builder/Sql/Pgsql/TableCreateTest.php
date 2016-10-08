@@ -1,12 +1,12 @@
-<?php namespace test\Builder\Sql\Common\TableCreate;
+<?php namespace test\Builder\Sql\Pgsql\TableCreate;
 use freidcreations\QueryMule\Builder\Sql\Pgsql\TableCreate;
 use freidcreations\QueryMule\Builder\Sql\Common\TableColumnAdd;
 
 /**
- * Class TableCreateForPgsqlTest
+ * Class TableCreateTest
  * @package test\Builder\Sql\Common\TableCreate
  */
-class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
+class TableCreateTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var TableCreate
@@ -43,7 +43,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             //do nothing
         },false,false);
 
-        $this->assertEquals('CREATE TABLE "some_table_name" ( )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE "some_table_name" ( );',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableIfNotExists()
@@ -52,7 +52,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             //dso nothing
         },false,true);
 
-        $this->assertEquals('CREATE TABLE IF NOT EXISTS "some_table_name" ( )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE IF NOT EXISTS "some_table_name" ( );',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableTemporary()
@@ -61,7 +61,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             //do nothing
         },true,false);
 
-        $this->assertEquals('CREATE TEMPORARY TABLE "some_table_name" ( )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TEMPORARY TABLE "some_table_name" ( );',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableTemporaryIfNotExists()
@@ -70,7 +70,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             //do nothing
         },true,true);
 
-        $this->assertEquals('CREATE TEMPORARY TABLE IF NOT EXISTS "some_table_name" ( )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TEMPORARY TABLE IF NOT EXISTS "some_table_name" ( );',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableWithColumnInt()
@@ -79,7 +79,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             $table->add('some_column')->int(10);
         },false,false);
 
-        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" INT )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" INT );',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableWithColumnVarchar()
@@ -88,7 +88,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             $table->add('some_column')->varchar(50);
         },false,false);
 
-        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" VARCHAR(50) )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" VARCHAR(50) );',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableWithColumnBoolean()
@@ -97,7 +97,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             $table->add('some_column')->boolean();
         },false,false);
 
-        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" BOOL )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" BOOL );',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableWithColumnDecimal()
@@ -106,7 +106,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             $table->add('some_column')->decimal(2,1);
         },false,false);
 
-        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" DECIMAL(2,1) )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" DECIMAL(2,1) );',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableWithColumn()
@@ -115,7 +115,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             $table->add('some_column')->text();
         },false,false);
 
-        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" TEXT )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" TEXT );',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableWithColumnAndAutoIncrement()
@@ -124,7 +124,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             $table->add('some_column')->increment(50);
         },false,false);
 
-        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" SERIAL )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" SERIAL );',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableWithColumnAndNotNull()
@@ -133,7 +133,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             $table->add('some_column')->varchar(50)->notNull();
         },false,false);
 
-        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" VARCHAR(50) NOT NULL )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" VARCHAR(50) NOT NULL );',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableWithColumnAndNullable()
@@ -142,7 +142,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             $table->add('some_column')->varchar(50)->nullable();
         },false,false);
 
-        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" VARCHAR(50) NULL )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" VARCHAR(50) NULL );',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableWithColumnAndDefualt()
@@ -151,7 +151,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             $table->add('some_column')->varchar(50)->default('some_default_value');
         },false,false);
 
-        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" VARCHAR(50) DEFAULT ? )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" VARCHAR(50) DEFAULT ? );',trim($this->table->build()->sql()));
         $this->assertContains('some_default_value', $this->table->build()->parameters());
     }
 
@@ -179,7 +179,7 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             $table->primaryKey('some_primary_key',['some_column','another_column']);
         },false,false);
 
-        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" INT ,  "another_column" INT ,  CONSTRAINT "some_primary_key" PRIMARY KEY ("some_column","another_column") )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" INT ,  "another_column" INT ,  CONSTRAINT "some_primary_key" PRIMARY KEY ("some_column","another_column") );',trim($this->table->build()->sql()));
     }
 
     public function testCreateTableWithUniqueKey()
@@ -190,6 +190,17 @@ class TableCreateForPgsqlTest extends \PHPUnit_Framework_TestCase
             $table->uniqueKey('some_unique',['some_column','another_column']);
         },false,false);
 
-        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" INT ,  "another_column" INT ,  CONSTRAINT "some_unique" UNIQUE ("some_column","another_column") )',trim($this->table->build()->sql()));
+        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" INT ,  "another_column" INT ,  CONSTRAINT "some_unique" UNIQUE ("some_column","another_column") );',trim($this->table->build()->sql()));
+    }
+
+    public function testCreateTableWithIndex()
+    {
+        $this->table->create(function(TableColumnAdd $table){
+            $table->add('some_column')->int();
+            $table->add('another_column')->int();
+            $table->index('some_index',['some_column', 'another_column']);
+        },false,false);
+
+        $this->assertEquals('CREATE TABLE "some_table_name" ( "some_column" INT ,  "another_column" INT ); CREATE INDEX "some_index" ON "some_table_name" ("some_column","another_column");',trim($this->table->build()->sql()));
     }
 }

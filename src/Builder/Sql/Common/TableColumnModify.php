@@ -47,7 +47,7 @@ class TableColumnModify
     public function rename($old,$new) : TableColumnDataType
     {
         $this->table->handleModify($old);
-        return new TableColumnDataType($this->table, $new, $this->type);
+        return new TableColumnDataType($this->table, $new, 'change');
     }
 
     /**
@@ -56,16 +56,16 @@ class TableColumnModify
      */
     public function drop($column)
     {
-        $this->table->handleDrop($column);
+        //$this->table->handleDrop($column);
     }
 
     /**
      * Primary Key
      * @param array $columns
      */
-    public function primaryKey(array $columns)
+    public function primaryKey($name,array $columns)
     {
-        $this->table->handlePrimaryKey($columns);
+        $this->table->handlePrimaryKey($name,$columns);
     }
 
     /**
@@ -82,8 +82,8 @@ class TableColumnModify
      * Index
      * @param array $columns
      */
-    public function index(array $columns)
+    public function index($name,array $columns)
     {
-        $this->table->handleIndex($columns);
+        $this->table->handleIndex($name,$columns);
     }
 }

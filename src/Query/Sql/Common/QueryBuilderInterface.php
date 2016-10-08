@@ -19,6 +19,7 @@ interface QueryBuilderInterface
     const COUNT = 'COUNT';
     const DELETE = 'DELETE';
     const DISTINCT = 'DISTINCT';
+    const DROP = 'DROP';
     const FETCH = 'fetch';
     const FETCH_ALL = 'fetchAll';
     const FETCH_COLUMN = 'fetchColumn';

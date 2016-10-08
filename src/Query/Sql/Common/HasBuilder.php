@@ -48,8 +48,8 @@ trait HasBuilder
         $buildOrder = [
             QueryBuilderInterface::CREATE_TABLE,
             QueryBuilderInterface::ALTER_TABLE,
-            QueryBuilderInterface::ADD,
-            QueryBuilderInterface::MODIFY,
+            //QueryBuilderInterface::ADD,
+            //QueryBuilderInterface::MODIFY,
             QueryBuilderInterface::SELECT,
             QueryBuilderInterface::INSERT,
             QueryBuilderInterface::UPDATE,

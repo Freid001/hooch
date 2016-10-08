@@ -8,9 +8,9 @@ use freidcreations\QueryMule\Builder\Sql\Common\TableColumnAdd;
 use freidcreations\QueryMule\Builder\Sql\Common\TableColumnDefinition;
 use freidcreations\QueryMule\Query\Sql\Common\QueryBuilderInterface;
 use freidcreations\QueryMule\Query\Sql\Common\TableColumnHandlerInterface;
-use freidcreations\QueryMule\Builder\Sql\Common\TableColumnDataTypeAttribute;
 use freidcreations\QueryMule\Query\Sql\Common\HasAccent;
 use freidcreations\QueryMule\Query\Sql\Common\HasBuilder;
+use freidcreations\QueryMule\Query\Sql\Common\TableColumnDataTypeAttributeInterface;
 
 /**
  * Class TableCreate
@@ -22,6 +22,7 @@ class TableCreate implements QueryBuilderInterface, TableColumnHandlerInterface
     use HasTableColumn;
     use HasBuilder;
 
+    const CREATE_INDEX = 'CREATE INDEX';
     const UNIQUE = 'UNIQUE';
 
     /**
@@ -38,6 +39,12 @@ class TableCreate implements QueryBuilderInterface, TableColumnHandlerInterface
      * @var array
      */
     private $uniqueKeys = [];
+
+    /**
+     * @var array
+     */
+    private $indexs = [];
+
 
     /**
      * TableCreate constructor.
@@ -104,17 +111,23 @@ class TableCreate implements QueryBuilderInterface, TableColumnHandlerInterface
         ],[
             'increment' => new TableColumnDataTypeIncrementAdapter(),
             'int' => new TableColumnDataTypeIntAdapter()
-        ]);
+        ],function($key, $column){
+            return $this->accent($column->column_name);
+        });
 
-        $this->generateConstraint($this->primaryKeys,true,function($name,$column){
+        $this->generateConstraint(self::CREATE_TABLE,$this->primaryKeys,true,function($name,$column){
             return self::CONSTRAINT . " " . $this->accent($name) . " " . TableColumnDefinition::PRIMARY_KEY . " (" . $column . ")";
         });
 
-        $this->generateConstraint($this->uniqueKeys,true,function($name,$column){
+        $this->generateConstraint(self::CREATE_TABLE,$this->uniqueKeys,true,function($name,$column){
             return self::CONSTRAINT . " " . $this->accent($name) . " " . self::UNIQUE . " (" . $column . ")";
         });
 
-        Sql::raw(self::CREATE_TABLE)->add(')',$parameters);
+        Sql::raw(self::CREATE_TABLE)->add(');',$parameters);
+
+        $this->generateConstraint(self::CREATE_TABLE,$this->indexs,false,function($name,$column){
+            return self::CREATE_INDEX  . " " . $this->accent($name) . " " . self::ON . " " . $this->accent($this->table->name()) . " (" . $column . ");";
+        });
 
         return $this;
     }
@@ -128,10 +141,10 @@ class TableCreate implements QueryBuilderInterface, TableColumnHandlerInterface
 
     /**
      * Handle Column
-     * @param TableColumnDataTypeAttribute $column
+     * @param TableColumnDataTypeAttributeInterface $column
      * @param null|string $type
      */
-    public function handleColumn(TableColumnDataTypeAttribute $column, $type = null)
+    public function handleColumn(TableColumnDataTypeAttributeInterface $column, $type = null)
     {
         $this->columns[] = $column;
     }
@@ -164,6 +177,8 @@ class TableCreate implements QueryBuilderInterface, TableColumnHandlerInterface
      * @param array $columns
      * @return void
      */
-    public function handleIndex($name,array $columns){}
+    public function handleIndex($name,array $columns){
+        $this->indexs[$name] = $columns;
+    }
 }
 

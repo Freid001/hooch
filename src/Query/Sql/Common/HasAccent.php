@@ -21,7 +21,6 @@ trait HasAccent
     public function makeAccent(QueryBuilderInterface $builder)
     {
         $this->table = $builder->table();
-        return $this;
     }
 
     /**

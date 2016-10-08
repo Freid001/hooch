@@ -26,18 +26,14 @@ trait HasTableColumn
     /**
      * Generate Columns
      * @param string $key
-     * @param Table $table
      * @param array $columns
      * @param array $definitions
      * @param array $adapters
+     * @param string $priorStatement
      * @return array
      */
-    public function generateColumns(
-        $key,
-        array $columns,
-        array $definitions,
-        array $adapters = []
-    ){
+    public function generateColumns($key, array $columns, array $definitions = [], array $adapters = [], \Closure $add)
+    {
         $parameters = [];
         if($columns) {
             $keys = array_keys($columns);
@@ -45,8 +41,8 @@ trait HasTableColumn
             foreach ($columns as $name => $column) {
                 if ($column instanceof TableColumnDataTypeAttributeInterface) {
 
-                    //Add column name
-                    sql::raw($key)->add($this->builder->accent($column->column_name));
+                    //Add column
+                    sql::raw($key)->add($add($name,$column));
 
                     //Add data type or use data type adapter
                     if(isset($adapters[$column->method])) {
@@ -97,22 +93,23 @@ trait HasTableColumn
 
     /**
      * Generate Constraint
-     * @param $keys
+     * @param $key
+     * @param $constraints
      * @param $append
      * @param \Closure $add
      */
-    public function generateConstraint($keys, $append,\Closure $add)
+    public function generateConstraint($key,$constraints, $append, \Closure $add)
     {
-        foreach($keys as $name=>$columns){
+        foreach($constraints as $name=>$columns){
             if($append) {
-                sql::raw(QueryBuilderInterface::CREATE_TABLE)->add(', ');
+                sql::raw($key)->add(', ');
             }
 
             foreach($columns as &$row){
                 $row = $this->builder->accent($row);
             }
 
-            sql::raw(QueryBuilderInterface::CREATE_TABLE)->add(
+            sql::raw($key)->add(
                 $add($name,implode(",",$columns))
             );
         }

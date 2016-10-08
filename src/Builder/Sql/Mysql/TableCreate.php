@@ -5,8 +5,8 @@ use freidcreations\QueryMule\Builder\Sql\Sql;
 use freidcreations\QueryMule\Builder\Sql\Table;
 use freidcreations\QueryMule\Builder\Sql\Common\TableColumnAdd;
 use freidcreations\QueryMule\Builder\Sql\Common\TableColumnDefinition;
+use freidcreations\QueryMule\Query\Sql\Common\TableColumnDataTypeAttributeInterface;
 use freidcreations\QueryMule\Query\Sql\Common\TableColumnHandlerInterface;
-use freidcreations\QueryMule\Builder\Sql\Common\TableColumnDataTypeAttribute;
 use freidcreations\QueryMule\Query\Sql\Common\HasAccent;
 use freidcreations\QueryMule\Query\Sql\Common\QueryBuilderInterface;
 
@@ -108,21 +108,23 @@ class TableCreate implements QueryBuilderInterface, TableColumnHandlerInterface
             'not_null',
             'default',
             'comment'
-        ]);
+        ], [], function($key, $column){
+            return $this->accent($column->column_name);
+        });
 
-        $this->generateConstraint($this->primaryKeys,true,function($name,$column){
+        $this->generateConstraint(self::CREATE_TABLE,$this->primaryKeys,true,function($name,$column){
             return TableColumnDefinition::PRIMARY_KEY . " " . $this->accent($name) . " (" . $column . ")";
         });
 
-        $this->generateConstraint($this->uniqueKeys,true,function($name,$column){
+        $this->generateConstraint(self::CREATE_TABLE,$this->uniqueKeys,true,function($name,$column){
             return TableColumnDefinition::UNIQUE_KEY . " " . $this->accent($name) . " (" . $column . ")";
         });
 
-        $this->generateConstraint($this->indexs,true,function($name,$column){
+        $this->generateConstraint(self::CREATE_TABLE,$this->indexs,true,function($name,$column){
             return TableColumnDefinition::INDEX . " " . $this->accent($name) . " (" . $column . ")";
         });
 
-        Sql::raw(self::CREATE_TABLE)->add(')',$parameters);
+        Sql::raw(self::CREATE_TABLE)->add(');',$parameters);
 
         return $this;
     }
@@ -136,10 +138,10 @@ class TableCreate implements QueryBuilderInterface, TableColumnHandlerInterface
 
     /**
      * Handle Column
-     * @param TableColumnDataTypeAttribute $column
+     * @param TableColumnDataTypeAttributeInterface $column
      * @param null|string $type
      */
-    public function handleColumn(TableColumnDataTypeAttribute $column, $type = null)
+    public function handleColumn(TableColumnDataTypeAttributeInterface $column, $type = null)
     {
         $this->columns[] = $column;
     }

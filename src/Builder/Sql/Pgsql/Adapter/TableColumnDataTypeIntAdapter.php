@@ -28,12 +28,16 @@ class TableColumnDataTypeIntAdapter implements TableColumnDataTypeAdapterInterfa
     /**
      * @param $parameter
      */
-    public function parameter($parameter){}
+    public function parameter($parameter){
+        $this->column->parameter($parameter);
+    }
 
     /**
      * @param $after
      */
-    public function after($after){}
+    public function after($after){
+        $this->column->after($after);
+    }
 
     /**
      * @param $key
@@ -41,10 +45,22 @@ class TableColumnDataTypeIntAdapter implements TableColumnDataTypeAdapterInterfa
      */
     public function hasAttribute($key)
     {
-        if(isset($this->column->{$key})){
-            return true;
+        $return = null;
+        switch($key){
+            case 'data_type':
+                $return = true;
+                break;
+            case 'parameter':
+                $return = false;
+                break;
+            case 'after':
+                $return = false;
+                break;
+            default:
+                $return = $this->column->hasAttribute($key);
         }
-        return false;
+
+        return $return;
     }
 
     /**
@@ -53,22 +69,22 @@ class TableColumnDataTypeIntAdapter implements TableColumnDataTypeAdapterInterfa
      */
     public function __get($key)
     {
-        $value = null;
+        $return = null;
         switch($key){
             case 'data_type':
-                $value = TableColumnDataType::DATA_TYPE_INT;
+                $return = TableColumnDataType::DATA_TYPE_INT;
                 break;
             case 'parameter':
-                $value = null;
+                $return = null;
                 break;
             case 'after':
-                $value = null;
+                $return = null;
                 break;
             default:
-                $value = $this->column->{$key};
+                $return = $this->column->{$key};
         }
 
-        return $value;
+        return $return;
     }
 
     /**

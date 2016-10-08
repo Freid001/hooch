@@ -2,29 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b436a12b-465f-4c57-8776-c7d630e5638e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/HasBuilder.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/QueryBuilderInterface.php" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Builder/Sql/Common/HasBuilder.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Builder/Sql/Common/HasRecall.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Builder/Sql/Common/HasReset.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/AbstractStatement.php" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Builder/Sql/Common/HasAccent.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/HasAccent.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Builder/Sql/Common/HasJoin.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/HasJoin.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Builder/Sql/Common/HasTableColumn.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/HasTableColumn.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableAlterTest.php" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/TableAlter.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/Builder/Sql/Common/TableAlterForMysqlTest.php" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForMysqlTest.php" afterPath="$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableCreateTest.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForPgsqlTest.php" afterPath="$PROJECT_DIR$/tests/Builder/Sql/Pgsql/TableCreateTest.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnAdd.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnAdd.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnDataType.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnDataType.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnDefinition.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnDefinition.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Mysql/TableAlter.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Mysql/TableAlter.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Mysql/TableCreate.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Mysql/TableCreate.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIncrementAdapter.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIncrementAdapter.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIntAdapter.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIntAdapter.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/TableCreate.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/TableCreate.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnDataTypeAdapterInterface.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnDataTypeAdapterInterface.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnDataTypeInterface.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnDataTypeInterface.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnDefinitionInterface.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnDefinitionInterface.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/HasAccent.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/HasAccent.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/HasBuilder.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/HasBuilder.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/HasTableColumn.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/HasTableColumn.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/QueryBuilderInterface.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/QueryBuilderInterface.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnHandlerInterface.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnHandlerInterface.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForMysqlTest.php" afterPath="$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForMysqlTest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForPgsqlTest.php" afterPath="$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForPgsqlTest.php" />
     </list>
     <ignored path="QueryMule.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -46,41 +40,36 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TableCreate.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Mysql/TableCreate.php">
+      <file leaf-file-name="HasTableColumn.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/HasTableColumn.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.384615">
-              <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+            <state vertical-scroll-proportion="-10.076923">
+              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
               <folding>
-                <element signature="e#60#117#0#PHP" expanded="true" />
+                <element signature="e#60#105#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TableCreateForMysqlTest.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForMysqlTest.php">
+      <file leaf-file-name="TableAlter.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Mysql/TableAlter.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7438795">
-              <caret line="212" column="0" selection-start-line="212" selection-start-column="0" selection-end-line="212" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.5517891">
+              <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
               <folding>
-                <element signature="e#53#112#0#PHP" expanded="true" />
-                <marker date="1475945885383" expanded="true" signature="1350:1384" placeholder="CREATE TABLE..some_table_name..." />
-                <marker date="1475945885383" expanded="true" signature="1626:1674" placeholder="CREATE TABLE..IF..." />
-                <marker date="1475945885383" expanded="true" signature="2532:2588" placeholder="CREATE TABLE..some_table_name..." />
-                <marker date="1475945885383" expanded="true" signature="2864:2924" placeholder="CREATE TABLE..some_table_name..." />
-                <marker date="1475945885383" expanded="true" signature="3198:3251" placeholder="CREATE TABLE..some_table_name..." />
-                <marker date="1475945885383" expanded="true" signature="3528:3589" placeholder="CREATE TABLE..some_table_name..." />
-                <marker date="1475945885383" expanded="true" signature="3853:3906" placeholder="CREATE TABLE..some_table_name..." />
-                <marker date="1475945885383" expanded="true" signature="4193:4264" placeholder="CREATE TABLE..some_table_name..." />
-                <marker date="1475945885383" expanded="true" signature="4554:4623" placeholder="CREATE TABLE..some_table_name..." />
-                <marker date="1475945885383" expanded="true" signature="4915:4980" placeholder="CREATE TABLE..some_table_name..." />
-                <marker date="1475945885383" expanded="true" signature="5285:5355" placeholder="CREATE TABLE..some_table_name..." />
-                <marker date="1475945885383" expanded="true" signature="5750:5820" placeholder="CREATE TABLE..some_table_name..." />
-                <marker date="1475945885383" expanded="true" signature="6896:7047" placeholder="CREATE TABLE..some_table_name..." />
-                <marker date="1475945885383" expanded="true" signature="7442:7587" placeholder="CREATE TABLE..some_table_name..." />
-                <marker date="1475945885383" expanded="true" signature="7974:8113" placeholder="CREATE TABLE..some_table_name..." />
+                <element signature="e#60#128#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TableColumnModify.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-5.230769">
+              <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -93,16 +82,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/bin/console.php" />
-        <option value="$PROJECT_DIR$/GreetCommand.php" />
-        <option value="$PROJECT_DIR$/app" />
-        <option value="$PROJECT_DIR$/QueryMule" />
-        <option value="$PROJECT_DIR$/bin/QueryMule" />
-        <option value="$PROJECT_DIR$/test/Builder/Sql/Common/TableCreateForMysqlTest.php" />
-        <option value="$PROJECT_DIR$/test/Builder/Sql/Common/Test.php" />
         <option value="$PROJECT_DIR$/composer.json" />
         <option value="$PROJECT_DIR$/test/Builder/Sql/Common/TableAlterForMysqlTest.php" />
-        <option value="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Common/TableAlter.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Common/Make.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Sqlite/TableCreate.php" />
@@ -111,8 +92,6 @@
         <option value="$PROJECT_DIR$/src/Builder/Sql/Common/TableCreate.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Common/Accent.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Common/HasTableCreate.php" />
-        <option value="$PROJECT_DIR$/src/Builder/Sql/Mysql/TableAlter.php" />
-        <option value="$PROJECT_DIR$/tests/Builder/Sql/Common/TableAlterForMysqlTest.php" />
         <option value="$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForPgresTest.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/Increment.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIncrement.php" />
@@ -122,7 +101,6 @@
         <option value="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIncrementIncrementAdapter.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIncrementIntAdapter.php" />
         <option value="$PROJECT_DIR$/src/Query/Sql/Common/AbstractStatement.php" />
-        <option value="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnHandlerInterface.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnAdd.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Common/HasTableColumn.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Common/HasAccent.php" />
@@ -132,18 +110,29 @@
         <option value="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnDataTypeInterface.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnDefinition.php" />
         <option value="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnDefinitionInterface.php" />
-        <option value="$PROJECT_DIR$/src/Query/Sql/Common/HasAccent.php" />
-        <option value="$PROJECT_DIR$/src/Query/Sql/Common/HasBuilder.php" />
         <option value="$PROJECT_DIR$/src/Query/Sql/Common/HasJoin.php" />
-        <option value="$PROJECT_DIR$/src/Builder/Sql/Pgsql/TableCreate.php" />
-        <option value="$PROJECT_DIR$/src/Query/Sql/Common/QueryBuilderInterface.php" />
-        <option value="$PROJECT_DIR$/src/Query/Sql/Common/HasTableColumn.php" />
         <option value="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnDataTypeAdapterInterface.php" />
+        <option value="$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForMysqlTest.php" />
+        <option value="$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForPgsqlTest.php" />
+        <option value="$PROJECT_DIR$/src/Query/Sql/Common/HasAccent.php" />
+        <option value="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnHandlerInterface.php" />
+        <option value="$PROJECT_DIR$/src/Query/Sql/Common/HasBuilder.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIntAdapter.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIncrementAdapter.php" />
-        <option value="$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForPgsqlTest.php" />
+        <option value="$PROJECT_DIR$/tests/Builder/Sql/Common/TableAlterForMysqlTest.php" />
+        <option value="$PROJECT_DIR$/src/Query/Sql/Common/QueryBuilderInterface.php" />
+        <option value="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php" />
+        <option value="$PROJECT_DIR$/tests/Builder/Sql/TableAlterForMysqlTest.php" />
+        <option value="$PROJECT_DIR$/tests/Builder/Sql/Pgsql/TableCreateForPgsqlTest.php" />
+        <option value="$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableAlterForMysqlTest.php" />
+        <option value="$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableCreateForMysqlTest.php" />
+        <option value="$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableAlterTest.php" />
+        <option value="$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableCreateTest.php" />
+        <option value="$PROJECT_DIR$/tests/Builder/Sql/Pgsql/TableCreateTest.php" />
+        <option value="$PROJECT_DIR$/src/Builder/Sql/Pgsql/TableCreate.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Mysql/TableCreate.php" />
-        <option value="$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForMysqlTest.php" />
+        <option value="$PROJECT_DIR$/src/Query/Sql/Common/HasTableColumn.php" />
+        <option value="$PROJECT_DIR$/src/Builder/Sql/Mysql/TableAlter.php" />
       </list>
     </option>
   </component>
@@ -227,7 +216,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Common" />
+              <option name="myItemId" value="Pgsql" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -241,29 +230,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
+              <option name="myItemId" value="tests" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Query" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="QueryMule" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="QueryMule" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Query" />
+              <option name="myItemId" value="Builder" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -271,7 +242,21 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Common" />
+              <option name="myItemId" value="Mysql" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="QueryMule" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="QueryMule" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -290,10 +275,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Builder" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Table" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -342,36 +323,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Pgsql" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="QueryMule" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="QueryMule" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Builder" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Sql" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pgsql" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Adapter" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -437,24 +388,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Builder" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="QueryMule" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="QueryMule" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="bin" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -474,6 +407,9 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\QueryMule\tests\Builder\Sql\Pgsql" />
+      <recent name="C:\xampp\htdocs\QueryMule\tests\Builder\Sql\Mysql" />
+      <recent name="C:\xampp\htdocs\QueryMule\tests\Builder\Sql" />
       <recent name="C:\xampp\htdocs\QueryMule\src\Query\Sql\Common" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
@@ -602,29 +538,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForPgsqlTest.php">
+    <entry file="file://$PROJECT_DIR$/tests/Builder/Sql/Pgsql/TableCreateTest.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#53#112#0#PHP" expanded="true" />
-            <marker date="1475945778952" expanded="true" signature="1167:6614" placeholder="..." />
-            <marker date="1475945778952" expanded="true" signature="1350:1384" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="1626:1674" placeholder="CREATE TABLE..IF..." />
-            <marker date="1475945778952" expanded="true" signature="1913:1957" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="2532:2584" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="2860:2920" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="3194:3247" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="3524:3585" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="3849:3902" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="4189:4244" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="4534:4603" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="4895:4960" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="5270:5340" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="6416:6445" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="6416:6570" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="6965:6994" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="6965:7109" placeholder="CREATE TABLE..some_table_name..." />
+            <element signature="e#52#111#0#PHP" expanded="true" />
+            <marker date="1475965933261" expanded="true" signature="1150:6611" placeholder="..." />
+            <marker date="1475965933261" expanded="true" signature="1333:1367" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="1610:1658" placeholder="CREATE TABLE..IF..." />
+            <marker date="1475965933261" expanded="true" signature="1898:1942" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="2519:2571" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="2848:2908" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="3183:3236" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="3514:3575" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="3840:3893" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="4181:4236" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="4527:4596" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="4889:4954" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="5265:5335" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="6412:6441" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="6412:6566" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="6962:6991" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="6962:7106" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="7494:7570" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="7494:7651" placeholder="CREATE TABLE..some_table_name..." />
           </folding>
         </state>
       </provider>
@@ -685,14 +623,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/phpunit.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.03195489">
-          <caret line="1" column="10" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/Reflection.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34962407">
@@ -728,13 +658,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Query/Connection/DatabaseInterface.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5432331">
-          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2236842">
@@ -746,13 +669,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.12781955">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Query/Table/AbstractTable.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.268797">
-          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -778,47 +694,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Sql.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31766918">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Mysql/TableAlter.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6153846">
-          <caret line="74" column="35" selection-start-line="74" selection-start-column="21" selection-end-line="74" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/Builder/Sql/Common/TableAlterForMysqlTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22410546">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Pgsql/TableAlter.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/standard_1.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5084746">
           <caret line="992" column="9" selection-start-line="992" selection-start-column="9" selection-end-line="992" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/TableColumnHandlerInterface.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.28060263">
-          <caret line="7" column="10" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
           <folding />
         </state>
       </provider>
@@ -839,28 +718,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnDataType.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.8846154">
-          <caret line="9" column="49" selection-start-line="9" selection-start-column="49" selection-end-line="9" selection-end-column="49" />
-          <folding>
-            <element signature="e#61#135#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/TableColumnDefinitionInterface.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.48022598">
           <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.2410545">
-          <caret line="70" column="7" selection-start-line="70" selection-start-column="7" selection-end-line="70" selection-end-column="7" />
           <folding />
         </state>
       </provider>
@@ -873,16 +734,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/HasAccent.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.096045196">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding>
-            <element signature="e#60#107#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/HasJoin.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -891,146 +742,260 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/HasAccent.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4124294">
+          <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
+          <folding>
+            <element signature="e#60#107#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/TableColumnHandlerInterface.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="58" selection-start-line="0" selection-start-column="58" selection-end-line="0" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/HasBuilder.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.06403013">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.12429378">
+          <caret line="51" column="14" selection-start-line="51" selection-start-column="14" selection-end-line="51" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/TableColumnDataTypeAdapterInterface.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22410546">
+          <caret line="7" column="10" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/TableColumnDataTypeAttributeInterface.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22410546">
-          <caret line="7" column="47" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="47" />
+        <state vertical-scroll-proportion="-0.08851224">
+          <caret line="7" column="10" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Sql.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.44444445">
+          <caret line="68" column="30" selection-start-line="68" selection-start-column="26" selection-end-line="68" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnDataTypeAttribute.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.1153846">
+          <caret line="40" column="20" selection-start-line="40" selection-start-column="20" selection-end-line="40" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIntAdapter.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8794727">
+          <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+          <folding>
+            <element signature="e#68#136#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIncrementAdapter.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6026365">
+          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+          <folding>
+            <element signature="e#68#145#0#PHP" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/QueryBuilderInterface.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.44067797">
-          <caret line="57" column="46" selection-start-line="57" selection-start-column="46" selection-end-line="57" selection-end-column="46" />
+        <state vertical-scroll-proportion="0.64030135">
+          <caret line="20" column="32" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
           <folding>
             <element signature="e#59#106#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/TableColumnDataTypeAdapterInterface.php">
+    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnDataType.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19209039">
-          <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.2881356">
+          <caret line="9" column="49" selection-start-line="9" selection-start-column="49" selection-end-line="9" selection-end-column="49" />
+          <folding>
+            <element signature="e#61#135#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/phpunit.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.032015067">
+          <caret line="1" column="10" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIncrementAdapter.php">
+    <entry file="file://$PROJECT_DIR$/tests/Builder/Sql/Pgsql/TableCreateTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.0489643">
-          <caret line="23" column="89" selection-start-line="23" selection-start-column="89" selection-end-line="23" selection-end-column="89" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="38" selection-start-line="0" selection-start-column="38" selection-end-line="0" selection-end-column="38" />
           <folding>
-            <element signature="e#68#145#0#PHP" expanded="true" />
+            <element signature="e#52#111#0#PHP" expanded="true" />
+            <marker date="1475965933261" expanded="true" signature="1150:6611" placeholder="..." />
+            <marker date="1475965933261" expanded="true" signature="1333:1367" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="1610:1658" placeholder="CREATE TABLE..IF..." />
+            <marker date="1475965933261" expanded="true" signature="1898:1942" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="2519:2571" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="2848:2908" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="3183:3236" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="3514:3575" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="3840:3893" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="4181:4236" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="4527:4596" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="4889:4954" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="5265:5335" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="6412:6441" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="6412:6566" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="6962:6991" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="6962:7106" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="7494:7570" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933261" expanded="true" signature="7494:7651" placeholder="CREATE TABLE..some_table_name..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIntAdapter.php">
+    <entry file="file://$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableAlterTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5762712">
-          <caret line="22" column="89" selection-start-line="22" selection-start-column="89" selection-end-line="22" selection-end-column="89" />
+        <state vertical-scroll-proportion="-0.0">
+          <caret line="0" column="38" selection-start-line="0" selection-start-column="33" selection-end-line="0" selection-end-column="38" />
           <folding>
-            <element signature="e#68#136#0#PHP" expanded="true" />
+            <element signature="e#52#110#0#PHP" expanded="true" />
+            <marker date="1475965933219" expanded="true" signature="1313:1342" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475965933219" expanded="true" signature="1605:1672" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475965933219" expanded="true" signature="1969:2066" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475965933219" expanded="true" signature="2361:2457" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475965933219" expanded="true" signature="2744:2835" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475965933219" expanded="true" signature="3110:3180" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475965933219" expanded="true" signature="3473:3548" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475965933219" expanded="true" signature="3832:3908" placeholder="ALTER TABLE `some_table_name`..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnDataTypeAttribute.php">
+    <entry file="file://$PROJECT_DIR$/src/Query/Console/AbstractConsole.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25612053">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+        <state vertical-scroll-proportion="-4.0583806">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/HasTableColumn.php">
+    <entry file="file://$PROJECT_DIR$/src/Query/Connection/DatabaseInterface.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.961538">
-          <caret line="54" column="62" selection-start-line="54" selection-start-column="62" selection-end-line="54" selection-end-column="62" />
-          <folding>
-            <element signature="e#60#105#0#PHP" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.5706215">
+          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForPgsqlTest.php">
+    <entry file="file://$PROJECT_DIR$/src/Query/Table/AbstractTable.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.10357816">
-          <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
-          <folding>
-            <element signature="e#53#112#0#PHP" expanded="true" />
-            <marker date="1475945778952" expanded="true" signature="1167:6614" placeholder="..." />
-            <marker date="1475945778952" expanded="true" signature="1350:1384" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="1626:1674" placeholder="CREATE TABLE..IF..." />
-            <marker date="1475945778952" expanded="true" signature="1913:1957" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="2532:2584" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="2860:2920" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="3194:3247" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="3524:3585" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="3849:3902" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="4189:4244" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="4534:4603" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="4895:4960" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="5270:5340" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="6416:6445" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="6416:6570" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="6965:6994" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945778952" expanded="true" signature="6965:7109" placeholder="CREATE TABLE..some_table_name..." />
-          </folding>
+        <state vertical-scroll-proportion="0.20150658">
+          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Pgsql/TableCreate.php">
+    <entry file="file://$PROJECT_DIR$/src/Query/QueryInterface.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22410546">
-          <caret line="107" column="0" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableCreateTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.440678">
+          <caret line="0" column="38" selection-start-line="0" selection-start-column="38" selection-end-line="0" selection-end-column="38" />
           <folding>
-            <element signature="e#60#121#0#PHP" expanded="true" />
+            <element signature="e#52#111#0#PHP" expanded="true" />
+            <marker date="1475965933392" expanded="true" signature="1333:1367" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933392" expanded="true" signature="1610:1658" placeholder="CREATE TABLE..IF..." />
+            <marker date="1475965933392" expanded="true" signature="2519:2575" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933392" expanded="true" signature="2852:2912" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933392" expanded="true" signature="3187:3240" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933392" expanded="true" signature="3518:3579" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933392" expanded="true" signature="3844:3897" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933392" expanded="true" signature="4185:4256" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933392" expanded="true" signature="4547:4616" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933392" expanded="true" signature="4909:4974" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933392" expanded="true" signature="5280:5350" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933392" expanded="true" signature="5746:5816" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933392" expanded="true" signature="6893:7044" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933392" expanded="true" signature="7440:7585" placeholder="CREATE TABLE..some_table_name..." />
+            <marker date="1475965933392" expanded="true" signature="7973:8112" placeholder="CREATE TABLE..some_table_name..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Mysql/TableCreate.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.384615">
-          <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.032015067">
+          <caret line="111" column="55" selection-start-line="111" selection-start-column="55" selection-end-line="111" selection-end-column="55" />
           <folding>
             <element signature="e#60#117#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForMysqlTest.php">
+    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Pgsql/TableCreate.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7438795">
-          <caret line="212" column="0" selection-start-line="212" selection-start-column="0" selection-end-line="212" selection-end-column="0" />
+        <state vertical-scroll-proportion="2.1468925">
+          <caret line="116" column="0" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
           <folding>
-            <element signature="e#53#112#0#PHP" expanded="true" />
-            <marker date="1475945885383" expanded="true" signature="1350:1384" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945885383" expanded="true" signature="1626:1674" placeholder="CREATE TABLE..IF..." />
-            <marker date="1475945885383" expanded="true" signature="2532:2588" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945885383" expanded="true" signature="2864:2924" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945885383" expanded="true" signature="3198:3251" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945885383" expanded="true" signature="3528:3589" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945885383" expanded="true" signature="3853:3906" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945885383" expanded="true" signature="4193:4264" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945885383" expanded="true" signature="4554:4623" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945885383" expanded="true" signature="4915:4980" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945885383" expanded="true" signature="5285:5355" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945885383" expanded="true" signature="5750:5820" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945885383" expanded="true" signature="6896:7047" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945885383" expanded="true" signature="7442:7587" placeholder="CREATE TABLE..some_table_name..." />
-            <marker date="1475945885383" expanded="true" signature="7974:8113" placeholder="CREATE TABLE..some_table_name..." />
+            <element signature="e#60#121#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/HasTableColumn.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.076923">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding>
+            <element signature="e#60#105#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.230769">
+          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Mysql/TableAlter.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5517891">
+          <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
+          <folding>
+            <element signature="e#60#128#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -1,5 +1,4 @@
 <?php namespace freidcreations\QueryMule\Query\Sql\Common;
-use freidcreations\QueryMule\Builder\Sql\Common\TableColumnDataTypeAttribute;
 
 /**
  * Interface TableColumnInterface
@@ -15,10 +14,10 @@ interface TableColumnHandlerInterface
 
     /**
      * Handle Column
-     * @param TableColumnDataTypeAttribute $column
+     * @param TableColumnDataTypeAttributeInterface $column
      * @param null|string $type
      */
-    public function handleColumn(TableColumnDataTypeAttribute $column, $type = null);
+    public function handleColumn(TableColumnDataTypeAttributeInterface $column, $type = null);
 
     /**
      * Handle Primary Key

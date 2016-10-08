@@ -156,32 +156,8 @@ class TableAlter implements QueryBuilderInterface, TableColumnHandlerInterface
             sql::raw(self::ALTER_TABLE)->add(', ');
         }
 
-        //Change columns
-        if(isset($this->columns['change'])) {
-            $parameters = $this->generateColumns(self::ALTER_TABLE, $this->columns['change'], [
-                'null',
-                'not_null',
-                'default',
-                'comment',
-                'first',
-                'after',
-                'rename',
-                'drop'
-            ], [], function($key,$column){
-                return self::CHANGE . " " . $this->accent($this->modify[$key]) . " " . $this->accent($column->column_name);
-            });
-
-            //Add parameters
-            sql::raw(self::ALTER_TABLE)->add(null, $parameters);
-        }
-
         //Modify columns
         if(isset($this->columns['modify'])) {
-
-            //Add comer if needed
-            if(isset($this->columns['change'])){
-                sql::raw(self::ALTER_TABLE)->add(', ');
-            }
 
             //Generate columns
             $parameters = $this->generateColumns(self::ALTER_TABLE, $this->columns['modify'], [
@@ -194,6 +170,10 @@ class TableAlter implements QueryBuilderInterface, TableColumnHandlerInterface
                 'rename',
                 'drop'
             ], [], function($key,$column){
+                if(!isset($this->modify[$key]) || ($this->modify[$key] != $column->column_name)) {
+                    return self::CHANGE . " " . $this->accent($this->modify[$key]) . " " . $this->accent($column->column_name);
+                }
+
                 return self::MODIFY_COLUMN . " " . $this->accent($column->column_name);
             });
 
@@ -216,99 +196,7 @@ class TableAlter implements QueryBuilderInterface, TableColumnHandlerInterface
             return self::ADD . " " . TableColumnDefinitionInterface::INDEX . " " . $this->accent($name) . " (" . $column . ")";
         });
 
-        //Modify columns
-//        $parameters = [];
-//        if(isset($this->columns['modify'])) {
-//            $keys = array_keys($this->columns['modify']);
-//
-//            $index = 0;
-//            foreach ($this->columns['modify'] as $name => $column) {
-//                if ($column instanceof TableColumnDefinitionInterface) {
-//
-//                    //Modify column name
-//                    if (isset($this->modify[$index]) &&
-//                        $this->modify[$index] != $column->getAttribute('name')
-//                    ) {
-//                        sql::raw(self::MODIFY)->add(self::CHANGE . ' ' . $this->accent($this->modify[$index]) . ' ' . $this->accent($column->getAttribute('name')));
-//                    } else {
-//                        sql::raw(self::MODIFY)->add(self::MODIFY_COLUMN . ' ' . $this->accent($column->getAttribute('name')));
-//                    }
-//
-//                    //Modify column definition
-//                    foreach ([
-//                                 'data_type',
-//                                 'null',
-//                                 'not_null',
-//                                 'default',
-//                                 'auto_increment',
-//                                 'comment',
-//                                 'first',
-//                                 'after',
-//                                 'rename',
-//                                 'drop'
-//                             ] as $attribute) {
-//                        if ($column->getAttribute($attribute)) {
-//
-//                            //Has Attribute?
-//                            if ($column->hasAttribute($attribute)) {
-//                                sql::raw(self::MODIFY)->add($column->getAttribute($attribute));
-//
-//                                //Has Parameters?
-//                                if ($column->hasParameter($attribute)) {
-//                                    $parameters[] = $column->getParameter($attribute);
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    //Is primary key?
-//                    if ($column->getAttribute('primary_key')) {
-//                        $primary[] = $this->accent($column->getAttribute('name'));
-//                    }
-//
-//                    //Is unique key?
-//                    if ($column->getAttribute('unique_key')) {
-//                        $unique[] = $this->accent($column->getAttribute('name'));
-//                    }
-//
-//                    //Do we need to add a comer?
-//                    if ($name != $keys[count($keys) - 1]) {
-//                        sql::raw(self::MODIFY)->add(', ');
-//                    }
-//                }
-//
-//                $index++;
-//            }
-//        }
-//
-//        //Add primary keys
-//        foreach($this->primaryKeys as $primary){
-//            if($this->columns) {
-//                sql::raw(self::MODIFY)->add(', ');
-//            }
-//
-//            sql::raw(self::MODIFY)->add(self::ADD . ' ' . TableColumnDefinitionInterface::PRIMARY_KEY . "(" . implode(", ", $primary) . ")");
-//        }
-//
-//        //Add unique
-//        foreach($this->uniqueKeys as $name => $unique){
-//            if($this->columns) {
-//                sql::raw(self::MODIFY)->add(', ');
-//            }
-//
-//            sql::raw(self::MODIFY)->add(self::ADD . ' ' . self::CONSTRAINT . ' ' . $name . ' ' . TableColumnDefinitionInterface::UNIQUE_KEY . "(" . implode(", ", $unique) . ")");
-//        }
-//
-//        //Add index
-//        foreach($this->indexs as $name => $index){
-//            if($this->columns) {
-//                sql::raw(self::MODIFY)->add(', ');
-//            }
-//
-//            sql::raw(self::MODIFY)->add(self::ADD . ' ' . TableColumnDefinitionInterface::INDEX . ' ' . $name . ' (' . implode(", ", $index) . ')');
-//        }
-//
-//        return $this;
+        return $this;
     }
 
     /**

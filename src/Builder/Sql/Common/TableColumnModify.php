@@ -47,7 +47,7 @@ class TableColumnModify
     public function rename($old,$new) : TableColumnDataType
     {
         $this->table->handleModify($old);
-        return new TableColumnDataType($this->table, $new, 'change');
+        return new TableColumnDataType($this->table, $new, $this->type);
     }
 
     /**

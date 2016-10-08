@@ -2,23 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b436a12b-465f-4c57-8776-c7d630e5638e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableAlterTest.php" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/TableAlter.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/Builder/Sql/Common/TableAlterForMysqlTest.php" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForMysqlTest.php" afterPath="$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableCreateTest.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/tests/Builder/Sql/Common/TableCreateForPgsqlTest.php" afterPath="$PROJECT_DIR$/tests/Builder/Sql/Pgsql/TableCreateTest.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Mysql/TableAlter.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Mysql/TableAlter.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Mysql/TableCreate.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Mysql/TableCreate.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIncrementAdapter.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIncrementAdapter.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIntAdapter.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIntAdapter.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/TableCreate.php" afterPath="$PROJECT_DIR$/src/Builder/Sql/Pgsql/TableCreate.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/HasAccent.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/HasAccent.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/HasBuilder.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/HasBuilder.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/HasTableColumn.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/HasTableColumn.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/QueryBuilderInterface.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/QueryBuilderInterface.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnHandlerInterface.php" afterPath="$PROJECT_DIR$/src/Query/Sql/Common/TableColumnHandlerInterface.php" />
     </list>
     <ignored path="QueryMule.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,8 +30,8 @@
       <file leaf-file-name="HasTableColumn.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/HasTableColumn.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.076923">
-              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+            <state vertical-scroll-proportion="-2.0181818">
+              <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
               <folding>
                 <element signature="e#60#105#0#PHP" expanded="true" />
               </folding>
@@ -55,8 +42,8 @@
       <file leaf-file-name="TableAlter.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Mysql/TableAlter.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5517891">
-              <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.519774">
+              <caret line="175" column="0" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
               <folding>
                 <element signature="e#60#128#0#PHP" expanded="true" />
               </folding>
@@ -64,12 +51,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TableColumnModify.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php">
+      <file leaf-file-name="TableAlterTest.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableAlterTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.230769">
-              <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="-9.153846">
+              <caret line="94" column="51" selection-start-line="94" selection-start-column="51" selection-end-line="94" selection-end-column="51" />
+              <folding>
+                <element signature="e#52#110#0#PHP" expanded="true" />
+                <marker date="1475968451579" expanded="true" signature="1313:1342" placeholder="ALTER TABLE `some_table_name`..." />
+                <marker date="1475968451579" expanded="true" signature="1605:1672" placeholder="ALTER TABLE `some_table_name`..." />
+                <marker date="1475968451579" expanded="true" signature="1969:2066" placeholder="ALTER TABLE `some_table_name`..." />
+                <marker date="1475968451579" expanded="true" signature="2361:2457" placeholder="ALTER TABLE `some_table_name`..." />
+                <marker date="1475968451579" expanded="true" signature="2744:2835" placeholder="ALTER TABLE `some_table_name`..." />
+                <marker date="1475968451579" expanded="true" signature="3110:3180" placeholder="ALTER TABLE `some_table_name`..." />
+                <marker date="1475968451579" expanded="true" signature="3473:3548" placeholder="ALTER TABLE `some_table_name`..." />
+                <marker date="1475968451579" expanded="true" signature="3832:3908" placeholder="ALTER TABLE `some_table_name`..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -121,17 +118,17 @@
         <option value="$PROJECT_DIR$/src/Builder/Sql/Pgsql/Adapter/TableColumnDataTypeIncrementAdapter.php" />
         <option value="$PROJECT_DIR$/tests/Builder/Sql/Common/TableAlterForMysqlTest.php" />
         <option value="$PROJECT_DIR$/src/Query/Sql/Common/QueryBuilderInterface.php" />
-        <option value="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php" />
         <option value="$PROJECT_DIR$/tests/Builder/Sql/TableAlterForMysqlTest.php" />
         <option value="$PROJECT_DIR$/tests/Builder/Sql/Pgsql/TableCreateForPgsqlTest.php" />
         <option value="$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableAlterForMysqlTest.php" />
         <option value="$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableCreateForMysqlTest.php" />
-        <option value="$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableAlterTest.php" />
         <option value="$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableCreateTest.php" />
         <option value="$PROJECT_DIR$/tests/Builder/Sql/Pgsql/TableCreateTest.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Pgsql/TableCreate.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Mysql/TableCreate.php" />
         <option value="$PROJECT_DIR$/src/Query/Sql/Common/HasTableColumn.php" />
+        <option value="$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php" />
+        <option value="$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableAlterTest.php" />
         <option value="$PROJECT_DIR$/src/Builder/Sql/Mysql/TableAlter.php" />
       </list>
     </option>
@@ -752,14 +749,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/TableColumnHandlerInterface.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="58" selection-start-line="0" selection-start-column="58" selection-end-line="0" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/HasBuilder.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.12429378">
@@ -877,24 +866,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableAlterTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="38" selection-start-line="0" selection-start-column="33" selection-end-line="0" selection-end-column="38" />
-          <folding>
-            <element signature="e#52#110#0#PHP" expanded="true" />
-            <marker date="1475965933219" expanded="true" signature="1313:1342" placeholder="ALTER TABLE `some_table_name`..." />
-            <marker date="1475965933219" expanded="true" signature="1605:1672" placeholder="ALTER TABLE `some_table_name`..." />
-            <marker date="1475965933219" expanded="true" signature="1969:2066" placeholder="ALTER TABLE `some_table_name`..." />
-            <marker date="1475965933219" expanded="true" signature="2361:2457" placeholder="ALTER TABLE `some_table_name`..." />
-            <marker date="1475965933219" expanded="true" signature="2744:2835" placeholder="ALTER TABLE `some_table_name`..." />
-            <marker date="1475965933219" expanded="true" signature="3110:3180" placeholder="ALTER TABLE `some_table_name`..." />
-            <marker date="1475965933219" expanded="true" signature="3473:3548" placeholder="ALTER TABLE `some_table_name`..." />
-            <marker date="1475965933219" expanded="true" signature="3832:3908" placeholder="ALTER TABLE `some_table_name`..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Query/Console/AbstractConsole.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.0583806">
@@ -972,28 +943,54 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/TableColumnHandlerInterface.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34839925">
+          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.60828626">
+          <caret line="44" column="25" selection-start-line="44" selection-start-column="25" selection-end-line="44" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Query/Sql/Common/HasTableColumn.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.076923">
-          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+        <state vertical-scroll-proportion="-2.0181818">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
           <folding>
             <element signature="e#60#105#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Common/TableColumnModify.php">
+    <entry file="file://$PROJECT_DIR$/tests/Builder/Sql/Mysql/TableAlterTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.230769">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="-9.153846">
+          <caret line="94" column="51" selection-start-line="94" selection-start-column="51" selection-end-line="94" selection-end-column="51" />
+          <folding>
+            <element signature="e#52#110#0#PHP" expanded="true" />
+            <marker date="1475968451579" expanded="true" signature="1313:1342" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475968451579" expanded="true" signature="1605:1672" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475968451579" expanded="true" signature="1969:2066" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475968451579" expanded="true" signature="2361:2457" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475968451579" expanded="true" signature="2744:2835" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475968451579" expanded="true" signature="3110:3180" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475968451579" expanded="true" signature="3473:3548" placeholder="ALTER TABLE `some_table_name`..." />
+            <marker date="1475968451579" expanded="true" signature="3832:3908" placeholder="ALTER TABLE `some_table_name`..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Builder/Sql/Mysql/TableAlter.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5517891">
-          <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.519774">
+          <caret line="175" column="0" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
           <folding>
             <element signature="e#60#128#0#PHP" expanded="true" />
           </folding>

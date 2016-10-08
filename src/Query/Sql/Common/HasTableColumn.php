@@ -38,11 +38,11 @@ trait HasTableColumn
         if($columns) {
             $keys = array_keys($columns);
 
-            foreach ($columns as $name => $column) {
+            foreach ($columns as $index => $column) {
                 if ($column instanceof TableColumnDataTypeAttributeInterface) {
 
                     //Add column
-                    sql::raw($key)->add($add($name,$column));
+                    sql::raw($key)->add($add($index,$column));
 
                     //Add data type or use data type adapter
                     if(isset($adapters[$column->method])) {
@@ -81,7 +81,7 @@ trait HasTableColumn
                     }
 
                     //Do we need to add a comer?
-                    if ($name != $keys[count($keys) - 1]) {
+                    if ($index != $keys[count($keys) - 1]) {
                         sql::raw($key)->add(', ');
                     }
                 }

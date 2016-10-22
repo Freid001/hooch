@@ -51,15 +51,6 @@ class TableColumnModify
     }
 
     /**
-     * Drop
-     * @param $column
-     */
-    public function drop($column)
-    {
-        //$this->table->handleDrop($column);
-    }
-
-    /**
      * Primary Key
      * @param array $columns
      */

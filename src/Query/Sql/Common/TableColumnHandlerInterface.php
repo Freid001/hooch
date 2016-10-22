@@ -17,7 +17,7 @@ interface TableColumnHandlerInterface
      * @param TableColumnDataTypeAttributeInterface $column
      * @param null|string $type
      */
-    public function handleColumn(TableColumnDataTypeAttributeInterface $column, $type = null);
+    public function handleColumn(TableColumnDataTypeAttributeInterface $column, $type = 'default');
 
     /**
      * Handle Primary Key

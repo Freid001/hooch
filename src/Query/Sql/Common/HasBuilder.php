@@ -13,12 +13,18 @@ trait HasBuilder
     private $builder;
 
     /**
+     * @var Sql
+     */
+    private $sql;
+
+    /**
      * Make Builder
      * @param QueryBuilderInterface $builder
      */
     public function makeBuilder(QueryBuilderInterface $builder)
     {
         $this->builder = $builder;
+        $this->sql = new Sql();
     }
 
     /**
@@ -48,8 +54,8 @@ trait HasBuilder
         $buildOrder = [
             QueryBuilderInterface::CREATE_TABLE,
             QueryBuilderInterface::ALTER_TABLE,
-            //QueryBuilderInterface::ADD,
-            //QueryBuilderInterface::MODIFY,
+            QueryBuilderInterface::RENAME_TABLE,
+            QueryBuilderInterface::DROP_TABLE,
             QueryBuilderInterface::SELECT,
             QueryBuilderInterface::INSERT,
             QueryBuilderInterface::UPDATE,

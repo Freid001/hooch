@@ -20,6 +20,7 @@ interface QueryBuilderInterface
     const DELETE = 'DELETE';
     const DISTINCT = 'DISTINCT';
     const DROP = 'DROP';
+    const DROP_TABLE = 'DROP TABLE';
     const FETCH = 'fetch';
     const FETCH_ALL = 'fetchAll';
     const FETCH_COLUMN = 'fetchColumn';
@@ -42,6 +43,7 @@ interface QueryBuilderInterface
     const ON = 'ON';
     const OR_WHERE = 'OR';
     const ORDER = 'ORDER BY';
+    const RENAME_TABLE = 'RENAME TABLE';
     const RIGHT_JOIN = 'RIGHT JOIN';
     const RIGHT_OUTER_JOIN = 'RIGHT OUTER JOIN';
     const SET = 'SET';

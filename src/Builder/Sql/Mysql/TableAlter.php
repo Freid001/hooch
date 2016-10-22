@@ -1,4 +1,5 @@
 <?php namespace freidcreations\QueryMule\Builder\Sql\Mysql;
+use freidcreations\QueryMule\Builder\Sql\Common\TableColumnDrop;
 use freidcreations\QueryMule\Query\Sql\Common\QueryBuilderInterface;
 use freidcreations\QueryMule\Query\Sql\Common\TableColumnDataTypeAttributeInterface;
 use freidcreations\QueryMule\Query\Sql\Common\TableColumnHandlerInterface;
@@ -24,6 +25,7 @@ class TableAlter implements QueryBuilderInterface, TableColumnHandlerInterface
     const ADD_COLUMN = 'ADD COLUMN';
     const CHANGE = 'CHANGE';
     const MODIFY_COLUMN = 'MODIFY COLUMN';
+    const DROP_COLUMN = 'DROP COLUMN';
 
     /**
      * @var array
@@ -46,7 +48,7 @@ class TableAlter implements QueryBuilderInterface, TableColumnHandlerInterface
     private $indexs = [];
 
     /**
-     * @var bool
+     * @var array
      */
     private $modify = null;
 
@@ -62,14 +64,13 @@ class TableAlter implements QueryBuilderInterface, TableColumnHandlerInterface
     public function __construct(Table $table)
     {
         $this->table = $table;
+        $this->makeBuilder($this);
         $this->makeAccent($this);
         $this->makeTableColumn($this);
-        $this->makeBuilder($this);
     }
 
     /**
      * Make
-     *
      * @param Table $table
      * @return self
      */
@@ -106,6 +107,11 @@ class TableAlter implements QueryBuilderInterface, TableColumnHandlerInterface
     {
         //Set columns
         $columns(new TableColumnAdd($this,'add'));
+
+        //Add comer if needed
+        if(isset($this->columns['modify']) || isset($this->columns['drop'])){
+            sql::raw(self::ALTER_TABLE)->add(', ');
+        }
 
         //Add columns
         if(isset($this->columns['add'])) {
@@ -152,7 +158,7 @@ class TableAlter implements QueryBuilderInterface, TableColumnHandlerInterface
         $columns(new TableColumnModify($this, 'modify'));
 
         //Add comer if needed
-        if(isset($this->columns['add'])){
+        if(isset($this->columns['add']) || isset($this->columns['drop'])){
             sql::raw(self::ALTER_TABLE)->add(', ');
         }
 
@@ -167,8 +173,6 @@ class TableAlter implements QueryBuilderInterface, TableColumnHandlerInterface
                 'comment',
                 'first',
                 'after',
-                'rename',
-                'drop'
             ], [], function($key,$column){
                 if(!isset($this->modify[$key]) || ($this->modify[$key] != $column->column_name)) {
                     return self::CHANGE . " " . $this->accent($this->modify[$key]) . " " . $this->accent($column->column_name);
@@ -189,31 +193,82 @@ class TableAlter implements QueryBuilderInterface, TableColumnHandlerInterface
         });
 
         $this->generateConstraint(self::ALTER_TABLE, $this->uniqueKeys, $append, function($name,$column){
-            return self::ADD . " " . TableColumnDefinitionInterface::UNIQUE_KEY . " " . $this->accent($name) . " (" . $column . ")";
+            return self::DROP . " " .  TableColumnDefinitionInterface::INDEX . " " . $this->accent($name) . ", " .
+                   self::ADD . " " . TableColumnDefinitionInterface::UNIQUE_KEY . " " . $this->accent($name) . " (" . $column . ")";
         });
 
         $this->generateConstraint(self::ALTER_TABLE, $this->indexs, $append, function($name,$column){
-            return self::ADD . " " . TableColumnDefinitionInterface::INDEX . " " . $this->accent($name) . " (" . $column . ")";
+            return self::DROP . " " .  TableColumnDefinitionInterface::INDEX . " " . $this->accent($name) . ", " .
+                   self::ADD . " " . TableColumnDefinitionInterface::INDEX . " " . $this->accent($name) . " (" . $column . ")";
         });
 
         return $this;
     }
 
     /**
-     * Rename
-     * @param $newName
+     * Drop
      */
-    public function rename($newName)
+    public function drop(\Closure $columns)
     {
+        //Set columns
+        $columns(new TableColumnDrop($this, 'drop'));
 
+        //Add comer if needed
+        if(isset($this->columns['add']) || isset($this->columns['modify'])){
+            sql::raw(self::ALTER_TABLE)->add(', ');
+        }
+
+        //Modify columns
+        if(isset($this->columns['drop'])) {
+
+            //Generate columns
+            $parameters = $this->generateColumns(self::ALTER_TABLE, $this->columns['drop'],
+                [], [], function($key,$column){
+                return self::DROP_COLUMN . " " . $this->accent($column->column_name);
+            });
+
+            //Add parameters
+            sql::raw(self::ALTER_TABLE)->add(null, $parameters);
+        }
+
+        $append = (!empty($this->columns['add']) || !empty($this->columns['modify'])) ? true : false;
+
+        $this->generateConstraint(self::ALTER_TABLE, $this->primaryKeys, $append, function($name){
+            $drop = self::DROP . " " .  TableColumnDefinitionInterface::PRIMARY_KEY;
+
+            if($name){
+                $drop .= " " . $this->accent($name);
+            }
+
+            return $drop;
+        });
+
+        $this->generateConstraint(self::ALTER_TABLE, $this->uniqueKeys, $append, function($name){
+            return self::DROP . " " .  TableColumnDefinitionInterface::INDEX . " " . $this->accent($name);
+        });
+
+        $this->generateConstraint(self::ALTER_TABLE, $this->indexs, $append, function($name){
+            return self::DROP . " " .  TableColumnDefinitionInterface::INDEX . " " . $this->accent($name);
+        });
+
+        return $this;
     }
 
     /**
-     * Drop
+     * Rename Table
+     * @param $name
      */
-    public function drop()
+    public function renameTable($name)
     {
+        Sql::raw(self::RENAME_TABLE)->add(self::RENAME_TABLE . ' ' . $this->accent($this->table->name()) . ' TO ' . $this->accent($name) . ';');
+    }
 
+    /**
+     * Drop Table
+     */
+    public function dropTable()
+    {
+        Sql::raw(self::DROP_TABLE)->add(self::DROP_TABLE . ' ' . $this->accent($this->table->name()) . ';');
     }
 
     /**
@@ -230,7 +285,7 @@ class TableAlter implements QueryBuilderInterface, TableColumnHandlerInterface
      * @param TableColumnDataTypeAttributeInterface $column
      * @param null|string $type
      */
-    public function handleColumn(TableColumnDataTypeAttributeInterface $column, $type = null)
+    public function handleColumn(TableColumnDataTypeAttributeInterface $column, $type = 'default')
     {
         $this->columns[$type][] = $column;
     }
@@ -268,4 +323,3 @@ class TableAlter implements QueryBuilderInterface, TableColumnHandlerInterface
         $this->indexs[$name] = $columns;
     }
 }
-

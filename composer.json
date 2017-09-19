@@ -15,14 +15,12 @@
     "license": "BSD-2-Clause",
     "autoload": {
         "psr-4": {
-            "freidcreations\\QueryMule\\": "src\/",
-            "QueryMule\\": "demo\/\/QueryMule"
+            "QueryMule\\": "src\/"
         }
     },
     "require": {
-        "php": ">=7"
+        "php": ">=7.0"
     },
-    "bin": ["bin/QueryMule"],
     "require-dev": {
         "phpunit/phpunit": "^4.8"
     },

@@ -3,8 +3,8 @@
 
 namespace QueryMule\Query\Sql\Clause;
 
-use QueryMule\Query\Sql\SelectInterface;
-use QueryMule\Query\Table\TableInterface;
+use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class HasColsClause
@@ -17,7 +17,7 @@ trait HasColumnClause
      * @param bool $alias
      * @param bool $as
      * @param bool $comma
-     * @return string
+     * @return Sql
      */
     private function columnClause($column, $alias = false, $as = false, $comma = false)
     {
@@ -25,8 +25,8 @@ trait HasColumnClause
         $sql .= !empty($comma) ? $comma.' ' : '';
         $sql .= !empty($alias) ? $alias.'.' : '';
         $sql .= $column;
-        $sql .= !empty($as) ? ' '.self::COL_AS.' '.$as : '';
+        $sql .= !empty($as) ? ' '.SelectInterface::COL_AS.' '.$as : '';
 
-        return $sql;
+        return new Sql($sql);
     }
 }

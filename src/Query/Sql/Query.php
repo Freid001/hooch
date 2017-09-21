@@ -2,6 +2,8 @@
 
 namespace QueryMule\Query\Sql;
 
+use QueryMule\Query\Sql\Sql;
+
 /**
  * Class Query
  * @package QueryMule\Query\Sql
@@ -19,15 +21,14 @@ trait Query
     private $parameters = [];
 
     /**
-     * @param string|null $sql
-     * @param array $parameters
-     * @return void
+     * @param $type
+     * @param Sql $sql
      */
-    private function queryAdd($type, $sql, array $parameters = [])
+    private function queryAdd($type, Sql $sql)
     {
-        $this->sql[$type] = !empty($this->sql[$type]) ? $this->sql[$type] . ' ' . $sql : $sql;
+        $this->sql[$type] = !empty($this->sql[$type]) ? $this->sql[$type] . ' ' . $sql->sql() : $sql;
 
-        foreach($parameters as $key => $parameter){
+        foreach($sql->parameters() as $key => $parameter){
             $this->parameters[$type] = $parameter;
         }
     }

@@ -5,6 +5,7 @@ namespace QueryMule\Builder\Sql\MySql;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasColumnClause;
 use QueryMule\Query\Sql\Clause\HasFromClause;
+use QueryMule\Query\Sql\Clause\HasWhereClause;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Query\Table\TableInterface;
@@ -20,7 +21,7 @@ class Select implements SelectInterface
 
     use HasFromClause;
     use HasColumnClause;
-
+    use HasWhereClause;
 
     private $cols;
     private $from;
@@ -84,23 +85,33 @@ class Select implements SelectInterface
         return $this;
     }
 
-    public function where($column, $operator = null, $value = null, $clause = self::WHERE) : SelectInterface
+    /**
+     * @param $column
+     * @param null $operator
+     * @param null $value
+     * @return SelectInterface
+     */
+    public function where($column, $operator = null, $value = null) : SelectInterface
     {
+        $clause = empty($this->queryGet(self::WHERE)) ? self::WHERE : self::AND_WHERE;
 
-
-
-
-
-
+        $this->queryAdd(self::FROM,$this->whereClause($column,$operator,$value,$clause));
 
         return $this;
     }
 
+    /**
+     * @param $column
+     * @param null $operator
+     * @param null $value
+     * @return SelectInterface
+     */
+    public function orWhere($column, $operator = null, $value = null) : SelectInterface
+    {
+        $this->queryAdd(self::FROM,$this->whereClause($column,$operator,$value,self::OR_WHERE));
 
-//    public function orWhere() : SelectInterface
-//    {
-//        return $this;
-//    }
+        return $this;
+    }
 
 
 

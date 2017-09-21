@@ -3,7 +3,8 @@
 
 namespace QueryMule\Query\Sql\Clause;
 
-use QueryMule\Query\Sql\SelectInterface;
+use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Query\Table\TableInterface;
 
 /**
@@ -15,12 +16,14 @@ trait HasFromClause
     /**
      * @param TableInterface $table
      * @param null $alias
-     * @return string
+     * @return Sql
      */
     private function fromClause(TableInterface $table, $alias = null)
     {
         $sql = '';
         $sql .= SelectInterface::FROM.' '.$table->getTableName();
-        return $sql;
+        $sql .= !empty($alias) ? ' '.SelectInterface::COL_AS.' '.$alias : null;
+
+        return new Sql($sql);
     }
 }

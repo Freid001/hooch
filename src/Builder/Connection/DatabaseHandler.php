@@ -2,8 +2,10 @@
 
 namespace QueryMule\Builder\Connection;
 
+use QueryMule\Builder\Adapter\MysqliAdapter;
 use QueryMule\Builder\Adapter\PdoAdapter;
 use QueryMule\Builder\Exception\DatabaseException;
+use QueryMule\Builder\Exception\DriverException;
 use QueryMule\Query\Adapter\AdapterInterface;
 use QueryMule\Query\Connection\DatabaseHandlerInterface;
 
@@ -13,7 +15,8 @@ use QueryMule\Query\Connection\DatabaseHandlerInterface;
  */
 class DatabaseHandler implements DatabaseHandlerInterface
 {
-    const ADAPTER_PDO = 'pdo';
+    const ADAPTER_PDO       = 'pdo';
+    const ADAPTER_MYSQLI    = 'mysqli';
 
     const DATABASE_ADAPTER  = 'adapter';
     const DATABASE_DRIVER   = 'driver';
@@ -54,8 +57,12 @@ class DatabaseHandler implements DatabaseHandlerInterface
             case self::ADAPTER_PDO:
                 $this->adapter = new PdoAdapter(new \pdo($dbh[self::DATABASE_DRIVER] . ":host=".$dbh[self::DATABASE_HOST]."; dbname=".$name."", $dbh[self::DATABASE_USER], $dbh[self::DATABASE_PASSWORD]));
                 break;
+            case self::ADAPTER_MYSQLI:
+                $this->adapter = new MysqliAdapter(new \mysqli($dbh[self::DATABASE_HOST],$dbh[self::DATABASE_USER], $dbh[self::DATABASE_PASSWORD], $dbh[self::DATABASE_DATABASE]));
+                break;
             default:
                 throw new DatabaseException("Adapter not found for: " . $dbh[self::DATABASE_ADAPTER]);
+
         }
     }
 

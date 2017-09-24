@@ -13,7 +13,7 @@ $database = new Database([
         DatabaseHandler::DATABASE_DATABASE => 'query_mule',
         DatabaseHandler::DATABASE_USER => 'root',
         DatabaseHandler::DATABASE_PASSWORD => '123',
-        DatabaseHandler::DATABASE_ADAPTER => DatabaseHandler::ADAPTER_PDO,
+        DatabaseHandler::DATABASE_ADAPTER => DatabaseHandler::ADAPTER_MYSQLI //DatabaseHandler::ADAPTER_PDO,
     ]
 ]);
 
@@ -32,7 +32,7 @@ $table = new Book();
 
 $handler = $database->dbh('query_mule')->conn();
 $query = $handler->select()->cols(['book_name'=>'name','id'],'b')->from($table,'b')->build();
-$result = $handler->execute($query)->fetchAll();
+$result = $handler->fetchAll($query);
 
 var_dump($query->sql());
 var_dump($result);

@@ -3,6 +3,7 @@
 namespace QueryMule\Builder\Adapter;
 
 use QueryMule\Builder\Exception\DriverException;
+use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Builder\Sql\MySql\Select;
 use QueryMule\Query\Adapter\AdapterInterface;
 use QueryMule\Query\Sql\Sql;
@@ -10,23 +11,23 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Query\Table\TableInterface;
 
 /**
- * Class PdoAdapter
+ * Class MysqliAdapter
  * @package QueryMule\Builder\Adapter
  */
-class PdoAdapter implements AdapterInterface
+class MysqliAdapter implements AdapterInterface
 {
     /**
-     * @var \PDO
+     * @var \mysqli
      */
-    private $pdo;
+    private $mysqli;
 
     /**
-     * PdoAdapter constructor.
-     * @param \PDO $pdo
+     * MysqliAdapter constructor.
+     * @param \mysqli $mysqli
      */
-    public function __construct(\PDO $pdo)
+    public function __construct(\mysqli $mysqli)
     {
-        $this->pdo = $pdo;
+        $this->mysqli = $mysqli;
     }
 
     /**
@@ -42,37 +43,39 @@ class PdoAdapter implements AdapterInterface
     /**
      * @param Sql $sql
      * @return array
+     * @throws DriverException
      */
     public function fetch(Sql $sql)
     {
-        return $this->execute($sql)->fetch(\PDO::FETCH_ASSOC);
+        return $this->execute($sql)->fetch_assoc();
     }
 
     /**
      * @param Sql $sql
      * @return array
+     * @throws DriverException
      */
     public function fetchAll(Sql $sql)
     {
-        return $this->execute($sql)->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->execute($sql)->fetch_all(MYSQLI_ASSOC);
     }
 
     /**
      * @param Sql $sql
-     * @return \PDOStatement
+     * @return bool|\mysqli_result
      * @throws DriverException
      */
     private function execute(Sql $sql)
     {
-        $query = $this->pdo->query($sql->sql());
-
-        if (!$query) {
-            throw new DriverException('PDO error code: ' . $this->pdo->errorCode());
+        if ($this->mysqli->connect_errno) {
+            throw new DriverException("Mysqli err no: " . $this->mysqli->connect_errno);
         }
 
-        $query->execute($sql->parameters());
+        if (!$result = $this->mysqli->query($sql->sql())) {
+            throw new DriverException("Mysqli err no: " . $this->mysqli->connect_errno);
+        }
 
-        return $query;
+        return $result;
     }
 }
 

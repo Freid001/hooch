@@ -21,7 +21,11 @@ interface AdapterInterface
 
     /**
      * @param Sql $sql
-     * @return \PDOStatement
      */
-    public function execute(Sql $sql);
+    public function fetch(Sql $sql);
+
+    /**
+     * @param Sql $sql
+     */
+    public function fetchAll(Sql $sql);
 }

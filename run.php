@@ -31,7 +31,7 @@ class Book implements TableInterface{
 $table = new Book();
 
 $handler = $database->dbh('query_mule')->conn();
-$query = $handler->select()->cols(['book_name'=>'name','id'],'b')->from($table,'b')->build();
+$query = $handler->select()->cols(['book_name'=>'name','id'],'b')->from($table,'b')->where('id','=',1)->build();
 $result = $handler->fetchAll($query);
 
 var_dump($query->sql());

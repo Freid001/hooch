@@ -64,13 +64,11 @@ class PdoAdapter implements AdapterInterface
      */
     private function execute(Sql $sql)
     {
-        $query = $this->pdo->query($sql->sql());
+        $query = $this->pdo->prepare($sql->sql());
 
-        if (!$query) {
+        if (!$query->execute($sql->parameters())) {
             throw new DriverException('PDO error code: ' . $this->pdo->errorCode());
         }
-
-        $query->execute($sql->parameters());
 
         return $query;
     }

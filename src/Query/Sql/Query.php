@@ -27,7 +27,7 @@ trait Query
         $this->sql[$type] = !empty($this->sql[$type]) ? $this->sql[$type] . ' ' . $sql->sql() : $sql->sql();
 
         foreach($sql->parameters() as $key => $parameter){
-            $this->parameters[$type] = $parameter;
+            $this->parameters[$type][] = $parameter;
         }
     }
 
@@ -59,7 +59,6 @@ trait Query
                 }
             }
         }
-
         return new Sql($sql,$parameters);
     }
 }

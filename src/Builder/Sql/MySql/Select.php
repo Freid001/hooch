@@ -90,7 +90,10 @@ class Select implements SelectInterface
     {
         $clause = empty($this->queryGet(self::WHERE)) ? self::WHERE : self::AND_WHERE;
 
-        $this->queryAdd(self::FROM,$this->whereClause($column,$operator,$value,$clause));
+        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column);
+
+
+        $this->queryAdd(self::WHERE,$this->whereClause($column,$operator,$value,$clause));
 
         return $this;
     }
@@ -103,7 +106,9 @@ class Select implements SelectInterface
      */
     public function orWhere($column, $operator = null, $value = null) : SelectInterface
     {
-        $this->queryAdd(self::FROM,$this->whereClause($column,$operator,$value,self::OR_WHERE));
+        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column);
+
+        $this->queryAdd(self::WHERE,$this->whereClause($column,$operator,$value,self::OR_WHERE));
 
         return $this;
     }

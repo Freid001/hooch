@@ -50,15 +50,31 @@ interface SelectInterface
     /**
      * @param array $cols
      * @param null $alias
-     * @return mixed
+     * @return SelectInterface
      */
     public function cols($cols = [self::SQL_STAR], $alias = null) : SelectInterface;
 
     /**
      * @param TableInterface $table
-     * @return mixed
+     * @return SelectInterface
      */
     public function from(TableInterface $table, $alias = null) : SelectInterface;
+
+    /**
+     * @param $column
+     * @param null $operator
+     * @param null $value
+     * @return SelectInterface
+     */
+    public function where($column, $operator = null, $value = null) : SelectInterface;
+
+     /**
+      * @param $column
+      * @param null $operator
+      * @param null $value
+      * @return SelectInterface
+      */
+    public function orWhere($column, $operator = null, $value = null) : SelectInterface;
 
     /**
      * @return Sql

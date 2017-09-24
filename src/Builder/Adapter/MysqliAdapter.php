@@ -67,15 +67,17 @@ class MysqliAdapter implements AdapterInterface
      */
     private function execute(Sql $sql)
     {
-        if ($this->mysqli->connect_errno) {
+        $query = $this->mysqli->prepare($sql->sql());
+
+        foreach($sql->parameters() as $parameter) {
+            $query->bind_param('s',$parameter);
+        }
+
+        if (!$query->execute()) {
             throw new DriverException("Mysqli err no: " . $this->mysqli->connect_errno);
         }
 
-        if (!$result = $this->mysqli->query($sql->sql())) {
-            throw new DriverException("Mysqli err no: " . $this->mysqli->connect_errno);
-        }
-
-        return $result;
+        return $query->get_result();
     }
 }
 

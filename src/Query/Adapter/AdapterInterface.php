@@ -12,6 +12,10 @@ use QueryMule\Query\Table\TableInterface;
  */
 interface AdapterInterface
 {
+    const DRIVER_MYSQL  = 'mysql';
+    const DRIVER_PGSQL  = 'pgsql';
+    const DRIVER_SQLITE = 'sqlite';
+
     /**
      * @param array $cols
      * @param TableInterface $table

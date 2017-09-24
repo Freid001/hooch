@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace test\Builder\Sql\MySql;
+namespace test\Builder\Sql\Sqlite;
 
 use PHPUnit\Framework\TestCase;
-use QueryMule\Builder\Sql\MySql\Select;
+use QueryMule\Builder\Sql\Sqlite\Select;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Query\Table\TableInterface;
 

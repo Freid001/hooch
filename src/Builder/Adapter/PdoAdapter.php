@@ -3,7 +3,6 @@
 namespace QueryMule\Builder\Adapter;
 
 use QueryMule\Builder\Exception\DriverException;
-use QueryMule\Builder\Sql\MySql\Select;
 use QueryMule\Query\Adapter\AdapterInterface;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\SelectInterface;
@@ -21,22 +20,47 @@ class PdoAdapter implements AdapterInterface
     private $pdo;
 
     /**
+     * @var string
+     */
+    private $driver;
+
+    /**
      * PdoAdapter constructor.
      * @param \PDO $pdo
      */
     public function __construct(\PDO $pdo)
     {
         $this->pdo = $pdo;
+        $this->driver = $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
     }
 
     /**
      * @param array $cols
      * @param TableInterface|null $table
      * @return SelectInterface
+     * @throws DriverException
      */
     public function select(array $cols = [],TableInterface $table = null) : SelectInterface
     {
-        return new Select($cols, $table);
+        $select = null;
+        switch($this->driver){
+            case self::DRIVER_MYSQL:
+                $select = new \QueryMule\Builder\Sql\Mysql\Select($cols, $table);
+                break;
+
+            case self::DRIVER_PGSQL:
+                $select = new \QueryMule\Builder\Sql\Pgsql\Select($cols, $table);
+                break;
+
+            case self::DRIVER_SQLITE:
+                $select = new \QueryMule\Builder\Sql\Sqlite\Select($cols, $table);
+                break;
+
+            default:
+                throw new DriverException('Driver: '.$this->driver.' not currently supported');
+        }
+
+        return $select;
     }
 
     /**
@@ -73,15 +97,3 @@ class PdoAdapter implements AdapterInterface
         return $query;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -3,8 +3,7 @@
 namespace QueryMule\Builder\Adapter;
 
 use QueryMule\Builder\Exception\DriverException;
-use QueryMule\Builder\Exception\SqlException;
-use QueryMule\Builder\Sql\MySql\Select;
+use QueryMule\Builder\Sql\Mysql\Select;
 use QueryMule\Query\Adapter\AdapterInterface;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\SelectInterface;
@@ -69,9 +68,30 @@ class MysqliAdapter implements AdapterInterface
     {
         $query = $this->mysqli->prepare($sql->sql());
 
-        foreach($sql->parameters() as $parameter) {
-            $query->bind_param('s',$parameter);
+        $parameters = [0 => ''];
+        foreach($sql->parameters() as $parameter){
+            switch(gettype($parameter)){
+                case 'integer':
+                    $parameters[0] .= 'i';
+                    break;
+
+                case 'float':
+                    $parameters[0] .= 'd';
+                    break;
+
+                case 'string':
+                    $parameters[0] .= 's';
+                    break;
+
+                default:
+                    $parameters[0] .= 'b';
+                    break;
+            }
+
+            $parameters[] = &$parameter;
         }
+
+        call_user_func_array([$query, 'bind_param'], $parameters);
 
         if (!$query->execute()) {
             throw new DriverException("Mysqli err no: " . $this->mysqli->connect_errno);

@@ -1,6 +1,6 @@
 <?php
 
-namespace QueryMule\Builder\Sql\MySql;
+namespace QueryMule\Builder\Sql\Mysql;
 
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasColumnClause;
@@ -92,7 +92,6 @@ class Select implements SelectInterface
 
         $column = ($column instanceof \Closure) ? $column : $this->addAccent($column);
 
-
         $this->queryAdd(self::WHERE,$this->whereClause($column,$operator,$value,$clause));
 
         return $this;
@@ -121,8 +120,6 @@ class Select implements SelectInterface
         return $this->queryBuild([
             self::SELECT,
             self::COLS,
-            self::INTO,
-            self::VALUES,
             self::FROM,
             self::JOIN,
             self::WHERE,

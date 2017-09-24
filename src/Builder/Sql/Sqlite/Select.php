@@ -13,7 +13,7 @@ use QueryMule\Query\Table\TableInterface;
 
 /**
  * Class Select
- * @package QueryMule\Builder\Sql\MySql
+ * @package QueryMule\Builder\Sql\Sqlite
  */
 class Select implements SelectInterface
 {
@@ -116,8 +116,6 @@ class Select implements SelectInterface
         return $this->queryBuild([
             self::SELECT,
             self::COLS,
-            self::INTO,
-            self::VALUES,
             self::FROM,
             self::JOIN,
             self::WHERE,

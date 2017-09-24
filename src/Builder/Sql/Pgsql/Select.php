@@ -118,8 +118,6 @@ class Select implements SelectInterface
         return $this->queryBuild([
             self::SELECT,
             self::COLS,
-            self::INTO,
-            self::VALUES,
             self::FROM,
             self::JOIN,
             self::WHERE,

@@ -2,8 +2,6 @@
 
 namespace QueryMule\Query\Sql;
 
-use QueryMule\Query\Sql\Sql;
-
 /**
  * Class Query
  * @package QueryMule\Query\Sql
@@ -26,7 +24,7 @@ trait Query
      */
     private function queryAdd($type, Sql $sql)
     {
-        $this->sql[$type] = !empty($this->sql[$type]) ? $this->sql[$type] . ' ' . $sql->sql() : $sql;
+        $this->sql[$type] = !empty($this->sql[$type]) ? $this->sql[$type] . ' ' . $sql->sql() : $sql->sql();
 
         foreach($sql->parameters() as $key => $parameter){
             $this->parameters[$type] = $parameter;
@@ -44,22 +42,24 @@ trait Query
 
     /**
      * @param array $buildOrder
-     * @return string
+     * @return \QueryMule\Query\Sql\Sql
      */
     private function queryBuild(array $buildOrder)
     {
+        $sql = '';
+        $parameters = [];
         foreach($buildOrder as $type){
             if(!empty($this->sql[$type])) {
 
-                $parameters = [];
+                $sql .= !empty($sql) ? ' '.$this->sql[$type] : $this->sql[$type];
                 if(!empty($this->parameters[$type])) {
                     foreach ($this->parameters[$type] as $parameter) {
                         $parameters[] = $parameter;
                     }
                 }
-
-                var_dump($type);
             }
         }
+
+        return new Sql($sql,$parameters);
     }
 }

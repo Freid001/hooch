@@ -2,7 +2,8 @@
 
 namespace QueryMule\Query\Adapter;
 
-use QueryMule\Query\Sql\SelectInterface;
+use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Query\Table\TableInterface;
 
 /**
@@ -17,4 +18,10 @@ interface AdapterInterface
      * @return SelectInterface
      */
     public function select(array $cols = [],TableInterface $table = null) : SelectInterface;
+
+    /**
+     * @param Sql $sql
+     * @return \PDOStatement
+     */
+    public function execute(Sql $sql);
 }

@@ -22,7 +22,7 @@ trait HasColumnClause
     private function columnClause($column, $alias = false, $as = false, $comma = false)
     {
         $sql = '';
-        $sql .= !empty($comma) ? $comma.' ' : '';
+        $sql .= !empty($comma) ? ',' : '';
         $sql .= !empty($alias) ? $alias.'.' : '';
         $sql .= $column;
         $sql .= !empty($as) ? ' '.SelectInterface::COL_AS.' '.$as : '';

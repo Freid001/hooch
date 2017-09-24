@@ -17,25 +17,38 @@ $database = new Database([
     ]
 ]);
 
-class TestTable implements TableInterface{
+class Book implements TableInterface{
 
     /**
      * @return string
      */
-    public function getTableName() : string
+    public function getTableName()
     {
-        return 'test_table';
+        return 'book';
     }
 }
 
-$table = new TestTable();
+$table = new Book();
 
-$handler = $database->dbh('query_mule');
-$query = $handler->conn()->select()->cols(['table'=>'test','cheese'],'t')->from($table)->build();
+$handler = $database->dbh('query_mule')->conn();
+$query = $handler->select()->cols(['book_name'=>'name','id'],'b')->from($table,'b')->build();
+$result = $handler->execute($query)->fetchAll();
+
+var_dump($query->sql());
+var_dump($result);
 
 
 
 
 
 
-var_dump($query);
+
+
+
+
+
+
+
+
+
+

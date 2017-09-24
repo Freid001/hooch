@@ -2,9 +2,11 @@
 
 namespace QueryMule\Builder\Adapter;
 
+use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Builder\Sql\MySql\Select;
 use QueryMule\Query\Adapter\AdapterInterface;
-use QueryMule\Query\Sql\SelectInterface;
+use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Query\Table\TableInterface;
 
 /**
@@ -35,6 +37,24 @@ class PdoAdapter implements AdapterInterface
     public function select(array $cols = [],TableInterface $table = null) : SelectInterface
     {
         return new Select($cols, $table);
+    }
+
+    /**
+     * @param Sql $sql
+     * @return \PDOStatement
+     * @throws SqlException
+     */
+    public function execute(Sql $sql)
+    {
+        $query = $this->pdo->query($sql->sql());
+
+        if (!$query) {
+            throw new SqlException('PDO error code: ' . $this->pdo->errorCode());
+        }
+
+        $query->execute($sql->parameters());
+
+        return $query;
     }
 }
 

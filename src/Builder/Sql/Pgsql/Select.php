@@ -1,6 +1,6 @@
 <?php
 
-namespace QueryMule\Builder\Sql\MySql;
+namespace QueryMule\Builder\Sql\Pgsql;
 
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasColumnClause;
@@ -13,7 +13,7 @@ use QueryMule\Query\Table\TableInterface;
 
 /**
  * Class Select
- * @package QueryMule\Builder\Sql\MySql
+ * @package QueryMule\Builder\Sql\Pgsql
  */
 class Select implements SelectInterface
 {
@@ -41,7 +41,7 @@ class Select implements SelectInterface
             $this->from($table);
         }
 
-        $this->setAccent("`");
+        $this->setAccent("'");
         $this->queryAdd(self::SELECT,new Sql(self::SELECT));
     }
 
@@ -55,12 +55,16 @@ class Select implements SelectInterface
         $i = 0;
         foreach($cols as $key => &$col){
             if((int)$key !== $i){
-                $i++; //Increment only when we using int positions
+                $i++; // increment only when we using int positions
             }
+
+            //!empty($alias) ? $this->addAccent($alias) : $alias,
+            
+            // append __ before adding accents
 
             $sql = $this->columnClause(
                 ($col !== self::SQL_STAR) ? $this->addAccent($col) : $col,
-                !empty($alias) ? $this->addAccent($alias) : $alias,
+                false,
                 ($key !== $i) ? $key : null,
                 !empty($this->queryGet(self::COLS))
             );

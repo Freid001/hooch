@@ -2,6 +2,7 @@
 
 namespace QueryMule\Query\Sql\Statement;
 
+use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Table\TableInterface;
 
 /**
@@ -59,4 +60,8 @@ interface SelectInterface
      */
     public function from(TableInterface $table, $alias = null) : SelectInterface;
 
+    /**
+     * @return Sql
+     */
+    public function build() : Sql;
 }

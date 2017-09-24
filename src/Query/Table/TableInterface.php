@@ -11,5 +11,5 @@ interface TableInterface
     /**
      * @return string
      */
-    public function getTableName() : string;
+    public function getTableName();
 }

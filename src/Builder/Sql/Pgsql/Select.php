@@ -24,9 +24,6 @@ class Select implements SelectInterface
     use HasColumnClause;
     use HasWhereClause;
 
-    private $cols;
-    private $from;
-
     /**
      * @param array $cols
      * @param TableInterface|null $table
@@ -58,9 +55,7 @@ class Select implements SelectInterface
                 $i++; // increment only when we using int positions
             }
 
-            //!empty($alias) ? $this->addAccent($alias) : $alias,
-            
-            // append __ before adding accents
+            $col = !empty($alias) ? $alias.'.'.$col : $col; // append alias before adding accents
 
             $sql = $this->columnClause(
                 ($col !== self::SQL_STAR) ? $this->addAccent($col) : $col,

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace test\Builder\Sql\Mysql\Select;
+namespace test\Builder\Sql\MySql;
 
 use PHPUnit\Framework\TestCase;
 use QueryMule\Builder\Sql\MySql\Select;

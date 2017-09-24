@@ -27,13 +27,6 @@ trait Accent
      */
     private function addAccent($string)
     {
-        $items = explode('.',$string);
-
-        $return = '';
-        foreach($items as $key => $item){
-            $dot = ($key != (count($items)-1)) ? '.' : '';
-            $return .= $this->accent . $item . $this->accent . $dot;
-        }
-        return $return;
+        return $this->accent.$string.$this->accent;
     }
 }

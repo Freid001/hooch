@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace test\Builder\Sql\Pgsql\Select;
+namespace test\Builder\Sql\Pgsql;
 
 use PHPUnit\Framework\TestCase;
 use QueryMule\Builder\Sql\Pgsql\Select;

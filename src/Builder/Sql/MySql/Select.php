@@ -24,9 +24,6 @@ class Select implements SelectInterface
     use HasColumnClause;
     use HasWhereClause;
 
-    private $cols;
-    private $from;
-
     /**
      * @param array $cols
      * @param TableInterface|null $table

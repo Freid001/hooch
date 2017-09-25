@@ -23,10 +23,6 @@ trait HasWhereClause
      */
     private function whereClause($column,$operator = null,$value = null,$clause = SelectInterface::WHERE)
     {
-        if($column instanceof \Closure) {
-            return $this->nestedWhereClause($column);
-        }
-
         $sql = '';
         switch ($clause){
             case SelectInterface::WHERE:
@@ -42,7 +38,7 @@ trait HasWhereClause
                 break;
 
             default:
-                throw new SqlException($clause.' not allowed.');
+                $sql .= $column.' '.$operator.' ?';
                 break;
         }
 
@@ -50,35 +46,10 @@ trait HasWhereClause
     }
 
     /**
-     * @param \Closure $nestedWhere
-     * @return Sql
+     * @param $input
      */
-    private function nestedWhereClause(\Closure $nestedWhere)
+    private function nestedWhereClause($input)
     {
-        $closure = $nestedWhere();
 
-        $nestedWhere = [];
-        foreach ($closure as $key => $row ) {
-            $column = $row['column'];
-
-            if( $key == 0 ) {
-                $column = '( ' . $row['column'];
-            }
-
-            $operator = $row['operator'];
-
-            if( $key == count( $closure ) - 1 ){
-                $operator = $row['operator'] . ' )';
-            }
-
-            $nestedWhere[] = [
-                'clause'     => $row['clause'],
-                'column'     => $column,
-                'operator'   => $operator,
-                'parameters' => $row['parameters']
-            ];
-        }
-
-        return new Sql('','');
     }
 }

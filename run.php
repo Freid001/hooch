@@ -44,12 +44,30 @@ class Book implements TableInterface{
 
 $table = new Book();
 
-$handler = $database->dbh('query_mule_sqlite')->conn();
-$query = $handler->select()->cols(['book_name'=>'name','id'],'b')->from($table,'b')->where('id','=',1)->where('name','=',"jungle book")->build();
+$handler = $database->dbh('query_mule_mysql')->conn();
+
+$query = $handler->select()->cols(['book_name'=>'name','id'],'b')
+    ->from($table,'b')
+    ->where(function(\QueryMule\Query\Sql\Statement\SelectInterface $query) {
+        $query->where(function(\QueryMule\Query\Sql\Statement\SelectInterface $query) {
+            $query->where(function(\QueryMule\Query\Sql\Statement\SelectInterface $query) {
+                $query->where(function (\QueryMule\Query\Sql\Statement\SelectInterface $query) {
+                    $query->where('id', '=', 1);
+                });
+            });
+            $query->where(function (\QueryMule\Query\Sql\Statement\SelectInterface $query) {
+                $query->where('id', '=', 1);
+            });
+        });
+    })->build();
+
 $result = $handler->fetchAll($query);
 
 var_dump($query->sql());
 var_dump($result);
+
+
+
 
 
 

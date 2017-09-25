@@ -5,6 +5,7 @@ namespace QueryMule\Builder\Connection;
 use QueryMule\Builder\Adapter\MysqliAdapter;
 use QueryMule\Builder\Adapter\PdoAdapter;
 use QueryMule\Builder\Exception\DatabaseException;
+use QueryMule\Builder\Exception\DriverException;
 use QueryMule\Query\Adapter\AdapterInterface;
 use QueryMule\Query\Connection\DatabaseHandlerInterface;
 
@@ -51,16 +52,23 @@ class DatabaseHandler implements DatabaseHandlerInterface
         //Select database adapter
         switch ($dbh[self::DATABASE_ADAPTER]){
             case self::ADAPTER_PDO:
+                switch($dbh[self::DATABASE_DRIVER]){
+                    case 'mysql':
+                        $dns = ":host=".$dbh[self::DATABASE_HOST]."; dbname=".$dbh[self::DATABASE_DATABASE];
+                        break;
 
-                $dns = null;
-                if(!empty($dbh[self::DATABASE_HOST]) && !empty($dbh[self::DATABASE_DATABASE])){
-                    $dns = ":host=".$dbh[self::DATABASE_HOST]."; dbname=".$dbh[self::DATABASE_DATABASE];
-                }else if(!empty($dbh[self::DATABASE_PATH_TO_FILE])){
-                    $dns = ":".$dbh[self::DATABASE_PATH_TO_FILE];
+                    case 'sqlite':
+                        $dns = ":".$dbh[self::DATABASE_PATH_TO_FILE];
+                        break;
+
+                    default:
+                        throw new DriverException('Driver unavailable');
                 }
 
+                $username = !empty($dbh[self::DATABASE_USER]) ? $dbh[self::DATABASE_USER] : null;
+                $password = !empty($dbh[self::DATABASE_PASSWORD]) ? $dbh[self::DATABASE_PASSWORD] : null;
 
-                $this->adapter = new PdoAdapter(new \pdo($dbh[self::DATABASE_DRIVER] . $dns)); // $dbh[self::DATABASE_USER], $dbh[self::DATABASE_PASSWORD]));
+                $this->adapter = new PdoAdapter(new \pdo($dbh[self::DATABASE_DRIVER] . $dns,$username,$password));
                 break;
 
             case self::ADAPTER_MYSQLI:

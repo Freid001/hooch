@@ -24,6 +24,8 @@ class Select implements SelectInterface
     use HasColumnClause;
     use HasWhereClause;
 
+    private $ignoreWhereClause;
+
     /**
      * @param array $cols
      * @param TableInterface|null $table
@@ -88,11 +90,27 @@ class Select implements SelectInterface
      */
     public function where($column, $operator = null, $value = null) : SelectInterface
     {
-        $clause = empty($this->queryGet(self::WHERE)) ? self::WHERE : self::AND_WHERE;
+        $clause = null;
+        if(!$this->ignoreWhereClause) {
+            $clause = empty($this->queryGet(self::WHERE)) ? self::WHERE : self::AND_WHERE;
+        }
 
         $column = ($column instanceof \Closure) ? $column : $this->addAccent($column);
 
-        $this->queryAdd(self::WHERE,$this->whereClause($column,$operator,$value,$clause));
+        if($column instanceof \Closure) {
+            $this->queryAdd(self::WHERE, new Sql($clause));
+            $this->queryAdd(self::WHERE, new Sql("("));
+
+            $this->ignoreWhereClause = true;
+            $column($this);
+            $this->ignoreWhereClause = false;
+
+            $this->queryAdd(self::WHERE, new Sql(")"));
+
+            return $this;
+        }
+
+        $this->queryAdd(self::WHERE, $this->whereClause($column, $operator, $value, $clause));
 
         return $this;
     }

@@ -1,4 +1,5 @@
-# Freid Query
+<img src="https://raw.githubusercontent.com/Freid001/query-mule/refactor/queryMule.png">
+
 A query builder and database access layer (DAL) built on top of PDO. This package providers a query toolkit which aims to make it easy to create complex and efficient queries. Developers can use this package on its own or in conjunction with a framework.
 
 ###Features

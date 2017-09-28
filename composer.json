@@ -1,5 +1,5 @@
 {
-    "name": "freidcreations\/QueryMule",
+    "name": "freidcreations\/query-mule",
     "type": "library",
     "description": "Database abstraction layer (DBAL) and fluent query builder for PHP. Developers can use this package on its own or in conjunction with a framework.",
     "keywords": [

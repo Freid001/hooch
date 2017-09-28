@@ -1,2 +1,9 @@
-<phpunit bootstrap="vendor/autoload.php">
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php"
+         colors="true">
+    <testsuites>
+        <testsuite name="Sql">
+            <directory suffix="Sql.php">./tests/Builder/Sq;</directory>
+        </testsuite>
+    </testsuites>
 </phpunit>

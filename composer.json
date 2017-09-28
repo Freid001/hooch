@@ -1,9 +1,12 @@
 {
     "name": "freidcreations\/QueryMule",
     "type": "library",
-    "description": "A query builder and database access layer (DAL) built on top of PDO. This package aims to makes it easy to create complex and efficient queries, by seamlessly moving away from raw SQL. Developers writing applications in PHP can use this package on its own or in conjunction with a framework.",
+    "description": "Database abstraction layer (DBAL) and fluent query builder for PHP. Developers can use this package on its own or in conjunction with a framework.",
     "keywords": [
-        "query builder", "data access layer", "sql"
+        "query builder",
+        "database abstraction layer",
+        "dbal",
+        "sql"
     ],
     "authors": [
         {
@@ -15,14 +18,15 @@
     "license": "BSD-2-Clause",
     "autoload": {
         "psr-4": {
-            "freidcreations\\QueryMule\\": "src\/",
-            "QueryMule\\": "demo\/\/QueryMule"
-        }
+            "QueryMule\\": "src\/"
+        },
+        "classmap": [
+            "src/"
+        ]
     },
     "require": {
-        "php": ">=7"
+        "php": ">=7.0"
     },
-    "bin": ["bin/QueryMule"],
     "require-dev": {
         "phpunit/phpunit": "^4.8"
     },

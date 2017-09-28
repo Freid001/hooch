@@ -1,5 +1,7 @@
 <img src="docs/logo.png" width="375" height="90">
 
+[![Build Status](https://travis-ci.org/freidcreations/query-mule.svg?branch=master)](https://travis-ci.org/freidcreations/query-mule)
+
 ## About
 Database abstraction layer (DBAL) and fluent query builder for PHP. Developers can use this package on its own or in conjunction with a framework.
 

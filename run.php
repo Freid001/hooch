@@ -16,7 +16,7 @@ $database = new Database([
         DatabaseHandler::DATABASE_ADAPTER => DatabaseHandler::ADAPTER_PDO
     ],
     'query_mule_pgsql' => [
-        DatabaseHandler::DATABASE_DRIVER => 'mysql',
+        DatabaseHandler::DATABASE_DRIVER => 'pgsql',
         DatabaseHandler::DATABASE_HOST => '127.0.0.1',
         DatabaseHandler::DATABASE_DATABASE => 'query_mule',
         DatabaseHandler::DATABASE_USER => 'root',
@@ -44,7 +44,7 @@ class Book implements TableInterface{
 
 $table = new Book();
 
-$handler = $database->dbh('query_mule_mysql')->conn();
+$handler = $database->dbh('query_mule_sqlite')->conn();
 
 $query = $handler->select()->cols(['book_name'=>'name','id'],'b')
     ->from($table,'b')
@@ -52,11 +52,14 @@ $query = $handler->select()->cols(['book_name'=>'name','id'],'b')
         $query->where(function(\QueryMule\Query\Sql\Statement\SelectInterface $query) {
             $query->where(function(\QueryMule\Query\Sql\Statement\SelectInterface $query) {
                 $query->where(function (\QueryMule\Query\Sql\Statement\SelectInterface $query) {
-                    $query->where('id', '=', 1);
+                    $query->where('id', '=?', 1);
                 });
             });
+            $query->orWhere(function (\QueryMule\Query\Sql\Statement\SelectInterface $query) {
+                $query->where('id', '=?', 1);
+            });
             $query->where(function (\QueryMule\Query\Sql\Statement\SelectInterface $query) {
-                $query->where('id', '=', 1);
+                $query->where('id', '=?', 1);
             });
         });
     })->build();

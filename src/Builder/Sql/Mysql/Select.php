@@ -24,8 +24,6 @@ class Select implements SelectInterface
     use HasColumnClause;
     use HasWhereClause;
 
-    private $ignoreWhereClause;
-
     /**
      * @param array $cols
      * @param TableInterface|null $table
@@ -83,6 +81,14 @@ class Select implements SelectInterface
     }
 
     /**
+     *
+     */
+    public function leftJoin()
+    {
+
+    }
+
+    /**
      * @param $column
      * @param null $operator
      * @param null $value
@@ -90,21 +96,17 @@ class Select implements SelectInterface
      */
     public function where($column, $operator = null, $value = null) : SelectInterface
     {
-        $clause = null;
-        if(!$this->ignoreWhereClause) {
-            $clause = empty($this->queryGet(self::WHERE)) ? self::WHERE : self::AND_WHERE;
-        }
+        $clause = empty($this->queryGet(self::WHERE)) ? self::WHERE : self::AND_WHERE;
 
         $column = ($column instanceof \Closure) ? $column : $this->addAccent($column);
 
         if($column instanceof \Closure) {
-            $this->queryAdd(self::WHERE, new Sql($clause));
+            if(!$this->ignoreClause) {
+                $this->queryAdd(self::WHERE, new Sql($clause));
+            }
+
             $this->queryAdd(self::WHERE, new Sql("("));
-
-            $this->ignoreWhereClause = true;
-            $column($this);
-            $this->ignoreWhereClause = false;
-
+            $this->nestedWhereClause($column);
             $this->queryAdd(self::WHERE, new Sql(")"));
 
             return $this;
@@ -124,6 +126,18 @@ class Select implements SelectInterface
     public function orWhere($column, $operator = null, $value = null) : SelectInterface
     {
         $column = ($column instanceof \Closure) ? $column : $this->addAccent($column);
+
+        if($column instanceof \Closure) {
+            if(!$this->ignoreClause) {
+                $this->queryAdd(self::WHERE, new Sql(self::OR_WHERE));
+            }
+
+            $this->queryAdd(self::WHERE, new Sql("("));
+            $this->nestedWhereClause($column);
+            $this->queryAdd(self::WHERE, new Sql(")"));
+
+            return $this;
+        }
 
         $this->queryAdd(self::WHERE,$this->whereClause($column,$operator,$value,self::OR_WHERE));
 

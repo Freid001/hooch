@@ -81,4 +81,42 @@ class SelectTest extends \PHPUnit_Framework_TestCase
         $this->select->cols(['col_a','col_b','col_c'],'t')->from($this->table,'t');
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t",trim($this->select->build()->sql()));
     }
+
+    public function testSelectWhere()
+    {
+        $query = $this->select->cols(['col_a','col_b','col_c'])->from($this->table)->where('col_a','=?','some_value')->build();
+        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name WHERE `col_a` =?", $query->sql());
+        $this->assertEquals(['some_value'],$query->parameters());
+    }
+
+    public function testSelectWhereWithAlias()
+    {
+        $query = $this->select->cols(['col_a','col_b','col_c'])->from($this->table)->where('col_a','=?','some_value')->build();
+        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name WHERE `col_a` =?", $query->sql());
+        $this->assertEquals(['some_value'],$query->parameters());
+    }
+
+    public function testSelectWhereAndNestedWhere()
+    {
+        $query = $this->select->cols(['col_a','col_b','col_c'])->from($this->table)->where('col_a','=?','some_value_a')->where(function(\QueryMule\Query\Sql\Statement\SelectInterface $query){
+            $query->where('col_b','=?','some_value_b');
+        })->build();
+
+        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name WHERE `col_a` =? AND ( `col_b` =? )", $query->sql());
+        $this->assertEquals(['some_value_a','some_value_b'],$query->parameters());
+    }
+
+    public function testSelectWhereAndWhere()
+    {
+        $query = $this->select->cols(['col_a','col_b','col_c'])->from($this->table)->where('col_a','=?','some_value_a')->where('col_b','=?','some_value_b')->build();
+        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name WHERE `col_a` =? AND `col_b` =?", $query->sql());
+        $this->assertEquals(['some_value_a','some_value_b'],$query->parameters());
+    }
+
+    public function testSelectWhereOrWhere()
+    {
+        $query = $this->select->cols(['col_a','col_b','col_c'])->from($this->table)->where('col_a','=?','some_value_a')->orWhere('col_b','=?','some_value_b')->build();
+        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name WHERE `col_a` =? OR `col_b` =?", $query->sql());
+        $this->assertEquals(['some_value_a','some_value_b'],$query->parameters());
+    }
 }

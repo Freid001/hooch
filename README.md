@@ -1,9 +1,9 @@
 <img src="docs/logo.png" width="375" height="90">
 
-##About
+## About
 Database abstraction layer (DBAL) and fluent query builder for PHP. Developers can use this package on its own or in conjunction with a framework.
 
-###Features
+### Features
 * Build select, insert, update & delete queries using unified api 
 * Create sub queries & nested queries.
 * Query sanitization.
@@ -13,7 +13,7 @@ Database abstraction layer (DBAL) and fluent query builder for PHP. Developers c
 * Supports MySQL, PostgreSQL & SQLite.
 * Drivers PDO & MySQLi.
 
-###Contributing
+### Contributing
 Here are a few rules to follow in order to ease code reviews, 
 and discussions.
  
@@ -25,9 +25,9 @@ and discussions.
 * When creating your Pull Request on GitHub, you MUST write a description which gives the context and/or explains why you are creating it.
 
 
-##Installation
+## Installation
 
-###Composer
+### Composer
 ```json
 "repositories": [
         {
@@ -40,13 +40,14 @@ and discussions.
 },
 ```
 
-##Documentation
-
-###Build
-* Select Query
-* Insert Query
-* Update Query
-* Delete Query
+## Documentation
+* Connections
+* Tables
+* Select Querys
+* Insert Querys
+* Update Querys
+* Delete Querys
+* Inegrations
 
 
 

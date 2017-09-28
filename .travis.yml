@@ -1,0 +1,15 @@
+language: php
+
+php:
+  - "7.1"
+
+sudo: required
+
+install:
+  - sudo apt-get -qq update
+
+before_script:
+  - composer install --prefer-source
+
+script:
+  - phpunit tests

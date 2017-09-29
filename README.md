@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/blue-strawberry/query-mule.svg?branch=master)](https://travis-ci.org/blue-strawberry/query-mule)
 
+[![Software License][ico-license]](LICENSE.md)
+
 # About
 Database abstraction layer (DBAL) and fluent query builder for PHP. Developers can use this package on its own or in conjunction with a framework.
 

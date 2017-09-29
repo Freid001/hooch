@@ -6,14 +6,13 @@
 Database abstraction layer (DBAL) and fluent query builder for PHP. Developers can use this package on its own or in conjunction with a framework.
 
 ### Features
-* Build select, insert, update & delete queries using unified api 
-* Create sub queries & nested queries.
-* Query sanitization.
+* Build select, insert, update & delete queries. 
 * Store and recall query logic.
 * Chain query statements.
 * Switch database connections with ease.
+* Query sanitization.
+* Supported drivers PDO & MySQLi.
 * Supports MySQL, PostgreSQL & SQLite.
-* Drivers PDO & MySQLi.
 
 ### Contributing
 Here are a few rules to follow in order to ease code reviews, 

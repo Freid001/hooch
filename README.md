@@ -11,7 +11,7 @@ Database abstraction layer (DBAL) and fluent query builder for PHP. Developers c
 * Chain query statements.
 * Switch database connections with ease.
 * Query sanitization.
-* Supported drivers PDO & MySQLi.
+* PDO & MySQLi are supported drivers.
 * Supports MySQL, PostgreSQL & SQLite.
 
 ### Contributing

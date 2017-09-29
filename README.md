@@ -32,12 +32,12 @@ and discussions.
 ```json
 "repositories": [
         {
-            "url": "https://github.com/freidcreations/query-mule",
+            "url": "https://github.com/blue-strawburry/query-mule",
             "type": "git"
         }
     ],
 "require": {
-        "freidcreations/query-mule" : "1.0"
+        "blue-strawburry/query-mule" : "1.0"
 },
 ```
 

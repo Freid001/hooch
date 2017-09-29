@@ -2,10 +2,10 @@
 
 [![Build Status](https://travis-ci.org/blue-strawburry/query-mule.svg?branch=master)](https://travis-ci.org/blue-strawburry/query-mule)
 
-## About
+# About
 Database abstraction layer (DBAL) and fluent query builder for PHP. Developers can use this package on its own or in conjunction with a framework.
 
-### Features
+## Features
 * Build select, insert, update & delete queries. 
 * Store and recall query logic.
 * Chain query statements.
@@ -14,21 +14,9 @@ Database abstraction layer (DBAL) and fluent query builder for PHP. Developers c
 * PDO & MySQLi are supported drivers.
 * Supports MySQL, PostgreSQL & SQLite.
 
-### Contributing
-Here are a few rules to follow in order to ease code reviews, 
-and discussions.
- 
-* You MUST follow the PSR-1 and PSR-2 coding standards.  
-* You MUST run the test suite.
-* You MUST write (or update) unit tests.
-* You SHOULD write documentation.
-* Please, write commit messages that make sense, and rebase your branch before submitting your Pull Request.
-* When creating your Pull Request on GitHub, you MUST write a description which gives the context and/or explains why you are creating it.
+# Installation
 
-
-## Installation
-
-### Composer
+## Composer
 ```json
 "repositories": [
         {
@@ -41,7 +29,7 @@ and discussions.
 },
 ```
 
-## Documentation
+# Documentation
 * Connections
 * Tables
 * Select Querys
@@ -52,7 +40,7 @@ and discussions.
 
 
 
-### Other
+# Other
 CREATE TABLE book(
   id int(11),
   name varchar(225)

@@ -54,6 +54,12 @@ interface SelectInterface
     public function ignoreAccent($ignore = true) : SelectInterface;
 
     /**
+     * @param FilterInterface $filter
+     * @return SelectInterface
+     */
+    public function applyFilter(FilterInterface $filter) : SelectInterface;
+
+    /**
      * @param array $cols
      * @param null $alias
      * @return SelectInterface

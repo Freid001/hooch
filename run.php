@@ -31,8 +31,8 @@ $database = new Database([
     ]
 ]);
 
-class Book implements TableInterface{
-
+class Book implements TableInterface
+{
     /**
      * @return string
      */
@@ -41,10 +41,14 @@ class Book implements TableInterface{
         return 'book';
     }
 
-    public function saved(\QueryMule\Query\Sql\Statement\SelectInterface $query)
+    /**
+     * @param $id
+     * @return \QueryMule\Query\Sql\Sql
+     */
+    public function filterId($id) : \QueryMule\Query\Sql\Statement\FilterInterface
     {
-        return $query->where(function (\QueryMule\Query\Sql\Statement\SelectInterface $query) {
-            $query->where('b.id', '=?', 1);
+        return $this->filter->where(function (\QueryMule\Query\Sql\Statement\FilterInterface $filter) use ($id) {
+            $filter->where('b.id', '=?', $id);
         });
     }
 }
@@ -55,18 +59,9 @@ $handler = $database->dbh('query_mule_mysql')->conn();
 
 $query = $handler->select()->cols(['book_name'=>'name','id'],'b')
     ->from($table,'b')
-    ->where(function(\QueryMule\Query\Sql\Statement\SelectInterface $query) {
-        $query->where(function(\QueryMule\Query\Sql\Statement\SelectInterface $query) {
-            $query->where(function(\QueryMule\Query\Sql\Statement\SelectInterface $query) {
-                $query->where(function (\QueryMule\Query\Sql\Statement\SelectInterface $query) {
-                    $query->where('b.id', '=?', 1);
-                });
-            });
-            $query->orWhere(function (\QueryMule\Query\Sql\Statement\SelectInterface $query) {
-                $query->where('b.id', '=?', 1);
-            });
-        });
-    })->build();
+//    ->applyFilter($table->filterId(1))
+//    ->applyFilter($table->filterId(2))
+    ->build();
 
 $result = $handler->fetchAll($query);
 

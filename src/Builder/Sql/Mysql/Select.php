@@ -8,6 +8,7 @@ use QueryMule\Query\Sql\Clause\HasFromClause;
 use QueryMule\Query\Sql\Clause\HasWhereClause;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Query\Table\TableInterface;
 
@@ -15,7 +16,7 @@ use QueryMule\Query\Table\TableInterface;
  * Class Select
  * @package QueryMule\Builder\Sql\MySql
  */
-class Select implements SelectInterface
+class Select implements SelectInterface, FilterInterface
 {
     use Accent;
     use Query;
@@ -50,6 +51,19 @@ class Select implements SelectInterface
     public function ignoreAccent($ignore = true) : SelectInterface
     {
         $this->ignoreAccentSymbol($ignore);
+        return $this;
+    }
+
+    /**
+     * @param FilterInterface $filter
+     * @return SelectInterface
+     */
+    public function applyFilter(FilterInterface $filter) : SelectInterface
+    {
+        //$filter->build();
+
+
+
         return $this;
     }
 

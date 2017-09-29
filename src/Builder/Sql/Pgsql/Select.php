@@ -53,6 +53,19 @@ class Select implements SelectInterface
     }
 
     /**
+     * @param Sql $sql
+     * @return mixed
+     */
+    public function applySql(Sql $sql) : SelectInterface
+    {
+
+
+
+
+        return $this;
+    }
+
+    /**
      * @param array $cols
      * @param null $alias
      * @return SelectInterface

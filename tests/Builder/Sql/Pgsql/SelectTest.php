@@ -46,6 +46,11 @@ class SelectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("SELECT",trim($this->select->build()->sql()));
     }
 
+    public function testIgnoreAlias()
+    {
+        $this->assertEquals("SELECT col_a ,col_b ,col_c",$this->select->ignoreAccent()->cols(['col_a','col_b','col_c'])->build()->sql());
+    }
+
     public function testSelectCols()
     {
         $this->select->cols(['col_a','col_b','col_c']);

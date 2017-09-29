@@ -46,6 +46,11 @@ class SelectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("SELECT",trim($this->select->build()->sql()));
     }
 
+    public function testIgnoreAlias()
+    {
+        $this->assertEquals("SELECT col_a ,col_b ,col_c",$this->select->ignoreAccent()->cols(['col_a','col_b','col_c'])->build()->sql());
+    }
+
     public function testSelectCols()
     {
         $this->select->cols(['col_a','col_b','col_c']);
@@ -91,8 +96,8 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
     public function testSelectWhereWithAlias()
     {
-        $query = $this->select->cols(['col_a','col_b','col_c'])->from($this->table)->where('col_a','=?','some_value')->build();
-        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name WHERE `col_a` =?", $query->sql());
+        $query = $this->select->cols(['col_a','col_b','col_c'],'t')->from($this->table)->where('t.col_a','=?','some_value')->build();
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name WHERE `t`.`col_a` =?", $query->sql());
         $this->assertEquals(['some_value'],$query->parameters());
     }
 

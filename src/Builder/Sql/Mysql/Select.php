@@ -22,6 +22,7 @@ class Select implements SelectInterface
 
     use HasFromClause;
     use HasColumnClause;
+    //use HasJoinClause;
     use HasWhereClause;
 
     /**
@@ -40,6 +41,16 @@ class Select implements SelectInterface
 
         $this->setAccent("`");
         $this->queryAdd(self::SELECT,new Sql(self::SELECT));
+    }
+
+    /**
+     * @param bool $ignore
+     * @return SelectInterface
+     */
+    public function ignoreAccent($ignore = true) : SelectInterface
+    {
+        $this->ignoreAccentSymbol($ignore);
+        return $this;
     }
 
     /**
@@ -83,7 +94,7 @@ class Select implements SelectInterface
     /**
      *
      */
-    public function leftJoin()
+    public function join()
     {
 
     }
@@ -98,10 +109,10 @@ class Select implements SelectInterface
     {
         $clause = empty($this->queryGet(self::WHERE)) ? self::WHERE : self::AND_WHERE;
 
-        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column);
+        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column,'.');
 
         if($column instanceof \Closure) {
-            if(!$this->ignoreClause) {
+            if(!$this->ignoreWhereClause) {
                 $this->queryAdd(self::WHERE, new Sql($clause));
             }
 
@@ -125,10 +136,10 @@ class Select implements SelectInterface
      */
     public function orWhere($column, $operator = null, $value = null) : SelectInterface
     {
-        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column);
+        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column,'.');
 
         if($column instanceof \Closure) {
-            if(!$this->ignoreClause) {
+            if(!$this->ignoreWhereClause) {
                 $this->queryAdd(self::WHERE, new Sql(self::OR_WHERE));
             }
 

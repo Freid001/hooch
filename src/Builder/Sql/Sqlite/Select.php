@@ -43,6 +43,16 @@ class Select implements SelectInterface
     }
 
     /**
+     * @param bool $ignore
+     * @return SelectInterface
+     */
+    public function ignoreAccent($ignore = true) : SelectInterface
+    {
+        $this->ignoreAccentSymbol($ignore);
+        return $this;
+    }
+
+    /**
      * @param array $cols
      * @param null $alias
      * @return SelectInterface
@@ -90,10 +100,10 @@ class Select implements SelectInterface
     {
         $clause = empty($this->queryGet(self::WHERE)) ? self::WHERE : self::AND_WHERE;
 
-        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column);
+        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column,'.');
 
         if($column instanceof \Closure) {
-            if(!$this->ignoreClause) {
+            if(!$this->ignoreWhereClause) {
                 $this->queryAdd(self::WHERE, new Sql($clause));
             }
 
@@ -117,10 +127,10 @@ class Select implements SelectInterface
      */
     public function orWhere($column, $operator = null, $value = null) : SelectInterface
     {
-        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column);
+        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column,'.');
 
         if($column instanceof \Closure) {
-            if(!$this->ignoreClause) {
+            if(!$this->ignoreWhereClause) {
                 $this->queryAdd(self::WHERE, new Sql(self::OR_WHERE));
             }
 

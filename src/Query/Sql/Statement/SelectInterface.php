@@ -48,6 +48,12 @@ interface SelectInterface
     const WHERE = 'WHERE';
 
     /**
+     * @param bool $ignore
+     * @return SelectInterface
+     */
+    public function ignoreAccent($ignore = true) : SelectInterface;
+
+    /**
      * @param array $cols
      * @param null $alias
      * @return SelectInterface

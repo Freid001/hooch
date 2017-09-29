@@ -16,7 +16,7 @@ trait HasWhereClause
     /**
      * @var bool
      */
-    private $ignoreClause = false;
+    private $ignoreWhereClause = false;
 
     /**
      * @param $column
@@ -28,7 +28,7 @@ trait HasWhereClause
      */
     private function whereClause($column,$operator = null,$value = null,$clause = SelectInterface::WHERE)
     {
-        if($this->ignoreClause){
+        if($this->ignoreWhereClause){
             $clause = null;
         }
 
@@ -59,8 +59,8 @@ trait HasWhereClause
      */
     private function nestedWhereClause(\Closure $column)
     {
-        $this->ignoreClause = true;
+        $this->ignoreWhereClause = true;
         $column($this);
-        $this->ignoreClause = false;
+        $this->ignoreWhereClause = false;
     }
 }

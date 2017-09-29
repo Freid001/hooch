@@ -40,11 +40,18 @@ class Book implements TableInterface{
     {
         return 'book';
     }
+
+    public function saved(\QueryMule\Query\Sql\Statement\SelectInterface $query)
+    {
+        return $query->where(function (\QueryMule\Query\Sql\Statement\SelectInterface $query) {
+            $query->where('b.id', '=?', 1);
+        });
+    }
 }
 
 $table = new Book();
 
-$handler = $database->dbh('query_mule_sqlite')->conn();
+$handler = $database->dbh('query_mule_mysql')->conn();
 
 $query = $handler->select()->cols(['book_name'=>'name','id'],'b')
     ->from($table,'b')
@@ -52,14 +59,11 @@ $query = $handler->select()->cols(['book_name'=>'name','id'],'b')
         $query->where(function(\QueryMule\Query\Sql\Statement\SelectInterface $query) {
             $query->where(function(\QueryMule\Query\Sql\Statement\SelectInterface $query) {
                 $query->where(function (\QueryMule\Query\Sql\Statement\SelectInterface $query) {
-                    $query->where('id', '=?', 1);
+                    $query->where('b.id', '=?', 1);
                 });
             });
             $query->orWhere(function (\QueryMule\Query\Sql\Statement\SelectInterface $query) {
-                $query->where('id', '=?', 1);
-            });
-            $query->where(function (\QueryMule\Query\Sql\Statement\SelectInterface $query) {
-                $query->where('id', '=?', 1);
+                $query->where('b.id', '=?', 1);
             });
         });
     })->build();

@@ -43,6 +43,16 @@ class Select implements SelectInterface
     }
 
     /**
+     * @param bool $ignore
+     * @return SelectInterface
+     */
+    public function ignoreAccent($ignore = true) : SelectInterface
+    {
+        $this->ignoreAccentSymbol($ignore);
+        return $this;
+    }
+
+    /**
      * @param array $cols
      * @param null $alias
      * @return SelectInterface

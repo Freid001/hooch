@@ -111,6 +111,7 @@ class Select implements SelectInterface
 
         return $this;
     }
+
     /**
      * @param $column
      * @param null $operator

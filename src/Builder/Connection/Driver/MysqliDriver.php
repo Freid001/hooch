@@ -1,19 +1,19 @@
 <?php
 
-namespace QueryMule\Builder\Adapter;
+namespace QueryMule\Builder\Connection\Driver;
 
 use QueryMule\Builder\Exception\DriverException;
 use QueryMule\Builder\Sql\Mysql\Select;
-use QueryMule\Query\Adapter\AdapterInterface;
+use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Query\Table\TableInterface;
 
 /**
- * Class MysqliAdapter
- * @package QueryMule\Builder\Adapter
+ * Class MysqliDriver
+ * @package QueryMule\Builder\Connection\Driver
  */
-class MysqliAdapter implements AdapterInterface
+class MysqliDriver implements DriverInterface
 {
     /**
      * @var \mysqli

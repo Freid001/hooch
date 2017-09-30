@@ -1,6 +1,6 @@
 <?php
 
-namespace QueryMule\Query\Adapter;
+namespace QueryMule\Query\Connection\Driver;
 
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\SelectInterface;
@@ -10,7 +10,7 @@ use QueryMule\Query\Table\TableInterface;
  * Class AdapterInterface
  * @package QueryMule\Adapter
  */
-interface AdapterInterface
+interface DriverInterface
 {
     const DRIVER_MYSQL  = 'mysql';
     const DRIVER_PGSQL  = 'pgsql';

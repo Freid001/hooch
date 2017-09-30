@@ -1,19 +1,18 @@
 <?php
 
-namespace QueryMule\Builder\Adapter;
+namespace QueryMule\Builder\Connection\Driver;
 
 use QueryMule\Builder\Exception\DriverException;
-use QueryMule\Query\Adapter\AdapterInterface;
+use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Query\Table\TableInterface;
 
 /**
- * Class PdoAdapter
- * @package QueryMule\Builder\Adapter
+ * Class PdoDriver
+ * @package QueryMule\Builder\Connection\Driver
  */
-class PdoAdapter implements AdapterInterface
+class PdoDriver implements DriverInterface
 {
     /**
      * @var \PDO

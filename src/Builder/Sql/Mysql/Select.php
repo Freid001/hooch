@@ -24,7 +24,7 @@ class Select implements SelectInterface
     use HasColumnClause;
 
     /**
-     * @var Filter
+     * @var FilterInterface
      */
     private $filter;
 
@@ -67,6 +67,9 @@ class Select implements SelectInterface
      */
     public function applyFilter(FilterInterface $filter) : SelectInterface
     {
+
+
+
         return $this;
     }
 

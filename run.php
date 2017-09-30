@@ -13,7 +13,7 @@ $database = new Database([
         DatabaseHandler::DATABASE_DATABASE => 'query_mule',
         DatabaseHandler::DATABASE_USER => 'root',
         DatabaseHandler::DATABASE_PASSWORD => '123',
-        DatabaseHandler::DATABASE_ADAPTER => DatabaseHandler::ADAPTER_PDO
+        DatabaseHandler::DATABASE_ADAPTER => DatabaseHandler::ADAPTER_MYSQLI
     ],
     'query_mule_pgsql' => [
         DatabaseHandler::DATABASE_DRIVER => 'pgsql',
@@ -33,42 +33,41 @@ $database = new Database([
 
 class Book implements TableInterface
 {
-    /**
-     * @return string
-     */
+    private $driver;
+
+    public function __construct(\QueryMule\Query\Connection\Driver\DriverInterface $driver)
+    {
+        $this->driver = $driver;
+    }
+
     public function getTableName()
     {
         return 'book';
     }
 
-    /**
-     * @param $id
-     * @return \QueryMule\Query\Sql\Sql
-     */
-//    public function filterId($id) : \QueryMule\Query\Sql\Statement\FilterInterface
-//    {
-//        return $filter->where(function (\QueryMule\Query\Sql\Statement\FilterInterface $filter) use ($id) {
-//            $filter->where('b.id', '=?', $id);
-//        });
-//    }
+    public function filterId($id) : \QueryMule\Query\Sql\Statement\FilterInterface
+    {
+        return $this->driver->select()->where(function (\QueryMule\Query\Sql\Statement\FilterInterface $filter) use ($id) {
+            $filter->where('b.id', '=?', $id);
+        });
+    }
 }
 
-$table = new Book();
+$adapter = $database->dbh('query_mule_mysql')->driver();
 
-$handler = $database->dbh('query_mule_mysql')->conn();
+$table = new Book($adapter);
 
-$query = $handler->select()->cols(['book_name'=>'name','id'],'b')
+$query = $adapter->select()->cols(['book_name'=>'name','id'],'b')
     ->from($table,'b')
-    ->where('id','=?',1)
-    ->where('id','=?',1)
-//    ->applyFilter($table->filterId(1))
-//    ->applyFilter($table->filterId(2))
+    ->where(function(\QueryMule\Query\Sql\Statement\FilterInterface $query){
+        $query->where('id','=?',1);
+    })
     ->build();
 
-//$result = $handler->fetchAll($query);
+$result = $adapter->fetchAll($query);
 
 var_dump($query->sql());
-//var_dump($result);
+var_dump($result);
 
 
 

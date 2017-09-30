@@ -3,7 +3,6 @@
 namespace QueryMule\Query\Sql\Statement;
 
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Table\TableInterface;
 
 /**
  * Interface FilterInterface
@@ -11,21 +10,26 @@ use QueryMule\Query\Table\TableInterface;
  */
 interface FilterInterface
 {
+    const WHERE = 'WHERE';
+    const AND_WHERE = 'AND';
+    const OR_WHERE = 'OR';
+
     /**
      * @param $column
      * @param null $operator
      * @param null $value
-     * @return SelectInterface
+     * @param string $clause
+     * @return FilterInterface
      */
-    public function where($column, $operator = null, $value = null) : SelectInterface;
+    public function where($column, $operator = null, $value = null, $clause = self::WHERE);
 
      /**
       * @param $column
       * @param null $operator
       * @param null $value
-      * @return SelectInterface
+      * @return FilterInterface
       */
-    public function orWhere($column, $operator = null, $value = null) : SelectInterface;
+    public function orWhere($column, $operator = null, $value = null);
 
     /**
      * @return Sql

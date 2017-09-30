@@ -9,9 +9,8 @@ use QueryMule\Query\Table\TableInterface;
  * Interface Select
  * @package QueryMule\Query\Sql\Statement
  */
-interface SelectInterface
+interface SelectInterface extends FilterInterface
 {
-    const AND_WHERE = 'AND';
     const COLS = 'COL';
     const COL_AS = 'AS';
     const COUNT = 'COUNT';
@@ -35,7 +34,6 @@ interface SelectInterface
     const LEFT_OUTER_JOIN = 'LEFT OUTER JOIN';
     const LIMIT = 'LIMIT';
     const ON = 'ON';
-    const OR_WHERE = 'OR';
     const ORDER = 'ORDER BY';
     const RIGHT_JOIN = 'RIGHT JOIN';
     const RIGHT_OUTER_JOIN = 'RIGHT OUTER JOIN';
@@ -45,7 +43,6 @@ interface SelectInterface
     const TABLE = 'TABLE';
     const UPDATE = 'UPDATE';
     const VALUES = 'VALUES';
-    const WHERE = 'WHERE';
 
     /**
      * @param bool $ignore
@@ -71,22 +68,6 @@ interface SelectInterface
      * @return SelectInterface
      */
     public function from(TableInterface $table, $alias = null) : SelectInterface;
-
-    /**
-     * @param $column
-     * @param null $operator
-     * @param null $value
-     * @return SelectInterface
-     */
-    public function where($column, $operator = null, $value = null) : SelectInterface;
-
-     /**
-      * @param $column
-      * @param null $operator
-      * @param null $value
-      * @return SelectInterface
-      */
-    public function orWhere($column, $operator = null, $value = null) : SelectInterface;
 
     /**
      * @return Sql

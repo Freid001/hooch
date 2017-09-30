@@ -20,6 +20,15 @@ trait Query
 
     /**
      * @param $type
+     * @return string|null
+     */
+    private function queryGet($type)
+    {
+        return !empty($this->sql[$type]) ? $this->sql[$type] : null;
+    }
+
+    /**
+     * @param $type
      * @param Sql $sql
      */
     private function queryAdd($type, Sql $sql)
@@ -32,12 +41,12 @@ trait Query
     }
 
     /**
-     * @param $type
-     * @return string|null
+     * @return void
      */
-    private function queryGet($type)
+    private function queryReset()
     {
-        return !empty($this->sql[$type]) ? $this->sql[$type] : null;
+        $this->sql = [];
+        $this->parameters = [];
     }
 
     /**

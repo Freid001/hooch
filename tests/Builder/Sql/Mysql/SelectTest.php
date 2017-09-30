@@ -103,7 +103,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
     public function testSelectWhereAndNestedWhere()
     {
-        $query = $this->select->cols(['col_a','col_b','col_c'])->from($this->table)->where('col_a','=?','some_value_a')->where(function(\QueryMule\Query\Sql\Statement\SelectInterface $query){
+        $query = $this->select->cols(['col_a','col_b','col_c'])->from($this->table)->where('col_a','=?','some_value_a')->where(function(\QueryMule\Query\Sql\Statement\FilterInterface $query){
             $query->where('col_b','=?','some_value_b');
         })->build();
 

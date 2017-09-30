@@ -5,6 +5,7 @@ namespace QueryMule\Builder\Adapter;
 use QueryMule\Builder\Exception\DriverException;
 use QueryMule\Query\Adapter\AdapterInterface;
 use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Query\Table\TableInterface;
 

@@ -45,12 +45,12 @@ class Book implements TableInterface
      * @param $id
      * @return \QueryMule\Query\Sql\Sql
      */
-    public function filterId($id) : \QueryMule\Query\Sql\Statement\FilterInterface
-    {
-        return $this->filter->where(function (\QueryMule\Query\Sql\Statement\FilterInterface $filter) use ($id) {
-            $filter->where('b.id', '=?', $id);
-        });
-    }
+//    public function filterId($id) : \QueryMule\Query\Sql\Statement\FilterInterface
+//    {
+//        return $filter->where(function (\QueryMule\Query\Sql\Statement\FilterInterface $filter) use ($id) {
+//            $filter->where('b.id', '=?', $id);
+//        });
+//    }
 }
 
 $table = new Book();
@@ -59,14 +59,16 @@ $handler = $database->dbh('query_mule_mysql')->conn();
 
 $query = $handler->select()->cols(['book_name'=>'name','id'],'b')
     ->from($table,'b')
+    ->where('id','=?',1)
+    ->where('id','=?',1)
 //    ->applyFilter($table->filterId(1))
 //    ->applyFilter($table->filterId(2))
     ->build();
 
-$result = $handler->fetchAll($query);
+//$result = $handler->fetchAll($query);
 
 var_dump($query->sql());
-var_dump($result);
+//var_dump($result);
 
 
 

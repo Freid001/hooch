@@ -5,7 +5,6 @@ namespace QueryMule\Builder\Sql\Mysql;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasColumnClause;
 use QueryMule\Query\Sql\Clause\HasFromClause;
-use QueryMule\Query\Sql\Clause\HasWhereClause;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
@@ -16,15 +15,18 @@ use QueryMule\Query\Table\TableInterface;
  * Class Select
  * @package QueryMule\Builder\Sql\MySql
  */
-class Select implements SelectInterface, FilterInterface
+class Select implements SelectInterface
 {
     use Accent;
     use Query;
 
     use HasFromClause;
     use HasColumnClause;
-    //use HasJoinClause;
-    use HasWhereClause;
+
+    /**
+     * @var Filter
+     */
+    private $filter;
 
     /**
      * @param array $cols
@@ -42,6 +44,8 @@ class Select implements SelectInterface, FilterInterface
 
         $this->setAccent("`");
         $this->queryAdd(self::SELECT,new Sql(self::SELECT));
+
+        $this->filter = new Filter();
     }
 
     /**
@@ -51,6 +55,9 @@ class Select implements SelectInterface, FilterInterface
     public function ignoreAccent($ignore = true) : SelectInterface
     {
         $this->ignoreAccentSymbol($ignore);
+
+        $this->filter->ignoreAccent($ignore);
+
         return $this;
     }
 
@@ -60,10 +67,6 @@ class Select implements SelectInterface, FilterInterface
      */
     public function applyFilter(FilterInterface $filter) : SelectInterface
     {
-        //$filter->build();
-
-
-
         return $this;
     }
 
@@ -106,38 +109,19 @@ class Select implements SelectInterface, FilterInterface
     }
 
     /**
-     *
-     */
-    public function join()
-    {
-
-    }
-
-    /**
      * @param $column
      * @param null $operator
      * @param null $value
+     * @param $clause
      * @return SelectInterface
      */
-    public function where($column, $operator = null, $value = null) : SelectInterface
+    public function where($column, $operator = null, $value = null, $clause = self::WHERE)
     {
-        $clause = empty($this->queryGet(self::WHERE)) ? self::WHERE : self::AND_WHERE;
-
-        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column,'.');
-
-        if($column instanceof \Closure) {
-            if(!$this->ignoreWhereClause) {
-                $this->queryAdd(self::WHERE, new Sql($clause));
-            }
-
-            $this->queryAdd(self::WHERE, new Sql("("));
-            $this->nestedWhereClause($column);
-            $this->queryAdd(self::WHERE, new Sql(")"));
-
-            return $this;
+        if($clause == self::WHERE && !empty($this->queryGet(self::WHERE))) {
+            $clause = self::AND_WHERE;
         }
 
-        $this->queryAdd(self::WHERE, $this->whereClause($column, $operator, $value, $clause));
+        $this->queryAdd(FilterInterface::WHERE,$this->filter->where($column,$operator,$value,$clause)->build());
 
         return $this;
     }
@@ -148,23 +132,9 @@ class Select implements SelectInterface, FilterInterface
      * @param null $value
      * @return SelectInterface
      */
-    public function orWhere($column, $operator = null, $value = null) : SelectInterface
+    public function orWhere($column, $operator = null, $value = null)
     {
-        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column,'.');
-
-        if($column instanceof \Closure) {
-            if(!$this->ignoreWhereClause) {
-                $this->queryAdd(self::WHERE, new Sql(self::OR_WHERE));
-            }
-
-            $this->queryAdd(self::WHERE, new Sql("("));
-            $this->nestedWhereClause($column);
-            $this->queryAdd(self::WHERE, new Sql(")"));
-
-            return $this;
-        }
-
-        $this->queryAdd(self::WHERE,$this->whereClause($column,$operator,$value,self::OR_WHERE));
+        $this->queryAdd(FilterInterface::WHERE,$this->filter->orWhere($column,$operator,$value)->build());
 
         return $this;
     }
@@ -174,7 +144,7 @@ class Select implements SelectInterface, FilterInterface
      */
     public function build() : Sql
     {
-        return $this->queryBuild([
+        $sql = $this->queryBuild([
             self::SELECT,
             self::COLS,
             self::FROM,
@@ -185,5 +155,9 @@ class Select implements SelectInterface, FilterInterface
             self::HAVING,
             self::LIMIT
         ]);
+
+        $this->queryReset();
+
+        return $sql;
     }
 }

@@ -119,13 +119,13 @@ class Select implements SelectInterface
      * @param $clause
      * @return SelectInterface
      */
-    public function where($column, $operator = null, $value = null, $clause = self::WHERE)
+    public function where($column, $operator = null, $value = null, $clause = self::WHERE) : SelectInterface
     {
         if($clause == self::WHERE && !empty($this->queryGet(self::WHERE))) {
             $clause = self::AND_WHERE;
         }
 
-        $this->queryAdd(FilterInterface::WHERE,$this->filter->where($column,$operator,$value,$clause)->build());
+        $this->queryAdd(self::WHERE,$this->filter->where($column,$operator,$value,$clause)->build());
 
         return $this;
     }
@@ -136,9 +136,9 @@ class Select implements SelectInterface
      * @param null $value
      * @return SelectInterface
      */
-    public function orWhere($column, $operator = null, $value = null)
+    public function orWhere($column, $operator = null, $value = null) : SelectInterface
     {
-        $this->queryAdd(FilterInterface::WHERE,$this->filter->orWhere($column,$operator,$value)->build());
+        $this->queryAdd(self::WHERE,$this->filter->orWhere($column,$operator,$value)->build());
 
         return $this;
     }

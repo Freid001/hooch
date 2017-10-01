@@ -3,9 +3,11 @@
 namespace QueryMule\Builder\Connection\Driver;
 
 use QueryMule\Builder\Exception\DriverException;
+use QueryMule\Builder\Sql\Mysql\Filter;
 use QueryMule\Builder\Sql\Mysql\Select;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Query\Table\TableInterface;
 
@@ -27,6 +29,14 @@ class MysqliDriver implements DriverInterface
     public function __construct(\mysqli $mysqli)
     {
         $this->mysqli = $mysqli;
+    }
+
+    /**
+     * @return FilterInterface
+     */
+    public function filter() : FilterInterface
+    {
+        return new Filter();
     }
 
     /**

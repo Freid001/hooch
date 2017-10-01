@@ -3,8 +3,10 @@
 namespace QueryMule\Builder\Connection\Driver;
 
 use QueryMule\Builder\Exception\DriverException;
+use QueryMule\Builder\Sql\Mysql\Filter;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Query\Table\TableInterface;
 
@@ -32,6 +34,33 @@ class PdoDriver implements DriverInterface
     {
         $this->pdo = $pdo;
         $this->driver = $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
+    }
+
+    /**
+     * @return FilterInterface
+     * @throws DriverException
+     */
+    public function filter() : FilterInterface
+    {
+        $filter = null;
+        switch($this->driver){
+            case self::DRIVER_MYSQL:
+                $filter = new \QueryMule\Builder\Sql\Mysql\Filter();
+                break;
+
+            case self::DRIVER_PGSQL:
+                $filter = new \QueryMule\Builder\Sql\Pgsql\Filter();
+                break;
+
+            case self::DRIVER_SQLITE:
+                $filter = new \QueryMule\Builder\Sql\Sqlite\Filter();
+                break;
+
+            default:
+                throw new DriverException('Driver: '.$this->driver.' not currently supported');
+        }
+
+        return $filter;
     }
 
     /**

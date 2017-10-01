@@ -1,6 +1,6 @@
 <?php
 
-namespace QueryMule\Builder\Sql\Mysql;
+namespace QueryMule\Builder\Sql\Pgsql;
 
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasWhereClause;

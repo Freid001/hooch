@@ -15,6 +15,12 @@ interface FilterInterface
     const OR_WHERE = 'OR';
 
     /**
+     * @param bool $ignore
+     * @return FilterInterface
+     */
+    public function ignoreAccent($ignore = true);
+
+    /**
      * @param $column
      * @param null $operator
      * @param null $value
@@ -32,7 +38,13 @@ interface FilterInterface
     public function orWhere($column, $operator = null, $value = null);
 
     /**
+     * @return array
+     */
+    public function clauses() : array;
+
+    /**
+     * @param array $clauses
      * @return Sql
      */
-    public function build() : Sql;
+    public function build(array $clauses = []) : Sql;
 }

@@ -67,8 +67,9 @@ class Select implements SelectInterface
      */
     public function applyFilter(FilterInterface $filter) : SelectInterface
     {
-
-
+        foreach($filter->clauses() as $clause){
+            $this->queryAdd($clause,$filter->build([$clause]));
+        }
 
         return $this;
     }
@@ -118,13 +119,13 @@ class Select implements SelectInterface
      * @param $clause
      * @return SelectInterface
      */
-    public function where($column, $operator = null, $value = null, $clause = self::WHERE)
+    public function where($column, $operator = null, $value = null, $clause = self::WHERE) : SelectInterface
     {
         if($clause == self::WHERE && !empty($this->queryGet(self::WHERE))) {
             $clause = self::AND_WHERE;
         }
 
-        $this->queryAdd(FilterInterface::WHERE,$this->filter->where($column,$operator,$value,$clause)->build());
+        $this->queryAdd(self::WHERE,$this->filter->where($column,$operator,$value,$clause)->build());
 
         return $this;
     }
@@ -135,29 +136,38 @@ class Select implements SelectInterface
      * @param null $value
      * @return SelectInterface
      */
-    public function orWhere($column, $operator = null, $value = null)
+    public function orWhere($column, $operator = null, $value = null) : SelectInterface
     {
-        $this->queryAdd(FilterInterface::WHERE,$this->filter->orWhere($column,$operator,$value)->build());
+        $this->queryAdd(self::WHERE,$this->filter->orWhere($column,$operator,$value)->build());
 
         return $this;
     }
 
     /**
-     * @return \QueryMule\Query\Sql\Sql
+     * @return array
      */
-    public function build() : Sql
+    public function clauses() : array
     {
-        $sql = $this->queryBuild([
-            self::SELECT,
-            self::COLS,
-            self::FROM,
-            self::JOIN,
-            self::WHERE,
-            self::GROUP,
-            self::ORDER,
-            self::HAVING,
-            self::LIMIT
-        ]);
+        return array_keys($this->sql);
+    }
+
+    /**
+     * @param array $clauses
+     * @return Sql
+     */
+    public function build(array $clauses = [
+        self::SELECT,
+        self::COLS,
+        self::FROM,
+        self::JOIN,
+        self::WHERE,
+        self::GROUP,
+        self::ORDER,
+        self::HAVING,
+        self::LIMIT
+    ]) : Sql
+    {
+        $sql = $this->queryBuild($clauses);
 
         $this->queryReset();
 

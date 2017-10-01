@@ -13,7 +13,7 @@ $database = new Database([
         DatabaseHandler::DATABASE_DATABASE => 'query_mule',
         DatabaseHandler::DATABASE_USER => 'root',
         DatabaseHandler::DATABASE_PASSWORD => '123',
-        DatabaseHandler::DATABASE_ADAPTER => DatabaseHandler::ADAPTER_MYSQLI
+        DatabaseHandler::DATABASE_ADAPTER => DatabaseHandler::ADAPTER_PDO
     ],
     'query_mule_pgsql' => [
         DatabaseHandler::DATABASE_DRIVER => 'pgsql',
@@ -47,36 +47,31 @@ class Book implements TableInterface
 
     public function filterId($id) : \QueryMule\Query\Sql\Statement\FilterInterface
     {
-        return $this->driver->select()->where(function (\QueryMule\Query\Sql\Statement\FilterInterface $filter) use ($id) {
+//        if($clause == self::WHERE && !empty($this->queryGet(self::WHERE))) {
+//            $clause = self::AND_WHERE;
+//        }
+
+        return $this->driver->filter()->where(function (\QueryMule\Query\Sql\Statement\FilterInterface $filter) use ($id) {
             $filter->where('b.id', '=?', $id);
         });
     }
 }
 
-$adapter = $database->dbh('query_mule_mysql')->driver();
+$driver = $database->dbh('query_mule_mysql')->driver();
 
-$table = new Book($adapter);
+$table = new Book($driver);
 
-$query = $adapter->select()->cols(['book_name'=>'name','id'],'b')
+$query = $driver->select()->cols(['book_name'=>'name','id'],'b')
     ->from($table,'b')
     ->where(function(\QueryMule\Query\Sql\Statement\FilterInterface $query){
         $query->where('id','=?',1);
     })
+    ->applyFilter($table->filterId(1))
     ->build();
 
-$result = $adapter->fetchAll($query);
+//$result = $driver->fetchAll($query);
 
 var_dump($query->sql());
-var_dump($result);
-
-
-
-
-
-
-
-
-
-
+//var_dump($result);
 
 //note: presto

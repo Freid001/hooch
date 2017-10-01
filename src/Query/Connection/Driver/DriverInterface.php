@@ -3,6 +3,7 @@
 namespace QueryMule\Query\Connection\Driver;
 
 use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Query\Table\TableInterface;
 
@@ -15,6 +16,11 @@ interface DriverInterface
     const DRIVER_MYSQL  = 'mysql';
     const DRIVER_PGSQL  = 'pgsql';
     const DRIVER_SQLITE = 'sqlite';
+
+    /**
+     * @return FilterInterface
+     */
+    public function filter() : FilterInterface;
 
     /**
      * @param array $cols

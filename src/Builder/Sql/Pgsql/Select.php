@@ -2,11 +2,9 @@
 
 namespace QueryMule\Builder\Sql\Pgsql;
 
-use QueryMule\Builder\Sql\Mysql\Filter;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasColumnClause;
 use QueryMule\Query\Sql\Clause\HasFromClause;
-use QueryMule\Query\Sql\Clause\HasWhereClause;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
@@ -91,7 +89,7 @@ class Select implements SelectInterface
             $col = !empty($alias) ? $alias.'.'.$col : $col; // append alias before adding accents
 
             $sql = $this->columnClause(
-                ($col !== self::SQL_STAR) ? $this->addAccent($col) : $col,
+                ($col !== self::SQL_STAR) ? $this->addAccent($col,'.') : $col,
                 false,
                 ($key !== $i) ? $key : null,
                 !empty($this->queryGet(self::COLS))
@@ -122,13 +120,13 @@ class Select implements SelectInterface
      * @param $clause
      * @return SelectInterface
      */
-    public function where($column, $operator = null, $value = null, $clause = self::WHERE)
+    public function where($column, $operator = null, $value = null, $clause = self::WHERE) : SelectInterface
     {
         if($clause == self::WHERE && !empty($this->queryGet(self::WHERE))) {
             $clause = self::AND_WHERE;
         }
 
-        $this->queryAdd(FilterInterface::WHERE,$this->filter->where($column,$operator,$value,$clause)->build());
+        $this->queryAdd(self::WHERE,$this->filter->where($column,$operator,$value,$clause)->build());
 
         return $this;
     }
@@ -139,9 +137,9 @@ class Select implements SelectInterface
      * @param null $value
      * @return SelectInterface
      */
-    public function orWhere($column, $operator = null, $value = null)
+    public function orWhere($column, $operator = null, $value = null) : SelectInterface
     {
-        $this->queryAdd(FilterInterface::WHERE,$this->filter->orWhere($column,$operator,$value)->build());
+        $this->queryAdd(self::WHERE,$this->filter->orWhere($column,$operator,$value)->build());
 
         return $this;
     }

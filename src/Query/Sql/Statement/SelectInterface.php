@@ -70,7 +70,25 @@ interface SelectInterface extends FilterInterface
     public function from(TableInterface $table, $alias = null) : SelectInterface;
 
     /**
+     * @param $column
+     * @param null $operator
+     * @param null $value
+     * @param string $clause
+     * @return SelectInterface
+     */
+    public function where($column, $operator = null, $value = null, $clause = self::WHERE) : SelectInterface;
+
+    /**
+     * @param $column
+     * @param null $operator
+     * @param null $value
+     * @return SelectInterface
+     */
+    public function orWhere($column, $operator = null, $value = null) : SelectInterface;
+
+    /**
+     * @param array $clauses
      * @return Sql
      */
-    public function build() : Sql;
+    public function build(array $clauses = []) : Sql;
 }

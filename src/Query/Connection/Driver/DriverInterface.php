@@ -2,10 +2,10 @@
 
 namespace QueryMule\Query\Connection\Driver;
 
+use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
-use QueryMule\Query\Table\TableInterface;
 
 /**
  * Class AdapterInterface
@@ -24,10 +24,10 @@ interface DriverInterface
 
     /**
      * @param array $cols
-     * @param TableInterface $table
+     * @param RepositoryInterface $table
      * @return SelectInterface
      */
-    public function select(array $cols = [],TableInterface $table = null) : SelectInterface;
+    public function select(array $cols = [],RepositoryInterface $table = null) : SelectInterface;
 
     /**
      * @param Sql $sql

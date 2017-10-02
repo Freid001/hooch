@@ -3,12 +3,11 @@
 namespace QueryMule\Builder\Connection\Driver;
 
 use QueryMule\Builder\Exception\DriverException;
-use QueryMule\Builder\Sql\Mysql\Filter;
 use QueryMule\Query\Connection\Driver\DriverInterface;
+use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
-use QueryMule\Query\Table\TableInterface;
 
 /**
  * Class PdoDriver
@@ -65,11 +64,11 @@ class PdoDriver implements DriverInterface
 
     /**
      * @param array $cols
-     * @param TableInterface|null $table
+     * @param RepositoryInterface|null $table
      * @return SelectInterface
      * @throws DriverException
      */
-    public function select(array $cols = [],TableInterface $table = null) : SelectInterface
+    public function select(array $cols = [],RepositoryInterface $table = null) : SelectInterface
     {
         $select = null;
         switch($this->driver){
@@ -119,7 +118,7 @@ class PdoDriver implements DriverInterface
     {
         $query = $this->pdo->prepare($sql->sql());
 
-        if (!$query->execute($sql->parameters())) {
+        if (!$query || !$query->execute($sql->parameters())) {
             throw new DriverException('PDO error code: ' . $this->pdo->errorCode());
         }
 

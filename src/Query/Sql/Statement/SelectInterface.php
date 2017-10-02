@@ -2,8 +2,8 @@
 
 namespace QueryMule\Query\Sql\Statement;
 
+use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Table\TableInterface;
 
 /**
  * Interface Select
@@ -58,10 +58,10 @@ interface SelectInterface extends FilterInterface
     public function cols($cols = [self::SQL_STAR], $alias = null) : SelectInterface;
 
     /**
-     * @param TableInterface $table
+     * @param RepositoryInterface $table
      * @return SelectInterface
      */
-    public function from(TableInterface $table, $alias = null) : SelectInterface;
+    public function from(RepositoryInterface $table, $alias = null) : SelectInterface;
 
     /**
      * @param $column

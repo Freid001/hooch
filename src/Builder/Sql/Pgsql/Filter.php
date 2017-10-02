@@ -94,9 +94,12 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @return \QueryMule\Query\Sql\Sql
+     * @param array $clauses
+     * @return Sql
      */
-    public function build() : Sql
+    public function build(array $clauses = [
+        self::WHERE
+    ]) : Sql
     {
         $sql = $this->queryBuild([
             self::WHERE

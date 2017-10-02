@@ -2,6 +2,7 @@
 
 namespace QueryMule\Builder\Sql\Mysql;
 
+use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasColumnClause;
 use QueryMule\Query\Sql\Clause\HasFromClause;
@@ -9,7 +10,6 @@ use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
-use QueryMule\Query\Table\TableInterface;
 
 /**
  * Class Select
@@ -30,9 +30,9 @@ class Select implements SelectInterface
 
     /**
      * @param array $cols
-     * @param TableInterface|null $table
+     * @param RepositoryInterface|null $table
      */
-    public function __construct(array $cols = [], TableInterface $table = null)
+    public function __construct(array $cols = [], RepositoryInterface $table = null)
     {
         if(!empty($cols)) {
             $this->cols($cols);
@@ -88,11 +88,11 @@ class Select implements SelectInterface
     }
 
     /**
-     * @param TableInterface $table
+     * @param RepositoryInterface $table
      * @param null $alias
      * @return SelectInterface
      */
-    public function from(TableInterface $table, $alias = null) : SelectInterface
+    public function from(RepositoryInterface $table, $alias = null) : SelectInterface
     {
         $this->queryAdd(self::FROM,$this->fromClause($table,$alias));
 

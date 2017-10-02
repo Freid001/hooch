@@ -2,12 +2,11 @@
 
 ## Table
 
-### Object
+### Class
 ```php
-// table class
 class Book extends AbstractTable
 {
-    public function getTableName()
+    public function getName()
     {
         return 'book';
     }
@@ -29,5 +28,5 @@ $book = new Book($database->dbh('your_db_config_key')->driver());
 ```php
 // filter by id.
 $book->filterById(1);
-$query = $book->select()->build();
+$query = $book->select($cols, $alias)->build();
 ```

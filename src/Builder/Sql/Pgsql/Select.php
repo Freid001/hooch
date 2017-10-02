@@ -2,6 +2,7 @@
 
 namespace QueryMule\Builder\Sql\Pgsql;
 
+use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasColumnClause;
 use QueryMule\Query\Sql\Clause\HasFromClause;
@@ -9,7 +10,6 @@ use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
-use QueryMule\Query\Table\TableInterface;
 
 /**
  * Class Select
@@ -30,9 +30,9 @@ class Select implements SelectInterface
 
     /**
      * @param array $cols
-     * @param TableInterface|null $table
+     * @param RepositoryInterface|null $table
      */
-    public function __construct(array $cols = [], TableInterface $table = null)
+    public function __construct(array $cols = [], RepositoryInterface $table = null)
     {
         if(!empty($cols)) {
             $this->cols($cols);
@@ -44,8 +44,6 @@ class Select implements SelectInterface
 
         $this->setAccent("'");
         $this->queryAdd(self::SELECT,new Sql(self::SELECT));
-
-        $this->filter = new Filter();
     }
 
     /**
@@ -56,7 +54,9 @@ class Select implements SelectInterface
     {
         $this->ignoreAccentSymbol($ignore);
 
-        $this->filter->ignoreAccent($ignore);
+        if(!empty($this->filter)) {
+            $this->filter->ignoreAccent($ignore);
+        }
 
         return $this;
     }
@@ -90,13 +90,15 @@ class Select implements SelectInterface
     }
 
     /**
-     * @param TableInterface $table
+     * @param RepositoryInterface $table
      * @param null $alias
      * @return SelectInterface
      */
-    public function from(TableInterface $table, $alias = null) : SelectInterface
+    public function from(RepositoryInterface $table, $alias = null) : SelectInterface
     {
         $this->queryAdd(self::FROM,$this->fromClause($table,$alias));
+
+        $this->filter = $table->getFilter();
 
         return $this;
     }
@@ -110,11 +112,7 @@ class Select implements SelectInterface
      */
     public function where($column, $operator = null, $value = null, $clause = self::WHERE) : SelectInterface
     {
-        if($clause == self::WHERE && !empty($this->queryGet(self::WHERE))) {
-            $clause = self::AND_WHERE;
-        }
-
-        $this->queryAdd(self::WHERE,$this->filter->where($column,$operator,$value,$clause)->build());
+        $this->filter->where($column,$operator,$value,$clause);
 
         return $this;
     }
@@ -127,7 +125,7 @@ class Select implements SelectInterface
      */
     public function orWhere($column, $operator = null, $value = null) : SelectInterface
     {
-        $this->queryAdd(self::WHERE,$this->filter->orWhere($column,$operator,$value)->build());
+        $this->filter->orWhere($column,$operator,$value);
 
         return $this;
     }

@@ -1,15 +1,15 @@
 <?php
 
-namespace QueryMule\Query\Table;
+namespace QueryMule\Query\Repository;
 
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 
 /**
- * Interface TableInterface
- * @package QueryMule\Query\Table
+ * Interface RepositoryInterface
+ * @package QueryMule\Query\Repository
  */
-interface TableInterface
+interface RepositoryInterface
 {
     /**
      * TableInterface constructor.
@@ -20,7 +20,7 @@ interface TableInterface
     /**
      * @return string
      */
-    public function getTableName();
+    public function getName();
 
     /**
      * @return FilterInterface

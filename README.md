@@ -34,24 +34,13 @@ Database abstraction layer (DBAL) and fluent query builder for PHP. Developers c
     * [Database](./docs/CONNECTIONS.md#database)
         * [Config](./docs/CONNECTIONS.md#config)
         * [Handler](./docs/CONNECTIONS.md#handler)
-* [Tables](./docs/TABLES.md)
-    * [Table](./docs/TABLES.md#table)
-        * [Create](./docs/TABLES.md#create)
-        * [Filters](./docs/TABLES.md#filters)
-
-## Query Builder
-* Select
-* Insert
-* Update
-* Delete
-
-# Other
-CREATE TABLE book(
-  id int(11),
-  name varchar(225)
-)
-
-
-
-
-
+* [Repositories](./docs/REPOSITORIES.md)
+    * [Table](./docs/REPOSITORIES.md#table)
+        * [Class](./docs/REPOSITORIES.md#class)
+        * [Instantiate](./docs/REPOSITORIES.md#instantiate)
+        * [Filters](./docs/REPOSITORIES.md#filters)
+* [Query Builder](./docs/QUERY_BUILDER.md)      
+    * Select
+    * Insert
+    * Update
+    * Delete

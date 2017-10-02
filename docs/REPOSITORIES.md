@@ -1,8 +1,10 @@
-# Tables
+# Repositories
 
 ## Table
 
+### Object
 ```php
+// table class
 class Book extends AbstractTable
 {
     public function getTableName()
@@ -15,13 +17,13 @@ class Book extends AbstractTable
         return $this->filter->where('b.id', '=?', $id);
     }
 }
-````
+```
 
-### Create 
+### Instantiate
 ```php
 // instantiate table.
 $book = new Book($database->dbh('your_db_config_key')->driver());
-```
+````
 
 ### Filters
 ```php

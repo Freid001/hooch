@@ -63,18 +63,6 @@ class Select implements SelectInterface
     }
 
     /**
-     * @param FilterInterface $filter
-     * @return SelectInterface
-     */
-    public function applyFilter(FilterInterface $filter) : SelectInterface
-    {
-
-
-
-        return $this;
-    }
-
-    /**
      * @param array $cols
      * @param null $alias
      * @return SelectInterface
@@ -144,21 +132,26 @@ class Select implements SelectInterface
     }
 
     /**
-     * @return \QueryMule\Query\Sql\Sql
+     * @param array $clauses
+     * @return Sql
      */
-    public function build() : Sql
+    public function build(array $clauses = [
+        self::SELECT,
+        self::COLS,
+        self::FROM,
+        self::JOIN,
+        self::WHERE,
+        self::GROUP,
+        self::ORDER,
+        self::HAVING,
+        self::LIMIT
+    ]) : Sql
     {
-        $sql = $this->queryBuild([
-            self::SELECT,
-            self::COLS,
-            self::FROM,
-            self::JOIN,
-            self::WHERE,
-            self::GROUP,
-            self::ORDER,
-            self::HAVING,
-            self::LIMIT
-        ]);
+        $this->queryAdd(self::WHERE,$this->filter->build([
+            self::WHERE
+        ]));
+
+        $sql = $this->queryBuild($clauses);
 
         $this->queryReset();
 

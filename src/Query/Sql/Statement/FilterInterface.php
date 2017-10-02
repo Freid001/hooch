@@ -38,11 +38,6 @@ interface FilterInterface
     public function orWhere($column, $operator = null, $value = null);
 
     /**
-     * @return array
-     */
-    public function clauses() : array;
-
-    /**
      * @param array $clauses
      * @return Sql
      */

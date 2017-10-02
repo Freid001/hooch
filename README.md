@@ -1,4 +1,4 @@
-<img src="docs/logo.png" width="375" height="90">
+<img src="docs/img/logo.png" width="375" height="90">
 
 [![Build Status](https://travis-ci.org/blue-strawberry/query-mule.svg?branch=master)](https://travis-ci.org/blue-strawberry/query-mule)
 
@@ -7,12 +7,12 @@ Database abstraction layer (DBAL) and fluent query builder for PHP. Developers c
 
 ## Features
 * Build select, insert, update & delete queries. 
-* Store and recall query logic.
-* Chain query statements.
+* Use table filters to store & recall query logic. 
+* Chain query statements together.
 * Switch database connections with ease.
-* Query sanitization.
-* PDO & MySQLi are supported drivers.
+* Query sanitation.
 * Supports MySQL, PostgreSQL & SQLite.
+* Drivers PDO & MySQLi.
 
 # Installation
 
@@ -25,27 +25,31 @@ Database abstraction layer (DBAL) and fluent query builder for PHP. Developers c
         }
     ],
 "require": {
-        "blue-strawberry/query-mule" : "1.0"
+        "blue-strawberry/query-mule" : "0.1.0"
 },
 ```
 
 # Documentation
-* Connections
-* Tables
-* Select Querys
-* Insert Querys
-* Update Querys
-* Delete Querys
-* Inegrations
+* [Connections](./docs/CONNECTIONS.md)
+    * [Database](./docs/CONNECTIONS.md)
+        * [Config](./docs/CONNECTIONS.md)
+        * [Handler](./docs/CONNECTIONS.md)
+* [Tables](./docs/TABLES.md)
+    * [Table](./docs/TABLES.md)
+        * [Create](./docs/TABLES.md)
+        * [Filters](./docs/TABLES.md)
 
-
+## Query Builder
+* Select
+* Insert
+* Update
+* Delete
 
 # Other
 CREATE TABLE book(
   id int(11),
   name varchar(225)
 )
-
 
 
 

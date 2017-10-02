@@ -44,8 +44,6 @@ class Select implements SelectInterface
 
         $this->setAccent("`");
         $this->queryAdd(self::SELECT,new Sql(self::SELECT));
-
-        $this->filter = new Filter();
     }
 
     /**
@@ -56,19 +54,8 @@ class Select implements SelectInterface
     {
         $this->ignoreAccentSymbol($ignore);
 
-        $this->filter->ignoreAccent($ignore);
-
-        return $this;
-    }
-
-    /**
-     * @param FilterInterface $filter
-     * @return SelectInterface
-     */
-    public function applyFilter(FilterInterface $filter) : SelectInterface
-    {
-        foreach($filter->clauses() as $clause){
-            $this->queryAdd($clause,$filter->build([$clause]));
+        if(!empty($this->filter)) {
+            $this->filter->ignoreAccent($ignore);
         }
 
         return $this;
@@ -109,6 +96,8 @@ class Select implements SelectInterface
     {
         $this->queryAdd(self::FROM,$this->fromClause($table,$alias));
 
+        $this->filter = $table->getFilter();
+
         return $this;
     }
 
@@ -121,11 +110,7 @@ class Select implements SelectInterface
      */
     public function where($column, $operator = null, $value = null, $clause = self::WHERE) : SelectInterface
     {
-        if($clause == self::WHERE && !empty($this->queryGet(self::WHERE))) {
-            $clause = self::AND_WHERE;
-        }
-
-        $this->queryAdd(self::WHERE,$this->filter->where($column,$operator,$value,$clause)->build());
+        $this->filter->where($column,$operator,$value,$clause);
 
         return $this;
     }
@@ -138,17 +123,9 @@ class Select implements SelectInterface
      */
     public function orWhere($column, $operator = null, $value = null) : SelectInterface
     {
-        $this->queryAdd(self::WHERE,$this->filter->orWhere($column,$operator,$value)->build());
+        $this->filter->orWhere($column,$operator,$value);
 
         return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function clauses() : array
-    {
-        return array_keys($this->sql);
     }
 
     /**
@@ -167,6 +144,10 @@ class Select implements SelectInterface
         self::LIMIT
     ]) : Sql
     {
+        $this->queryAdd(self::WHERE,$this->filter->build([
+            self::WHERE
+        ]));
+
         $sql = $this->queryBuild($clauses);
 
         $this->queryReset();

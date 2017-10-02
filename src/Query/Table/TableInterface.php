@@ -3,6 +3,7 @@
 namespace QueryMule\Query\Table;
 
 use QueryMule\Query\Connection\Driver\DriverInterface;
+use QueryMule\Query\Sql\Statement\FilterInterface;
 
 /**
  * Interface TableInterface
@@ -20,4 +21,9 @@ interface TableInterface
      * @return string
      */
     public function getTableName();
+
+    /**
+     * @return FilterInterface
+     */
+    public function getFilter() : FilterInterface;
 }

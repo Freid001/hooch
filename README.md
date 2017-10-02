@@ -31,13 +31,13 @@ Database abstraction layer (DBAL) and fluent query builder for PHP. Developers c
 
 # Documentation
 * [Connections](./docs/CONNECTIONS.md)
-    * [Database](./docs/CONNECTIONS.md)
-        * [Config](./docs/CONNECTIONS.md)
-        * [Handler](./docs/CONNECTIONS.md)
+    * [Database](./docs/CONNECTIONS.md#database)
+        * [Config](./docs/CONNECTIONS.md#config)
+        * [Handler](./docs/CONNECTIONS.md#handler)
 * [Tables](./docs/TABLES.md)
-    * [Table](./docs/TABLES.md)
-        * [Create](./docs/TABLES.md)
-        * [Filters](./docs/TABLES.md)
+    * [Table](./docs/TABLES.md#table)
+        * [Create](./docs/TABLES.md#create)
+        * [Filters](./docs/TABLES.md#filters)
 
 ## Query Builder
 * Select

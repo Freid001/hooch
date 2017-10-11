@@ -1,4 +1,4 @@
-<img src="docs/img/logo.png" width="375" height="90">
+![](/docs/img/logo.png)
 
 [![Build Status](https://travis-ci.org/blue-strawberry/query-mule.svg?branch=master)](https://travis-ci.org/blue-strawberry/query-mule)
 

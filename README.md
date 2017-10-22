@@ -45,10 +45,8 @@ composer require blue-strawberry/query-mule
     * Insert
     * Update
     * Delete
-<<<<<<< HEAD
     
 # Demo
 ```bash
 php demo/run.php
 ```
-=======

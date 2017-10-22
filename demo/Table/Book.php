@@ -21,6 +21,15 @@ class Book extends AbstractTable
     }
 
     /**
+     * @param Author $author
+     * @return SelectInterface
+     */
+    public function joinAuthor(Author $author) : SelectInterface
+    {
+        return $this->select->leftJoin(['a'=>$author],'a.author_id','=','b.author_id');
+    }
+
+    /**
      * @param $id
      * @return FilterInterface
      */
@@ -29,13 +38,5 @@ class Book extends AbstractTable
         return $this->filter->where(function (FilterInterface $filter) use ($id) {
             $filter->where('book_id', '=?', $id);
         });
-    }
-
-    /**
-     * @return SelectInterface
-     */
-    public function joinAuthor() : SelectInterface
-    {
-        return $this->select->join();
     }
 }

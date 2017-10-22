@@ -38,41 +38,35 @@ class DemoController
 
     /**
      * @param $book_id
-     * @param null $author
+     * @param bool $with_author
      * @return string
      */
-    public function getBook($book_id, $author = null)
+    public function getBook($book_id, $with_author = false)
     {
-        $author = new Author($this->driver);
-
         $book = new Book($this->driver);
-        $query = $this->driver->select()->cols([SelectInterface::SQL_STAR])->from($book,'b');
-        $query->leftJoin(['a'=>$author],'a.author_id','=','b.author_id');
-
-        $stm = $query->build();
-
-        $result = $this->driver->fetch($stm);
-
-        var_dump($stm);
-        var_dump($result);
-
-        die;
+        $author = new Author($this->driver);
 
         if(empty($book_id)){
             return json_encode(['error'=>'book_id is required!'], JSON_PRETTY_PRINT);
         }
 
-        $book = new Book($this->driver);
-
         $query = $book->select([SelectInterface::SQL_STAR],'b');
 
-        if($author){
-            $book->joinAuthor();
+        if($with_author){
+            $book->joinAuthor($author);
+
+            //$author->filterByAuthorId(1);
         }
 
         $book->filterByBookId($book_id);
 
-        $result = $this->driver->fetchAll($query->build());
+        $query->where('a.author_id','=?',"1");
+
+        $stm = $query->build();
+
+        var_dump($stm);
+
+        $result = $this->driver->fetchAll($stm);
 
         return json_encode($result, JSON_PRETTY_PRINT);
     }

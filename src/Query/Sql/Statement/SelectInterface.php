@@ -67,6 +67,9 @@ interface SelectInterface extends FilterInterface
      */
     public function leftJoin(array $table, $first = null, $operator = null, $second = null) : SelectInterface;
 
+
+
+
     /**
      * @param $column
      * @param null $operator

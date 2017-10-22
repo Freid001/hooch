@@ -1,4 +1,4 @@
-![](/docs/img/logo.png)
+<img src="docs/img/logo.png" width="375" height="90">
 
 [![Build Status](https://travis-ci.org/blue-strawberry/query-mule.svg?branch=master)](https://travis-ci.org/blue-strawberry/query-mule)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](LICENSE)

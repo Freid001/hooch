@@ -98,53 +98,6 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param array $table
-     * @param null $first
-     * @param null $operator
-     * @param null $second
-     * @return FilterInterface
-     * @throws SqlException
-     */
-    public function leftJoin(array $table, $first = null, $operator = null, $second = null) : FilterInterface
-    {
-        $keys = array_keys($table);
-
-        $alias = isset($keys[0]) ? $keys[0] : null;
-        $table = isset($table[$keys[0]]) ? $table[$keys[0]] : null;
-
-        if($table instanceof RepositoryInterface) {
-            $this->queryAdd(self::JOIN,$this->joinClause(self::LEFT_JOIN,$table, $alias));
-            return $this->on($first,$operator,$second);
-        }else {
-            throw new SqlException('Table must be instance of RepositoryInterface');
-        }
-    }
-
-    /**
-     * @param $first
-     * @param null $operator
-     * @param null $second
-     * @return FilterInterface
-     */
-    public function on($first, $operator, $second) : FilterInterface
-    {
-        $this->queryAdd(self::JOIN,$this->onClause($first,$operator,$second, self::ON));
-
-        return $this;
-    }
-
-    /**
-     * @param $first
-     * @param null $operator
-     * @param null $second
-     * @return FilterInterface
-     */
-    public function orOn($first, $operator = null, $second = null) : FilterInterface
-    {
-        return $this;
-    }
-
-    /**
      * @param array $clauses
      * @return Sql
      */
@@ -155,7 +108,7 @@ class Filter implements FilterInterface
     {
         $sql = $this->queryBuild($clauses);
 
-        //$this->queryReset();
+        $this->queryReset($clauses);
 
         return $sql;
     }

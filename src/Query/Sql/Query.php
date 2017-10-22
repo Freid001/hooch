@@ -43,10 +43,12 @@ trait Query
     /**
      * @return void
      */
-    private function queryReset()
+    private function queryReset(array $clauses)
     {
-        $this->sql = [];
-        $this->parameters = [];
+        foreach($clauses as $clause) {
+            unset($this->sql[$clause]);
+            unset($this->parameters[$clause]);
+        }
     }
 
     /**

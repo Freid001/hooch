@@ -38,12 +38,12 @@ trait HasWhereClause
                 $sql .= FilterInterface::WHERE.' '.$column.' '.$operator;
                 break;
 
-            case FilterInterface::AND_WHERE:
-                $sql .= FilterInterface::AND_WHERE.' '.$column.' '.$operator;
+            case FilterInterface::AND:
+                $sql .= FilterInterface::AND.' '.$column.' '.$operator;
                 break;
 
-            case FilterInterface::OR_WHERE:
-                $sql .= FilterInterface::OR_WHERE.' '.$column.' '.$operator;
+            case FilterInterface::OR:
+                $sql .= FilterInterface::OR.' '.$column.' '.$operator;
                 break;
 
             default:

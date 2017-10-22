@@ -43,7 +43,7 @@ abstract class AbstractTable implements RepositoryInterface
      */
     public function select(array $cols = [SelectInterface::SQL_STAR], $alias = null) : SelectInterface
     {
-        return $this->select->cols($cols,$alias)->from($this,$alias);
+        return $this->select->cols($cols)->from($this,$alias);
     }
 
     /**

@@ -119,7 +119,8 @@ class PdoDriver implements DriverInterface
         $query = $this->pdo->prepare($sql->sql());
 
         if (!$query || !$query->execute($sql->parameters())) {
-            throw new DriverException('PDO error code: ' . $this->pdo->errorCode());
+            //throw new DriverException('PDO error code: ' . $this->pdo->errorCode());
+            throw new DriverException($this->pdo->errorInfo());
         }
 
         return $query;

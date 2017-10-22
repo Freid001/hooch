@@ -4,14 +4,20 @@
 
 ### Cols
 ```php
-// select 
-$query = $driver->select()->cols(['book_name'=>'name','id'],'b');
+$query = $driver->select()->cols(['id','name'],'b')->build();
 ````
 
 ### From
+```php
+$book = new Book($database->dbh('your_db_config_key')->driver());
+$query = $driver->select()->cols(['id','name'],'b')->from($book,'b')->build();
+````
 
 ### Where
-
+```php
+$book = new Book($database->dbh('your_db_config_key')->driver());
+$query = $driver->select()->cols(['id','name'],'b')->from($book,'b')->where('b.id','=?',1)->build();
+````
 
 ## Insert
 

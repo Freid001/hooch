@@ -2,6 +2,7 @@
 
 namespace QueryMule\Query\Sql\Statement;
 
+use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Sql;
 
@@ -26,17 +27,10 @@ interface SelectInterface extends FilterInterface
     const GROUP = 'GROUP BY';
     const HAVING = 'HAVING';
     const IN = 'IN';
-    const INNER_JOIN = 'INNER JOIN';
     const INSERT = 'INSERT';
     const INTO = 'INTO';
-    const JOIN = 'JOIN';
-    const LEFT_JOIN = 'LEFT JOIN';
-    const LEFT_OUTER_JOIN = 'LEFT OUTER JOIN';
     const LIMIT = 'LIMIT';
-    const ON = 'ON';
     const ORDER = 'ORDER BY';
-    const RIGHT_JOIN = 'RIGHT JOIN';
-    const RIGHT_OUTER_JOIN = 'RIGHT OUTER JOIN';
     const SET = 'SET';
     const SELECT = 'SELECT';
     const SQL_STAR = '*';
@@ -62,6 +56,16 @@ interface SelectInterface extends FilterInterface
      * @return SelectInterface
      */
     public function from(RepositoryInterface $table, $alias = null) : SelectInterface;
+
+    /**
+     * @param array $table
+     * @param null $first
+     * @param null $operator
+     * @param null $second
+     * @return SelectInterface
+     * @throws SqlException
+     */
+    public function leftJoin(array $table, $first = null, $operator = null, $second = null) : SelectInterface;
 
     /**
      * @param $column

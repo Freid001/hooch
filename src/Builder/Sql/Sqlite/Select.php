@@ -2,10 +2,12 @@
 
 namespace QueryMule\Builder\Sql\Sqlite;
 
+use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasColumnClause;
 use QueryMule\Query\Sql\Clause\HasFromClause;
+use QueryMule\Query\Sql\Clause\HasJoinClause;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
@@ -22,6 +24,7 @@ class Select implements SelectInterface
 
     use HasFromClause;
     use HasColumnClause;
+    use HasJoinClause;
 
     /**
      * @var FilterInterface
@@ -102,6 +105,39 @@ class Select implements SelectInterface
     }
 
     /**
+     * @param array $table
+     * @param null $first
+     * @param null $operator
+     * @param null $second
+     * @return SelectInterface
+     * @throws SqlException
+     */
+    public function leftJoin(array $table, $first = null, $operator = null, $second = null) : SelectInterface
+    {
+        $this->filter->leftJoin($table, $first, $operator, $second);
+
+        return $this;
+    }
+
+    public function on($first, $operator = null, $second = null)
+    {
+        // TODO: Implement on() method.
+    }
+
+    public function orOn($first, $operator = null, $second = null)
+    {
+        // TODO: Implement orOn() method.
+    }
+
+    public function rightJoin(){}
+
+    public function crossJoin(){}
+
+    public function innerJoin(){}
+
+    public function outerJoin(){}
+
+    /**
      * @param $column
      * @param null $operator
      * @param null $value
@@ -144,9 +180,13 @@ class Select implements SelectInterface
         self::LIMIT
     ]) : Sql
     {
-        $this->queryAdd(self::WHERE,$this->filter->build([
-            self::WHERE
-        ]));
+        if(in_array(self::WHERE,$clauses)) {
+            $this->queryAdd(self::WHERE, $this->filter->build([self::WHERE]));
+        }
+
+        if(in_array(self::JOIN,$clauses)) {
+            $this->queryAdd(self::JOIN, $this->filter->build([self::JOIN]));
+        }
 
         $sql = $this->queryBuild($clauses);
 

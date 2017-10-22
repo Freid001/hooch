@@ -2,6 +2,7 @@
 
 namespace QueryMule\Query\Sql\Statement;
 
+use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Query\Sql\Sql;
 
 /**
@@ -11,8 +12,11 @@ use QueryMule\Query\Sql\Sql;
 interface FilterInterface
 {
     const WHERE = 'WHERE';
-    const AND_WHERE = 'AND';
-    const OR_WHERE = 'OR';
+    const AND = 'AND';
+    const OR = 'OR';
+    const ON = 'ON';
+    const JOIN = 'JOIN';
+    const LEFT_JOIN = 'LEFT JOIN';
 
     /**
      * @param bool $ignore
@@ -36,6 +40,32 @@ interface FilterInterface
       * @return FilterInterface
       */
     public function orWhere($column, $operator = null, $value = null);
+
+    /**
+     * @param array $table
+     * @param null $first
+     * @param null $operator
+     * @param null $second
+     * @return SelectInterface
+     * @throws SqlException
+     */
+    public function leftJoin(array $table, $first = null, $operator = null, $second = null);
+
+    /**
+     * @param $first
+     * @param null $operator
+     * @param null $second
+     * @return FilterInterface
+     */
+    public function on($first, $operator, $second);
+
+    /**
+     * @param $first
+     * @param null $operator
+     * @param null $second
+     * @return FilterInterface
+     */
+    public function orOn($first, $operator, $second);
 
     /**
      * @param array $clauses

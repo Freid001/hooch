@@ -7,26 +7,26 @@ Database abstraction layer (DBAL) and fluent query builder for PHP. Developers c
 
 ## Features
 * Build select, insert, update & delete queries. 
-* Use table filters to store & recall query logic. 
 * Chain query statements together.
+* Use filters to store & recall query logic. 
 * Switch database connections with ease.
-* Query sanitation.
-* Supports MySQL, PostgreSQL & SQLite.
-* Drivers PDO & MySQLi.
+* Supported database drivers: 
+    * PDO
+    * MySQLi
+* Supported databases: 
+    * MySQL
+    * PostgreSQL
+    * SQLite
+
+## Requirements
+* PHP >= 7.0
+* PDO or MySQLi extension.
 
 # Installation
 
-## Composer
-```json
-"repositories": [
-        {
-            "url": "https://github.com/blue-strawburry/query-mule",
-            "type": "git"
-        }
-    ],
-"require": {
-        "blue-strawberry/query-mule" : "0.1.0"
-},
+## via Composer
+```bash
+composer require blue-strawberry/query-mule
 ```
 
 # Documentation
@@ -44,3 +44,8 @@ Database abstraction layer (DBAL) and fluent query builder for PHP. Developers c
     * Insert
     * Update
     * Delete
+    
+# Demo
+```bash
+php demo/run.php
+```

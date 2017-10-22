@@ -4,6 +4,7 @@ namespace QueryMule\Demo\Table;
 
 use QueryMule\Query\Repository\Table\AbstractTable;
 use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class Book
@@ -28,5 +29,13 @@ class Book extends AbstractTable
         return $this->filter->where(function (FilterInterface $filter) use ($id) {
             $filter->where('book_id', '=?', $id);
         });
+    }
+
+    /**
+     * @return SelectInterface
+     */
+    public function joinAuthor() : SelectInterface
+    {
+        return $this->select->join();
     }
 }

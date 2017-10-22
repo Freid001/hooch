@@ -1,5 +1,8 @@
-<?php namespace QueryMule\Query\Connection;
-use QueryMule\Query\Adapter\AdapterInterface;
+<?php
+
+namespace QueryMule\Query\Connection;
+
+use QueryMule\Query\Connection\Driver\DriverInterface;
 
 /**
  * Interface DatabaseHandlerInterface
@@ -8,7 +11,7 @@ use QueryMule\Query\Adapter\AdapterInterface;
 interface DatabaseHandlerInterface
 {
     /**
-     * @return AdapterInterface
+     * @return DriverInterface
      */
-    public function conn() : AdapterInterface;
+    public function driver() : DriverInterface;
 }

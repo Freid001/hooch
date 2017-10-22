@@ -2,12 +2,12 @@
 
 namespace QueryMule\Builder\Connection;
 
-use QueryMule\Builder\Adapter\MysqliAdapter;
-use QueryMule\Builder\Adapter\PdoAdapter;
+use QueryMule\Builder\Connection\Driver\MysqliDriver;
+use QueryMule\Builder\Connection\Driver\PdoDriver;
 use QueryMule\Builder\Exception\DatabaseException;
 use QueryMule\Builder\Exception\DriverException;
-use QueryMule\Query\Adapter\AdapterInterface;
 use QueryMule\Query\Connection\DatabaseHandlerInterface;
+use QueryMule\Query\Connection\Driver\DriverInterface;
 
 /**
  * Class DatabaseHandler
@@ -27,15 +27,16 @@ class DatabaseHandler implements DatabaseHandlerInterface
     const DATABASE_USER         = 'user';
 
     /**
-     * @var \pdo
+     * @var DriverInterface
      */
-    private $adapter;
+    private $driver;
 
     /**
      * DatabaseHandler constructor.
      * @param $name
      * @param array $dbh
      * @throws DatabaseException
+     * @throws DriverException
      */
     public function __construct($name,array $dbh)
     {
@@ -68,11 +69,11 @@ class DatabaseHandler implements DatabaseHandlerInterface
                 $username = !empty($dbh[self::DATABASE_USER]) ? $dbh[self::DATABASE_USER] : null;
                 $password = !empty($dbh[self::DATABASE_PASSWORD]) ? $dbh[self::DATABASE_PASSWORD] : null;
 
-                $this->adapter = new PdoAdapter(new \pdo($dbh[self::DATABASE_DRIVER] . $dns,$username,$password));
+                $this->driver = new PdoDriver(new \pdo($dbh[self::DATABASE_DRIVER] . $dns,$username,$password));
                 break;
 
             case self::ADAPTER_MYSQLI:
-                $this->adapter = new MysqliAdapter(new \mysqli($dbh[self::DATABASE_HOST],$dbh[self::DATABASE_USER], $dbh[self::DATABASE_PASSWORD], $dbh[self::DATABASE_DATABASE]));
+                $this->driver = new MysqliDriver(new \mysqli($dbh[self::DATABASE_HOST],$dbh[self::DATABASE_USER], $dbh[self::DATABASE_PASSWORD], $dbh[self::DATABASE_DATABASE]));
                 break;
 
             default:
@@ -81,10 +82,10 @@ class DatabaseHandler implements DatabaseHandlerInterface
     }
 
     /**
-     * @return AdapterInterface
+     * @return DriverInterface
      */
-    public function conn() : AdapterInterface
+    public function driver() : DriverInterface
     {
-        return $this->adapter;
+        return $this->driver;
     }
 }

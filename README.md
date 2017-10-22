@@ -1,4 +1,4 @@
-<img src="docs/logo.png" width="375" height="90">
+![](/docs/img/logo.png)
 
 [![Build Status](https://travis-ci.org/blue-strawberry/query-mule.svg?branch=master)](https://travis-ci.org/blue-strawberry/query-mule)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](LICENSE)
@@ -8,47 +8,47 @@ Database abstraction layer (DBAL) and fluent query builder for PHP. Developers c
 
 ## Features
 * Build select, insert, update & delete queries. 
-* Store and recall query logic.
-* Chain query statements.
+* Chain query statements together.
+* Use filters to store & recall query logic. 
 * Switch database connections with ease.
-* Query sanitization.
-* PDO & MySQLi are supported drivers.
-* Supports MySQL, PostgreSQL & SQLite.
+* Supported database drivers: 
+    * PDO
+    * MySQLi
+* Supported databases: 
+    * MySQL
+    * PostgreSQL
+    * SQLite
+
+## Requirements
+* PHP >= 7.0
+* PDO or MySQLi extension.
 
 # Installation
 
-## Composer
-```json
-"repositories": [
-        {
-            "url": "https://github.com/blue-strawburry/query-mule",
-            "type": "git"
-        }
-    ],
-"require": {
-        "blue-strawberry/query-mule" : "1.0"
-},
+## via Composer
+```bash
+composer require blue-strawberry/query-mule
 ```
 
 # Documentation
-* Connections
-* Tables
-* Select Querys
-* Insert Querys
-* Update Querys
-* Delete Querys
-* Inegrations
-
-
-
-# Other
-CREATE TABLE book(
-  id int(11),
-  name varchar(225)
-)
-
-
-
-
-
-
+* [Connections](./docs/CONNECTIONS.md)
+    * [Database](./docs/CONNECTIONS.md#database)
+        * [Config](./docs/CONNECTIONS.md#config)
+        * [Handler](./docs/CONNECTIONS.md#handler)
+* [Repositories](./docs/REPOSITORIES.md)
+    * [Table](./docs/REPOSITORIES.md#table)
+        * [Class](./docs/REPOSITORIES.md#class)
+        * [Instantiate](./docs/REPOSITORIES.md#instantiate)
+        * [Filters](./docs/REPOSITORIES.md#filters)
+* [Query Builder](./docs/QUERY_BUILDER.md)      
+    * Select
+    * Insert
+    * Update
+    * Delete
+<<<<<<< HEAD
+    
+# Demo
+```bash
+php demo/run.php
+```
+=======

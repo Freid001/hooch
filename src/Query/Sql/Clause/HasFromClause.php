@@ -3,9 +3,9 @@
 
 namespace QueryMule\Query\Sql\Clause;
 
+use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\SelectInterface;
-use QueryMule\Query\Table\TableInterface;
 
 /**
  * Class HasFromClause
@@ -14,14 +14,14 @@ use QueryMule\Query\Table\TableInterface;
 trait HasFromClause
 {
     /**
-     * @param TableInterface $table
+     * @param RepositoryInterface $table
      * @param null $alias
      * @return Sql
      */
-    private function fromClause(TableInterface $table, $alias = null)
+    private function fromClause(RepositoryInterface $table, $alias = null)
     {
         $sql = '';
-        $sql .= SelectInterface::FROM.' '.$table->getTableName();
+        $sql .= SelectInterface::FROM.' '.$table->getName();
         $sql .= !empty($alias) ? ' '.SelectInterface::COL_AS.' '.$alias : null;
 
         return new Sql($sql);

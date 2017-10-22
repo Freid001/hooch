@@ -2,16 +2,16 @@
 
 namespace QueryMule\Query\Sql\Statement;
 
+use QueryMule\Builder\Exception\SqlException;
+use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Table\TableInterface;
 
 /**
  * Interface Select
  * @package QueryMule\Query\Sql\Statement
  */
-interface SelectInterface
+interface SelectInterface extends FilterInterface
 {
-    const AND_WHERE = 'AND';
     const COLS = 'COL';
     const COL_AS = 'AS';
     const COUNT = 'COUNT';
@@ -27,25 +27,22 @@ interface SelectInterface
     const GROUP = 'GROUP BY';
     const HAVING = 'HAVING';
     const IN = 'IN';
-    const INNER_JOIN = 'INNER JOIN';
     const INSERT = 'INSERT';
     const INTO = 'INTO';
-    const JOIN = 'JOIN';
-    const LEFT_JOIN = 'LEFT JOIN';
-    const LEFT_OUTER_JOIN = 'LEFT OUTER JOIN';
     const LIMIT = 'LIMIT';
-    const ON = 'ON';
-    const OR_WHERE = 'OR';
     const ORDER = 'ORDER BY';
-    const RIGHT_JOIN = 'RIGHT JOIN';
-    const RIGHT_OUTER_JOIN = 'RIGHT OUTER JOIN';
     const SET = 'SET';
     const SELECT = 'SELECT';
     const SQL_STAR = '*';
     const TABLE = 'TABLE';
     const UPDATE = 'UPDATE';
     const VALUES = 'VALUES';
-    const WHERE = 'WHERE';
+
+    /**
+     * @param bool $ignore
+     * @return SelectInterface
+     */
+    public function ignoreAccent($ignore = true) : SelectInterface;
 
     /**
      * @param array $cols
@@ -55,10 +52,29 @@ interface SelectInterface
     public function cols($cols = [self::SQL_STAR], $alias = null) : SelectInterface;
 
     /**
-     * @param TableInterface $table
+     * @param RepositoryInterface $table
      * @return SelectInterface
      */
-    public function from(TableInterface $table, $alias = null) : SelectInterface;
+    public function from(RepositoryInterface $table, $alias = null) : SelectInterface;
+
+    /**
+     * @param array $table
+     * @param null $first
+     * @param null $operator
+     * @param null $second
+     * @return SelectInterface
+     * @throws SqlException
+     */
+    public function leftJoin(array $table, $first = null, $operator = null, $second = null) : SelectInterface;
+
+    /**
+     * @param $column
+     * @param null $operator
+     * @param null $value
+     * @param string $clause
+     * @return SelectInterface
+     */
+    public function where($column, $operator = null, $value = null, $clause = self::WHERE) : SelectInterface;
 
     /**
      * @param $column
@@ -66,18 +82,11 @@ interface SelectInterface
      * @param null $value
      * @return SelectInterface
      */
-    public function where($column, $operator = null, $value = null) : SelectInterface;
-
-     /**
-      * @param $column
-      * @param null $operator
-      * @param null $value
-      * @return SelectInterface
-      */
     public function orWhere($column, $operator = null, $value = null) : SelectInterface;
 
     /**
+     * @param array $clauses
      * @return Sql
      */
-    public function build() : Sql;
+    public function build(array $clauses = []) : Sql;
 }

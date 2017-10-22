@@ -2,14 +2,14 @@
 
 namespace QueryMule\Builder\Sql\Mysql;
 
+use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasColumnClause;
 use QueryMule\Query\Sql\Clause\HasFromClause;
-use QueryMule\Query\Sql\Clause\HasWhereClause;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
-use QueryMule\Query\Table\TableInterface;
 
 /**
  * Class Select
@@ -22,13 +22,17 @@ class Select implements SelectInterface
 
     use HasFromClause;
     use HasColumnClause;
-    use HasWhereClause;
+
+    /**
+     * @var FilterInterface
+     */
+    private $filter;
 
     /**
      * @param array $cols
-     * @param TableInterface|null $table
+     * @param RepositoryInterface|null $table
      */
-    public function __construct(array $cols = [], TableInterface $table = null)
+    public function __construct(array $cols = [], RepositoryInterface $table = null)
     {
         if(!empty($cols)) {
             $this->cols($cols);
@@ -40,6 +44,21 @@ class Select implements SelectInterface
 
         $this->setAccent("`");
         $this->queryAdd(self::SELECT,new Sql(self::SELECT));
+    }
+
+    /**
+     * @param bool $ignore
+     * @return SelectInterface
+     */
+    public function ignoreAccent($ignore = true) : SelectInterface
+    {
+        $this->ignoreAccentSymbol($ignore);
+
+        if(!empty($this->filter)) {
+            $this->filter->ignoreAccent($ignore);
+        }
+
+        return $this;
     }
 
     /**
@@ -69,50 +88,29 @@ class Select implements SelectInterface
     }
 
     /**
-     * @param TableInterface $table
+     * @param RepositoryInterface $table
      * @param null $alias
      * @return SelectInterface
      */
-    public function from(TableInterface $table, $alias = null) : SelectInterface
+    public function from(RepositoryInterface $table, $alias = null) : SelectInterface
     {
         $this->queryAdd(self::FROM,$this->fromClause($table,$alias));
 
+        $this->filter = $table->getFilter();
+
         return $this;
-    }
-
-    /**
-     *
-     */
-    public function leftJoin()
-    {
-
     }
 
     /**
      * @param $column
      * @param null $operator
      * @param null $value
+     * @param $clause
      * @return SelectInterface
      */
-    public function where($column, $operator = null, $value = null) : SelectInterface
+    public function where($column, $operator = null, $value = null, $clause = self::WHERE) : SelectInterface
     {
-        $clause = empty($this->queryGet(self::WHERE)) ? self::WHERE : self::AND_WHERE;
-
-        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column);
-
-        if($column instanceof \Closure) {
-            if(!$this->ignoreClause) {
-                $this->queryAdd(self::WHERE, new Sql($clause));
-            }
-
-            $this->queryAdd(self::WHERE, new Sql("("));
-            $this->nestedWhereClause($column);
-            $this->queryAdd(self::WHERE, new Sql(")"));
-
-            return $this;
-        }
-
-        $this->queryAdd(self::WHERE, $this->whereClause($column, $operator, $value, $clause));
+        $this->filter->where($column,$operator,$value,$clause);
 
         return $this;
     }
@@ -125,40 +123,35 @@ class Select implements SelectInterface
      */
     public function orWhere($column, $operator = null, $value = null) : SelectInterface
     {
-        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column);
-
-        if($column instanceof \Closure) {
-            if(!$this->ignoreClause) {
-                $this->queryAdd(self::WHERE, new Sql(self::OR_WHERE));
-            }
-
-            $this->queryAdd(self::WHERE, new Sql("("));
-            $this->nestedWhereClause($column);
-            $this->queryAdd(self::WHERE, new Sql(")"));
-
-            return $this;
-        }
-
-        $this->queryAdd(self::WHERE,$this->whereClause($column,$operator,$value,self::OR_WHERE));
+        $this->filter->orWhere($column,$operator,$value);
 
         return $this;
     }
 
     /**
-     * @return \QueryMule\Query\Sql\Sql
+     * @param array $clauses
+     * @return Sql
      */
-    public function build() : Sql
+    public function build(array $clauses = [
+        self::SELECT,
+        self::COLS,
+        self::FROM,
+        self::JOIN,
+        self::WHERE,
+        self::GROUP,
+        self::ORDER,
+        self::HAVING,
+        self::LIMIT
+    ]) : Sql
     {
-        return $this->queryBuild([
-            self::SELECT,
-            self::COLS,
-            self::FROM,
-            self::JOIN,
-            self::WHERE,
-            self::GROUP,
-            self::ORDER,
-            self::HAVING,
-            self::LIMIT
-        ]);
+        $this->queryAdd(self::WHERE,$this->filter->build([
+            self::WHERE
+        ]));
+
+        $sql = $this->queryBuild($clauses);
+
+        $this->queryReset();
+
+        return $sql;
     }
 }

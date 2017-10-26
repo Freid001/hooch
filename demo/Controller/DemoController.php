@@ -2,9 +2,6 @@
 
 namespace QueryMule\Demo\Controller;
 
-use chillerlan\SimpleCache\Cache;
-use chillerlan\SimpleCache\Drivers\RedisDriver;
-use Monolog\Logger;
 use Psr\Log\NullLogger;
 use QueryMule\Builder\Connection\Config;
 use QueryMule\Builder\Connection\Handler\DatabaseHandler;
@@ -28,16 +25,18 @@ class DemoController
      */
     public function __construct()
     {
-        $database = new Config([
+        $config = new Config();
+        $config->setLogger(new NullLogger());
+        $config->setConfigs([
             'sqlite' => [
                 DatabaseHandler::DATABASE_DRIVER => 'sqlite',
                 DatabaseHandler::DATABASE_DATABASE => 'sqlite.db',
                 DatabaseHandler::DATABASE_PATH_TO_FILE => __DIR__ . '/../Database/sqlite.db',
                 DatabaseHandler::DATABASE_ADAPTER => DatabaseHandler::ADAPTER_PDO,
             ]
-        ], new Logger('logger'));
+        ]);
 
-        $this->driver = $database->dbh('sqlite')->driver();
+        $this->driver = $config->dbh('sqlite')->driver();
     }
 
     /**

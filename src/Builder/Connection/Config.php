@@ -4,6 +4,7 @@ namespace QueryMule\Builder\Connection;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use QueryMule\Builder\Connection\Handler\DatabaseHandler;
 use QueryMule\Query\Connection\Handler\DatabaseHandlerInterface;
 use QueryMule\Query\Connection\DatabaseInterface;
@@ -26,14 +27,11 @@ class Config implements DatabaseInterface, LoggerAwareInterface
     private $logger;
 
     /**
-     * Database constructor.
-     * @param array $configs
-     * @param LoggerInterface $logger
+     * Config constructor.
      */
-    public function __construct(array $configs = [], LoggerInterface $logger)
+    public function __construct()
     {
-        $this->configs = $configs;
-        $this->logger = $logger;
+        $this->logger = new NullLogger();
     }
 
     /**
@@ -44,9 +42,12 @@ class Config implements DatabaseInterface, LoggerAwareInterface
         $this->logger = $logger;
     }
 
-    public function setConfig(){}
-
-    public function setConfigFromFile(){}
+    /**
+     * @param array $configs
+     */
+    public function setConfigs(array $configs = []){
+        $this->configs = $configs;
+    }
 
     /**
      * @param $key

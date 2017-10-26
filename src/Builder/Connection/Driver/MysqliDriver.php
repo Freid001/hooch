@@ -3,6 +3,7 @@
 namespace QueryMule\Builder\Connection\Driver;
 
 use Psr\Log\LoggerInterface;
+use Psr\SimpleCache\CacheInterface;
 use QueryMule\Builder\Exception\DriverException;
 use QueryMule\Builder\Sql\Mysql\Filter;
 use QueryMule\Builder\Sql\Mysql\Select;
@@ -11,7 +12,6 @@ use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
-use QueryMule\Query\Table\TableInterface;
 
 /**
  * Class MysqliDriver
@@ -23,6 +23,16 @@ class MysqliDriver implements DriverInterface
      * @var \mysqli
      */
     private $mysqli;
+
+    /**
+     * @var CacheInterface
+     */
+    private $cache;
+
+    /**
+     * @var null|int
+     */
+    private $ttl;
 
     /**
      * @var LoggerInterface
@@ -40,6 +50,9 @@ class MysqliDriver implements DriverInterface
         $this->logger = $logger;
     }
 
+    /**
+     * @return FilterInterface
+     */
     public function filter() : FilterInterface
     {
         // TODO: Implement filter() method.
@@ -56,13 +69,26 @@ class MysqliDriver implements DriverInterface
     }
 
     /**
+     * @param CacheInterface $cache
+     * @param int $ttl
+     * @return DriverInterface
+     */
+    public function cache(CacheInterface $cache, $ttl = null) : DriverInterface
+    {
+        $this->cache = $cache;
+        $this->ttl = $ttl;
+
+        return $this;
+    }
+
+    /**
      * @param Sql $sql
      * @return array
      * @throws DriverException
      */
     public function fetch(Sql $sql)
     {
-        return $this->execute($sql)->fetch_assoc();
+        return $this->execute($sql,'fetch');
     }
 
     /**
@@ -72,65 +98,83 @@ class MysqliDriver implements DriverInterface
      */
     public function fetchAll(Sql $sql)
     {
-        return $this->execute($sql)->fetch_all(MYSQLI_ASSOC);
+        return $this->execute($sql,'fetch_all');
     }
 
     /**
      * @param Sql $sql
+     * @param string $method
      * @return bool|\mysqli_result
-     * @throws DriverException
      */
-    private function execute(Sql $sql)
+    private function execute(Sql $sql, string $method)
     {
+        $cache = false;
+        $key = md5(serialize($sql));
         $time = microtime(true);
 
-        $this->logger->info('Executing query',[
-            'query'         => $sql->sql(),
-            'parameters'    => $sql->parameters(),
-            'driver'        => self::DRIVER_MYSQL
-        ]);
+        if(empty($this->cache) || empty($this->cache->has($key))) {
+            $query = $this->mysqli->prepare($sql->sql());
 
-        $query = $this->mysqli->prepare($sql->sql());
+            $parameters = [0 => ''];
+            foreach ($sql->parameters() as $parameter) {
+                switch (gettype($parameter)) {
+                    case 'integer':
+                        $parameters[0] .= 'i';
+                        break;
 
-        $parameters = [0 => ''];
-        foreach($sql->parameters() as $parameter){
-            switch(gettype($parameter)){
-                case 'integer':
-                    $parameters[0] .= 'i';
+                    case 'float':
+                        $parameters[0] .= 'd';
+                        break;
+
+                    case 'string':
+                        $parameters[0] .= 's';
+                        break;
+
+                    default:
+                        $parameters[0] .= 'b';
+                        break;
+                }
+
+                $parameters[] = &$parameter;
+            }
+
+            call_user_func_array([$query, 'bind_param'], $parameters);
+
+            if (!$query->execute()) {
+                $this->logger->critical("Mysqli error code: " . $this->mysqli->connect_errno, [
+                    'query' => $sql->sql(),
+                    'message' => $this->mysqli->error
+                ]);
+
+                return false;
+            }
+
+            $result = [];
+            switch ($method){
+                case 'fetch':
+                    $result = $query->get_result()->fetch_assoc();
                     break;
-
-                case 'float':
-                    $parameters[0] .= 'd';
-                    break;
-
-                case 'string':
-                    $parameters[0] .= 's';
-                    break;
-
-                default:
-                    $parameters[0] .= 'b';
+                case 'fetch_all':
+                    $result = $query->get_result()->fetch_all(MYSQLI_ASSOC);
                     break;
             }
 
-            $parameters[] = &$parameter;
+            if(!empty($this->cache)) {
+                $this->cache->set($key, json_encode($result), $this->ttl);
+            }
+        }else {
+            $cache = true;
+            $result = json_decode($this->cache->get($key));
         }
 
-        call_user_func_array([$query, 'bind_param'], $parameters);
-
-        if (!$query->execute()) {
-            $this->logger->critical("Mysqli error code: " . $this->mysqli->connect_errno,[
-                'query'     => $sql->sql(),
-                'message'   => $this->mysqli->error
-            ]);
-
-            return false;
-        }
-
-        $this->logger->info("Query successfully executed",[
+        $this->logger->info("Successfully executed query",[
             'query'             => $sql->sql(),
-            'execution_time'    => round(microtime(true) - $time,3) . "s"
+            'parameters'        => $sql->parameters(),
+            'driver'            => self::DRIVER_MYSQL,
+            'execution_time'    => round(microtime(true) - $time,4) . "s",
+            'from_cache'        => $cache
         ]);
 
-        return $query->get_result();
+        return $result;
     }
 }

@@ -2,8 +2,12 @@
 
 namespace QueryMule\Demo\Controller;
 
-use QueryMule\Builder\Connection\Database;
-use QueryMule\Builder\Connection\DatabaseHandler;
+use chillerlan\SimpleCache\Cache;
+use chillerlan\SimpleCache\Drivers\RedisDriver;
+use Monolog\Logger;
+use Psr\Log\NullLogger;
+use QueryMule\Builder\Connection\Config;
+use QueryMule\Builder\Connection\Handler\DatabaseHandler;
 use QueryMule\Demo\Table\Author;
 use QueryMule\Demo\Table\Book;
 use QueryMule\Query\Sql\Statement\SelectInterface;
@@ -24,14 +28,14 @@ class DemoController
      */
     public function __construct()
     {
-        $database = new Database([
+        $database = new Config([
             'sqlite' => [
                 DatabaseHandler::DATABASE_DRIVER => 'sqlite',
                 DatabaseHandler::DATABASE_DATABASE => 'sqlite.db',
                 DatabaseHandler::DATABASE_PATH_TO_FILE => __DIR__ . '/../Database/sqlite.db',
                 DatabaseHandler::DATABASE_ADAPTER => DatabaseHandler::ADAPTER_PDO,
             ]
-        ]);
+        ], new Logger('logger'));
 
         $this->driver = $database->dbh('sqlite')->driver();
     }
@@ -55,16 +59,13 @@ class DemoController
         if($with_author){
             $book->joinAuthor($author);
 
-            //$author->filterByAuthorId(1);
+            $author->filterByAuthorId(1);
+            //$query->where('a.author_id','=?',"1");
         }
 
         $book->filterByBookId($book_id);
 
-        $query->where('a.author_id','=?',"1");
-
         $stm = $query->build();
-
-        var_dump($stm);
 
         $result = $this->driver->fetchAll($stm);
 

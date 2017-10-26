@@ -26,7 +26,7 @@ class Author extends AbstractTable
     public function filterByAuthorId($id) : FilterInterface
     {
         return $this->filter->where(function (FilterInterface $filter) use ($id) {
-            $filter->where('author_id', '=?', $id);
+            $filter->where('a.author_id', '=?', $id);
         });
     }
 }

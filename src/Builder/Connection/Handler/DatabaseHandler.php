@@ -1,12 +1,13 @@
 <?php
 
-namespace QueryMule\Builder\Connection;
+namespace QueryMule\Builder\Connection\Handler;
 
+use Psr\Log\LoggerInterface;
 use QueryMule\Builder\Connection\Driver\MysqliDriver;
 use QueryMule\Builder\Connection\Driver\PdoDriver;
 use QueryMule\Builder\Exception\DatabaseException;
 use QueryMule\Builder\Exception\DriverException;
-use QueryMule\Query\Connection\DatabaseHandlerInterface;
+use QueryMule\Query\Connection\Handler\DatabaseHandlerInterface;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 
 /**
@@ -32,13 +33,19 @@ class DatabaseHandler implements DatabaseHandlerInterface
     private $driver;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * DatabaseHandler constructor.
      * @param $name
      * @param array $dbh
+     * @param LoggerInterface $logger
      * @throws DatabaseException
      * @throws DriverException
      */
-    public function __construct($name,array $dbh)
+    public function __construct($name,array $dbh = [],LoggerInterface $logger)
     {
         //Validate config
         foreach([
@@ -49,6 +56,9 @@ class DatabaseHandler implements DatabaseHandlerInterface
                 throw new DatabaseException($key." not set in config: ".$name);
             }
         }
+
+        //Set logger
+        $this->logger = $logger;
 
         //Select database adapter
         switch ($dbh[self::DATABASE_ADAPTER]){
@@ -69,11 +79,11 @@ class DatabaseHandler implements DatabaseHandlerInterface
                 $username = !empty($dbh[self::DATABASE_USER]) ? $dbh[self::DATABASE_USER] : null;
                 $password = !empty($dbh[self::DATABASE_PASSWORD]) ? $dbh[self::DATABASE_PASSWORD] : null;
 
-                $this->driver = new PdoDriver(new \pdo($dbh[self::DATABASE_DRIVER] . $dns,$username,$password));
+                $this->driver = new PdoDriver(new \pdo($dbh[self::DATABASE_DRIVER] . $dns,$username,$password), $this->logger);
                 break;
 
             case self::ADAPTER_MYSQLI:
-                $this->driver = new MysqliDriver(new \mysqli($dbh[self::DATABASE_HOST],$dbh[self::DATABASE_USER], $dbh[self::DATABASE_PASSWORD], $dbh[self::DATABASE_DATABASE]));
+                $this->driver = new MysqliDriver(new \mysqli($dbh[self::DATABASE_HOST],$dbh[self::DATABASE_USER], $dbh[self::DATABASE_PASSWORD], $dbh[self::DATABASE_DATABASE]), $this->logger);
                 break;
 
             default:

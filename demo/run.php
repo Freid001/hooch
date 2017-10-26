@@ -21,7 +21,7 @@ switch ($method)
     case "get":
         echo $controller->getBook(
                 isset($argv[1]) ? (string)$argv[1] : null,
-                ($argv[2] == "true") ? true : false
+                (isset($argv[2]) && $argv[2] == "true") ? true : false
             ) . "\n";
         break;
 

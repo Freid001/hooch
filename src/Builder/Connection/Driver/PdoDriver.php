@@ -2,6 +2,8 @@
 
 namespace QueryMule\Builder\Connection\Driver;
 
+use Psr\Log\LoggerInterface;
+use Psr\SimpleCache\CacheInterface;
 use QueryMule\Builder\Exception\DriverException;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
@@ -26,13 +28,30 @@ class PdoDriver implements DriverInterface
     private $driver;
 
     /**
-     * PdoAdapter constructor.
-     * @param \PDO $pdo
+     * @var CacheInterface
      */
-    public function __construct(\PDO $pdo)
+    private $cache;
+
+    /**
+     * @var null|int
+     */
+    private $ttl;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * PdoDriver constructor.
+     * @param \PDO $pdo
+     * @param LoggerInterface $logger
+     */
+    public function __construct(\PDO $pdo, LoggerInterface $logger)
     {
         $this->pdo = $pdo;
         $this->driver = $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        $this->logger = $logger;
     }
 
     /**
@@ -92,12 +111,25 @@ class PdoDriver implements DriverInterface
     }
 
     /**
+     * @param CacheInterface $cache
+     * @param int $ttl
+     * @return DriverInterface
+     */
+    public function cache(CacheInterface $cache, $ttl = null) : DriverInterface
+    {
+        $this->cache = $cache;
+        $this->ttl = $ttl;
+
+        return $this;
+    }
+
+    /**
      * @param Sql $sql
      * @return array
      */
     public function fetch(Sql $sql)
     {
-        return $this->execute($sql)->fetch(\PDO::FETCH_ASSOC);
+        return $this->execute($sql, 'fetch');
     }
 
     /**
@@ -106,23 +138,58 @@ class PdoDriver implements DriverInterface
      */
     public function fetchAll(Sql $sql)
     {
-        return $this->execute($sql)->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->execute($sql, 'fetch_all');
     }
 
     /**
      * @param Sql $sql
-     * @return \PDOStatement
-     * @throws DriverException
+     * @param string $method
+     * @return array|bool|mixed
      */
-    private function execute(Sql $sql)
+    private function execute(Sql $sql, string $method)
     {
-        $query = $this->pdo->prepare($sql->sql());
+        $cache = false;
+        $key = md5(serialize($sql));
+        $time = microtime(true);
 
-        if (!$query || !$query->execute($sql->parameters())) {
-            //throw new DriverException('PDO error code: ' . $this->pdo->errorCode());
-            throw new DriverException($this->pdo->errorInfo());
+        if(empty($this->cache) || empty($this->cache->has($key))) {
+            $query = $this->pdo->prepare($sql->sql());
+
+            if (!$query || !$query->execute($sql->parameters())) {
+                $this->logger->error("PDO error code: " . $this->pdo->errorCode(), [
+                    'query' => $sql->sql(),
+                    'message' => $this->pdo->errorInfo(),
+                ]);
+
+                return false;
+            }
+
+            $result = [];
+            switch ($method){
+                case 'fetch':
+                    $result = $query->fetch();
+                    break;
+                case 'fetch_all':
+                    $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+                    break;
+            }
+
+            if(!empty($this->cache)) {
+                $this->cache->set($key, json_encode($result), $this->ttl);
+            }
+        }else {
+            $cache = true;
+            $result = json_decode($this->cache->get($key));
         }
 
-        return $query;
+        $this->logger->info("Successfully executed query",[
+            'query'             => $sql->sql(),
+            'parameters'        => $sql->parameters(),
+            'driver'            => $this->driver,
+            'execution_time'    => round(microtime(true) - $time,4) . "s",
+            'from_cache'        => $cache
+        ]);
+
+        return $result;
     }
 }

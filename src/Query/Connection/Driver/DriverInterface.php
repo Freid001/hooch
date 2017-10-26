@@ -2,6 +2,7 @@
 
 namespace QueryMule\Query\Connection\Driver;
 
+use Psr\SimpleCache\CacheInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
@@ -28,6 +29,13 @@ interface DriverInterface
      * @return SelectInterface
      */
     public function select(array $cols = [],RepositoryInterface $table = null) : SelectInterface;
+
+    /**
+     * @param CacheInterface $cache
+     * @param null $ttl
+     * @return DriverInterface
+     */
+    public function cache(CacheInterface $cache, $ttl = null) : DriverInterface;
 
     /**
      * @param Sql $sql

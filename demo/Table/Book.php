@@ -36,7 +36,7 @@ class Book extends AbstractTable
     public function filterByBookId($id) : FilterInterface
     {
         return $this->filter->where(function (FilterInterface $filter) use ($id) {
-            $filter->where('book_id', '=?', $id);
+            $filter->where('b.book_id', '=?', $id);
         });
     }
 }

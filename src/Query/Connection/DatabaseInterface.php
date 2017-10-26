@@ -1,4 +1,5 @@
 <?php namespace QueryMule\Query\Connection;
+use QueryMule\Query\Connection\Handler\DatabaseHandlerInterface;
 
 /**
  * Interface DatabaseInterface

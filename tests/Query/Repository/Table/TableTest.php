@@ -9,7 +9,6 @@ use QueryMule\Builder\Sql\Sqlite\Select;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Repository\Table\Table;
-use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**

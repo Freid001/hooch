@@ -35,6 +35,16 @@ class MysqliDriver implements DriverInterface
     private $ttl;
 
     /**
+     * @var FilterInterface
+     */
+    private $filter;
+
+    /**
+     * @var SelectInterface
+     */
+    private $select;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -55,7 +65,7 @@ class MysqliDriver implements DriverInterface
      */
     public function filter() : FilterInterface
     {
-        // TODO: Implement filter() method.
+        return new Filter();
     }
 
     /**
@@ -66,6 +76,35 @@ class MysqliDriver implements DriverInterface
     public function select(array $cols = [],RepositoryInterface $repository = null) : SelectInterface
     {
         return new Select($cols, $repository);
+    }
+
+    /**
+     * @param $statement
+     * @return null|FilterInterface|SelectInterface
+     */
+    public function getStatement($statement)
+    {
+        $statement = null;
+        switch ($statement){
+            case 'filter':
+                $statement = $this->filter;
+                break;
+
+            case 'select':
+                $statement = $this->select;
+                break;
+        }
+
+        return $statement;
+    }
+
+    /**
+     * @return void
+     */
+    public function reset()
+    {
+        $this->filter = null;
+        $this->select = null;
     }
 
     /**
@@ -166,6 +205,8 @@ class MysqliDriver implements DriverInterface
             $cache = true;
             $result = json_decode($this->cache->get($key));
         }
+
+        $this->reset();
 
         $this->logger->info("Successfully executed query",[
             'query'             => $sql->sql(),

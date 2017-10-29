@@ -2,8 +2,6 @@
 
 namespace QueryMule\Builder\Sql\Sqlite;
 
-use QueryMule\Builder\Exception\SqlException;
-use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasJoinClause;
 use QueryMule\Query\Sql\Clause\HasWhereClause;
@@ -102,7 +100,6 @@ class Filter implements FilterInterface
      * @return Sql
      */
     public function build(array $clauses = [
-        self::JOIN,
         self::WHERE
     ]) : Sql
     {

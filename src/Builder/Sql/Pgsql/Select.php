@@ -98,9 +98,14 @@ class Select implements SelectInterface
     {
         $this->queryAdd(self::FROM,$this->fromClause($table,$alias));
 
-        $this->filter = $table->getFilter();
+        $this->filter = $table->filter();
 
         return $this;
+    }
+
+    public function leftJoin(array $table, $first = null, $operator = null, $second = null) : SelectInterface
+    {
+        // TODO: Implement leftJoin() method.
     }
 
     /**
@@ -146,13 +151,13 @@ class Select implements SelectInterface
         self::LIMIT
     ]) : Sql
     {
-        $this->queryAdd(self::WHERE,$this->filter->build([
-            self::WHERE
-        ]));
+        if(in_array(self::WHERE,$clauses)) {
+            $this->queryAdd(self::WHERE, $this->filter->build([self::WHERE]));
+        }
 
         $sql = $this->queryBuild($clauses);
 
-        $this->queryReset();
+        $this->queryReset($clauses);
 
         return $sql;
     }

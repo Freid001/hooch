@@ -31,6 +31,12 @@ interface DriverInterface
     public function select(array $cols = [],RepositoryInterface $table = null) : SelectInterface;
 
     /**
+     * @param $statement
+     * @return mixed
+     */
+    public function getStatement($statement);
+
+    /**
      * @param CacheInterface $cache
      * @param null $ttl
      * @return DriverInterface

@@ -2,11 +2,13 @@
 
 namespace QueryMule\Demo\Controller;
 
+use Monolog\Logger;
 use Psr\Log\NullLogger;
 use QueryMule\Builder\Connection\Config;
 use QueryMule\Builder\Connection\Handler\DatabaseHandler;
 use QueryMule\Demo\Table\Author;
 use QueryMule\Demo\Table\Book;
+use QueryMule\Query\Repository\Table\Table;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
@@ -26,7 +28,8 @@ class DemoController
     public function __construct()
     {
         $config = new Config();
-        $config->setLogger(new NullLogger());
+        $config->setLogger(new Logger('demo'));
+        //$config->setLogger(new NullLogger());
         $config->setConfigs([
             'sqlite' => [
                 DatabaseHandler::DATABASE_DRIVER => 'sqlite',
@@ -47,7 +50,9 @@ class DemoController
     public function getBook($book_id, $with_author = false)
     {
         $book = new Book($this->driver);
-        $author = new Author($this->driver);
+        //$author = new Author($this->driver);
+
+        $author = Table::make($this->driver)->setName('author');
 
         if(empty($book_id)){
             return json_encode(['error'=>'book_id is required!'], JSON_PRETTY_PRINT);
@@ -56,10 +61,11 @@ class DemoController
         $query = $book->select([SelectInterface::SQL_STAR],'b');
 
         if($with_author){
-            $book->joinAuthor($author);
+            //$book->joinAuthor($author);
 
-            $author->filterByAuthorId(1);
-            //$query->where('a.author_id','=?',"1");
+            $query->leftJoin(['a'=>$author],'a.author_id','=','b.author_id');
+
+            //$author->filterByAuthorId(1);
         }
 
         $book->filterByBookId($book_id);

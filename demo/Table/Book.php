@@ -27,6 +27,11 @@ class Book extends AbstractTable
     public function joinAuthor(Author $author) : SelectInterface
     {
         return $this->select->leftJoin(['a'=>$author],'a.author_id','=','b.author_id');
+
+//        $this->select->leftJoin(['a'=>$author], function(SelectInterface $select) use ($author){
+//            $select->on('a.author_id','=','b.author_id');
+//            $select->where('a.author','=?,1);
+//        });
     }
 
     /**

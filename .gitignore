@@ -1,2 +1,5 @@
 vendor
+log
+tests/coverage.xml
+tests/test-results.xml
 .idea

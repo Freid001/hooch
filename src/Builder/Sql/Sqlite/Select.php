@@ -17,7 +17,7 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
  * Class Select
  * @package QueryMule\Builder\Sql\Sqlite
  */
-class Select implements SelectInterface
+class Select  implements SelectInterface
 {
     use Accent;
     use Query;
@@ -99,7 +99,7 @@ class Select implements SelectInterface
     {
         $this->queryAdd(self::FROM,$this->fromClause($table,$alias));
 
-        $this->filter = $table->getFilter();
+        $this->filter = $table->filter();
 
         return $this;
     }
@@ -110,7 +110,7 @@ class Select implements SelectInterface
      * @param null $first
      * @param null $operator
      * @param null $second
-     * @return FilterInterface
+     * @return SelectInterface
      * @throws SqlException
      */
     public function leftJoin(array $table, $first = null, $operator = null, $second = null) : SelectInterface
@@ -132,7 +132,7 @@ class Select implements SelectInterface
      * @param $first
      * @param null $operator
      * @param null $second
-     * @return FilterInterface
+     * @return SelectInterface
      */
     public function on($first, $operator, $second) : SelectInterface
     {
@@ -145,7 +145,7 @@ class Select implements SelectInterface
      * @param $first
      * @param null $operator
      * @param null $second
-     * @return FilterInterface
+     * @return SelectInterface
      */
     public function orOn($first, $operator = null, $second = null) : SelectInterface
     {
@@ -153,7 +153,6 @@ class Select implements SelectInterface
 
         return $this;
     }
-
 
     public function rightJoin(){}
 

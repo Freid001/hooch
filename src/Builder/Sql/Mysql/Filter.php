@@ -44,7 +44,7 @@ class Filter implements FilterInterface
     public function where($column, $operator = null, $value = null, $clause = self::WHERE) : FilterInterface
     {
         if($clause == self::WHERE && !empty($this->queryGet(self::WHERE))) {
-            $clause = self::AND_WHERE;
+            $clause = self::AND;
         }
 
         $column = ($column instanceof \Closure) ? $column : $this->addAccent($column,'.');
@@ -78,7 +78,7 @@ class Filter implements FilterInterface
 
         if($column instanceof \Closure) {
             if(!$this->ignoreWhereClause) {
-                $this->queryAdd(self::WHERE, new Sql(self::OR_WHERE));
+                $this->queryAdd(self::WHERE, new Sql(self::OR));
             }
 
             $this->queryAdd(self::WHERE, new Sql("("));
@@ -88,7 +88,7 @@ class Filter implements FilterInterface
             return $this;
         }
 
-        $this->queryAdd(self::WHERE,$this->whereClause($column,$operator,$value,self::OR_WHERE));
+        $this->queryAdd(self::WHERE,$this->whereClause($column,$operator,$value,self::OR));
 
         return $this;
     }
@@ -111,7 +111,7 @@ class Filter implements FilterInterface
     {
         $sql = $this->queryBuild($clauses);
 
-        $this->queryReset();
+        $this->queryReset($clauses);
 
         return $sql;
     }

@@ -38,6 +38,16 @@ class PdoDriver implements DriverInterface
     private $ttl;
 
     /**
+     * @var FilterInterface
+     */
+    private $filter;
+
+    /**
+     * @var SelectInterface
+     */
+    private $select;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -60,54 +70,83 @@ class PdoDriver implements DriverInterface
      */
     public function filter() : FilterInterface
     {
-        $filter = null;
+        $this->filter = null;
         switch($this->driver){
             case self::DRIVER_MYSQL:
-                $filter = new \QueryMule\Builder\Sql\Mysql\Filter();
+                $this->filter = new \QueryMule\Builder\Sql\Mysql\Filter();
                 break;
 
             case self::DRIVER_PGSQL:
-                $filter = new \QueryMule\Builder\Sql\Pgsql\Filter();
+                $this->filter = new \QueryMule\Builder\Sql\Pgsql\Filter();
                 break;
 
             case self::DRIVER_SQLITE:
-                $filter = new \QueryMule\Builder\Sql\Sqlite\Filter();
+                $this->filter = new \QueryMule\Builder\Sql\Sqlite\Filter();
                 break;
 
             default:
                 throw new DriverException('Driver: '.$this->driver.' not currently supported');
         }
 
-        return $filter;
+        return $this->filter;
     }
 
     /**
      * @param array $cols
-     * @param RepositoryInterface|null $table
+     * @param RepositoryInterface|null $repository
      * @return SelectInterface
      * @throws DriverException
      */
-    public function select(array $cols = [],RepositoryInterface $table = null) : SelectInterface
+    public function select(array $cols = [],RepositoryInterface $repository = null) : SelectInterface
     {
-        $select = null;
+        $this->select = null;
         switch($this->driver){
             case self::DRIVER_MYSQL:
-                $select = new \QueryMule\Builder\Sql\Mysql\Select($cols, $table);
+                $this->select = new \QueryMule\Builder\Sql\Mysql\Select($cols, $repository);
                 break;
 
             case self::DRIVER_PGSQL:
-                $select = new \QueryMule\Builder\Sql\Pgsql\Select($cols, $table);
+                $this->select = new \QueryMule\Builder\Sql\Pgsql\Select($cols, $repository);
                 break;
 
             case self::DRIVER_SQLITE:
-                $select = new \QueryMule\Builder\Sql\Sqlite\Select($cols, $table);
+                $this->select = new \QueryMule\Builder\Sql\Sqlite\Select($cols, $repository);
                 break;
 
             default:
                 throw new DriverException('Driver: '.$this->driver.' not currently supported');
         }
 
-        return $select;
+        return $this->select;
+    }
+
+    /**
+     * @param $statement
+     * @return null|FilterInterface|SelectInterface
+     */
+    public function getStatement($statement)
+    {
+        $statement = null;
+        switch ($statement){
+            case 'filter':
+                $statement = $this->filter;
+                break;
+
+            case 'select':
+                $statement = $this->select;
+                break;
+        }
+
+        return $statement;
+    }
+
+    /**
+     * @return void
+     */
+    public function reset()
+    {
+        $this->filter = null;
+        $this->select = null;
     }
 
     /**
@@ -181,6 +220,8 @@ class PdoDriver implements DriverInterface
             $cache = true;
             $result = json_decode($this->cache->get($key));
         }
+
+        $this->reset();
 
         $this->logger->info("Successfully executed query",[
             'query'             => $sql->sql(),

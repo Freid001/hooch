@@ -2,6 +2,7 @@
 
 namespace QueryMule\Query\Repository\Table;
 
+use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
@@ -13,23 +14,37 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
 abstract class AbstractTable implements RepositoryInterface
 {
     /**
-     * @var \QueryMule\Query\Sql\Statement\SelectInterface
-     */
-    protected $select;
-
-    /**
-     * @var \QueryMule\Query\Sql\Statement\FilterInterface
+     * @var FilterInterface
      */
     protected $filter;
 
     /**
-     * AbstractTable constructor.
-     * @param \QueryMule\Query\Connection\Driver\DriverInterface $driver
+     * @var SelectInterface
      */
-    public function __construct(\QueryMule\Query\Connection\Driver\DriverInterface $driver)
+    protected $select;
+
+    /**
+     * @var DriverInterface
+     */
+    private $driver;
+
+    /**
+     * AbstractTable constructor.
+     * @param DriverInterface $driver
+     */
+    public function __construct(DriverInterface $driver)
     {
-        $this->select = $driver->select();
-        $this->filter = $driver->filter();
+        $this->driver = $driver;
+
+        $this->filter = $this->driver->getStatement('filter');
+        if(empty($this->filter)) {
+            $this->filter = $this->driver->filter();
+        }
+
+        $this->select = $this->driver->getStatement('select');
+        if(empty($this->select)) {
+            $this->select = $this->driver->select();
+        }
     }
 
     /**
@@ -49,7 +64,7 @@ abstract class AbstractTable implements RepositoryInterface
     /**
      * @return \QueryMule\Query\Sql\Statement\FilterInterface
      */
-    public function getFilter() : FilterInterface
+    public function filter() : FilterInterface
     {
         return $this->filter;
     }

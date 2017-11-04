@@ -45,7 +45,8 @@ class Config implements DatabaseInterface, LoggerAwareInterface
     /**
      * @param array $configs
      */
-    public function setConfigs(array $configs = []){
+    public function setConfigs(array $configs = [])
+    {
         $this->configs = $configs;
     }
 

@@ -206,6 +206,8 @@ class MysqliDriver implements DriverInterface
             $result = json_decode($this->cache->get($key));
         }
 
+        var_dump($result);
+
         $this->reset();
 
         $this->logger->info("Successfully executed query",[

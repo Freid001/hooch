@@ -1,5 +1,5 @@
 vendor
 log
 tests/coverage.xml
-tests/test-results.xml
+tests/results.xml
 .idea

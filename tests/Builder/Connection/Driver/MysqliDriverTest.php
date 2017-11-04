@@ -5,6 +5,7 @@ namespace test\Builder\Sql\MySql;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use QueryMule\Builder\Connection\Driver\MysqliDriver;
 use QueryMule\Query\Sql\Sql;
 
@@ -14,39 +15,66 @@ use QueryMule\Query\Sql\Sql;
  */
 class MysqliDriverTest extends TestCase
 {
-
-    public function testFetchAll()
+    public function testExecutionErrorLogged()
     {
-        $mysqli = $this->getMockBuilder('mysqli')->getMock();
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('critical');
 
-        $mysqli->expects($this->any())->method('prepare')->will($this->returnCallback(function() {
+        $mysqli = $this->getMockBuilder('mysqli')->getMock();
+        $mysqli->expects($this->once())->method('prepare')->will($this->returnCallback(function() {
             $mysqli_result = $this->getMockBuilder('mysqli_result')
                 ->setMethods(['execute','get_result','fetch_all','bind_param'])
                 ->disableOriginalConstructor()
                 ->getMock();
 
-            $mysqli_result->expects($this->any())
+            $mysqli_result->expects($this->once())
+                ->method('execute')
+                ->will($this->returnValue(false));
+
+            return $mysqli_result;
+        }));
+
+        $driver = new MysqliDriver($mysqli,$logger);
+
+        $fetch = $driver->fetch(new Sql(null));
+
+        $this->assertFalse($fetch);
+    }
+
+    public function testFetchAll()
+    {
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('info');
+
+        $mysqli = $this->getMockBuilder('mysqli')->getMock();
+        $mysqli->expects($this->once())->method('prepare')->will($this->returnCallback(function() {
+            $mysqli_result = $this->getMockBuilder('mysqli_result')
+                ->setMethods(['execute','get_result','fetch_all','bind_param'])
+                ->disableOriginalConstructor()
+                ->getMock();
+
+            $mysqli_result->expects($this->once())
                 ->method('execute')
                 ->will($this->returnValue(true));
 
-            $mysqli_result->expects($this->any())
+            $mysqli_result->expects($this->once())
                 ->method('get_result')
                 ->will($this->returnValue($mysqli_result));
 
-            $mysqli_result->expects($this->any())
+            $mysqli_result->expects($this->once())
                ->method('fetch_all')
                ->will($this->returnCallback(function() {
-                   return '111';
+                   return 'some_result';
                }));
 
            return $mysqli_result;
         }));
 
-        $driver = new MysqliDriver($mysqli,$this->createMock(LoggerInterface::class));
+        $driver = new MysqliDriver($mysqli,$logger);
 
-        $fetchAll = $driver->fetchAll(new Sql('SELECT * FROM some_table'));
+        $fetchAll = $driver->fetchAll(new Sql(null));
 
-        $this->assertEquals('111',$fetchAll);
+        $this->assertEquals('some_result',$fetchAll);
     }
 
 }

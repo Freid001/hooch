@@ -122,7 +122,7 @@ class MysqliDriver implements DriverInterface
 
     /**
      * @param Sql $sql
-     * @return array
+     * @return array|bool
      * @throws DriverException
      */
     public function fetch(Sql $sql)
@@ -132,7 +132,7 @@ class MysqliDriver implements DriverInterface
 
     /**
      * @param Sql $sql
-     * @return array
+     * @return array|bool
      * @throws DriverException
      */
     public function fetchAll(Sql $sql)
@@ -205,8 +205,6 @@ class MysqliDriver implements DriverInterface
             $cache = true;
             $result = json_decode($this->cache->get($key));
         }
-
-        var_dump($result);
 
         $this->reset();
 

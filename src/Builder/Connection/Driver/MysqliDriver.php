@@ -65,7 +65,9 @@ class MysqliDriver implements DriverInterface
      */
     public function filter() : FilterInterface
     {
-        return new Filter();
+        $this->filter = new Filter();
+
+        return $this->filter;
     }
 
     /**
@@ -75,17 +77,19 @@ class MysqliDriver implements DriverInterface
      */
     public function select(array $cols = [],RepositoryInterface $repository = null) : SelectInterface
     {
-        return new Select($cols, $repository);
+        $this->select = new Select($cols, $repository);
+
+        return $this->select ;
     }
 
     /**
-     * @param $statement
+     * @param $type
      * @return null|FilterInterface|SelectInterface
      */
-    public function getStatement($statement)
+    public function getStatement($type)
     {
         $statement = null;
-        switch ($statement){
+        switch ($type){
             case 'filter':
                 $statement = $this->filter;
                 break;
@@ -161,7 +165,7 @@ class MysqliDriver implements DriverInterface
                         $parameters[0] .= 'i';
                         break;
 
-                    case 'float':
+                    case 'double':
                         $parameters[0] .= 'd';
                         break;
 
@@ -180,7 +184,7 @@ class MysqliDriver implements DriverInterface
             call_user_func_array([$query, 'bind_param'], $parameters);
 
             if (!$query->execute()) {
-                $this->logger->critical("Mysqli error code: " . $this->mysqli->connect_errno, [
+                $this->logger->error("Mysqli error code: " . $this->mysqli->connect_errno, [
                     'query' => $sql->sql(),
                     'message' => $this->mysqli->error
                 ]);

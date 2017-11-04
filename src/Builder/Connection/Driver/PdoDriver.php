@@ -164,7 +164,7 @@ class PdoDriver implements DriverInterface
 
     /**
      * @param Sql $sql
-     * @return array
+     * @return array|bool
      */
     public function fetch(Sql $sql)
     {
@@ -173,7 +173,7 @@ class PdoDriver implements DriverInterface
 
     /**
      * @param Sql $sql
-     * @return array
+     * @return array|bool
      */
     public function fetchAll(Sql $sql)
     {

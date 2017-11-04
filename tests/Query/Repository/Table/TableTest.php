@@ -21,7 +21,7 @@ class TableTest extends TestCase
     {
         $driver = $this->createMock(DriverInterface::class);
 
-        $this->assertTrue((Table::make($driver) instanceof RepositoryInterface));
+        $this->assertTrue(Table::make($driver) instanceof RepositoryInterface);
     }
 
     public function testSetName()

@@ -28,7 +28,7 @@ class ConfigTest extends TestCase
             ]
         ]);
 
-        $this->assertTrue(($config->dbh(getenv('DB_NAME')) instanceof DatabaseHandlerInterface));
+        $this->assertTrue($config->dbh(getenv('DB_NAME')) instanceof DatabaseHandlerInterface);
     }
 
     public function testInvalidConfig()

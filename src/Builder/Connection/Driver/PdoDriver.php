@@ -121,13 +121,13 @@ class PdoDriver implements DriverInterface
     }
 
     /**
-     * @param $statement
+     * @param $type
      * @return null|FilterInterface|SelectInterface
      */
-    public function getStatement($statement)
+    public function getStatement($type)
     {
         $statement = null;
-        switch ($statement){
+        switch ($type){
             case 'filter':
                 $statement = $this->filter;
                 break;

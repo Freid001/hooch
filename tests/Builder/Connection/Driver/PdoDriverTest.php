@@ -7,8 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use QueryMule\Builder\Connection\Driver\PdoDriver;
-use QueryMule\Builder\Sql\Mysql\Select;
-use QueryMule\Query\Connection\Driver\DriverInterface;
+use QueryMule\Builder\Exception\DriverException;
 use QueryMule\Query\Repository\Table\Table;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
@@ -136,7 +135,7 @@ class PdoDriverTest extends TestCase
         $driver->cache($cache)->fetch(new Sql(null));
     }
 
-    public function testFilter()
+    public function testFilterSqlite()
     {
         $logger = $this->createMock(LoggerInterface::class);
 
@@ -148,7 +147,44 @@ class PdoDriverTest extends TestCase
         $this->assertTrue($driver->filter() instanceof FilterInterface);
     }
 
-    public function testSelect()
+    public function testFilterMysql()
+    {
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $pdo = $this->getMockBuilder('PDO')->disableOriginalConstructor()->getMock();
+        $pdo->expects($this->once())->method('getAttribute')->willReturn(PdoDriver::DRIVER_MYSQL);
+
+        $driver = new PdoDriver($pdo,$logger);
+
+        $this->assertTrue($driver->filter() instanceof FilterInterface);
+    }
+
+    public function testFilterPostgres()
+    {
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $pdo = $this->getMockBuilder('PDO')->disableOriginalConstructor()->getMock();
+        $pdo->expects($this->once())->method('getAttribute')->willReturn(PdoDriver::DRIVER_PGSQL);
+
+        $driver = new PdoDriver($pdo,$logger);
+
+        $this->assertTrue($driver->filter() instanceof FilterInterface);
+    }
+
+    public function testFilterError()
+    {
+        $this->expectException(DriverException::class);
+
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $pdo = $this->getMockBuilder('PDO')->disableOriginalConstructor()->getMock();
+        $pdo->expects($this->once())->method('getAttribute')->willReturn(null);
+
+        $driver = new PdoDriver($pdo,$logger);
+        $driver->filter();
+    }
+
+    public function testSelectSqlite()
     {
         $logger = $this->createMock(LoggerInterface::class);
 
@@ -167,7 +203,57 @@ class PdoDriverTest extends TestCase
         ])->sql());
     }
 
-    public function testStatement()
+    public function testSelectMysql()
+    {
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $pdo = $this->getMockBuilder('PDO')->disableOriginalConstructor()->getMock();
+        $pdo->expects($this->once())->method('getAttribute')->willReturn(PdoDriver::DRIVER_MYSQL);
+
+        $driver = new PdoDriver($pdo,$logger);
+
+        $select = $driver->select([SelectInterface::SQL_STAR], Table::make($driver)->setName('some_table'));
+
+        $this->assertTrue($select instanceof SelectInterface);
+        $this->assertEquals("SELECT * FROM some_table",$select->build([
+            SelectInterface::SELECT,
+            SelectInterface::COLS,
+            SelectInterface::FROM
+        ])->sql());
+    }
+
+    public function testSelectPostgres()
+    {
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $pdo = $this->getMockBuilder('PDO')->disableOriginalConstructor()->getMock();
+        $pdo->expects($this->once())->method('getAttribute')->willReturn(PdoDriver::DRIVER_PGSQL);
+
+        $driver = new PdoDriver($pdo,$logger);
+
+        $select = $driver->select([SelectInterface::SQL_STAR], Table::make($driver)->setName('some_table'));
+
+        $this->assertTrue($select instanceof SelectInterface);
+        $this->assertEquals("SELECT * FROM some_table",$select->build([
+            SelectInterface::SELECT,
+            SelectInterface::COLS,
+            SelectInterface::FROM
+        ])->sql());
+    }
+
+    public function testSelectError()
+    {
+        $this->expectException(DriverException::class);
+
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $pdo = $this->getMockBuilder('PDO')->disableOriginalConstructor()->getMock();
+
+        $driver = new PdoDriver($pdo,$logger);
+        $driver->select([SelectInterface::SQL_STAR], Table::make($driver)->setName('some_table'));
+    }
+
+    public function testStatementSqlite()
     {
         $logger = $this->createMock(LoggerInterface::class);
 
@@ -177,7 +263,37 @@ class PdoDriverTest extends TestCase
         $driver = new PdoDriver($pdo,$logger);
         $driver->filter();
         $driver->select();
-        
+
+        $this->assertTrue($driver->getStatement('filter') instanceof FilterInterface);
+        $this->assertTrue($driver->getStatement('select') instanceof SelectInterface);
+    }
+
+    public function testStatementMysql()
+    {
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $pdo = $this->getMockBuilder('PDO')->disableOriginalConstructor()->getMock();
+        $pdo->expects($this->once())->method('getAttribute')->willReturn(PdoDriver::DRIVER_MYSQL);
+
+        $driver = new PdoDriver($pdo,$logger);
+        $driver->filter();
+        $driver->select();
+
+        $this->assertTrue($driver->getStatement('filter') instanceof FilterInterface);
+        $this->assertTrue($driver->getStatement('select') instanceof SelectInterface);
+    }
+
+    public function testStatementPostgres()
+    {
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $pdo = $this->getMockBuilder('PDO')->disableOriginalConstructor()->getMock();
+        $pdo->expects($this->once())->method('getAttribute')->willReturn(PdoDriver::DRIVER_PGSQL);
+
+        $driver = new PdoDriver($pdo,$logger);
+        $driver->filter();
+        $driver->select();
+
         $this->assertTrue($driver->getStatement('filter') instanceof FilterInterface);
         $this->assertTrue($driver->getStatement('select') instanceof SelectInterface);
     }

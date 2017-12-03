@@ -18,7 +18,7 @@ trait HasJoinClause
     /**
      * @var bool
      */
-    private $ignoreOnClause = false;
+    protected $ignoreOnClause = false;
 
     /**
      * @param $type
@@ -27,13 +27,8 @@ trait HasJoinClause
      * @return Sql
      * @throws SqlException
      */
-    private function joinClause($type, RepositoryInterface $table, $alias = null)
+    final protected function joinClause($type, RepositoryInterface $table, $alias = null)
     {
-        //->leftJoin('posts', 'users.id', '=', 'posts.user_id')
-//        ->join('contacts', function ($join) {
-//        $join->on('users.id', '=', 'contacts.user_id')->orOn(...);
-//    })
-
         $this->ignoreOnClause = false;
 
         $sql = '';
@@ -69,7 +64,7 @@ trait HasJoinClause
      * @param null $second
      * @return Sql
      */
-    private function onClause($first, $operator = null, $second = null, $clause = FilterInterface::ON)
+    final protected function onClause($first, $operator = null, $second = null, $clause = FilterInterface::ON)
     {
         $sql = '';
         $sql .= ($this->ignoreOnClause) ? FilterInterface::AND : $clause;

@@ -63,7 +63,10 @@ class DemoController
         if($with_author){
             //$book->joinAuthor($author);
 
-            $query->leftJoin(['a'=>$author],'a.author_id','=','b.author_id');
+            $query->leftJoin(['a'=>$author],'a.author_id','=','b.author_id')
+                ->orOn('a.author_id','=',1);
+
+
 
             //$author->filterByAuthorId(1);
         }

@@ -19,7 +19,7 @@ trait HasColumnClause
      * @param bool $comma
      * @return Sql
      */
-    private function columnClause($column, $alias = false, $as = false, $comma = false)
+    final protected function columnClause($column, $alias = false, $as = false, $comma = false)
     {
         $sql = '';
         $sql .= !empty($comma) ? ',' : '';

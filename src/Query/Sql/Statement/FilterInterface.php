@@ -42,32 +42,6 @@ interface FilterInterface
     public function orWhere($column, $operator = null, $value = null);
 
     /**
-     * @param array $table
-     * @param null $first
-     * @param null $operator
-     * @param null $second
-     * @return SelectInterface
-     * @throws SqlException
-     */
-    public function leftJoin(array $table, $first = null, $operator = null, $second = null);
-
-    /**
-     * @param $first
-     * @param null $operator
-     * @param null $second
-     * @return FilterInterface
-     */
-    public function on($first, $operator, $second);
-
-    /**
-     * @param $first
-     * @param null $operator
-     * @param null $second
-     * @return FilterInterface
-     */
-    public function orOn($first, $operator, $second);
-
-    /**
      * @param array $clauses
      * @return Sql
      */

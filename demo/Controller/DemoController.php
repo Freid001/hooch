@@ -2,10 +2,13 @@
 
 namespace QueryMule\Demo\Controller;
 
-use QueryMule\Builder\Connection\Database;
-use QueryMule\Builder\Connection\DatabaseHandler;
+use Monolog\Logger;
+use Psr\Log\NullLogger;
+use QueryMule\Builder\Connection\Config;
+use QueryMule\Builder\Connection\Handler\DatabaseHandler;
 use QueryMule\Demo\Table\Author;
 use QueryMule\Demo\Table\Book;
+use QueryMule\Query\Repository\Table\Table;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
@@ -24,7 +27,10 @@ class DemoController
      */
     public function __construct()
     {
-        $database = new Database([
+        $config = new Config();
+        $config->setLogger(new Logger('demo'));
+        //$config->setLogger(new NullLogger());
+        $config->setConfigs([
             'sqlite' => [
                 DatabaseHandler::DATABASE_DRIVER => 'sqlite',
                 DatabaseHandler::DATABASE_DATABASE => 'sqlite.db',
@@ -33,46 +39,43 @@ class DemoController
             ]
         ]);
 
-        $this->driver = $database->dbh('sqlite')->driver();
+        $this->driver = $config->dbh('sqlite')->driver();
     }
 
     /**
      * @param $book_id
-     * @param null $author
+     * @param bool $with_author
      * @return string
      */
-    public function getBook($book_id, $author = null)
+    public function getBook($book_id, $with_author = false)
     {
-        $author = new Author($this->driver);
-
         $book = new Book($this->driver);
-        $query = $this->driver->select()->cols([SelectInterface::SQL_STAR])->from($book,'b');
-        $query->leftJoin(['a'=>$author],'a.author_id','=','b.author_id');
+        //$author = new Author($this->driver);
 
-        $stm = $query->build();
-
-        $result = $this->driver->fetch($stm);
-
-        var_dump($stm);
-        var_dump($result);
-
-        die;
+        $author = Table::make($this->driver)->setName('author');
 
         if(empty($book_id)){
             return json_encode(['error'=>'book_id is required!'], JSON_PRETTY_PRINT);
         }
 
-        $book = new Book($this->driver);
-
         $query = $book->select([SelectInterface::SQL_STAR],'b');
 
-        if($author){
-            $book->joinAuthor();
+        if($with_author){
+            //$book->joinAuthor($author);
+
+            $query->leftJoin(['a'=>$author],'a.author_id','=','b.author_id')
+                ->orOn('a.author_id','=',1);
+
+
+
+            //$author->filterByAuthorId(1);
         }
 
         $book->filterByBookId($book_id);
 
-        $result = $this->driver->fetchAll($query->build());
+        $stm = $query->build();
+
+        $result = $this->driver->fetchAll($stm);
 
         return json_encode($result, JSON_PRETTY_PRINT);
     }

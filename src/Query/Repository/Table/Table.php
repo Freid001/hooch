@@ -1,6 +1,7 @@
 <?php
 
 namespace QueryMule\Query\Repository\Table;
+use QueryMule\Query\Connection\Driver\DriverInterface;
 
 /**
  * Class Table
@@ -9,12 +10,37 @@ namespace QueryMule\Query\Repository\Table;
 class Table extends AbstractTable
 {
     /**
-     * @param $name
-     * @return AbstractTable
+     * @var string
      */
-    public static function set($name)
-    {
+    private $name;
 
+    /**
+     * Table constructor.
+     * @param DriverInterface $driver
+     */
+    public function __construct(DriverInterface $driver)
+    {
+        parent::__construct($driver);
+    }
+
+    /**
+     * @param DriverInterface $driver
+     * @return Table
+     */
+    public static function make(DriverInterface $driver)
+    {
+        return new self($driver);
+    }
+
+    /**
+     * @param $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -22,6 +48,6 @@ class Table extends AbstractTable
      */
     public function getName()
     {
-        return $this->getName();
+        return $this->name;
     }
 }

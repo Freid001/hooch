@@ -1,6 +1,6 @@
 <?php
 
-namespace QueryMule\Query\Connection;
+namespace QueryMule\Query\Connection\Handler;
 
 use QueryMule\Query\Connection\Driver\DriverInterface;
 

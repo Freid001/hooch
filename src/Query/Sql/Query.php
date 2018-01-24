@@ -11,18 +11,18 @@ trait Query
     /**
      * @var array
      */
-    private $sql = [];
+    protected $sql = [];
 
     /**
      * @var array
      */
-    private $parameters = [];
+    protected $parameters = [];
 
     /**
      * @param $type
      * @return string|null
      */
-    private function queryGet($type)
+    final protected function queryGet($type)
     {
         return !empty($this->sql[$type]) ? $this->sql[$type] : null;
     }
@@ -31,7 +31,7 @@ trait Query
      * @param $type
      * @param Sql $sql
      */
-    private function queryAdd($type, Sql $sql)
+    final protected function queryAdd($type, Sql $sql)
     {
         $this->sql[$type] = !empty($this->sql[$type]) ? $this->sql[$type] . ' ' . $sql->sql() : $sql->sql();
 
@@ -43,17 +43,19 @@ trait Query
     /**
      * @return void
      */
-    private function queryReset()
+    final protected function queryReset(array $clauses)
     {
-        $this->sql = [];
-        $this->parameters = [];
+        foreach($clauses as $clause) {
+            unset($this->sql[$clause]);
+            unset($this->parameters[$clause]);
+        }
     }
 
     /**
      * @param array $buildOrder
      * @return \QueryMule\Query\Sql\Sql
      */
-    private function queryBuild(array $buildOrder)
+    final protected function queryBuild(array $buildOrder)
     {
         $sql = '';
         $parameters = [];

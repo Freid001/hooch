@@ -16,28 +16,37 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
 trait HasJoinClause
 {
     /**
+     * @var bool
+     */
+    protected $ignoreOnClause = false;
+
+    /**
      * @param $type
      * @param RepositoryInterface $table
      * @param null $alias
      * @return Sql
      * @throws SqlException
      */
-    private function joinClause($type, RepositoryInterface $table, $alias = null)
+    final protected function joinClause($type, RepositoryInterface $table, $alias = null)
     {
-        //->leftJoin('posts', 'users.id', '=', 'posts.user_id')
-//        ->join('contacts', function ($join) {
-//        $join->on('users.id', '=', 'contacts.user_id')->orOn(...);
-//    })
-
-        //LEFT JOIN posts ON user.id = post.user_id;
-        //RIGHT JOIN posts ON user.id = post.user_id;
-        //INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
-        //FULL OUTER JOIN table2 ON table1.column_name = table2.column_name;
+        $this->ignoreOnClause = false;
 
         $sql = '';
         switch ($type) {
             case FilterInterface::LEFT_JOIN:
                 $sql .= FilterInterface::LEFT_JOIN . ' ' . $table->getName();
+                break;
+
+            case "RIGHT JOIN":
+                break;
+
+            case "INNER JOIN":
+                break;
+
+            case "OUTER JOIN":
+                break;
+
+            case "CROSS JOIN":
                 break;
 
             default:
@@ -55,10 +64,10 @@ trait HasJoinClause
      * @param null $second
      * @return Sql
      */
-    private function onClause($first, $operator = null, $second = null, $clause = FilterInterface::ON)
+    final protected function onClause($first, $operator = null, $second = null, $clause = FilterInterface::ON)
     {
         $sql = '';
-        $sql .= $clause;
+        $sql .= ($this->ignoreOnClause) ? FilterInterface::AND : $clause;
         $sql .= ' '.$first;
         $sql .= ' '.$operator;
         $sql .= ' '.$second;

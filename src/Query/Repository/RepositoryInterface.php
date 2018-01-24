@@ -12,12 +12,6 @@ use QueryMule\Query\Sql\Statement\FilterInterface;
 interface RepositoryInterface
 {
     /**
-     * TableInterface constructor.
-     * @param DriverInterface $driver
-     */
-    public function __construct(DriverInterface $driver);
-
-    /**
      * @return string
      */
     public function getName();
@@ -25,5 +19,5 @@ interface RepositoryInterface
     /**
      * @return FilterInterface
      */
-    public function getFilter() : FilterInterface;
+    public function filter() : FilterInterface;
 }

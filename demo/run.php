@@ -19,7 +19,10 @@ $controller = new DemoController();
 switch ($method)
 {
     case "get":
-        echo $controller->getBook(isset($argv[1]) ? $argv[1] : null) . "\n";
+        echo $controller->getBook(
+                isset($argv[1]) ? (string)$argv[1] : null,
+                (isset($argv[2]) && $argv[2] == "true") ? true : false
+            ) . "\n";
         break;
 
     case "post":

@@ -11,17 +11,17 @@ trait Accent
     /**
      * @var string
      */
-    private $accent;
+    protected $accent;
 
     /**
      * @var bool
      */
-    private $ignoreAccentSymbol = false;
+    protected $ignoreAccentSymbol = false;
 
     /**
      * @param $accent
      */
-    private function setAccent($accent)
+    final protected function setAccent($accent)
     {
         $this->accent = $accent;
     }
@@ -29,7 +29,7 @@ trait Accent
     /**
      * @param bool $ignore
      */
-    private function ignoreAccentSymbol($ignore = true)
+    final protected function ignoreAccentSymbol($ignore = true)
     {
         $this->ignoreAccentSymbol = $ignore;
     }
@@ -39,7 +39,7 @@ trait Accent
      * @param bool $delimiter
      * @return string
      */
-    private function addAccent($string,$delimiter = false)
+    final protected function addAccent($string,$delimiter = false)
     {
         if($this->ignoreAccentSymbol){
             return $string;

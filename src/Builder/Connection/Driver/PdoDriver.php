@@ -2,6 +2,8 @@
 
 namespace QueryMule\Builder\Connection\Driver;
 
+use Psr\Log\LoggerInterface;
+use Psr\SimpleCache\CacheInterface;
 use QueryMule\Builder\Exception\DriverException;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
@@ -26,13 +28,40 @@ class PdoDriver implements DriverInterface
     private $driver;
 
     /**
-     * PdoAdapter constructor.
-     * @param \PDO $pdo
+     * @var CacheInterface
      */
-    public function __construct(\PDO $pdo)
+    private $cache;
+
+    /**
+     * @var null|int
+     */
+    private $ttl;
+
+    /**
+     * @var FilterInterface
+     */
+    private $filter;
+
+    /**
+     * @var SelectInterface
+     */
+    private $select;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * PdoDriver constructor.
+     * @param \PDO $pdo
+     * @param LoggerInterface $logger
+     */
+    public function __construct(\PDO $pdo, LoggerInterface $logger)
     {
         $this->pdo = $pdo;
         $this->driver = $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        $this->logger = $logger;
     }
 
     /**
@@ -41,87 +70,167 @@ class PdoDriver implements DriverInterface
      */
     public function filter() : FilterInterface
     {
-        $filter = null;
+        $this->filter = null;
         switch($this->driver){
             case self::DRIVER_MYSQL:
-                $filter = new \QueryMule\Builder\Sql\Mysql\Filter();
+                $this->filter = new \QueryMule\Builder\Sql\Mysql\Filter();
                 break;
 
             case self::DRIVER_PGSQL:
-                $filter = new \QueryMule\Builder\Sql\Pgsql\Filter();
+                $this->filter = new \QueryMule\Builder\Sql\Pgsql\Filter();
                 break;
 
             case self::DRIVER_SQLITE:
-                $filter = new \QueryMule\Builder\Sql\Sqlite\Filter();
+                $this->filter = new \QueryMule\Builder\Sql\Sqlite\Filter();
                 break;
 
             default:
                 throw new DriverException('Driver: '.$this->driver.' not currently supported');
         }
 
-        return $filter;
+        return $this->filter;
     }
 
     /**
      * @param array $cols
-     * @param RepositoryInterface|null $table
+     * @param RepositoryInterface|null $repository
      * @return SelectInterface
      * @throws DriverException
      */
-    public function select(array $cols = [],RepositoryInterface $table = null) : SelectInterface
+    public function select(array $cols = [],RepositoryInterface $repository = null) : SelectInterface
     {
-        $select = null;
+        $this->select = null;
         switch($this->driver){
             case self::DRIVER_MYSQL:
-                $select = new \QueryMule\Builder\Sql\Mysql\Select($cols, $table);
+                $this->select = new \QueryMule\Builder\Sql\Mysql\Select($cols, $repository);
                 break;
 
             case self::DRIVER_PGSQL:
-                $select = new \QueryMule\Builder\Sql\Pgsql\Select($cols, $table);
+                $this->select = new \QueryMule\Builder\Sql\Pgsql\Select($cols, $repository);
                 break;
 
             case self::DRIVER_SQLITE:
-                $select = new \QueryMule\Builder\Sql\Sqlite\Select($cols, $table);
+                $this->select = new \QueryMule\Builder\Sql\Sqlite\Select($cols, $repository);
                 break;
 
             default:
                 throw new DriverException('Driver: '.$this->driver.' not currently supported');
         }
 
-        return $select;
+        return $this->select;
+    }
+
+    /**
+     * @param $type
+     * @return null|FilterInterface|SelectInterface
+     */
+    public function getStatement($type)
+    {
+        $statement = null;
+        switch ($type){
+            case 'filter':
+                $statement = $this->filter;
+                break;
+
+            case 'select':
+                $statement = $this->select;
+                break;
+        }
+
+        return $statement;
+    }
+
+    /**
+     * @return void
+     */
+    public function reset()
+    {
+        $this->filter = null;
+        $this->select = null;
+    }
+
+    /**
+     * @param CacheInterface $cache
+     * @param int $ttl
+     * @return DriverInterface
+     */
+    public function cache(CacheInterface $cache, $ttl = null) : DriverInterface
+    {
+        $this->cache = $cache;
+        $this->ttl = $ttl;
+
+        return $this;
     }
 
     /**
      * @param Sql $sql
-     * @return array
+     * @return array|bool
      */
     public function fetch(Sql $sql)
     {
-        return $this->execute($sql)->fetch(\PDO::FETCH_ASSOC);
+        return $this->execute($sql, 'fetch');
     }
 
     /**
      * @param Sql $sql
-     * @return array
+     * @return array|bool
      */
     public function fetchAll(Sql $sql)
     {
-        return $this->execute($sql)->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->execute($sql, 'fetch_all');
     }
 
     /**
      * @param Sql $sql
-     * @return \PDOStatement
-     * @throws DriverException
+     * @param string $method
+     * @return array|bool|mixed
      */
-    private function execute(Sql $sql)
+    private function execute(Sql $sql, string $method)
     {
-        $query = $this->pdo->prepare($sql->sql());
+        $cache = false;
+        $key = md5(serialize($sql));
+        $time = microtime(true);
 
-        if (!$query || !$query->execute($sql->parameters())) {
-            throw new DriverException('PDO error code: ' . $this->pdo->errorCode());
+        if(empty($this->cache) || empty($this->cache->has($key))) {
+            $query = $this->pdo->prepare($sql->sql());
+
+            if (!$query || !$query->execute($sql->parameters())) {
+                $this->logger->error("PDO error code: " . $this->pdo->errorCode(), [
+                    'query' => $sql->sql(),
+                    'message' => $this->pdo->errorInfo(),
+                ]);
+
+                return false;
+            }
+
+            $result = [];
+            switch ($method){
+                case 'fetch':
+                    $result = $query->fetch();
+                    break;
+                case 'fetch_all':
+                    $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+                    break;
+            }
+
+            if(!empty($this->cache)) {
+                $this->cache->set($key, json_encode($result), $this->ttl);
+            }
+        }else {
+            $cache = true;
+            $result = json_decode($this->cache->get($key));
         }
 
-        return $query;
+        $this->reset();
+
+        $this->logger->info("Successfully executed query",[
+            'query'             => $sql->sql(),
+            'parameters'        => $sql->parameters(),
+            'driver'            => $this->driver,
+            'execution_time'    => round(microtime(true) - $time,4) . "s",
+            'from_cache'        => $cache
+        ]);
+
+        return $result;
     }
 }

@@ -16,7 +16,7 @@ trait HasWhereClause
     /**
      * @var bool
      */
-    private $ignoreWhereClause = false;
+    protected $ignoreWhereClause = false;
 
     /**
      * @param $column
@@ -26,7 +26,7 @@ trait HasWhereClause
      * @return Sql
      * @throws SqlException
      */
-    private function whereClause($column,$operator = null,$value = null,$clause = FilterInterface::WHERE)
+    final protected function whereClause($column,$operator = null,$value = null,$clause = FilterInterface::WHERE)
     {
         if($this->ignoreWhereClause){
             $clause = null;
@@ -38,12 +38,12 @@ trait HasWhereClause
                 $sql .= FilterInterface::WHERE.' '.$column.' '.$operator;
                 break;
 
-            case FilterInterface::AND_WHERE:
-                $sql .= FilterInterface::AND_WHERE.' '.$column.' '.$operator;
+            case FilterInterface::AND:
+                $sql .= FilterInterface::AND.' '.$column.' '.$operator;
                 break;
 
-            case FilterInterface::OR_WHERE:
-                $sql .= FilterInterface::OR_WHERE.' '.$column.' '.$operator;
+            case FilterInterface::OR:
+                $sql .= FilterInterface::OR.' '.$column.' '.$operator;
                 break;
 
             default:
@@ -57,7 +57,7 @@ trait HasWhereClause
     /**
      * @param \Closure $column
      */
-    private function nestedWhereClause(\Closure $column)
+    final protected function nestedWhereClause(\Closure $column)
     {
         $this->ignoreWhereClause = true;
         $column($this);

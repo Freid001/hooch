@@ -18,7 +18,7 @@ trait HasFromClause
      * @param null $alias
      * @return Sql
      */
-    private function fromClause(RepositoryInterface $table, $alias = null)
+    final protected function fromClause(RepositoryInterface $table, $alias = null)
     {
         $sql = '';
         $sql .= SelectInterface::FROM.' '.$table->getName();

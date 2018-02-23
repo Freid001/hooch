@@ -12,7 +12,7 @@ use QueryMule\Query\Sql\Statement\FilterInterface;
  * Class Filter
  * @package QueryMule\Builder\Sql\Generic
  */
-abstract class Filter implements FilterInterface
+class Filter implements FilterInterface
 {
     use Accent;
     use Query;
@@ -21,7 +21,7 @@ abstract class Filter implements FilterInterface
 
     /**
      * Filter constructor.
-     * @param $accent
+     * @param string $accent
      */
     public function __construct($accent)
     {
@@ -42,9 +42,9 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param $column
-     * @param null $operator
-     * @param null $value
+     * @param string|\Closure $column
+     * @param string|null $operator
+     * @param string|null $value
      * @param string $clause
      * @return FilterInterface
      */
@@ -74,9 +74,9 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param $column
-     * @param null $operator
-     * @param null $value
+     * @param string|\Closure $column
+     * @param string|null $operator
+     * @param string|null $value
      * @return FilterInterface
      */
     public function orWhere($column, $operator = null, $value = null) : FilterInterface

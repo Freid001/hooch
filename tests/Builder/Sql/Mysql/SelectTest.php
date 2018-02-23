@@ -47,7 +47,7 @@ class SelectTest extends TestCase
 
     public function testSelectCols()
     {
-        $this->select->cols(['col_a','col_b','col_c']);
+        $this->select->cols(['col_a'])->cols(['col_b'])->cols(['col_c']);
         $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c`",trim($this->select->build([
             Select::SELECT,
             Select::COLS
@@ -107,6 +107,30 @@ class SelectTest extends TestCase
         ])->sql()));
     }
 
+    public function testSelectColsFromWihOrderBy()
+    {
+
+    }
+
+    public function testSelectColsFromWihGroupBy()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->groupBy('col_a')->groupBy('col_b');
+        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name GROUP BY `col_a` ,`col_b`",trim($this->select->build([
+            Select::SELECT,
+            Select::COLS,
+            Select::FROM,
+            Select::GROUP
+        ])->sql()));
+    }
+
+    public function testSelectColsFromWihLimit()
+    {
+
+    }
+
     public function testSelectWhereFilterCall()
     {
         $filter = $this->createMock(FilterInterface::class);
@@ -143,5 +167,4 @@ class SelectTest extends TestCase
         ]);
     }
 
-    
 }

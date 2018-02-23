@@ -39,7 +39,7 @@ class DatabaseHandler implements DatabaseHandlerInterface
 
     /**
      * DatabaseHandler constructor.
-     * @param $name
+     * @param string $name
      * @param array $dbh
      * @param LoggerInterface $logger
      * @throws DatabaseException
@@ -79,7 +79,7 @@ class DatabaseHandler implements DatabaseHandlerInterface
                 $username = !empty($dbh[self::DATABASE_USER]) ? $dbh[self::DATABASE_USER] : null;
                 $password = !empty($dbh[self::DATABASE_PASSWORD]) ? $dbh[self::DATABASE_PASSWORD] : null;
 
-                $this->driver = new PdoDriver(new \pdo($dbh[self::DATABASE_DRIVER] . $dns,$username,$password), $this->logger);
+                $this->driver = new PdoDriver(new \PDO($dbh[self::DATABASE_DRIVER] . $dns,$username,$password), $this->logger);
                 break;
 
             case self::ADAPTER_MYSQLI:

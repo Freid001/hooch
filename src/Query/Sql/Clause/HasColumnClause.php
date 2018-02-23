@@ -13,7 +13,7 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
 trait HasColumnClause
 {
     /**
-     * @param $column
+     * @param string $column
      * @param bool $alias
      * @param bool $as
      * @param bool $comma

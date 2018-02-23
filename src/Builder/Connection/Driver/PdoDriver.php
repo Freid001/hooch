@@ -33,17 +33,17 @@ class PdoDriver implements DriverInterface
     private $cache;
 
     /**
-     * @var null|int
+     * @var null|integer
      */
     private $ttl;
 
     /**
-     * @var FilterInterface
+     * @var FilterInterface|null
      */
     private $filter;
 
     /**
-     * @var SelectInterface
+     * @var SelectInterface|null
      */
     private $select;
 
@@ -121,7 +121,7 @@ class PdoDriver implements DriverInterface
     }
 
     /**
-     * @param $type
+     * @param string $type
      * @return null|FilterInterface|SelectInterface
      */
     public function getStatement($type)
@@ -151,7 +151,7 @@ class PdoDriver implements DriverInterface
 
     /**
      * @param CacheInterface $cache
-     * @param int $ttl
+     * @param integer $ttl
      * @return DriverInterface
      */
     public function cache(CacheInterface $cache, $ttl = null) : DriverInterface

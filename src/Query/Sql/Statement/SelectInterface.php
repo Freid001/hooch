@@ -46,60 +46,66 @@ interface SelectInterface extends FilterInterface
 
     /**
      * @param array $cols
-     * @param null $alias
+     * @param string|null $alias
      * @return SelectInterface
      */
     public function cols($cols = [self::SQL_STAR], $alias = null) : SelectInterface;
 
     /**
      * @param RepositoryInterface $table
+     * @param string|null $alias
      * @return SelectInterface
      */
     public function from(RepositoryInterface $table, $alias = null) : SelectInterface;
 
     /**
      * @param array $table
-     * @param null $first
-     * @param null $operator
-     * @param null $second
+     * @param string $first
+     * @param string|null $operator
+     * @param string|null $second
      * @return SelectInterface
      * @throws SqlException
      */
-    public function leftJoin(array $table, $first = null, $operator = null, $second = null) : SelectInterface;
+    public function leftJoin(array $table, $first, $operator = null, $second = null) : SelectInterface;
 
     /**
-     * @param $first
-     * @param $operator
-     * @param $second
+     * @param string $first
+     * @param string $operator
+     * @param string $second
      * @return SelectInterface
      */
     public function on($first, $operator, $second) : SelectInterface;
 
     /**
-     * @param $first
-     * @param null $operator
-     * @param null $second
+     * @param string $first
+     * @param string|null $operator
+     * @param string|null $second
      * @return SelectInterface
      */
     public function orOn($first, $operator = null, $second = null) : SelectInterface;
 
-
     /**
-     * @param $column
-     * @param null $operator
-     * @param null $value
+     * @param string $column
+     * @param string|null $operator
+     * @param string|null $value
      * @param string $clause
      * @return SelectInterface
      */
     public function where($column, $operator = null, $value = null, $clause = self::WHERE) : SelectInterface;
 
     /**
-     * @param $column
-     * @param null $operator
-     * @param null $value
+     * @param string $column
+     * @param string|null $operator
+     * @param string|null $value
      * @return SelectInterface
      */
     public function orWhere($column, $operator = null, $value = null) : SelectInterface;
+
+    /**
+     * @param string $column
+     * @return SelectInterface
+     */
+    public function groupBy($column) : SelectInterface;
 
     /**
      * @param array $clauses

@@ -10,7 +10,7 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class AdapterInterface
- * @package QueryMule\Adapter
+ * @package QueryMule\Query\Connection\Driver
  */
 interface DriverInterface
 {
@@ -31,14 +31,14 @@ interface DriverInterface
     public function select(array $cols = [],RepositoryInterface $table = null) : SelectInterface;
 
     /**
-     * @param $statement
-     * @return mixed
+     * @param string $statement
+     * @return FilterInterface|SelectInterface
      */
     public function getStatement($statement);
 
     /**
      * @param CacheInterface $cache
-     * @param null $ttl
+     * @param integer|null $ttl
      * @return DriverInterface
      */
     public function cache(CacheInterface $cache, $ttl = null) : DriverInterface;

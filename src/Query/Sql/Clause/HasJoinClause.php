@@ -21,9 +21,9 @@ trait HasJoinClause
     protected $ignoreOnClause = false;
 
     /**
-     * @param $type
+     * @param string $type
      * @param RepositoryInterface $table
-     * @param null $alias
+     * @param string|null $alias
      * @return Sql
      * @throws SqlException
      */
@@ -38,6 +38,7 @@ trait HasJoinClause
                 break;
 
             case "RIGHT JOIN":
+                $sql .= FilterInterface::LEFT_JOIN . ' ' . $table->getName();
                 break;
 
             case "INNER JOIN":
@@ -59,9 +60,9 @@ trait HasJoinClause
     }
 
     /**
-     * @param $first
-     * @param null $operator
-     * @param null $second
+     * @param string $first
+     * @param string|null $operator
+     * @param string|null $second
      * @return Sql
      */
     final protected function onClause($first, $operator = null, $second = null, $clause = FilterInterface::ON)
@@ -75,9 +76,3 @@ trait HasJoinClause
         return new Sql($sql);
     }
 }
-
-
-
-
-
-

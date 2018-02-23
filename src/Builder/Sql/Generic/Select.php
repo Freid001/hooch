@@ -7,6 +7,7 @@ use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasColumnClause;
 use QueryMule\Query\Sql\Clause\HasFromClause;
+use QueryMule\Query\Sql\Clause\HasGroupByClause;
 use QueryMule\Query\Sql\Clause\HasJoinClause;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
@@ -17,7 +18,7 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
  * Class Select
  * @package QueryMule\Builder\Sql\Sqlite
  */
-abstract class Select implements SelectInterface
+class Select implements SelectInterface
 {
     use Accent;
     use Query;
@@ -25,6 +26,7 @@ abstract class Select implements SelectInterface
     use HasFromClause;
     use HasColumnClause;
     use HasJoinClause;
+    use HasGroupByClause;
 
     /**
      * @var FilterInterface
@@ -35,7 +37,7 @@ abstract class Select implements SelectInterface
      * Select constructor.
      * @param array $cols
      * @param RepositoryInterface|null $table
-     * @param null $accent
+     * @param string|null $accent
      */
     public function __construct(array $cols = [], RepositoryInterface $table = null, $accent = null)
     {
@@ -111,13 +113,13 @@ abstract class Select implements SelectInterface
 
     /**
      * @param array $table
-     * @param null $first
-     * @param null $operator
-     * @param null $second
+     * @param string $first
+     * @param string|null $operator
+     * @param string|null $second
      * @return SelectInterface
      * @throws SqlException
      */
-    public function leftJoin(array $table, $first = null, $operator = null, $second = null) : SelectInterface
+    public function leftJoin(array $table, $first, $operator = null, $second = null) : SelectInterface
     {
         $keys = array_keys($table);
 
@@ -132,10 +134,14 @@ abstract class Select implements SelectInterface
         }
     }
 
+//    public function join(array $table, \Closure $on)
+//    {
+//    }
+
     /**
-     * @param $first
-     * @param null $operator
-     * @param null $second
+     * @param string $first
+     * @param string|null $operator
+     * @param string|null $second
      * @return SelectInterface
      */
     public function on($first, $operator, $second) : SelectInterface
@@ -146,9 +152,9 @@ abstract class Select implements SelectInterface
     }
 
     /**
-     * @param $first
-     * @param null $operator
-     * @param null $second
+     * @param string $first
+     * @param string|null $operator
+     * @param string|null $second
      * @return SelectInterface
      */
     public function orOn($first, $operator = null, $second = null) : SelectInterface
@@ -158,19 +164,19 @@ abstract class Select implements SelectInterface
         return $this;
     }
 
-    public function rightJoin(){}
-
-    public function crossJoin(){}
-
-    public function innerJoin(){}
-
-    public function outerJoin(){}
+//    public function rightJoin(){}
+//
+//    public function crossJoin(){}
+//
+//    public function innerJoin(){}
+//
+//    public function outerJoin(){}
 
     /**
-     * @param $column
-     * @param null $operator
-     * @param null $value
-     * @param $clause
+     * @param string $column
+     * @param string|null $operator
+     * @param string|null $value
+     * @param string $clause
      * @return SelectInterface
      */
     public function where($column, $operator = null, $value = null, $clause = self::WHERE) : SelectInterface
@@ -181,9 +187,9 @@ abstract class Select implements SelectInterface
     }
 
     /**
-     * @param $column
-     * @param null $operator
-     * @param null $value
+     * @param string $column
+     * @param string|null $operator
+     * @param string|null $value
      * @return SelectInterface
      */
     public function orWhere($column, $operator = null, $value = null) : SelectInterface
@@ -192,6 +198,32 @@ abstract class Select implements SelectInterface
 
         return $this;
     }
+
+//    public function union()
+//    {}
+
+    /**
+     * @param string $column
+     * @param string|null $alias
+     * @return SelectInterface
+     */
+    public function groupBy($column, $alias = null) : SelectInterface
+    {
+        $this->queryAdd(self::GROUP, $this->groupByClause($this->addAccent($column), (empty($this->queryGet(self::GROUP)))));
+
+        return $this;
+    }
+
+//    public function order($column, $sort)
+//    {}
+//
+//    public function having()
+//    {
+//
+//    }
+//
+//    public function limit()
+//    {}
 
     /**
      * @param array $clauses

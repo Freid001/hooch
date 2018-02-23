@@ -20,7 +20,7 @@ class Sql
 
     /**
      * Sql constructor.
-     * @param $sql
+     * @param string $sql
      * @param array $parameters
      */
     public function __construct($sql, array $parameters = [])

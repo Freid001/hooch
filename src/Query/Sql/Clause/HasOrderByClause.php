@@ -13,13 +13,25 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
 trait HasOrderByClause
 {
     /**
-     * @param array $column
+     * @param string $column
+     * @param string $sort
+     * @param bool $alias
+     * @param bool $comma
      * @return Sql
      */
-    final protected function orderByClause($column, $sort, $withClause = true)
+    final protected function orderByClause($column, $sort = 'desc', $alias = false, $comma = false)
     {
         $sql = '';
-        $sql .= SelectInterface::ORDER.' '.$column;
+
+        if($comma) {
+            $sql .= ',';
+            $sql .= !empty($alias) ? $alias.'.'.$column : $column;
+            $sql .= ' '.strtoupper($sort);
+        }else {
+            $sql = SelectInterface::ORDER;
+            $sql .= !empty($alias) ? ' '.$alias.'.'.$column : ' '.$column;
+            $sql .= ' '.strtoupper($sort);
+        }
 
         return new Sql($sql);
     }

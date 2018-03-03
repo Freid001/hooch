@@ -25,7 +25,7 @@ trait HasColumnClause
         $sql .= !empty($comma) ? ',' : '';
         $sql .= !empty($alias) ? $alias.'.' : '';
         $sql .= $column;
-        $sql .= !empty($as) ? ' '.SelectInterface::COL_AS.' '.$as : '';
+        $sql .= !empty($as) ? ' '.SelectInterface::AS.' '.$as : '';
 
         return new Sql($sql);
     }

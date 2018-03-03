@@ -54,7 +54,7 @@ trait HasJoinClause
                 throw new SqlException('Join type not supported.');
         }
 
-        $sql .= !empty($alias) ? ' '.SelectInterface::COL_AS.' '.$alias : ' ';
+        $sql .= !empty($alias) ? ' '.SelectInterface::AS.' '.$alias : ' ';
 
         return new Sql($sql);
     }

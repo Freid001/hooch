@@ -13,17 +13,21 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
 trait HasGroupByClause
 {
     /**
-     * @param $column
-     * @param bool $withClause
+     * @param string $column
+     * @param bool $alias
+     * @param bool $comma
      * @return Sql
      */
-    final protected function groupByClause($column, $withClause = true)
+    final protected function groupByClause($column, $alias = false, $comma = false)
     {
         $sql = '';
-        if($withClause) {
-            $sql .= SelectInterface::GROUP.' '.$column;
+
+        if($comma) {
+            $sql .= ',';
+            $sql .= !empty($alias) ? $alias.'.'.$column : $column;
         }else {
-            $sql .= ','.$column;
+            $sql = SelectInterface::GROUP;
+            $sql .= !empty($alias) ? ' '.$alias.'.'.$column : ' '.$column;
         }
 
         return new Sql($sql);

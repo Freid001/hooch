@@ -107,30 +107,6 @@ class SelectTest extends TestCase
         ])->sql()));
     }
 
-    public function testSelectColsFromWihOrderBy()
-    {
-
-    }
-
-    public function testSelectColsFromWihGroupBy()
-    {
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-
-        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->groupBy('col_a')->groupBy('col_b');
-        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name GROUP BY `col_a` ,`col_b`",trim($this->select->build([
-            Select::SELECT,
-            Select::COLS,
-            Select::FROM,
-            Select::GROUP
-        ])->sql()));
-    }
-
-    public function testSelectColsFromWihLimit()
-    {
-
-    }
-
     public function testSelectWhereFilterCall()
     {
         $filter = $this->createMock(FilterInterface::class);
@@ -165,6 +141,97 @@ class SelectTest extends TestCase
             Select::FROM,
             Select::WHERE
         ]);
+    }
+
+    public function testSelectColsFromGroupBy()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->groupBy('col_a')->groupBy('col_b');
+        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name GROUP BY `col_a` ,`col_b`",trim($this->select->build([
+            Select::SELECT,
+            Select::COLS,
+            Select::FROM,
+            Select::GROUP
+        ])->sql()));
+    }
+
+    public function testSelectColsFromGroupByWithAlias()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->groupBy('col_a', 't')->groupBy('col_b','t');
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t GROUP BY `t`.`col_a` ,`t`.`col_b`",trim($this->select->build([
+            Select::SELECT,
+            Select::COLS,
+            Select::FROM,
+            Select::GROUP
+        ])->sql()));
+    }
+
+    public function testSelectColsFromOrderBy()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->orderBy('col_a')->orderBy('col_b','asc');
+        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name ORDER BY `col_a` DESC ,`col_b` ASC",trim($this->select->build([
+            Select::SELECT,
+            Select::COLS,
+            Select::FROM,
+            Select::ORDER
+        ])->sql()));
+    }
+
+    public function testSelectColsFromOrderByWithAlias()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'],'t')->from($table,'t')->orderBy('col_a','desc','t')->orderBy('col_b','asc','t');
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t ORDER BY `t`.`col_a` DESC ,`t`.`col_b` ASC",trim($this->select->build([
+            Select::SELECT,
+            Select::COLS,
+            Select::FROM,
+            Select::ORDER
+        ])->sql()));
+    }
+
+    public function testSelectColsFromGroupByHaving()
+    {}
+
+    public function testSelectColsFromGroupByHavingWithAlias()
+    {}
+
+    public function testSelectColsFromLimit()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->limit(10);
+        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name LIMIT 10",trim($this->select->build([
+            Select::SELECT,
+            Select::COLS,
+            Select::FROM,
+            Select::LIMIT
+        ])->sql()));
+    }
+
+    public function testSelectColsFromLimitOffset()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->limit(10)->offset(3);
+        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name LIMIT 10 OFFSET 3",trim($this->select->build([
+            Select::SELECT,
+            Select::COLS,
+            Select::FROM,
+            Select::LIMIT,
+            Select::OFFSET
+        ])->sql()));
     }
 
 }

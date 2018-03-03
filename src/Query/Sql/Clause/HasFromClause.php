@@ -22,7 +22,7 @@ trait HasFromClause
     {
         $sql = '';
         $sql .= SelectInterface::FROM.' '.$table->getName();
-        $sql .= !empty($alias) ? ' '.SelectInterface::COL_AS.' '.$alias : null;
+        $sql .= !empty($alias) ? ' '.SelectInterface::AS.' '.$alias : null;
 
         return new Sql($sql);
     }

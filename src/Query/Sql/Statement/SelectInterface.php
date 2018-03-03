@@ -13,7 +13,7 @@ use QueryMule\Query\Sql\Sql;
 interface SelectInterface extends FilterInterface
 {
     const COLS = 'COL';
-    const COL_AS = 'AS';
+    const AS = 'AS';
     const COUNT = 'COUNT';
     const DELETE = 'DELETE';
     const DISTINCT = 'DISTINCT';
@@ -30,6 +30,7 @@ interface SelectInterface extends FilterInterface
     const INSERT = 'INSERT';
     const INTO = 'INTO';
     const LIMIT = 'LIMIT';
+    const OFFSET = 'OFFSET';
     const ORDER = 'ORDER BY';
     const SET = 'SET';
     const SELECT = 'SELECT';
@@ -103,9 +104,30 @@ interface SelectInterface extends FilterInterface
 
     /**
      * @param string $column
+     * @param string|null $alias
      * @return SelectInterface
      */
-    public function groupBy($column) : SelectInterface;
+    public function groupBy($column, $alias = null) : SelectInterface;
+
+    /**
+     * @param string $column
+     * @param string $sort
+     * @param null $alias
+     * @return SelectInterface
+     */
+    public function orderBy($column, $sort = 'desc', $alias = null) : SelectInterface;
+
+    /**
+     * @param int $limit
+     * @return SelectInterface
+     */
+    public function limit($limit) : SelectInterface;
+
+    /**
+     * @param int $offset
+     * @return SelectInterface
+     */
+    public function offset($offset) : SelectInterface;
 
     /**
      * @param array $clauses

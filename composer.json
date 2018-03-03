@@ -11,7 +11,9 @@
     ],
     "authors": [
         {
-            "name": "Freid001"
+            "name": "Fraser Reid",
+            "homepage": "https://freid001.github.io",
+            "role": "Developer"
         }
     ],
     "license": "BSD-3-Clause",
@@ -34,7 +36,5 @@
         "phpunit/phpunit": "^6.4.3",
         "phpmetrics/phpmetrics": "^2.3",
         "phpstan/phpstan": "^0.9.2"
-    },
-    "minimum-stability": "stable",
-    "version": "0.1.0"
+    }
 }

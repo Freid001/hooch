@@ -19,10 +19,10 @@ trait HasWhereClause
     protected $ignoreWhereClause = false;
 
     /**
-     * @param $column
-     * @param $operator
-     * @param $value
-     * @param $clause
+     * @param string $column
+     * @param string|null $operator
+     * @param string|null $value
+     * @param string|null $clause
      * @return Sql
      * @throws SqlException
      */

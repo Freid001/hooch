@@ -51,7 +51,7 @@ class Config implements DatabaseInterface, LoggerAwareInterface
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @return DatabaseHandlerInterface
      * @throws DatabaseException
      */

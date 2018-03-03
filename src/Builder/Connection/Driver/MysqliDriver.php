@@ -30,17 +30,17 @@ class MysqliDriver implements DriverInterface
     private $cache;
 
     /**
-     * @var null|int
+     * @var null|integer
      */
     private $ttl;
 
     /**
-     * @var FilterInterface
+     * @var FilterInterface|null
      */
     private $filter;
 
     /**
-     * @var SelectInterface
+     * @var SelectInterface|null
      */
     private $select;
 
@@ -83,7 +83,7 @@ class MysqliDriver implements DriverInterface
     }
 
     /**
-     * @param $type
+     * @param string $type
      * @return null|FilterInterface|SelectInterface
      */
     public function getStatement($type)
@@ -113,7 +113,7 @@ class MysqliDriver implements DriverInterface
 
     /**
      * @param CacheInterface $cache
-     * @param int $ttl
+     * @param integer $ttl
      * @return DriverInterface
      */
     public function cache(CacheInterface $cache, $ttl = null) : DriverInterface
@@ -147,7 +147,7 @@ class MysqliDriver implements DriverInterface
     /**
      * @param Sql $sql
      * @param string $method
-     * @return bool|\mysqli_result
+     * @return array|bool
      */
     private function execute(Sql $sql, string $method)
     {

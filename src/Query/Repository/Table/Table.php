@@ -33,7 +33,7 @@ class Table extends AbstractTable
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return $this
      */
     public function setName($name)

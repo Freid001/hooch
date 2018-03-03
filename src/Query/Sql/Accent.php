@@ -19,7 +19,7 @@ trait Accent
     protected $ignoreAccentSymbol = false;
 
     /**
-     * @param $accent
+     * @param string $accent
      */
     final protected function setAccent($accent)
     {
@@ -35,7 +35,7 @@ trait Accent
     }
 
     /**
-     * @param $string
+     * @param string $string
      * @param bool $delimiter
      * @return string
      */
@@ -59,12 +59,3 @@ trait Accent
         return $this->accent.$string.$this->accent;
     }
 }
-
-
-
-
-
-
-
-
-

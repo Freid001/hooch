@@ -13,7 +13,7 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
 trait HasColumnClause
 {
     /**
-     * @param $column
+     * @param string $column
      * @param bool $alias
      * @param bool $as
      * @param bool $comma
@@ -25,7 +25,7 @@ trait HasColumnClause
         $sql .= !empty($comma) ? ',' : '';
         $sql .= !empty($alias) ? $alias.'.' : '';
         $sql .= $column;
-        $sql .= !empty($as) ? ' '.SelectInterface::COL_AS.' '.$as : '';
+        $sql .= !empty($as) ? ' '.SelectInterface::AS.' '.$as : '';
 
         return new Sql($sql);
     }

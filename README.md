@@ -1,6 +1,7 @@
 <img src="docs/img/logo.png" width="375" height="90">
 
 [![Build Status](https://travis-ci.org/blue-strawberry/query-mule.svg?branch=master)](https://travis-ci.org/blue-strawberry/query-mule)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/32a64245-2815-4929-b317-5a5d197d0b5a/mini.png)](https://insight.sensiolabs.com/projects/32a64245-2815-4929-b317-5a5d197d0b5a)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](LICENSE)
 
 # About
@@ -51,5 +52,3 @@ composer require blue-strawberry/query-mule
 ```bash
 php demo/run.php
 ```
-
-https://codemetricsviewer.wordpress.com/2011/06/26/how-to-interpret-received-results/

@@ -1,4 +1,7 @@
-<?php namespace QueryMule\Query\Connection;
+<?php
+
+namespace QueryMule\Query\Connection;
+
 use QueryMule\Query\Connection\Handler\DatabaseHandlerInterface;
 
 /**
@@ -8,7 +11,7 @@ use QueryMule\Query\Connection\Handler\DatabaseHandlerInterface;
 interface DatabaseInterface
 {
     /**
-     * @param $key
+     * @param string $key
      * @return DatabaseHandlerInterface
      */
     public function dbh($key) : DatabaseHandlerInterface;

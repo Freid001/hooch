@@ -25,18 +25,18 @@ interface FilterInterface
     public function ignoreAccent($ignore = true);
 
     /**
-     * @param $column
-     * @param null $operator
-     * @param null $value
+     * @param string $column
+     * @param string|null $operator
+     * @param string|null $value
      * @param string $clause
      * @return FilterInterface
      */
     public function where($column, $operator = null, $value = null, $clause = self::WHERE);
 
      /**
-      * @param $column
-      * @param null $operator
-      * @param null $value
+      * @param string $column
+      * @param string|null $operator
+      * @param string|null $value
       * @return FilterInterface
       */
     public function orWhere($column, $operator = null, $value = null);

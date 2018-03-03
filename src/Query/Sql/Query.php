@@ -19,7 +19,7 @@ trait Query
     protected $parameters = [];
 
     /**
-     * @param $type
+     * @param string $type
      * @return string|null
      */
     final protected function queryGet($type)
@@ -28,7 +28,7 @@ trait Query
     }
 
     /**
-     * @param $type
+     * @param string $type
      * @param Sql $sql
      */
     final protected function queryAdd($type, Sql $sql)
@@ -41,6 +41,7 @@ trait Query
     }
 
     /**
+     * @param array $clauses
      * @return void
      */
     final protected function queryReset(array $clauses)

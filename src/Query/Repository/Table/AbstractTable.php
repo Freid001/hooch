@@ -2,6 +2,7 @@
 
 namespace QueryMule\Query\Repository\Table;
 
+use QueryMule\Builder\Sql\Generic\Filter;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Statement\FilterInterface;
@@ -36,13 +37,17 @@ abstract class AbstractTable implements RepositoryInterface
     {
         $this->driver = $driver;
 
-        $this->filter = $this->driver->getStatement('filter');
-        if(empty($this->filter)) {
+        $filter = $this->driver->getStatement('filter');
+        if($filter instanceof FilterInterface) {
+            $this->filter = $filter;
+        }else {
             $this->filter = $this->driver->filter();
         }
 
-        $this->select = $this->driver->getStatement('select');
-        if(empty($this->select)) {
+        $select = $this->driver->getStatement('select');
+        if($select instanceof SelectInterface){
+            $this->select = $select;
+        }else {
             $this->select = $this->driver->select();
         }
     }

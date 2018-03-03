@@ -53,7 +53,7 @@ class SelectTest extends TestCase
 
     public function testSelectCols()
     {
-        $this->select->cols(['col_a', 'col_b', 'col_c']);
+        $this->select->cols(['col_a'])->cols(['col_b'])->cols(['col_c']);
         $this->assertEquals("SELECT 'col_a' ,'col_b' ,'col_c'", trim($this->select->build([
             Select::SELECT,
             Select::COLS

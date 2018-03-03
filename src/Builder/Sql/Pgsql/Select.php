@@ -27,7 +27,7 @@ class Select extends GenericSelect
      * @param null $alias
      * @return SelectInterface
      */
-    public function cols($cols = [self::SQL_STAR], $alias = null) : SelectInterface
+    final public function cols($cols = [self::SQL_STAR], $alias = null) : SelectInterface
     {
         $i = 0;
         foreach($cols as $key => &$col){

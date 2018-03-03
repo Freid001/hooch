@@ -1,7 +1,7 @@
 <img src="docs/img/logo.png" width="375" height="90">
 
 [![Build Status](https://travis-ci.org/blue-strawberry/query-mule.svg?branch=master)](https://travis-ci.org/blue-strawberry/query-mule)
-![Packagist](https://img.shields.io/packagist/dt/blue-strawberry/query-mule.svg)
+[![Packagist](https://img.shields.io/packagist/dt/blue-strawberry/query-mule.svg)](https://packagist.org/packages/blue-strawberry/query-mule)
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
 
 # About

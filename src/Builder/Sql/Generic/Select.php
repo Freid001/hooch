@@ -2,7 +2,6 @@
 
 namespace QueryMule\Builder\Sql\Generic;
 
-use phpDocumentor\Reflection\Types\Integer;
 use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Accent;
@@ -13,6 +12,7 @@ use QueryMule\Query\Sql\Clause\HasJoinClause;
 use QueryMule\Query\Sql\Clause\HasLimitClause;
 use QueryMule\Query\Sql\Clause\HasOffsetClause;
 use QueryMule\Query\Sql\Clause\HasOrderByClause;
+use QueryMule\Query\Sql\Clause\HasUnionClause;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
@@ -33,6 +33,7 @@ class Select implements SelectInterface
     use HasOrderByClause;
     use HasLimitClause;
     use HasOffsetClause;
+    use HasUnionClause;
 
     /**
      * @var FilterInterface
@@ -177,17 +178,6 @@ class Select implements SelectInterface
 //
 //    public function outerJoin(){}
 
-    public function union(SelectInterface $select, $all = false)
-    {
-        $query = $select->build();
-
-//        $query->sql();
-//        $query->parameters();
-
-        
-
-    }
-
     /**
      * @param string $column
      * @param string|null $operator
@@ -279,20 +269,33 @@ class Select implements SelectInterface
     }
 
     /**
+     * @param SelectInterface $select
+     * @param bool $all
+     * @return SelectInterface
+     */
+    public function union(SelectInterface $select, $all = false) : SelectInterface
+    {
+        $this->queryAdd(self::UNION, $this->unionClause($select, $all));
+
+        return $this;
+    }
+
+    /**
      * @param array $clauses
      * @return Sql
      */
     public function build(array $clauses = [
-        self::SELECT, //DONE
-        self::COLS, //DONE
-        self::FROM, //DONE
-        self::JOIN,
-        self::WHERE, //DONE
-        self::GROUP, //DONE
-        self::ORDER, //DONE
-        self::HAVING, //
-        self::LIMIT, //TESTING
-        self::OFFSET //TESTING
+        self::SELECT,   // DONE
+        self::COLS,     // DONE
+        self::FROM,     // DONE
+        self::JOIN,     // <<<
+        self::WHERE,    // DONE
+        self::GROUP,    // DONE
+        self::ORDER,    // DONE
+        self::HAVING,   // <<<
+        self::LIMIT,    // DONE
+        self::OFFSET,   // DONE
+        self::UNION     // DONE
     ]) : Sql
     {
         if (in_array(self::WHERE, $clauses)) {

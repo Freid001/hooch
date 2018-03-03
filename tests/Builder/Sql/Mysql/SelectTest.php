@@ -6,6 +6,7 @@ namespace test\Builder\Sql\Mysql;
 use PHPUnit\Framework\TestCase;
 use QueryMule\Builder\Sql\Mysql\Select;
 use QueryMule\Query\Repository\RepositoryInterface;
+use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
@@ -234,4 +235,63 @@ class SelectTest extends TestCase
         ])->sql()));
     }
 
+    public function testSelectColsFromWhereUnionSelectColsFromWhereWithAlias()
+    {
+        $filter = $this->createMock(FilterInterface::class);
+        $filter->expects($this->exactly(2))->method('build')->will(
+            $this->onConsecutiveCalls(
+                new Sql('WHERE `tt`.`col_a` =?',[2]),
+                new Sql('WHERE `t`.`col_a` =?',[1])
+            )
+        );
+
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
+
+        $unionSelect = new Select();
+
+        $this->select->cols(['col_a','col_b','col_c'],'t')->from($table,'t')->where('col_a','=?',1)->union($unionSelect->cols(['col_a','col_b','col_c'],'tt')->from($table,'tt')->where('col_a','=?',2),false);
+
+        $query = $this->select->build([
+            Select::SELECT,
+            Select::COLS,
+            Select::FROM,
+            Select::WHERE,
+            Select::UNION
+        ]);
+
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t WHERE `t`.`col_a` =? UNION SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM some_table_name AS tt WHERE `tt`.`col_a` =?", trim($query->sql()));
+        $this->assertEquals([1,2], $query->parameters());
+    }
+
+    public function testSelectColsFromWhereUnionAllSelectColsFromWhere()
+    {
+        $filter = $this->createMock(FilterInterface::class);
+        $filter->expects($this->exactly(2))->method('build')->will(
+            $this->onConsecutiveCalls(
+                new Sql('WHERE `tt`.`col_a` =?',[2]),
+                new Sql('WHERE `t`.`col_a` =?',[1])
+            )
+        );
+
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
+
+        $unionSelect = new Select();
+
+        $this->select->cols(['col_a','col_b','col_c'],'t')->from($table,'t')->where('col_a','=?',1)->union($unionSelect->cols(['col_a','col_b','col_c'],'tt')->from($table,'tt')->where('col_a','=?',2),true);
+
+        $query = $this->select->build([
+            Select::SELECT,
+            Select::COLS,
+            Select::FROM,
+            Select::WHERE,
+            Select::UNION
+        ]);
+
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t WHERE `t`.`col_a` =? UNION ALL SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM some_table_name AS tt WHERE `tt`.`col_a` =?", trim($query->sql()));
+        $this->assertEquals([1,2], $query->parameters());
+    }
 }

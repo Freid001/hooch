@@ -12,8 +12,10 @@ use QueryMule\Query\Sql\Sql;
  */
 interface SelectInterface extends FilterInterface
 {
-    const COLS = 'COL';
+    const ALL = 'ALL';
     const AS = 'AS';
+    const BY = 'BY';
+    const COLS = 'COL';
     const COUNT = 'COUNT';
     const DELETE = 'DELETE';
     const DISTINCT = 'DISTINCT';
@@ -36,6 +38,7 @@ interface SelectInterface extends FilterInterface
     const SELECT = 'SELECT';
     const SQL_STAR = '*';
     const TABLE = 'TABLE';
+    const UNION = 'UNION';
     const UPDATE = 'UPDATE';
     const VALUES = 'VALUES';
 
@@ -128,6 +131,13 @@ interface SelectInterface extends FilterInterface
      * @return SelectInterface
      */
     public function offset($offset) : SelectInterface;
+
+    /**
+     * @param SelectInterface $select
+     * @param bool $all
+     * @return SelectInterface
+     */
+    public function union(SelectInterface $select, $all = false) : SelectInterface;
 
     /**
      * @param array $clauses

@@ -118,8 +118,7 @@ class Select implements SelectInterface
         return $this;
     }
 
-//    public function join(array $table, \Closure $on)
-//    {}
+//    public function join(array $table, \Closure $on) {}
 
     /**
      * @param array $table
@@ -170,13 +169,45 @@ class Select implements SelectInterface
         return $this;
     }
 
-//    public function rightJoin(){}
+//    /**
+//     * @return SelectInterface
+//     */
+//    public function rightJoin() : SelectInterface
+//    {
+//        $this->queryAdd(self::JOIN, new Sql('',[]));
 //
-//    public function crossJoin(){}
+//        return $this;
+//    }
 //
-//    public function innerJoin(){}
+//    /**
+//     * @return SelectInterface
+//     */
+//    public function crossJoin() : SelectInterface
+//    {
+//        $this->queryAdd(self::JOIN, new Sql('',[]));
 //
-//    public function outerJoin(){}
+//        return $this;
+//    }
+//
+//    /**
+//     * @return SelectInterface
+//     */
+//    public function innerJoin() : SelectInterface
+//    {
+//        $this->queryAdd(self::JOIN, new Sql('',[]));
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * @return SelectInterface
+//     */
+//    public function outerJoin() : SelectInterface
+//    {
+//        $this->queryAdd(self::JOIN, new Sql('',[]));
+//
+//        return $this;
+//    }
 
     /**
      * @param string $column
@@ -243,8 +274,8 @@ class Select implements SelectInterface
         return $this;
     }
 
-//    public function having()
-//    {}
+    public function having()
+    {}
 
     /**
      * @param int $limit

@@ -21,7 +21,7 @@ trait HasColumnClause
      */
     final protected function columnClause($column, $alias = false, $as = false, $comma = false)
     {
-        $sql = '';
+        $sql = null;
         $sql .= !empty($comma) ? ',' : '';
         $sql .= !empty($alias) ? $alias.'.' : '';
         $sql .= $column;

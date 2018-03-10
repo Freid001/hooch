@@ -46,10 +46,14 @@ class FilterTest extends TestCase
     {
         $query = $this->filter->where('col_a','=?','some_value_a')->where(function(\QueryMule\Query\Sql\Statement\FilterInterface $query){
             $query->where('col_b','=?','some_value_b');
+            $query->where('col_c','=?','some_value_c');
+            $query->where(function(\QueryMule\Query\Sql\Statement\FilterInterface $query){
+                $query->where('col_d','=?','some_value_d');
+            });
         })->build();
 
-        $this->assertEquals("WHERE `col_a` =? AND ( `col_b` =? )", $query->sql());
-        $this->assertEquals(['some_value_a','some_value_b'],$query->parameters());
+        $this->assertEquals("WHERE `col_a` =? AND ( `col_b` =? AND `col_c` =? AND ( `col_d` =? ) )", $query->sql());
+        $this->assertEquals(['some_value_a','some_value_b','some_value_c','some_value_d'],$query->parameters());
     }
 
     public function testSelectWhereAndWhere()

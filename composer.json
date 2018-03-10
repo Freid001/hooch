@@ -16,7 +16,7 @@
             "role": "Developer"
         }
     ],
-    "license": "BSD-3-Clause",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "QueryMule\\": "src\/",

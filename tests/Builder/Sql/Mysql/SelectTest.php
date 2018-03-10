@@ -108,40 +108,80 @@ class SelectTest extends TestCase
         ])->sql()));
     }
 
-    public function testSelectWhereFilterCall()
+    public function testSelectWhere()
     {
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->once())->method('where');
-        $filter->expects($this->once())->method('build');
+        $filter->expects($this->once())->method('build')->will(
+            $this->onConsecutiveCalls(
+                new Sql('WHERE `col_a` =?',['some_value'])
+            )
+        );
 
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $this->select->cols(['col_a'])->from($table)->where('col_a','=?','some_value')->build([
+        $query = $this->select->cols(['col_a'])->from($table)->where('col_a','=?','some_value')->build([
             Select::SELECT,
             Select::COLS,
             Select::FROM,
             Select::WHERE
         ]);
+
+        $this->assertEquals("SELECT `col_a` FROM some_table_name WHERE `col_a` =?", trim($query->sql()));
+        $this->assertEquals(['some_value'], $query->parameters());
     }
 
-    public function testSelectOrWhereFilterCall()
+    public function testSelectWhereOrWhere()
     {
         $filter = $this->createMock(FilterInterface::class);
+        $filter->expects($this->once())->method('where');
         $filter->expects($this->once())->method('orWhere');
-        $filter->expects($this->once())->method('build');
+        $filter->expects($this->once())->method('build')->will(
+            $this->onConsecutiveCalls(
+                new Sql('WHERE `col_a` =? OR `col_b` =?',['some_value','another_value'])
+            )
+        );
 
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $this->select->cols(['col_a'])->from($table)->orWhere('col_a','=?','some_value')->build([
+        $query =$this->select->cols(['col_a','col_b'])->from($table)->where('col_a','=?','some_value')->orWhere('col_b','=?','another_value')->build([
             Select::SELECT,
             Select::COLS,
             Select::FROM,
             Select::WHERE
         ]);
+
+        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE `col_a` =? OR `col_b` =?", trim($query->sql()));
+        $this->assertEquals(['some_value','another_value'], $query->parameters());
+    }
+
+    public function testSelectWhereAndWhere()
+    {
+        $filter = $this->createMock(FilterInterface::class);
+        $filter->expects($this->exactly(2))->method('where');
+        $filter->expects($this->once())->method('build')->will(
+            $this->onConsecutiveCalls(
+                new Sql('WHERE `col_a` =? AND `col_b` =?',['some_value','another_value'])
+            )
+        );
+
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
+
+        $query =$this->select->cols(['col_a','col_b'])->from($table)->where('col_a','=?','some_value')->where('col_b','=?','another_value')->build([
+            Select::SELECT,
+            Select::COLS,
+            Select::FROM,
+            Select::WHERE
+        ]);
+
+        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE `col_a` =? AND `col_b` =?", trim($query->sql()));
+        $this->assertEquals(['some_value','another_value'], $query->parameters());
     }
 
     public function testSelectColsFromGroupBy()
@@ -240,8 +280,8 @@ class SelectTest extends TestCase
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->exactly(2))->method('build')->will(
             $this->onConsecutiveCalls(
-                new Sql('WHERE `tt`.`col_a` =?',[2]),
-                new Sql('WHERE `t`.`col_a` =?',[1])
+                new Sql('WHERE `tt`.`col_a` =?',['another_value']),
+                new Sql('WHERE `t`.`col_a` =?',['some_value'])
             )
         );
 
@@ -251,7 +291,7 @@ class SelectTest extends TestCase
 
         $unionSelect = new Select();
 
-        $this->select->cols(['col_a','col_b','col_c'],'t')->from($table,'t')->where('col_a','=?',1)->union($unionSelect->cols(['col_a','col_b','col_c'],'tt')->from($table,'tt')->where('col_a','=?',2),false);
+        $this->select->cols(['col_a','col_b','col_c'],'t')->from($table,'t')->where('col_a','=?','some_value')->union($unionSelect->cols(['col_a','col_b','col_c'],'tt')->from($table,'tt')->where('col_a','=?','another_value'),false);
 
         $query = $this->select->build([
             Select::SELECT,
@@ -262,7 +302,7 @@ class SelectTest extends TestCase
         ]);
 
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t WHERE `t`.`col_a` =? UNION SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM some_table_name AS tt WHERE `tt`.`col_a` =?", trim($query->sql()));
-        $this->assertEquals([1,2], $query->parameters());
+        $this->assertEquals(['some_value','another_value'], $query->parameters());
     }
 
     public function testSelectColsFromWhereUnionAllSelectColsFromWhere()
@@ -270,8 +310,8 @@ class SelectTest extends TestCase
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->exactly(2))->method('build')->will(
             $this->onConsecutiveCalls(
-                new Sql('WHERE `tt`.`col_a` =?',[2]),
-                new Sql('WHERE `t`.`col_a` =?',[1])
+                new Sql('WHERE `tt`.`col_a` =?',['another_value']),
+                new Sql('WHERE `t`.`col_a` =?',['some_value'])
             )
         );
 
@@ -281,7 +321,7 @@ class SelectTest extends TestCase
 
         $unionSelect = new Select();
 
-        $this->select->cols(['col_a','col_b','col_c'],'t')->from($table,'t')->where('col_a','=?',1)->union($unionSelect->cols(['col_a','col_b','col_c'],'tt')->from($table,'tt')->where('col_a','=?',2),true);
+        $this->select->cols(['col_a','col_b','col_c'],'t')->from($table,'t')->where('col_a','=?','some_value')->union($unionSelect->cols(['col_a','col_b','col_c'],'tt')->from($table,'tt')->where('col_a','=?','another_value'),true);
 
         $query = $this->select->build([
             Select::SELECT,
@@ -292,6 +332,6 @@ class SelectTest extends TestCase
         ]);
 
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t WHERE `t`.`col_a` =? UNION ALL SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM some_table_name AS tt WHERE `tt`.`col_a` =?", trim($query->sql()));
-        $this->assertEquals([1,2], $query->parameters());
+        $this->assertEquals(['some_value','another_value'], $query->parameters());
     }
 }

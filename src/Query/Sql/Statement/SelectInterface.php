@@ -37,6 +37,9 @@ interface SelectInterface extends FilterInterface
     const SET = 'SET';
     const SELECT = 'SELECT';
     const SQL_STAR = '*';
+    const SQL_SPACE = ' ';
+    const SQL_BRACKET_OPEN = '(';
+    const SQL_BRACKET_CLOSE = ')';
     const TABLE = 'TABLE';
     const UNION = 'UNION';
     const UPDATE = 'UPDATE';

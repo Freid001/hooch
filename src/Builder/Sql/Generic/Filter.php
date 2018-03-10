@@ -57,13 +57,7 @@ class Filter implements FilterInterface
         $column = ($column instanceof \Closure) ? $column : $this->addAccent($column,'.');
 
         if($column instanceof \Closure) {
-            if(!$this->ignoreWhereClause) {
-                $this->queryAdd(self::WHERE, new Sql($clause));
-            }
-
-            $this->queryAdd(self::WHERE, new Sql("("));
-            $this->nestedWhereClause($column);
-            $this->queryAdd(self::WHERE, new Sql(")"));
+            $this->queryAdd(self::WHERE, $this->nestedWhereClause($column));
 
             return $this;
         }
@@ -85,6 +79,30 @@ class Filter implements FilterInterface
 
         return $this;
     }
+
+    public function whereIn()
+    {
+
+
+
+    }
+
+    public function whereNotIn()
+    {}
+
+    public function whereBetween()
+    {}
+
+    public function whereNotBetween()
+    {}
+
+    public function whereExists()
+    {
+        //run select query
+    }
+
+    public function whereJson()
+    {}
 
     /**
      * @param array $clauses

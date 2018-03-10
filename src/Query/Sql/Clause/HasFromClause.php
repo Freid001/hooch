@@ -21,8 +21,8 @@ trait HasFromClause
     final protected function fromClause(RepositoryInterface $table, $alias = null)
     {
         $sql = '';
-        $sql .= SelectInterface::FROM.' '.$table->getName();
-        $sql .= !empty($alias) ? ' '.SelectInterface::AS.' '.$alias : null;
+        $sql .= SelectInterface::FROM . ' ' . $table->getName();
+        $sql .= !empty($alias) ? ' ' . SelectInterface:: AS . ' ' . $alias : null;
 
         return new Sql($sql);
     }

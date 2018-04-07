@@ -8,15 +8,12 @@ install:
 
 before_script:
   - composer install --prefer-source
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
 
 script:
-  - vendor/bin/phpunit tests
+  - phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
 
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - vendor/bin/test-reporter
 
 addons:
   code_climate:

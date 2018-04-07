@@ -3,13 +3,3 @@ theme: jekyll-theme-architect
 author:
   name: Fraser Reid
   url: https://freid001.github.io/
-  
-defaults:
-  - scope:
-      path: ""
-      type: docs
-    values:
-      sidebar:
-        nav: "docs"
-        
-        

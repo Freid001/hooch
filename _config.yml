@@ -1,9 +1,17 @@
 theme: jekyll-theme-architect
 
 author:
-  name:              Fraser Reid
-  url:               https://freid001.github.io/
+  name: Fraser Reid
+  url: https://freid001.github.io/
   
+docs_list_title: ACME Documentation
 docs:
-  - title: Introduction
-    url: introduction.html
+
+- title: Introduction
+  url: introduction.html
+
+- title: Configuration
+  url: configuration.html
+
+- title: Deployment
+  url: deployment.html

@@ -1,6 +1,4 @@
-# theme: jekyll-theme-architect
-
-remote_theme: pietromenna/jekyll-architect-theme
+theme: jekyll-theme-architect
 
 author:
   name: Fraser Reid

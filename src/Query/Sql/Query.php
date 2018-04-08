@@ -19,24 +19,24 @@ trait Query
     protected $parameters = [];
 
     /**
-     * @param string $type
+     * @param string $clause
      * @return string|null
      */
-    final protected function queryGet($type)
+    final protected function queryGet($clause)
     {
-        return !empty($this->sql[$type]) ? $this->sql[$type] : null;
+        return !empty($this->sql[$clause]) ? $this->sql[$clause] : null;
     }
 
     /**
-     * @param string $type
+     * @param string $clause
      * @param Sql $sql
      */
-    final protected function queryAdd($type, Sql $sql)
+    final protected function queryAdd($clause, Sql $sql)
     {
-        $this->sql[$type] = !empty($this->sql[$type]) ? $this->sql[$type] . ' ' . $sql->sql() : $sql->sql();
+        $this->sql[$clause] = !empty($this->sql[$clause]) ? $this->sql[$clause] . ' ' . $sql->sql() : $sql->sql();
 
         foreach($sql->parameters() as $key => $parameter){
-            $this->parameters[$type][] = $parameter;
+            $this->parameters[$clause][] = $parameter;
         }
     }
 
@@ -53,19 +53,19 @@ trait Query
     }
 
     /**
-     * @param array $buildOrder
+     * @param array $order
      * @return \QueryMule\Query\Sql\Sql
      */
-    final protected function queryBuild(array $buildOrder)
+    final protected function queryBuild(array $order)
     {
         $sql = '';
         $parameters = [];
-        foreach($buildOrder as $type){
-            if(!empty($this->sql[$type])) {
+        foreach($order as $clause){
+            if(!empty($this->sql[$clause])) {
 
-                $sql .= !empty($sql) ? ' '.$this->sql[$type] : $this->sql[$type];
-                if(!empty($this->parameters[$type])) {
-                    foreach ($this->parameters[$type] as $parameter) {
+                $sql .= !empty($sql) ? ' '.$this->sql[$clause] : $this->sql[$clause];
+                if(!empty($this->parameters[$clause])) {
+                    foreach ($this->parameters[$clause] as $parameter) {
                         $parameters[] = $parameter;
                     }
                 }

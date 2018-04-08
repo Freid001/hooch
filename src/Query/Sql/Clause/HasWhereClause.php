@@ -3,7 +3,6 @@
 
 namespace QueryMule\Query\Sql\Clause;
 
-use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
@@ -21,19 +20,23 @@ trait HasWhereClause
 
     /**
      * @param string $column
-     * @param string|null $operator
+     * @param string|Sql|null $operator
      * @param string|null $value
-     * @param string|null $clause
+     * @param string $clause
      * @return Sql
-     * @throws SqlException
      */
     final protected function whereClause($column, $operator = null, $value = null, $clause = FilterInterface::WHERE)
     {
+        if($operator instanceof Sql) {
+            $value = $operator->parameters();
+            $operator = $operator->sql();
+        }
+
         $sql = null;
         switch ($clause) {
             case FilterInterface::WHERE:
                 $sql .= FilterInterface::WHERE.SelectInterface::SQL_SPACE;
-                $sql .= $this->bracket(true);
+                $sql .= $this->nestedBracket(true);
                 $sql .= implode(SelectInterface::SQL_SPACE, [
                     $column,
                     $operator
@@ -42,7 +45,7 @@ trait HasWhereClause
 
             case FilterInterface::AND:
                 $sql .= FilterInterface::AND.SelectInterface::SQL_SPACE;
-                $sql .= $this->bracket(true);
+                $sql .= $this->nestedBracket(true);
                 $sql .= implode(SelectInterface::SQL_SPACE, [
                     $column,
                     $operator
@@ -51,15 +54,33 @@ trait HasWhereClause
 
             case FilterInterface::OR:
                 $sql .= FilterInterface::OR.SelectInterface::SQL_SPACE;
-                $sql .= $this->bracket(true);
+                $sql .= $this->nestedBracket(true);
                 $sql .= implode(SelectInterface::SQL_SPACE, [
                     $column,
                     $operator
                 ]);
                 break;
+
+            case FilterInterface::NOT:
+                $sql .= FilterInterface::NOT.SelectInterface::SQL_SPACE;
+                $sql .= $this->nestedBracket(true);
+                $sql .= implode(SelectInterface::SQL_SPACE, [
+                    $column,
+                    $operator
+                ]);
+                break;
+
+            case FilterInterface::IN:
+                $sql .= FilterInterface::IN.SelectInterface::SQL_SPACE;
+                $sql .= implode(SelectInterface::SQL_SPACE, [
+                    SelectInterface::SQL_BRACKET_OPEN,
+                    implode( ",", array_fill(0, count($value), "?")),
+                    SelectInterface::SQL_BRACKET_CLOSE
+                ]);
+                break;
         }
 
-        return new Sql($sql, [$value]);
+        return new Sql($sql, !is_array($value) ? [$value] : $value);
     }
 
     /**
@@ -71,18 +92,18 @@ trait HasWhereClause
         $this->nestedWhere = true;
         $column($this);
         $this->nestedWhere = true;
-        return new Sql($this->bracket(false));
+        return new Sql($this->nestedBracket(false));
     }
 
     /**
-     * @param $open
+     * @param bool $open
      * @return string
      */
-    private function bracket($open)
+    private function nestedBracket($open)
     {
         $bracket = SelectInterface::SQL_BRACKET_CLOSE;
         if ($this->nestedWhere) {
-            if ($open == 'open') {
+            if ($open) {
                 $bracket = SelectInterface::SQL_BRACKET_OPEN.SelectInterface::SQL_SPACE;
             }
 

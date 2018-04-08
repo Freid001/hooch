@@ -21,10 +21,4 @@
         <log type="coverage-clover" target="tests/coverage.xml"/>
         <log type="junit" target="tests/results.xml"/>
     </logging>
-
-    <php>
-        <env name="DB_DRIVER" value="sqlite" />
-        <env name="DB_NAME" value="sqlite.db" />
-        <env name="DB_PATH" value="tests/Database/sqlite.db" />
-    </php>
 </phpunit>

@@ -70,4 +70,23 @@ class FilterTest extends TestCase
         $this->assertEquals(['some_value_a','some_value_b'],$query->parameters());
     }
 
+    public function testSelectWhereIn()
+    {
+        $query = $this->filter->whereIn('col_a',['some_value_a','some_value_b'])->build();
+        $this->assertEquals("WHERE `col_a` IN ( ?,? )", $query->sql());
+        $this->assertEquals(['some_value_a','some_value_b'],$query->parameters());
+    }
+
+    public function testSelectWhereInOrIn()
+    {
+        $query = $this->filter->whereIn('col_a',['some_value_a','some_value_b'])->orWhereIn('col_a',['some_value_c','some_value_d'])->build();
+        $this->assertEquals("WHERE `col_a` IN ( ?,? ) OR `col_a` IN ( ?,? )", $query->sql());
+        $this->assertEquals(['some_value_a','some_value_b','some_value_c','some_value_d'],$query->parameters());
+    }
+
+    public function testSelectWhereNot()
+    {}
+
+
+
 }

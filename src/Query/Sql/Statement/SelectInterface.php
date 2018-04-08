@@ -28,7 +28,6 @@ interface SelectInterface extends FilterInterface
     const FROM = 'FROM';
     const GROUP = 'GROUP BY';
     const HAVING = 'HAVING';
-    const IN = 'IN';
     const INSERT = 'INSERT';
     const INTO = 'INTO';
     const LIMIT = 'LIMIT';

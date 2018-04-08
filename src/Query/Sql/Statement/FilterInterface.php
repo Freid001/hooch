@@ -13,7 +13,9 @@ interface FilterInterface
 {
     const WHERE = 'WHERE';
     const AND = 'AND';
+    const IN = 'IN';
     const OR = 'OR';
+    const NOT = 'NOT';
     const ON = 'ON';
     const JOIN = 'JOIN';
     const LEFT_JOIN = 'LEFT JOIN';
@@ -40,6 +42,20 @@ interface FilterInterface
       * @return FilterInterface
       */
     public function orWhere($column, $operator = null, $value = null);
+
+    /**
+     * @param string $column
+     * @param array $values
+     * @return FilterInterface
+     */
+    public function whereIn($column,array $values = []);
+
+    /**
+     * @param $column
+     * @param array $values
+     * @return FilterInterface
+     */
+    public function orWhereIn($column,array $values = []);
 
     /**
      * @param array $clauses

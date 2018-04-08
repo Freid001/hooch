@@ -16,7 +16,7 @@ class Select extends GenericSelect
      * @param array $cols
      * @param RepositoryInterface|null $table
      */
-    public function __construct(array $cols = [], RepositoryInterface $table = null)
+    public function __construct(array $cols = [''], RepositoryInterface $table = null)
     {
         parent::__construct($cols, $table, '`');
     }

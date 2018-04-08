@@ -238,6 +238,30 @@ class Select implements SelectInterface
 
     /**
      * @param string $column
+     * @param array $values
+     * @return SelectInterface
+     */
+    public function whereIn($column, array $values = []) : SelectInterface
+    {
+        $this->filter->whereIn($column, $values);
+
+        return $this;
+    }
+
+    /**
+     * @param string $column
+     * @param array $values
+     * @return SelectInterface
+     */
+    public function orWhereIn($column, array $values = []) : SelectInterface
+    {
+        $this->filter->orWhereIn($column, $values);
+
+        return $this;
+    }
+
+    /**
+     * @param string $column
      * @param string|null $alias
      * @return SelectInterface
      */

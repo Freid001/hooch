@@ -42,9 +42,9 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param string|\Closure $column
-     * @param string|null $operator
-     * @param string|null $value
+     * @param string $column
+     * @param null $operator
+     * @param null $value
      * @param string $clause
      * @return FilterInterface
      */
@@ -54,7 +54,7 @@ class Filter implements FilterInterface
             $clause = self::AND;
         }
 
-        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column,'.');
+        $column = ($column instanceof \Closure) ? $column : $this->addAccent($column, '.');
 
         if($column instanceof \Closure) {
             $this->queryAdd(self::WHERE, $this->nestedWhereClause($column));
@@ -68,9 +68,9 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param string|\Closure $column
-     * @param string|null $operator
-     * @param string|null $value
+     * @param string $column
+     * @param null $operator
+     * @param null $value
      * @return FilterInterface
      */
     public function orWhere($column, $operator = null, $value = null) : FilterInterface
@@ -80,12 +80,45 @@ class Filter implements FilterInterface
         return $this;
     }
 
-    public function whereIn()
+    /**
+     * @param $column
+     * @param array $values
+     * @return FilterInterface
+     */
+    public function whereIn($column,array $values = []) : FilterInterface
     {
+        $this->where($column, $this->whereClause($column,null, $values, FilterInterface::IN));
 
-
-
+        return $this;
     }
+
+    /**
+     * @param $column
+     * @param array $values
+     * @return FilterInterface
+     */
+    public function orWhereIn($column,array $values = []) : FilterInterface
+    {
+        $this->orwhere($column, $this->whereClause($column,null, $values, FilterInterface::IN));
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $value
+     * @return FilterInterface
+     */
+    public function whereNot($column, $operator, $value) : FilterInterface
+    {
+        $this->whereClause($column,$operator, $value, FilterInterface::NOT);
+
+        return $this;
+    }
+
+    public function orWhereNot()
+    {}
 
     public function whereNotIn()
     {}
@@ -97,11 +130,6 @@ class Filter implements FilterInterface
     {}
 
     public function whereExists()
-    {
-        //run select query
-    }
-
-    public function whereJson()
     {}
 
     /**

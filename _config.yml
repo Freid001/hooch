@@ -1,5 +1,10 @@
 theme: jekyll-theme-architect
 
+site:
+  show_downloads: true
+#  tar_url: http://blue-strawberry/query-mule/download.zip
+#  zip_url: http://blue-strawberry/query-mule/download.zip
+  
 author:
   name: Fraser Reid
   url: https://freid001.github.io/

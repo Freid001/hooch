@@ -13,6 +13,28 @@
     <![endif]-->
 
 {% seo %}
+    <style>
+      .vertical-menu {
+          width: 200px;
+      }
+
+      .vertical-menu a {
+          background-color: #eee;
+          color: black;
+          display: block;
+          padding: 12px;
+          text-decoration: none;
+      }
+
+      .vertical-menu a:hover {
+          background-color: #ccc;
+      }
+
+      .vertical-menu a.active {
+          background-color: #4CAF50;
+          color: white;
+      }
+    </style>
   </head>
 
   <body>
@@ -39,42 +61,14 @@
 
         <aside id="sidebar">
           <h3>Documentation</h3>
-          <ul>
-             <li>
-                <a href="/query-mule/docs/CONNECTIONS.html">Connections</a>
-                <ul>
-                   <li>
-                      <a href="/query-mule/docs/CONNECTIONS.html#database">Database</a>
-                      <ul>
-                         <li><a href="/query-mule//docs/CONNECTIONS.html#config">Config</a></li>
-                         <li><a href="/query-mule//docs/CONNECTIONS.html#handler">Handler</a></li>
-                      </ul>
-                   </li>
-                </ul>
-             </li>
-             <li>
-                <a href="/query-mule//docs/REPOSITORIES.md">Repositories</a>
-                <ul>
-                   <li>
-                      <a href="/query-mule//docs/REPOSITORIES.md#table">Table</a>
-                      <ul>
-                         <li><a href="/query-mule//docs/REPOSITORIES.html#class">Class</a></li>
-                         <li><a href="/query-mule//docs/REPOSITORIES.html#instantiate">Instantiate</a></li>
-                         <li><a href="/query-mule//docs/REPOSITORIES.html#filters">Filters</a></li>
-                      </ul>
-                   </li>
-                </ul>
-             </li>
-             <li><a href="/docs/QUERY_BUILDER.md">Query Builder</a>
-                <ul>
-                   <li><a href="">Select</a></li>
-                   <li><a href="">Insert</a></li>
-                   <li><a href="">Update</a></li>
-                   <li><a href="">Delete</a></li>
-                </ul>
-             </li>
-          </ul>
-          
+          <div class="vertical-menu">
+            <a href="/query-mule/">Home</a>
+            <a href="/query-mule/docs/CONNECTIONS.html">Connections</a>
+            <a href="/query-mule//docs/REPOSITORIES.md">Repositories</a>
+            <a href="/docs/QUERY_BUILDER.md">Query Builder</a>
+            <a href="#">Link 4</a>
+          </div>
+
           <h3>Downloads</h3>
           {% if site.show_downloads %}
             <a href="{{ site.github.zip_url }}" class="button">

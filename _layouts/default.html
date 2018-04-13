@@ -22,14 +22,17 @@
           background-color: #fafafa;
           color: #474747;
           display: block;
-          padding: 12px;
+          padding-top: 5px;
+          padding-left: 5px;
+          padding-bottom: 10px;
+          font-size: 13px;
           text-decoration: none;
           font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
       }
 
       .vertical-menu a:hover {
-          background-color: #2f81da;
-          color: #fff;
+          background-color: #474747;
+          color: #2f81da;
       }
     </style>
   </head>
@@ -57,7 +60,7 @@
         </section>
 
         <aside id="sidebar">
-          <h3>Documentation</h3>
+          <h2 style="font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;">Documentation</h2>
           <div class="vertical-menu">
             <a href="/query-mule/">Home</a>
             <a href="/query-mule/docs/CONNECTIONS.html">Connections</a>
@@ -65,7 +68,7 @@
             <a href="/docs/QUERY_BUILDER.md">Query Builder</a>
           </div>
 
-          <h3>Downloads</h3>
+          <h2 style="font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;">Downloads</h2>
           {% if site.show_downloads %}
             <a href="{{ site.github.zip_url }}" class="button">
               <small>Download</small>

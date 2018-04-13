@@ -37,17 +37,4 @@ composer require blue-strawberry/query-mule
 ```
 
 ## Documentation
-* [Connections](./docs/CONNECTIONS.md)
-    * [Database](./docs/CONNECTIONS.md#database)
-        * [Config](./docs/CONNECTIONS.md#config)
-        * [Handler](./docs/CONNECTIONS.md#handler)
-* [Repositories](./docs/REPOSITORIES.md)
-    * [Table](./docs/REPOSITORIES.md#table)
-        * [Class](./docs/REPOSITORIES.md#class)
-        * [Instantiate](./docs/REPOSITORIES.md#instantiate)
-        * [Filters](./docs/REPOSITORIES.md#filters)
-* [Query Builder](./docs/QUERY_BUILDER.md)      
-    * Select
-    * Insert
-    * Update
-    * Delete
+https://blue-strawberry.github.io/query-mule/

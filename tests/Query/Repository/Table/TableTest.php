@@ -10,6 +10,7 @@ use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Repository\Table\Table;
 use QueryMule\Query\Sql\Statement\SelectInterface;
+use QueryMule\Sql\Operator\Comparison;
 
 /**
  * Class TableTest
@@ -41,7 +42,7 @@ class TableTest extends TestCase
 
         $table = new Table($driver);
 
-        $query = $table->filter()->where('a','=?','b')->build([
+        $query = $table->filter()->where('a',Comparison::equalTo(),'b')->build([
             SelectInterface::WHERE
         ]);
 

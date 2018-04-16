@@ -6,6 +6,7 @@ namespace test\Builder\Sql\Pgsql;
 use PHPUnit\Framework\TestCase;
 use QueryMule\Builder\Sql\Pgsql\Filter;
 use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Sql\Operator\Comparison;
 
 /**
  * Class FilterTest
@@ -30,22 +31,22 @@ class FilterTest extends TestCase
 
     public function testSelectWhere()
     {
-        $query = $this->filter->where('col_a', '=?', 'some_value')->build();
+        $query = $this->filter->where('col_a', Comparison::equalTo(), 'some_value')->build();
         $this->assertEquals("WHERE 'col_a' =?", $query->sql());
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
     public function testSelectWhereWithAlias()
     {
-        $query = $this->filter->where('t.col_a', '=?', 'some_value')->build();
+        $query = $this->filter->where('t.col_a', Comparison::equalTo(), 'some_value')->build();
         $this->assertEquals("WHERE 't'.'col_a' =?", $query->sql());
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
     public function testSelectWhereAndNestedWhere()
     {
-        $query = $this->filter->where('col_a', '=?', 'some_value_a')->where(function (\QueryMule\Query\Sql\Statement\FilterInterface $query) {
-            $query->where('col_b', '=?', 'some_value_b');
+        $query = $this->filter->where('col_a', Comparison::equalTo(), 'some_value_a')->where(function (\QueryMule\Query\Sql\Statement\FilterInterface $query) {
+            $query->where('col_b', Comparison::equalTo(), 'some_value_b');
         })->build();
 
         $this->assertEquals("WHERE 'col_a' =? AND ( 'col_b' =? )", $query->sql());
@@ -54,14 +55,14 @@ class FilterTest extends TestCase
 
     public function testSelectWhereAndWhere()
     {
-        $query = $this->filter->where('col_a', '=?', 'some_value_a')->where('col_b', '=?', 'some_value_b')->build();
+        $query = $this->filter->where('col_a', Comparison::equalTo(), 'some_value_a')->where('col_b', Comparison::equalTo(), 'some_value_b')->build();
         $this->assertEquals("WHERE 'col_a' =? AND 'col_b' =?", $query->sql());
         $this->assertEquals(['some_value_a', 'some_value_b'], $query->parameters());
     }
 
     public function testSelectWhereOrWhere()
     {
-        $query = $this->filter->where('col_a', '=?', 'some_value_a')->orWhere('col_b', '=?', 'some_value_b')->build();
+        $query = $this->filter->where('col_a', Comparison::equalTo(), 'some_value_a')->orWhere('col_b', Comparison::equalTo(), 'some_value_b')->build();
         $this->assertEquals("WHERE 'col_a' =? OR 'col_b' =?", $query->sql());
         $this->assertEquals(['some_value_a', 'some_value_b'], $query->parameters());
     }

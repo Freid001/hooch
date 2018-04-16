@@ -17,6 +17,7 @@ use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
+use QueryMule\Sql\Operator\Comparison;
 
 /**
  * Class Select
@@ -211,12 +212,12 @@ class Select implements SelectInterface
 
     /**
      * @param string $column
-     * @param string|null $operator
-     * @param string|null $value
+     * @param null|Comparison|null $operator
+     * @param null $value
      * @param string $clause
      * @return SelectInterface
      */
-    public function where($column, $operator = null, $value = null, $clause = self::WHERE) : SelectInterface
+    public function where($column, ?Comparison $operator = null, $value = null, $clause = self::WHERE) : SelectInterface
     {
         $this->filter->where($column, $operator, $value, $clause);
 
@@ -225,11 +226,11 @@ class Select implements SelectInterface
 
     /**
      * @param string $column
-     * @param string|null $operator
-     * @param string|null $value
+     * @param null|Comparison|null $operator
+     * @param null $value
      * @return SelectInterface
      */
-    public function orWhere($column, $operator = null, $value = null) : SelectInterface
+    public function orWhere($column, ?Comparison $operator = null, $value = null) : SelectInterface
     {
         $this->filter->orWhere($column, $operator, $value);
 
@@ -256,6 +257,19 @@ class Select implements SelectInterface
     public function orWhereIn($column, array $values = []) : SelectInterface
     {
         $this->filter->orWhereIn($column, $values);
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param null|Comparison $operator
+     * @param null $value
+     * @return FilterInterface
+     */
+    public function whereNot($column, ?Comparison $operator = null, $value = null) : FilterInterface
+    {
+        $this->filter->whereNot($column, $operator, $value);
 
         return $this;
     }

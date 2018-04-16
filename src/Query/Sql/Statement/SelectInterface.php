@@ -5,6 +5,7 @@ namespace QueryMule\Query\Sql\Statement;
 use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Sql;
+use QueryMule\Sql\Operator\Comparison;
 
 /**
  * Interface Select
@@ -100,21 +101,21 @@ interface SelectInterface extends FilterInterface
     public function orOn($first, $operator = null, $second = null) : SelectInterface;
 
     /**
-     * @param string $column
-     * @param string|null $operator
-     * @param string|null $value
+     * @param $column
+     * @param null|Comparison|null $operator
+     * @param null $value
      * @param string $clause
      * @return SelectInterface
      */
-    public function where($column, $operator = null, $value = null, $clause = self::WHERE) : SelectInterface;
+    public function where($column, ?Comparison $operator = null, $value = null, $clause = self::WHERE) : SelectInterface;
 
     /**
-     * @param string $column
-     * @param string|null $operator
-     * @param string|null $value
+     * @param $column
+     * @param null|Comparison|null $operator
+     * @param null $value
      * @return SelectInterface
      */
-    public function orWhere($column, $operator = null, $value = null) : SelectInterface;
+    public function orWhere($column, ?Comparison $operator = null, $value = null) : SelectInterface;
 
     /**
      * @param string $column

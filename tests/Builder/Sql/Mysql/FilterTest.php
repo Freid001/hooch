@@ -6,6 +6,7 @@ namespace test\Builder\Sql\MySql;
 use PHPUnit\Framework\TestCase;
 use QueryMule\Builder\Sql\MySql\Filter;
 use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Sql\Operator\Comparison;
 
 /**
  * Class FilterTest
@@ -30,25 +31,25 @@ class FilterTest extends TestCase
 
     public function testSelectWhere()
     {
-        $query = $this->filter->where('col_a','=?','some_value')->build();
+        $query = $this->filter->where('col_a',Comparison::equalTo(),'some_value')->build();
         $this->assertEquals("WHERE `col_a` =?", $query->sql());
         $this->assertEquals(['some_value'],$query->parameters());
     }
 
     public function testSelectWhereWithAlias()
     {
-        $query = $this->filter->where('t.col_a','=?','some_value')->build();
+        $query = $this->filter->where('t.col_a',Comparison::equalTo(),'some_value')->build();
         $this->assertEquals("WHERE `t`.`col_a` =?", $query->sql());
         $this->assertEquals(['some_value'],$query->parameters());
     }
 
     public function testSelectWhereAndNestedWhere()
     {
-        $query = $this->filter->where('col_a','=?','some_value_a')->where(function(\QueryMule\Query\Sql\Statement\FilterInterface $query){
-            $query->where('col_b','=?','some_value_b');
-            $query->where('col_c','=?','some_value_c');
+        $query = $this->filter->where('col_a',Comparison::equalTo(),'some_value_a')->where(function(\QueryMule\Query\Sql\Statement\FilterInterface $query){
+            $query->where('col_b',Comparison::equalTo(),'some_value_b');
+            $query->where('col_c',Comparison::equalTo(),'some_value_c');
             $query->where(function(\QueryMule\Query\Sql\Statement\FilterInterface $query){
-                $query->where('col_d','=?','some_value_d');
+                $query->where('col_d',Comparison::equalTo(),'some_value_d');
             });
         })->build();
 
@@ -58,14 +59,14 @@ class FilterTest extends TestCase
 
     public function testSelectWhereAndWhere()
     {
-        $query = $this->filter->where('col_a','=?','some_value_a')->where('col_b','=?','some_value_b')->build();
+        $query = $this->filter->where('col_a',Comparison::equalTo(),'some_value_a')->where('col_b',Comparison::equalTo(),'some_value_b')->build();
         $this->assertEquals("WHERE `col_a` =? AND `col_b` =?", $query->sql());
         $this->assertEquals(['some_value_a','some_value_b'],$query->parameters());
     }
 
     public function testSelectWhereOrWhere()
     {
-        $query = $this->filter->where('col_a','=?','some_value_a')->orWhere('col_b','=?','some_value_b')->build();
+        $query = $this->filter->where('col_a',Comparison::equalTo(),'some_value_a')->orWhere('col_b',Comparison::equalTo(),'some_value_b')->build();
         $this->assertEquals("WHERE `col_a` =? OR `col_b` =?", $query->sql());
         $this->assertEquals(['some_value_a','some_value_b'],$query->parameters());
     }
@@ -84,8 +85,12 @@ class FilterTest extends TestCase
         $this->assertEquals(['some_value_a','some_value_b','some_value_c','some_value_d'],$query->parameters());
     }
 
-    public function testSelectWhereNot()
-    {}
+//    public function testSelectWhereNot()
+//    {
+//        $query = $this->filter->whereNot('col_a', Comparison::equalTo(), ['some_value_a','some_value_b'])->build();
+//        $this->assertEquals("WHERE `col_a` IN ( ?,? ) OR `col_a` IN ( ?,? )", $query->sql());
+//        $this->assertEquals([],$query->parameters());
+//    }
 
 
 

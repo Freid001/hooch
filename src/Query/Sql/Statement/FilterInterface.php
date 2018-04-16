@@ -4,6 +4,7 @@ namespace QueryMule\Query\Sql\Statement;
 
 use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Query\Sql\Sql;
+use QueryMule\Sql\Operator\Comparison;
 
 /**
  * Interface FilterInterface
@@ -27,21 +28,21 @@ interface FilterInterface
     public function ignoreAccent($ignore = true);
 
     /**
-     * @param string $column
-     * @param string|null $operator
-     * @param string|null $value
+     * @param $column
+     * @param null|Comparison $operator
+     * @param null $value
      * @param string $clause
      * @return FilterInterface
      */
-    public function where($column, $operator = null, $value = null, $clause = self::WHERE);
+    public function where($column, ?Comparison $operator = null, $value = null, $clause = self::WHERE);
 
-     /**
-      * @param string $column
-      * @param string|null $operator
-      * @param string|null $value
-      * @return FilterInterface
-      */
-    public function orWhere($column, $operator = null, $value = null);
+    /**
+     * @param $column
+     * @param null|Comparison $operator
+     * @param null $value
+     * @return FilterInterface
+     */
+    public function orWhere($column, ?Comparison $operator = null, $value = null);
 
     /**
      * @param string $column
@@ -56,6 +57,14 @@ interface FilterInterface
      * @return FilterInterface
      */
     public function orWhereIn($column,array $values = []);
+
+    /**
+     * @param $column
+     * @param null|Comparison $operator
+     * @param $value
+     * @return FilterInterface
+     */
+    public function whereNot($column, ?Comparison $operator = null, $value = null);
 
     /**
      * @param array $clauses

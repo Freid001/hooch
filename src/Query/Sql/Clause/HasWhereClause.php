@@ -6,6 +6,7 @@ namespace QueryMule\Query\Sql\Clause;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
+use QueryMule\Sql\Operator\Comparison;
 
 /**
  * Class HasWhereClause
@@ -19,17 +20,21 @@ trait HasWhereClause
     protected $nestedWhere = false;
 
     /**
-     * @param string $column
-     * @param string|Sql|null $operator
-     * @param string|null $value
+     * @param $column
+     * @param null|Comparison $operator
+     * @param null|Sql $value
      * @param string $clause
      * @return Sql
      */
-    final protected function whereClause($column, $operator = null, $value = null, $clause = FilterInterface::WHERE)
+    final protected function whereClause($column, ?Comparison $operator = null, $value = null, $clause = FilterInterface::WHERE)
     {
-        if($operator instanceof Sql) {
-            $value = $operator->parameters();
-            $operator = $operator->sql();
+        if(!empty($operator)){
+            $operator = $operator->build();
+        }
+
+        if($value instanceof Sql) {
+            $operator = $value->sql();
+            $value = $value->parameters();
         }
 
         $sql = null;
@@ -61,13 +66,18 @@ trait HasWhereClause
                 ]);
                 break;
 
+            //WHERE NOT condition;
+            //WHERE NOT country = 'USA';
+            //WHERE NOT country = 'USA' OR NOT country = 'UK';
+            //WHERE NOT country = 'USA' AND NOT country = 'UK';
+            //WHERE NOT country in ('USA', 'UK');
+
             case FilterInterface::NOT:
-                $sql .= FilterInterface::NOT.SelectInterface::SQL_SPACE;
-                $sql .= $this->nestedBracket(true);
-                $sql .= implode(SelectInterface::SQL_SPACE, [
-                    $column,
-                    $operator
-                ]);
+//                $sql .= FilterInterface::NOT.SelectInterface::SQL_SPACE;
+//                $sql .= implode(SelectInterface::SQL_SPACE, [
+//                    $column,
+//                    $operator
+//                ]);
                 break;
 
             case FilterInterface::IN:
@@ -78,6 +88,18 @@ trait HasWhereClause
                     SelectInterface::SQL_BRACKET_CLOSE
                 ]);
                 break;
+
+//WHERE     [DONE]
+//ALL
+//AND       [DONE]
+//ANY
+//BETWEEN
+//EXISTS
+//IN	    [DONE]
+//LIKE
+//NOT
+//OR	    [DONE]
+//SOME
         }
 
         return new Sql($sql, !is_array($value) ? [$value] : $value);

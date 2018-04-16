@@ -9,6 +9,7 @@ use QueryMule\Builder\Sql\Pgsql\Select;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
+use QueryMule\Sql\Operator\Comparison;
 
 /**
  * Class SelectTest
@@ -123,7 +124,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $this->select->cols(['col_a'])->from($table)->where('col_a','=?','some_value')->build([
+        $this->select->cols(['col_a'])->from($table)->where('col_a',Comparison::equalTo(),'some_value')->build([
             Select::SELECT,
             Select::COLS,
             Select::FROM,
@@ -141,7 +142,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $this->select->cols(['col_a'])->from($table)->orWhere('col_a','=?','some_value')->build([
+        $this->select->cols(['col_a'])->from($table)->orWhere('col_a',Comparison::equalTo(),'some_value')->build([
             Select::SELECT,
             Select::COLS,
             Select::FROM,

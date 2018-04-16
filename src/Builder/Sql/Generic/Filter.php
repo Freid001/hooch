@@ -7,6 +7,8 @@ use QueryMule\Query\Sql\Clause\HasWhereClause;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Sql\Operator\Comparison;
+use QueryMule\Sql\Operator\Logical;
 
 /**
  * Class Filter
@@ -42,13 +44,13 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param string $column
-     * @param null $operator
+     * @param $column
+     * @param null|Comparison|null $operator
      * @param null $value
      * @param string $clause
      * @return FilterInterface
      */
-    public function where($column, $operator = null, $value = null, $clause = self::WHERE) : FilterInterface
+    public function where($column, ?Comparison $operator = null, $value = null, $clause = self::WHERE) : FilterInterface
     {
         if($clause == self::WHERE && !empty($this->queryGet(self::WHERE))) {
             $clause = self::AND;
@@ -68,12 +70,12 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param string $column
-     * @param null $operator
+     * @param $column
+     * @param null|Comparison|null $operator
      * @param null $value
      * @return FilterInterface
      */
-    public function orWhere($column, $operator = null, $value = null) : FilterInterface
+    public function orWhere($column, ?Comparison $operator = null, $value = null) : FilterInterface
     {
         $this->where($column, $operator, $value, self::OR);
 
@@ -87,7 +89,7 @@ class Filter implements FilterInterface
      */
     public function whereIn($column,array $values = []) : FilterInterface
     {
-        $this->where($column, $this->whereClause($column,null, $values, FilterInterface::IN));
+        $this->where($column, null, $this->whereClause($column, null, $values, FilterInterface::IN));
 
         return $this;
     }
@@ -99,20 +101,25 @@ class Filter implements FilterInterface
      */
     public function orWhereIn($column,array $values = []) : FilterInterface
     {
-        $this->orwhere($column, $this->whereClause($column,null, $values, FilterInterface::IN));
+        $this->orWhere($column, null, $this->whereClause($column, null, $values, FilterInterface::IN));
 
         return $this;
     }
 
+    public function whereLogical($column, ?Logical $logical = null)
+    {
+        $this->whereClause($column, null, $logical);
+    }
+
     /**
      * @param $column
-     * @param $operator
-     * @param $value
+     * @param null|Comparison $operator
+     * @param null $value
      * @return FilterInterface
      */
-    public function whereNot($column, $operator, $value) : FilterInterface
+    public function whereNot($column, ?Comparison $operator = null, $value = null) : FilterInterface
     {
-        $this->whereClause($column,$operator, $value, FilterInterface::NOT);
+        $this->where($column, null, $this->whereClause($column, $operator, $value, FilterInterface::NOT));
 
         return $this;
     }
@@ -120,7 +127,8 @@ class Filter implements FilterInterface
     public function orWhereNot()
     {}
 
-    public function whereNotIn()
+
+    public function whereLike()
     {}
 
     public function whereBetween()

@@ -2,9 +2,9 @@
 
 namespace QueryMule\Query\Sql\Statement;
 
-use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Sql\Operator\Comparison;
+use QueryMule\Sql\Operator\Logical;
 
 /**
  * Interface FilterInterface
@@ -12,15 +12,6 @@ use QueryMule\Sql\Operator\Comparison;
  */
 interface FilterInterface
 {
-    const WHERE = 'WHERE';
-    const AND = 'AND';
-    const IN = 'IN';
-    const OR = 'OR';
-    const NOT = 'NOT';
-    const ON = 'ON';
-    const JOIN = 'JOIN';
-    const LEFT_JOIN = 'LEFT JOIN';
-
     /**
      * @param bool $ignore
      * @return FilterInterface
@@ -29,20 +20,20 @@ interface FilterInterface
 
     /**
      * @param $column
-     * @param null|Comparison $operator
+     * @param null|Comparison $comparison
      * @param null $value
-     * @param string $clause
-     * @return FilterInterface
+     * @param null|Logical $logical
+     * @return mixed
      */
-    public function where($column, ?Comparison $operator = null, $value = null, $clause = self::WHERE);
+    public function where($column, ?Comparison $comparison = null, $value = null, ?Logical $logical = null);
 
     /**
      * @param $column
-     * @param null|Comparison $operator
+     * @param null|Comparison $comparison
      * @param null $value
      * @return FilterInterface
      */
-    public function orWhere($column, ?Comparison $operator = null, $value = null);
+    public function orWhere($column, ?Comparison $comparison = null, $value = null);
 
     /**
      * @param string $column
@@ -60,11 +51,11 @@ interface FilterInterface
 
     /**
      * @param $column
-     * @param null|Comparison $operator
+     * @param null|Comparison $comparison
      * @param $value
      * @return FilterInterface
      */
-    public function whereNot($column, ?Comparison $operator = null, $value = null);
+    public function whereNot($column, ?Comparison $comparison = null, $value = null);
 
     /**
      * @param array $clauses

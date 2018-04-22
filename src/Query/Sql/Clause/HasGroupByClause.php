@@ -26,7 +26,7 @@ trait HasGroupByClause
             $sql .= ',';
             $sql .= !empty($alias) ? $alias.'.'.$column : $column;
         }else {
-            $sql = SelectInterface::GROUP;
+            $sql = Sql::GROUP;
             $sql .= !empty($alias) ? ' '.$alias.'.'.$column : ' '.$column;
         }
 

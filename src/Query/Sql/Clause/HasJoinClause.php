@@ -33,12 +33,12 @@ trait HasJoinClause
 
         $sql = '';
         switch ($type) {
-            case FilterInterface::LEFT_JOIN:
-                $sql .= FilterInterface::LEFT_JOIN . ' ' . $table->getName();
+            case Sql::JOIN_LET:
+                $sql .= Sql::JOIN_LET . ' ' . $table->getName();
                 break;
 
             case "RIGHT JOIN":
-                $sql .= FilterInterface::LEFT_JOIN . ' ' . $table->getName();
+                $sql .= Sql::JOIN_LET . ' ' . $table->getName();
                 break;
 
             case "INNER JOIN":
@@ -54,7 +54,7 @@ trait HasJoinClause
                 throw new SqlException('Join type not supported.');
         }
 
-        $sql .= !empty($alias) ? ' '.SelectInterface::AS.' '.$alias : ' ';
+        $sql .= !empty($alias) ? ' '.Sql::AS.' '.$alias : ' ';
 
         return new Sql($sql);
     }
@@ -65,10 +65,10 @@ trait HasJoinClause
      * @param string|null $second
      * @return Sql
      */
-    final protected function onClause($first, $operator = null, $second = null, $clause = FilterInterface::ON)
+    final protected function onClause($first, $operator = null, $second = null, $clause = Sql::ON)
     {
         $sql = '';
-        $sql .= ($this->ignoreOnClause) ? FilterInterface::AND : $clause;
+        $sql .= ($this->ignoreOnClause) ? Sql::AND : $clause;
         $sql .= ' '.$first;
         $sql .= ' '.$operator;
         $sql .= ' '.$second;

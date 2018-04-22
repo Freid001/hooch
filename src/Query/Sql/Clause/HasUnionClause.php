@@ -22,8 +22,8 @@ trait HasUnionClause
         $query = $select->build();
 
         $sql = '';
-        $sql .= SelectInterface::UNION;
-        $sql .= !empty($all) ? ' '.SelectInterface::ALL.' ' : ' ';
+        $sql .= Sql::UNION;
+        $sql .= !empty($all) ? ' '.Sql::ALL.' ' : ' ';
         $sql .= $query->sql();
 
         return new Sql($sql,$query->parameters());

@@ -19,7 +19,7 @@ trait HasOffsetClause
     final protected function offsetClause($offset)
     {
         $sql = '';
-        $sql .= SelectInterface::OFFSET.' '.$offset;
+        $sql .= Sql::OFFSET.' '.$offset;
         return new Sql($sql);
     }
 }

@@ -19,7 +19,7 @@ trait HasLimitClause
     final protected function limitClause($limit)
     {
         $sql = '';
-        $sql .= SelectInterface::LIMIT.' '.$limit;
+        $sql .= Sql::LIMIT.' '.$limit;
 
         return new Sql($sql);
     }

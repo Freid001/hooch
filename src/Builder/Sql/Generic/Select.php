@@ -61,7 +61,7 @@ class Select implements SelectInterface
             $this->setAccent($accent);
         }
 
-        $this->queryAdd(self::SELECT, new Sql(self::SELECT));
+        $this->queryAdd(Sql::SELECT, new Sql(Sql::SELECT));
     }
 
     /**
@@ -84,7 +84,7 @@ class Select implements SelectInterface
      * @param null $alias
      * @return SelectInterface
      */
-    public function cols($cols = [self::SQL_STAR], $alias = null) : SelectInterface
+    public function cols($cols = [Sql::SQL_STAR], $alias = null) : SelectInterface
     {
         $i = 0;
         foreach ($cols as $key => &$col) {
@@ -93,13 +93,13 @@ class Select implements SelectInterface
             }
 
             $sql = $this->columnClause(
-                ($col !== self::SQL_STAR) ? $this->addAccent($col) : $col,
+                ($col !== Sql::SQL_STAR) ? $this->addAccent($col) : $col,
                 !empty($alias) ? $this->addAccent($alias) : $alias,
                 ($key !== $i) ? $key : null,
-                !empty($this->queryGet(self::COLS))
+                !empty($this->queryGet(Sql::COLS))
             );
 
-            $this->queryAdd(self::COLS, $sql);
+            $this->queryAdd(Sql::COLS, $sql);
         }
 
         return $this;
@@ -112,7 +112,7 @@ class Select implements SelectInterface
      */
     public function from(RepositoryInterface $table, $alias = null) : SelectInterface
     {
-        $this->queryAdd(self::FROM, $this->fromClause($table, $alias));
+        $this->queryAdd(Sql::FROM, $this->fromClause($table, $alias));
 
         $this->filter = $table->filter();
 
@@ -137,7 +137,7 @@ class Select implements SelectInterface
         $table = isset($table[$keys[0]]) ? $table[$keys[0]] : null;
 
         if ($table instanceof RepositoryInterface) {
-            $this->queryAdd(self::JOIN, $this->joinClause(self::LEFT_JOIN, $table, $alias));
+            $this->queryAdd(Sql::JOIN, $this->joinClause(Sql::JOIN_LET, $table, $alias));
             return $this->on($first, $operator, $second);
         } else {
             throw new SqlException('Table must be instance of RepositoryInterface');
@@ -152,7 +152,7 @@ class Select implements SelectInterface
      */
     public function on($first, $operator, $second) : SelectInterface
     {
-        $this->queryAdd(self::JOIN, $this->onClause($first, $operator, $second, self::ON));
+        $this->queryAdd(Sql::JOIN, $this->onClause($first, $operator, $second, Sql::ON));
 
         return $this;
     }
@@ -165,7 +165,7 @@ class Select implements SelectInterface
      */
     public function orOn($first, $operator = null, $second = null) : SelectInterface
     {
-        $this->queryAdd(self::JOIN, $this->onClause($first, $operator, $second, self:: OR));
+        $this->queryAdd(Sql::JOIN, $this->onClause($first, $operator, $second, Sql:: OR));
 
         return $this;
     }
@@ -212,27 +212,27 @@ class Select implements SelectInterface
 
     /**
      * @param string $column
-     * @param null|Comparison|null $operator
+     * @param null|Comparison|null $comparison
      * @param null $value
-     * @param string $clause
+     * @param string $logical
      * @return SelectInterface
      */
-    public function where($column, ?Comparison $operator = null, $value = null, $clause = self::WHERE) : SelectInterface
+    public function where($column, ?Comparison $comparison = null, $value = null, $logical = Sql::WHERE) : SelectInterface
     {
-        $this->filter->where($column, $operator, $value, $clause);
+        $this->filter->where($column, $comparison, $value, $logical);
 
         return $this;
     }
 
     /**
      * @param string $column
-     * @param null|Comparison|null $operator
+     * @param null|Comparison|null $comparison
      * @param null $value
      * @return SelectInterface
      */
-    public function orWhere($column, ?Comparison $operator = null, $value = null) : SelectInterface
+    public function orWhere($column, ?Comparison $comparison = null, $value = null) : SelectInterface
     {
-        $this->filter->orWhere($column, $operator, $value);
+        $this->filter->orWhere($column, $comparison, $value);
 
         return $this;
     }
@@ -263,13 +263,13 @@ class Select implements SelectInterface
 
     /**
      * @param $column
-     * @param null|Comparison $operator
+     * @param null|Comparison $comparison
      * @param null $value
      * @return FilterInterface
      */
-    public function whereNot($column, ?Comparison $operator = null, $value = null) : FilterInterface
+    public function whereNot($column, ?Comparison $comparison = null, $value = null) : FilterInterface
     {
-        $this->filter->whereNot($column, $operator, $value);
+        $this->filter->whereNot($column, $comparison, $value);
 
         return $this;
     }
@@ -284,10 +284,10 @@ class Select implements SelectInterface
         $sql = $this->groupByClause(
             $this->addAccent($column),
             !empty($alias) ? $this->addAccent($alias) : $alias,
-            !empty($this->queryGet(self::GROUP))
+            !empty($this->queryGet(Sql::GROUP))
         );
 
-        $this->queryAdd(self::GROUP,$sql);
+        $this->queryAdd(Sql::GROUP,$sql);
 
         return $this;
     }
@@ -304,10 +304,10 @@ class Select implements SelectInterface
             $this->addAccent($column),
             $sort,
             !empty($alias) ? $this->addAccent($alias) : $alias,
-            !empty($this->queryGet(self::ORDER))
+            !empty($this->queryGet(Sql::ORDER))
         );
 
-        $this->queryAdd(self::ORDER,$sql);
+        $this->queryAdd(Sql::ORDER,$sql);
 
         return $this;
     }
@@ -321,7 +321,7 @@ class Select implements SelectInterface
      */
     public function limit($limit) : SelectInterface
     {
-        $this->queryAdd(self::LIMIT,$this->limitClause($limit));
+        $this->queryAdd(Sql::LIMIT,$this->limitClause($limit));
 
         return $this;
     }
@@ -332,7 +332,7 @@ class Select implements SelectInterface
      */
     public function offset($offset) : SelectInterface
     {
-        $this->queryAdd(self::OFFSET,$this->offsetClause($offset));
+        $this->queryAdd(Sql::OFFSET,$this->offsetClause($offset));
 
         return $this;
     }
@@ -344,7 +344,7 @@ class Select implements SelectInterface
      */
     public function union(SelectInterface $select, $all = false) : SelectInterface
     {
-        $this->queryAdd(self::UNION, $this->unionClause($select, $all));
+        $this->queryAdd(Sql::UNION, $this->unionClause($select, $all));
 
         return $this;
     }
@@ -354,21 +354,21 @@ class Select implements SelectInterface
      * @return Sql
      */
     public function build(array $clauses = [
-        self::SELECT,   // DONE
-        self::COLS,     // DONE
-        self::FROM,     // DONE
-        self::JOIN,     // <<<
-        self::WHERE,    // DONE
-        self::GROUP,    // DONE
-        self::ORDER,    // DONE
-        self::HAVING,   // <<<
-        self::LIMIT,    // DONE
-        self::OFFSET,   // DONE
-        self::UNION     // DONE
+        Sql::SELECT,   // DONE
+        Sql::COLS,     // DONE
+        Sql::FROM,     // DONE
+        Sql::JOIN,     // <<<
+        Sql::WHERE,    // DONE
+        Sql::GROUP,    // DONE
+        Sql::ORDER,    // DONE
+        Sql::HAVING,   // <<<
+        Sql::LIMIT,    // DONE
+        Sql::OFFSET,   // DONE
+        Sql::UNION     // DONE
     ]) : Sql
     {
-        if (in_array(self::WHERE, $clauses)) {
-            $this->queryAdd(self::WHERE, $this->filter->build([self::WHERE]));
+        if (in_array(Sql::WHERE, $clauses)) {
+            $this->queryAdd(Sql::WHERE, $this->filter->build([Sql::WHERE]));
         }
 
         $sql = $this->queryBuild($clauses);

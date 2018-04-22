@@ -9,6 +9,7 @@ use QueryMule\Builder\Sql\Sqlite\Select;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Repository\Table\Table;
+use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Sql\Operator\Comparison;
 
@@ -43,7 +44,7 @@ class TableTest extends TestCase
         $table = new Table($driver);
 
         $query = $table->filter()->where('a',Comparison::equalTo(),'b')->build([
-            SelectInterface::WHERE
+            Sql::WHERE
         ]);
 
         $this->assertEquals("WHERE `a` =?", $query->sql());
@@ -59,9 +60,9 @@ class TableTest extends TestCase
         $table->setName('some_table_name');
 
         $this->assertEquals("SELECT * FROM some_table_name", $table->select()->build([
-            SelectInterface::SELECT,
-            SelectInterface::COLS,
-            SelectInterface::FROM
+            Sql::SELECT,
+            Sql::COLS,
+            Sql::FROM
         ])->sql());
     }
 }

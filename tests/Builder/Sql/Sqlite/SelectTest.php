@@ -6,6 +6,7 @@ namespace test\Builder\Sql\Sqlite;
 use PHPUnit\Framework\TestCase;
 use QueryMule\Builder\Sql\Sqlite\Select;
 use QueryMule\Query\Repository\RepositoryInterface;
+use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 use QueryMule\Sql\Operator\Comparison;
@@ -34,15 +35,15 @@ class SelectTest extends TestCase
     public function testSelect()
     {
         $this->assertEquals("SELECT",trim($this->select->build([
-            Select::SELECT
+            Sql::SELECT
         ])->sql()));
     }
 
     public function testIgnoreAlias()
     {
         $this->assertEquals("SELECT col_a ,col_b ,col_c",$this->select->ignoreAccent()->cols(['col_a','col_b','col_c'])->build([
-            Select::SELECT,
-            Select::COLS
+            Sql::SELECT,
+            Sql::COLS
         ])->sql());
     }
 
@@ -50,8 +51,8 @@ class SelectTest extends TestCase
     {
         $this->select->cols(['col_a'])->cols(['col_b'])->cols(['col_c']);
         $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c`",trim($this->select->build([
-            Select::SELECT,
-            Select::COLS
+            Sql::SELECT,
+            Sql::COLS
         ])->sql()));
     }
 
@@ -59,17 +60,17 @@ class SelectTest extends TestCase
     {
         $this->select->cols(['col_a','col_b','col_c'],'t');
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c`",trim($this->select->build([
-            Select::SELECT,
-            Select::COLS
+            Sql::SELECT,
+            Sql::COLS
         ])->sql()));
     }
 
     public function testSelectAllCols()
     {
-        $this->select->cols([SelectInterface::SQL_STAR]);
+        $this->select->cols([Sql::SQL_STAR]);
         $this->assertEquals("SELECT *",trim($this->select->build([
-            Select::SELECT,
-            Select::COLS
+            Sql::SELECT,
+            Sql::COLS
         ])->sql()));
     }
 
@@ -77,8 +78,8 @@ class SelectTest extends TestCase
     {
         $this->select->cols(['a'=>'col_a','b'=>'col_b','c'=>'col_c']);
         $this->assertEquals("SELECT `col_a` AS a ,`col_b` AS b ,`col_c` AS c",trim($this->select->build([
-            Select::SELECT,
-            Select::COLS
+            Sql::SELECT,
+            Sql::COLS
         ])->sql()));
     }
 
@@ -89,9 +90,9 @@ class SelectTest extends TestCase
 
         $this->select->cols(['col_a','col_b','col_c'])->from($table);
         $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name",trim($this->select->build([
-            Select::SELECT,
-            Select::COLS,
-            Select::FROM
+            Sql::SELECT,
+            Sql::COLS,
+            Sql::FROM
         ])->sql()));
     }
 
@@ -102,9 +103,9 @@ class SelectTest extends TestCase
 
         $this->select->cols(['col_a','col_b','col_c'],'t')->from($table,'t');
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t",trim($this->select->build([
-            Select::SELECT,
-            Select::COLS,
-            Select::FROM
+            Sql::SELECT,
+            Sql::COLS,
+            Sql::FROM
         ])->sql()));
     }
 
@@ -119,10 +120,10 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
         $this->select->cols(['col_a'])->from($table)->where('col_a',Comparison::equalTo(),'some_value')->build([
-            Select::SELECT,
-            Select::COLS,
-            Select::FROM,
-            Select::WHERE
+            Sql::SELECT,
+            Sql::COLS,
+            Sql::FROM,
+            Sql::WHERE
         ]);
     }
 
@@ -137,10 +138,10 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
         $this->select->cols(['col_a'])->from($table)->orWhere('col_a',Comparison::equalTo(),'some_value')->build([
-            Select::SELECT,
-            Select::COLS,
-            Select::FROM,
-            Select::WHERE
+            Sql::SELECT,
+            Sql::COLS,
+            Sql::FROM,
+            Sql::WHERE
         ]);
     }
 

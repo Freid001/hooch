@@ -1,10 +1,10 @@
 <?php
 
 namespace QueryMule\Sql\Operator;
-use QueryMule\Builder\Sql\Generic\Filter;
-use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Query\Sql\Statement\SelectInterface;
 
+
+use QueryMule\Query\Sql\Nested;
+use QueryMule\Query\Sql\Sql;
 
 /**
  * Class Comparison
@@ -12,39 +12,57 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
  */
 class Logical
 {
-    /**
-     * @var null|string
-     */
-    private $operator = null;
+    use Nested;
 
     /**
-     * @param $operator
+     * @var Sql
      */
-    private function __construct($operator)
+    private $sql;
+
+    /**
+     * @param $sql
+     */
+    private function __construct(Sql $sql)
     {
-        $this->operator = $operator;
+        $this->sql = $sql;
     }
 
-    public static function in(array $value = [])
+    public static function in(array $values = [])
     {
-        $sql = FilterInterface::IN;
-        $sql .= SelectInterface::SQL_SPACE
-        $sql .= implode(SelectInterface::SQL_SPACE, [
-            SelectInterface::SQL_BRACKET_OPEN,
-            implode( ",", array_fill(0, count($value), "?")),
-            SelectInterface::SQL_BRACKET_CLOSE
+        $sql = Sql::IN;
+        $sql .= Sql::SQL_SPACE;
+        $sql .= implode(Sql::SQL_SPACE, [
+            Sql::SQL_BRACKET_OPEN,
+            implode( ",", array_fill(0, count($values), "?")),
+            Sql::SQL_BRACKET_CLOSE
         ]);
 
-        return new self($sql);
+        return new self(new Sql($sql, $values));
     }
 
-    public static function not(FilterInterface $filter)
+    public static function not($column, Comparison $comparison)
     {
+        $sql = Sql::NOT;
+        $sql .= Sql::SQL_SPACE;
+        //$sql .= $this->nest(true);
+        $sql .= implode(Sql::SQL_SPACE, [
+            $column,
+            $comparison->build()
+        ]);
 
+        return new self (new Sql($sql));
     }
+
+    public static function and()
+    {
+        return new self (new Sql(null));
+    }
+
+    public static function or()
+    {}
 
     public function build()
     {
-        return $this->operator;
+        return $this->sql;
     }
 }

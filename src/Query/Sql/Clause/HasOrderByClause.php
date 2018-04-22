@@ -28,7 +28,9 @@ trait HasOrderByClause
             $sql .= !empty($alias) ? $alias.'.'.$column : $column;
             $sql .= ' '.strtoupper($sort);
         }else {
-            $sql = SelectInterface::ORDER;
+            $sql = Sql::ORDER;
+            $sql .= Sql::SQL_SPACE;
+            $sql .= Sql::BY;
             $sql .= !empty($alias) ? ' '.$alias.'.'.$column : ' '.$column;
             $sql .= ' '.strtoupper($sort);
         }

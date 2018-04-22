@@ -5,6 +5,7 @@ namespace QueryMule\Query\Repository\Table;
 use QueryMule\Builder\Sql\Generic\Filter;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
+use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
@@ -61,7 +62,7 @@ abstract class AbstractTable implements RepositoryInterface
      * @param array $cols
      * @return \QueryMule\Query\Sql\Statement\SelectInterface
      */
-    public function select(array $cols = [SelectInterface::SQL_STAR], $alias = null) : SelectInterface
+    public function select(array $cols = [Sql::SQL_STAR], $alias = null) : SelectInterface
     {
         return $this->select->cols($cols)->from($this,$alias);
     }

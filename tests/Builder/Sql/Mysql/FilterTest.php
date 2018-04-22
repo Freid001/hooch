@@ -85,12 +85,12 @@ class FilterTest extends TestCase
         $this->assertEquals(['some_value_a','some_value_b','some_value_c','some_value_d'],$query->parameters());
     }
 
-//    public function testSelectWhereNot()
-//    {
-//        $query = $this->filter->whereNot('col_a', Comparison::equalTo(), ['some_value_a','some_value_b'])->build();
-//        $this->assertEquals("WHERE `col_a` IN ( ?,? ) OR `col_a` IN ( ?,? )", $query->sql());
-//        $this->assertEquals([],$query->parameters());
-//    }
+    public function testSelectWhereNot()
+    {
+        $query = $this->filter->whereNot('col_a', Comparison::equalTo(), ['some_value_a','some_value_b'])->build();
+        $this->assertEquals("WHERE `col_a` IN ( ?,? ) OR `col_a` IN ( ?,? )", $query->sql());
+        $this->assertEquals([],$query->parameters());
+    }
 
 
 

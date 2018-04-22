@@ -21,7 +21,7 @@ trait HasHavingClause
     final protected function havingClause($column,$operator = null,$value = null)
     {
         $sql = '';
-        $sql .= SelectInterface::HAVING.' '.$column.' '.$operator;
+        $sql .= Sql::HAVING.' '.$column.' '.$operator;
 
         return new Sql($sql,$value);
     }

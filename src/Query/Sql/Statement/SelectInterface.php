@@ -13,38 +13,6 @@ use QueryMule\Sql\Operator\Comparison;
  */
 interface SelectInterface extends FilterInterface
 {
-    const ALL = 'ALL';
-    const AS = 'AS';
-    const BY = 'BY';
-    const COLS = 'COL';
-    const COUNT = 'COUNT';
-    const DELETE = 'DELETE';
-    const DISTINCT = 'DISTINCT';
-    const FETCH = 'fetch';
-    const FETCH_ALL = 'fetchAll';
-    const FETCH_COLUMN = 'fetchColumn';
-    const FETCH_COLUMN_COUNT = 'columnCount';
-    const FETCH_COLUMN_META = 'getColumnMeta';
-    const FETCH_ROW_COUNT = 'rowCount';
-    const FROM = 'FROM';
-    const GROUP = 'GROUP BY';
-    const HAVING = 'HAVING';
-    const INSERT = 'INSERT';
-    const INTO = 'INTO';
-    const LIMIT = 'LIMIT';
-    const OFFSET = 'OFFSET';
-    const ORDER = 'ORDER BY';
-    const SET = 'SET';
-    const SELECT = 'SELECT';
-    const SQL_STAR = '*';
-    const SQL_SPACE = ' ';
-    const SQL_BRACKET_OPEN = '(';
-    const SQL_BRACKET_CLOSE = ')';
-    const TABLE = 'TABLE';
-    const UNION = 'UNION';
-    const UPDATE = 'UPDATE';
-    const VALUES = 'VALUES';
-
     /**
      * @param bool $ignore
      * @return SelectInterface
@@ -56,7 +24,7 @@ interface SelectInterface extends FilterInterface
      * @param string|null $alias
      * @return SelectInterface
      */
-    public function cols($cols = [self::SQL_STAR], $alias = null) : SelectInterface;
+    public function cols($cols = [Sql::SQL_STAR], $alias = null) : SelectInterface;
 
     /**
      * @param RepositoryInterface $table
@@ -102,20 +70,20 @@ interface SelectInterface extends FilterInterface
 
     /**
      * @param $column
-     * @param null|Comparison|null $operator
+     * @param null|Comparison|null $comparison
      * @param null $value
-     * @param string $clause
+     * @param string $logical
      * @return SelectInterface
      */
-    public function where($column, ?Comparison $operator = null, $value = null, $clause = self::WHERE) : SelectInterface;
+    public function where($column, ?Comparison $comparison = null, $value = null, $logical = Sql::WHERE) : SelectInterface;
 
     /**
      * @param $column
-     * @param null|Comparison|null $operator
+     * @param null|Comparison|null $comparison
      * @param null $value
      * @return SelectInterface
      */
-    public function orWhere($column, ?Comparison $operator = null, $value = null) : SelectInterface;
+    public function orWhere($column, ?Comparison $comparison = null, $value = null) : SelectInterface;
 
     /**
      * @param string $column

@@ -123,7 +123,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $query = $this->select->cols(['col_a'])->from($table)->where('col_a',Comparison::equalTo(),'some_value')->build([
+        $query = $this->select->cols(['col_a'])->from($table)->where('col_a',$this->select->comparison()->equalTo('some_value'))->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -149,7 +149,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $query =$this->select->cols(['col_a','col_b'])->from($table)->where('col_a',Comparison::equalTo(),'some_value')->orWhere('col_b',Comparison::equalTo(),'another_value')->build([
+        $query =$this->select->cols(['col_a','col_b'])->from($table)->where('col_a',$this->select->comparison()->equalTo('some_value'))->orWhere('col_b',$this->select->comparison()->equalTo('another_value'))->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -174,7 +174,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $query =$this->select->cols(['col_a','col_b'])->from($table)->where('col_a',Comparison::equalTo(),'some_value')->where('col_b',Comparison::equalTo(),'another_value')->build([
+        $query =$this->select->cols(['col_a','col_b'])->from($table)->where('col_a',$this->select->comparison()->equalTo('some_value'))->where('col_b',$this->select->comparison()->equalTo('another_value'))->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -292,7 +292,7 @@ class SelectTest extends TestCase
 
         $unionSelect = new Select();
 
-        $this->select->cols(['col_a','col_b','col_c'],'t')->from($table,'t')->where('col_a',Comparison::equalTo(),'some_value')->union($unionSelect->cols(['col_a','col_b','col_c'],'tt')->from($table,'tt')->where('col_a',Comparison::equalTo(),'another_value'),false);
+        $this->select->cols(['col_a','col_b','col_c'],'t')->from($table,'t')->where('col_a',$this->select->comparison()->equalTo('some_value'))->union($unionSelect->cols(['col_a','col_b','col_c'],'tt')->from($table,'tt')->where('col_a',$this->select->comparison()->equalTo('another_value')),false);
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -322,7 +322,7 @@ class SelectTest extends TestCase
 
         $unionSelect = new Select();
 
-        $this->select->cols(['col_a','col_b','col_c'],'t')->from($table,'t')->where('col_a',Comparison::equalTo(),'some_value')->union($unionSelect->cols(['col_a','col_b','col_c'],'tt')->from($table,'tt')->where('col_a',Comparison::equalTo(),'another_value'),true);
+        $this->select->cols(['col_a','col_b','col_c'],'t')->from($table,'t')->where('col_a',$this->select->comparison()->equalTo('some_value'))->union($unionSelect->cols(['col_a','col_b','col_c'],'tt')->from($table,'tt')->where('col_a',$this->select->comparison()->equalTo('another_value')),true);
 
         $query = $this->select->build([
             Sql::SELECT,

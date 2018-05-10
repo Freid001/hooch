@@ -4,11 +4,11 @@ namespace QueryMule\Builder\Sql\Generic;
 
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasWhereClause;
+use QueryMule\Query\Sql\Operator\Comparison;
+use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Sql\Operator\Comparison;
-use QueryMule\Sql\Operator\Logical;
 
 /**
  * Class Filter
@@ -44,41 +44,59 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $column
+     * @return Comparison
+     */
+    public function comparison() : Comparison
+    {
+        return new Comparison();
+    }
+
+    /**
+     * @return Logical
+     */
+    public function logical() : Logical
+    {
+        return new Logical();
+    }
+
+    /**
+     * @param string $column
      * @param null|Comparison $comparison
-     * @param null $value
      * @param null|Logical $logical
      * @return FilterInterface
      */
-    public function where($column, ?Comparison $comparison = null, $value = null, ?Logical $logical = null): FilterInterface
+    public function where($column, ?Comparison $comparison = null, ?Logical $logical = null): FilterInterface
     {
-        if (empty($logical) && !empty($this->queryGet(Sql::WHERE))) {
-            $logical = Logical::and();
+        $column = is_string($column) ? $this->addAccent($column, '.') : $column;
+
+        $and = false;
+        if(is_null($logical) && !empty($this->queryGet(Sql::WHERE))){
+            $logical = $this->logical()->and($column,$comparison);
+            $and = true;
         }
 
         if (!$column instanceof \Closure) {
             $this->queryAdd(Sql::WHERE, $this->whereClause(
-                !empty($column) ? $this->addAccent($column, '.') : null,
-                $comparison,
-                $value,
+                !$and ? $column : null,
+                !$and ? $comparison : null,
                 $logical
             ));
-        } else {
-            $this->queryAdd(Sql::WHERE, $this->nestedWhereClause($column));
+        }else {
+            $this->queryAdd(Sql::WHERE, $this->nestedWhereClause($column, $logical));
         }
 
         return $this;
     }
 
     /**
-     * @param $column
-     * @param null|Comparison|null $comparison
-     * @param null $value
+     * @param string $column
+     * @param null|Comparison $comparison
+     * @param null|Logical $logical
      * @return FilterInterface
      */
-    public function orWhere($column, ?Comparison $comparison = null, $value = null): FilterInterface
+    public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null): FilterInterface
     {
-        $this->where($column, $comparison, $value, Sql:: OR);
+        $this->where(null, null, $this->logical()->or($this->addAccent($column, '.'),$comparison,$logical));
 
         return $this;
     }
@@ -90,7 +108,7 @@ class Filter implements FilterInterface
      */
     public function whereIn($column, array $values = []): FilterInterface
     {
-        $this->where($column, null, $this->whereClause(null, null, $values, Sql::IN));
+        $this->where($column, null, $this->logical()->in($values));
 
         return $this;
     }
@@ -102,7 +120,7 @@ class Filter implements FilterInterface
      */
     public function orWhereIn($column, array $values = []): FilterInterface
     {
-        $this->orWhere($column, null, $this->whereClause(null, null, $values, Sql::IN));
+        $this->orWhere($column, null, $this->logical()->in($values));
 
         return $this;
     }
@@ -110,12 +128,11 @@ class Filter implements FilterInterface
     /**
      * @param $column
      * @param null|Comparison $comparison
-     * @param null $value
      * @return FilterInterface
      */
-    public function whereNot($column, ?Comparison $comparison = null, $value = null): FilterInterface
+    public function whereNot($column, ?Comparison $comparison = null): FilterInterface
     {
-        $this->where(null, null, Logical::not($column, $comparison)->build());
+        $this->where(null, null, $this->logical()->not($column, $comparison));
 
         return $this;
     }

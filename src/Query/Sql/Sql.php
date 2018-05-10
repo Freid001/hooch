@@ -38,10 +38,15 @@ class Sql
     const ON = 'ON';
     const SET = 'SET';
     const SELECT = 'SELECT';
+    const SQL_EQUAL = '=';
+    const SQL_LIKE = 'LIKE';
+    const SQL_GREATER_THAN = '>';
+    const SQL_LESS_THAN = '<';
     const SQL_STAR = '*';
     const SQL_SPACE = ' ';
     const SQL_BRACKET_OPEN = '(';
     const SQL_BRACKET_CLOSE = ')';
+    const SQL_QUESTION_MARK = '?';
     const TABLE = 'TABLE';
     const UNION = 'UNION';
     const UPDATE = 'UPDATE';

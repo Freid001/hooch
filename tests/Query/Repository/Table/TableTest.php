@@ -43,7 +43,7 @@ class TableTest extends TestCase
 
         $table = new Table($driver);
 
-        $query = $table->filter()->where('a',Comparison::equalTo(),'b')->build([
+        $query = $table->filter()->where('a',$table->filter()->comparison()->equalTo('b'))->build([
             Sql::WHERE
         ]);
 

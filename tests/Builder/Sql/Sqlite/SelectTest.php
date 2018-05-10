@@ -119,7 +119,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $this->select->cols(['col_a'])->from($table)->where('col_a',Comparison::equalTo(),'some_value')->build([
+        $this->select->cols(['col_a'])->from($table)->where('col_a',$this->select->comparison()->equalTo('some_value'))->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -137,7 +137,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $this->select->cols(['col_a'])->from($table)->orWhere('col_a',Comparison::equalTo(),'some_value')->build([
+        $this->select->cols(['col_a'])->from($table)->orWhere('col_a',$this->select->comparison()->equalTo('some_value'))->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,

@@ -1,8 +1,9 @@
 <?php
 
-namespace QueryMule\Sql\Operator;
+namespace QueryMule\Query\Sql\Operator;
 
 
+use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Nested;
 use QueryMule\Query\Sql\Sql;
 
@@ -19,49 +20,101 @@ class Logical
      */
     private $sql;
 
-    /**
-     * @param $sql
-     */
-    private function __construct(Sql $sql)
+    public function setNested(bool $bool)
     {
-        $this->sql = $sql;
+        $this->nested = $bool;
     }
 
-    public static function in(array $values = [])
+    public function in(array $values = [])
     {
         $sql = Sql::IN;
         $sql .= Sql::SQL_SPACE;
         $sql .= implode(Sql::SQL_SPACE, [
             Sql::SQL_BRACKET_OPEN,
-            implode( ",", array_fill(0, count($values), "?")),
+            implode(",", array_fill(0, count($values), Sql::SQL_QUESTION_MARK)),
             Sql::SQL_BRACKET_CLOSE
         ]);
 
-        return new self(new Sql($sql, $values));
+        $this->sql = new Sql($sql, $values);
+
+        return $this;
     }
 
-    public static function not($column, Comparison $comparison)
+    public function not($column, Comparison $comparison)
     {
+        $value = [];
+        if (!empty($comparison)) {
+            $value = $comparison->build()->parameters();
+        }
+
         $sql = Sql::NOT;
         $sql .= Sql::SQL_SPACE;
-        //$sql .= $this->nest(true);
-        $sql .= implode(Sql::SQL_SPACE, [
-            $column,
-            $comparison->build()
-        ]);
+        $sql .= $this->nest(true);
+        $sql .= $column;
+        $sql .= Sql::SQL_SPACE;
+        $sql .= ($comparison instanceof Comparison) ? $comparison->build()->sql() : "";
 
-        return new self (new Sql($sql));
+        $this->sql = new Sql($sql,$value);
+
+        return $this;
     }
 
-    public static function and()
+    /**
+     * @param string $column
+     * @param null|Comparison $comparison
+     * @return Logical
+     */
+    public function and ($column, ?Comparison $comparison): Logical
     {
-        return new self (new Sql(null));
+        $value = [];
+        if (!empty($comparison)) {
+            $value = $comparison->build()->parameters();
+        }
+
+        $sql = Sql:: AND;
+        $sql .= Sql::SQL_SPACE;
+        $sql .= $this->nest(true);
+        $sql .= is_string($column) ? $column.Sql::SQL_SPACE : "";
+        $sql .= ($comparison instanceof Comparison) ? $comparison->build()->sql() : "";
+
+        $this->sql = new Sql($sql,$value);
+
+        return $this;
     }
 
-    public static function or()
-    {}
+    /**
+     * @param string $column
+     * @param null|Comparison $comparison
+     * @param null|Logical $logical
+     * @return Logical
+     */
+    public function or ($column, ?Comparison $comparison, ?Logical $logical): Logical
+    {
+        $value = [];
+        if (!empty($comparison)) {
+            $value = array_merge($value, $comparison->build()->parameters());
+        }
 
-    public function build()
+        if (!empty($logical)) {
+            $value = array_merge($value, $logical->build()->parameters());
+        }
+
+        $sql = Sql:: OR;
+        $sql .= Sql::SQL_SPACE;
+        $sql .= $this->nest(true);
+        $sql .= is_string($column) ? $column.Sql::SQL_SPACE : "";
+        $sql .= ($comparison instanceof Comparison) ? $comparison->build()->sql() : "";
+        $sql .= ($logical instanceof Logical) ? $logical->build()->sql() : "";
+
+        $this->sql = new Sql($sql, $value);
+
+        return $this;
+    }
+
+    /**
+     * @return Sql
+     */
+    public function build(): Sql
     {
         return $this->sql;
     }

@@ -2,9 +2,9 @@
 
 namespace QueryMule\Query\Sql\Statement;
 
+use QueryMule\Query\Sql\Operator\Comparison;
+use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Sql\Operator\Comparison;
-use QueryMule\Sql\Operator\Logical;
 
 /**
  * Interface FilterInterface
@@ -19,21 +19,30 @@ interface FilterInterface
     public function ignoreAccent($ignore = true);
 
     /**
-     * @param $column
-     * @param null|Comparison $comparison
-     * @param null $value
-     * @param null|Logical $logical
-     * @return mixed
+     * @return Comparison
      */
-    public function where($column, ?Comparison $comparison = null, $value = null, ?Logical $logical = null);
+    public function comparison();
+
+    /**
+     * @return Logical
+     */
+    public function logical();
 
     /**
      * @param $column
      * @param null|Comparison $comparison
-     * @param null $value
+     * @param null|Logical $logical
      * @return FilterInterface
      */
-    public function orWhere($column, ?Comparison $comparison = null, $value = null);
+    public function where($column, ?Comparison $comparison = null, ?Logical $logical = null);
+
+    /**
+     * @param $column
+     * @param null|Comparison $comparison
+     * @param null|Logical $logical
+     * @return FilterInterface
+     */
+    public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null);
 
     /**
      * @param string $column
@@ -52,10 +61,9 @@ interface FilterInterface
     /**
      * @param $column
      * @param null|Comparison $comparison
-     * @param $value
      * @return FilterInterface
      */
-    public function whereNot($column, ?Comparison $comparison = null, $value = null);
+    public function whereNot($column, ?Comparison $comparison = null);
 
     /**
      * @param array $clauses

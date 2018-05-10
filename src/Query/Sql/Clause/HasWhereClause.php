@@ -4,8 +4,9 @@
 namespace QueryMule\Query\Sql\Clause;
 
 use QueryMule\Query\Sql\Nested;
+use QueryMule\Query\Sql\Operator\Comparison;
+use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Sql\Operator\Comparison;
 
 /**
  * Class HasWhereClause
@@ -18,103 +19,41 @@ trait HasWhereClause
     /**
      * @param null|string $column
      * @param null|Comparison $comparison
-     * @param null $value
-     * @param string $operator
+     * @param null|Logical $logical
      * @return Sql
      */
-    final protected function whereClause(?string $column, ?Comparison $comparison = null, $value = null, string $operator = Sql::WHERE)
+    final protected function whereClause(?string $column, ?Comparison $comparison = null, ?Logical $logical = null)
     {
-        if(!empty($comparison)){
-            $comparison = $comparison->build();
+        $value = [];
+        if (!empty($comparison)) {
+            $value = array_merge($value, $comparison->build()->parameters());
         }
 
-        if($value instanceof Sql) {
-            $comparison = $value->sql();
-            $value = $value->parameters();
+        if (!empty($logical)) {
+            $value = array_merge($value, $logical->build()->parameters());
         }
 
-        $sql = null;
-        switch ($operator) {
-            case Sql::WHERE:
-                $sql .= Sql::WHERE.Sql::SQL_SPACE;
-                $sql .= $this->nest(true);
-                $sql .= implode(Sql::SQL_SPACE, [
-                    $column,
-                    $comparison
-                ]);
-                break;
+        $sql = "";
+        $sql .= !is_null($column) ? Sql::WHERE.Sql::SQL_SPACE : "";
+        $sql .= $this->nest(true);
+        $sql .= !is_null($column) ? $column. Sql::SQL_SPACE : "";
+        $sql .= !is_null($comparison) ? $comparison->build()->sql() : "";
+        $sql .= !is_null($logical) ? $logical->build()->sql() : "";
 
-            case Sql::AND:
-                $sql .= Sql::AND.Sql::SQL_SPACE;
-                $sql .= $this->nest(true);
-                $sql .= implode(Sql::SQL_SPACE, [
-                    $column,
-                    $comparison
-                ]);
-                break;
-
-            case Sql::OR:
-                $sql .= Sql::OR.Sql::SQL_SPACE;
-                $sql .= $this->nest(true);
-                $sql .= implode(Sql::SQL_SPACE, [
-                    $column,
-                    $comparison
-                ]);
-                break;
-
-            case Sql::NOT:
-//                $sql .= FilterInterface::NOT.SelectInterface::SQL_SPACE;
-//                $sql .= $this->nestedBracket(true);
-//                $sql .= implode(SelectInterface::SQL_SPACE, [
-//                    $column,
-//                    $comparison
-//                ]);
-                break;
-
-            case 'SOME':
-                break;
-
-            case 'ANY':
-                break;
-
-            case 'ALL':
-                break;
-
-            case Sql::IN:
-                $sql .= Sql::IN.Sql::SQL_SPACE;
-                $sql .= implode(Sql::SQL_SPACE, [
-                    Sql::SQL_BRACKET_OPEN,
-                    implode( ",", array_fill(0, count($value), "?")),
-                    Sql::SQL_BRACKET_CLOSE
-                ]);
-                break;
-
-//WHERE     [DONE]
-//ALL       ...
-//AND       [DONE]
-//ANY       ...
-//BETWEEN
-//EXISTS
-//IN	    [DONE]
-//LIKE      [DONE]
-//NOT       ...
-//OR	    [DONE]
-//SOME      ...
-        }
-
-        return new Sql($sql, !is_array($value) ? [$value] : $value);
+        return new Sql($sql, $value);
     }
 
     /**
      * @param \Closure $column
+     * @param null|Logical $logical
      * @return Sql
      */
-    final protected function nestedWhereClause(\Closure $column)
+    final protected function nestedWhereClause(\Closure $column, ?Logical $logical = null)
     {
-        $this->nested = true;
+        $logical->setNested(true);
         $column($this);
         $this->nested = true;
+
         return new Sql($this->nest(false));
     }
-
 }

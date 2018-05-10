@@ -13,11 +13,12 @@ use QueryMule\Query\Sql\Clause\HasLimitClause;
 use QueryMule\Query\Sql\Clause\HasOffsetClause;
 use QueryMule\Query\Sql\Clause\HasOrderByClause;
 use QueryMule\Query\Sql\Clause\HasUnionClause;
+use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
-use QueryMule\Sql\Operator\Comparison;
+use QueryMule\Query\Sql\Operator\Comparison;
 
 /**
  * Class Select
@@ -62,6 +63,22 @@ class Select implements SelectInterface
         }
 
         $this->queryAdd(Sql::SELECT, new Sql(Sql::SELECT));
+    }
+
+    /**
+     * @return Comparison
+     */
+    public function comparison() : Comparison
+    {
+        return new Comparison();
+    }
+
+    /**
+     * @return Logical
+     */
+    public function logical() : Logical
+    {
+        return new Logical();
     }
 
     /**
@@ -211,28 +228,27 @@ class Select implements SelectInterface
 //    }
 
     /**
-     * @param string $column
-     * @param null|Comparison|null $comparison
-     * @param null $value
-     * @param string $logical
+     * @param $column
+     * @param null|Comparison $comparison
+     * @param null|Logical $logical
      * @return SelectInterface
      */
-    public function where($column, ?Comparison $comparison = null, $value = null, $logical = Sql::WHERE) : SelectInterface
+    public function where($column, ?Comparison $comparison = null, ?Logical $logical = null) : SelectInterface
     {
-        $this->filter->where($column, $comparison, $value, $logical);
+        $this->filter->where($column, $comparison, $logical);
 
         return $this;
     }
 
     /**
-     * @param string $column
-     * @param null|Comparison|null $comparison
-     * @param null $value
+     * @param $column
+     * @param null|Comparison $comparison
+     * @param null|Logical $logical
      * @return SelectInterface
      */
-    public function orWhere($column, ?Comparison $comparison = null, $value = null) : SelectInterface
+    public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null) : SelectInterface
     {
-        $this->filter->orWhere($column, $comparison, $value);
+        $this->filter->orWhere($column, $comparison, $logical);
 
         return $this;
     }
@@ -264,12 +280,11 @@ class Select implements SelectInterface
     /**
      * @param $column
      * @param null|Comparison $comparison
-     * @param null $value
      * @return FilterInterface
      */
-    public function whereNot($column, ?Comparison $comparison = null, $value = null) : FilterInterface
+    public function whereNot($column, ?Comparison $comparison = null) : FilterInterface
     {
-        $this->filter->whereNot($column, $comparison, $value);
+        $this->filter->whereNot($column, $comparison);
 
         return $this;
     }

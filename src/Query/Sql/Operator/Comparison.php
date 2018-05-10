@@ -1,64 +1,112 @@
 <?php
 
-namespace QueryMule\Sql\Operator;
 
+namespace QueryMule\Query\Sql\Operator;
+
+use QueryMule\Query\Sql\Sql;
 
 /**
  * Class Comparison
- * @package QueryMule\Builder\Sql\Generic
+ * @package QueryMule\Query\Sql\Operator
  */
 class Comparison
 {
     /**
-     * @var null
+     * @var Sql
      */
-    private $operator = null;
+    private $sql;
 
     /**
-     * @param $operator
+     * @param $value
+     * @return Comparison
      */
-    private function __construct($operator)
+    public function equalTo($value) : Comparison
     {
-        $this->operator = $operator;
+        $this->sql =  new Sql(Sql::SQL_EQUAL.Sql::SQL_QUESTION_MARK,[$value]);
+
+        return $this;
     }
 
-    public static function equalTo()
+    /**
+     * @param $value
+     * @return Comparison
+     */
+    public function wildcard($value) : Comparison
     {
-        return new self('=?');
+        return $this;
     }
 
-//    public static function like()
-//    {
-//        return new self('LIKE ?');
-//    }
-
-    public static function greaterThan()
+    /**
+     * @param $value
+     * @return Comparison
+     */
+    public function like($value) : Comparison
     {
-        return new self('>?');
+        $this->sql = new Sql(Sql::SQL_LIKE.Sql::SQL_QUESTION_MARK,[$value]);
+
+        return $this;
     }
 
-    public static function lessThan()
+    /**
+     * @param $value
+     * @return Comparison
+     */
+    public function greaterThan($value) : Comparison
     {
-        return new self('<?');
+        $this->sql = new Sql(Sql::SQL_GREATER_THAN.Sql::SQL_QUESTION_MARK,[$value]);
+
+        return $this;
     }
 
-    public static function greaterThanEqualTo()
+    /**
+     * @param $value
+     * @return Comparison
+     */
+    public function lessThan($value) : Comparison
     {
-        return new self('>=?');
+        $this->sql = new Sql(Sql::SQL_LESS_THAN.Sql::SQL_QUESTION_MARK,[$value]);
+
+        return $this;
     }
 
-    public static function lessThanEqualTo()
+    /**
+     * @param $value
+     * @return Comparison
+     */
+    public function greaterThanEqualTo($value) : Comparison
     {
-        return new self('<=?');
+        $this->sql = new Sql(Sql::SQL_GREATER_THAN.Sql::SQL_EQUAL.SQL::SQL_QUESTION_MARK,[$value]);
+
+        return $this;
     }
 
-    public static function notEqualTo()
+    /**
+     * @param $value
+     * @return Comparison
+     */
+    public function lessThanEqualTo($value) : Comparison
     {
-        return new self('<>?');
+        $this->sql = new Sql(Sql::SQL_LESS_THAN.Sql::SQL_EQUAL.Sql::SQL_QUESTION_MARK,[$value]);
+
+        return $this;
     }
 
-    public function build()
+    /**
+     * @param $value
+     * @return Comparison
+     */
+    public function notEqualTo($value) : Comparison
     {
-        return $this->operator;
+        $this->sql =  new Sql(Sql::SQL_LESS_THAN.Sql::SQL_GREATER_THAN.Sql::SQL_QUESTION_MARK,[$value]);
+
+        return $this;
+    }
+
+    /**
+     * @return Sql
+     */
+    public function build() : Sql
+    {
+        return $this->sql;
     }
 }

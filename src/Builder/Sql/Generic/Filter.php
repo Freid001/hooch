@@ -22,6 +22,16 @@ class Filter implements FilterInterface
     use HasWhereClause;
 
     /**
+     * @var Comparison
+     */
+    private $comparison;
+
+    /**
+     * @var Logical
+     */
+    private $logical;
+
+    /**
      * Filter constructor.
      * @param string $accent
      */
@@ -30,6 +40,76 @@ class Filter implements FilterInterface
         if (!empty($accent)) {
             $this->setAccent($accent);
         }
+
+        $this->comparison = new Comparison();
+        $this->logical = new Logical();
+    }
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function whereExists(Sql $subQuery): FilterInterface
+    {
+        $this->where(null, null, $this->logical()->exists($subQuery));
+
+        return $this;
+    }
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function whereNotExists(Sql $subQuery): FilterInterface
+    {
+        $this->whereNot(null, null, $this->logical()->exists($subQuery));
+
+        return $this;
+    }
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function orWhereExists(Sql $subQuery): FilterInterface
+    {
+        $this->orWhere(null, null, $this->logical()->exists($subQuery));
+
+        return $this;
+    }
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function orWhereNotExists(Sql $subQuery): FilterInterface
+    {
+        $this->orWhereNot(null, null, $this->logical()->exists($subQuery));
+
+        return $this;
+    }
+
+    /**
+     * @param array $clauses
+     * @return Sql
+     */
+    public function build(array $clauses = [
+        Sql::WHERE
+    ]): Sql
+    {
+        $sql = $this->queryBuild($clauses);
+
+        $this->queryReset($clauses);
+
+        return $sql;
+    }
+
+    /**
+     * @return Comparison
+     */
+    public function comparison(): Comparison
+    {
+        return $this->comparison;
     }
 
     /**
@@ -44,48 +124,11 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @return Comparison
-     */
-    public function comparison() : Comparison
-    {
-        return new Comparison();
-    }
-
-    /**
      * @return Logical
      */
-    public function logical() : Logical
+    public function logical(): Logical
     {
-        return new Logical();
-    }
-
-    /**
-     * @param string $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
-     * @return FilterInterface
-     */
-    public function where($column, ?Comparison $comparison = null, ?Logical $logical = null): FilterInterface
-    {
-        $column = is_string($column) ? $this->addAccent($column, '.') : $column;
-
-        $and = false;
-        if(is_null($logical) && !empty($this->queryGet(Sql::WHERE))){
-            $logical = $this->logical()->and($column,$comparison);
-            $and = true;
-        }
-
-        if (!$column instanceof \Closure) {
-            $this->queryAdd(Sql::WHERE, $this->whereClause(
-                !$and ? $column : null,
-                !$and ? $comparison : null,
-                $logical
-            ));
-        }else {
-            $this->queryAdd(Sql::WHERE, $this->nestedWhereClause($column, $logical));
-        }
-
-        return $this;
+        return $this->logical;
     }
 
     /**
@@ -96,19 +139,22 @@ class Filter implements FilterInterface
      */
     public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null): FilterInterface
     {
-        $this->where(null, null, $this->logical()->or($this->addAccent($column, '.'),$comparison,$logical));
+        $column = is_string($column) ? $this->addAccent($column, '.') : $column;
+
+        $this->where(null, null, $this->logical()->or($column, $comparison, $logical));
 
         return $this;
     }
 
     /**
      * @param $column
-     * @param array $values
+     * @param $from
+     * @param $to
      * @return FilterInterface
      */
-    public function whereIn($column, array $values = []): FilterInterface
+    public function orWhereBetween($column, $from, $to): FilterInterface
     {
-        $this->where($column, null, $this->logical()->in($values));
+        $this->orWhere($column, null, $this->logical()->between($from, $to));
 
         return $this;
     }
@@ -128,48 +174,134 @@ class Filter implements FilterInterface
     /**
      * @param $column
      * @param null|Comparison $comparison
+     * @param null|Logical $logical
      * @return FilterInterface
      */
-    public function whereNot($column, ?Comparison $comparison = null): FilterInterface
+    public function orWhereNot($column, ?Comparison $comparison = null, ?Logical $logical = null): FilterInterface
     {
-        $this->where(null, null, $this->logical()->not($column, $comparison));
+        $column = is_string($column) ? $this->addAccent($column, '.') : $column;
+
+        $this->orWhere(null, null, $this->logical()->not($column, $comparison, $logical));
 
         return $this;
     }
 
-    public function orWhereNot()
+    /**
+     * @param $column
+     * @param $from
+     * @param $to
+     * @return FilterInterface
+     */
+    public function orWhereNotBetween($column, $from, $to): FilterInterface
     {
-    }
+        $this->orWhereNot($column, null, $this->logical()->between($from, $to));
 
-
-    public function whereLike()
-    {
-    }
-
-    public function whereBetween()
-    {
-    }
-
-    public function whereNotBetween()
-    {
-    }
-
-    public function whereExists()
-    {
+        return $this;
     }
 
     /**
-     * @param array $clauses
-     * @return Sql
+     * @param $column
+     * @param array $values
+     * @return FilterInterface
      */
-    public function build(array $clauses = [
-        Sql::WHERE
-    ]): Sql
+    public function orWhereNotIn($column, array $values = []): FilterInterface
     {
-        $sql = $this->queryBuild($clauses);
+        $this->orWhereNot($column, null, $this->logical()->in($values));
 
-        $this->queryReset($clauses);
+        return $this;
+    }
 
-        return $sql;
+    /**
+     * @param string $column
+     * @param null|Comparison $comparison
+     * @param null|Logical $logical
+     * @return FilterInterface
+     */
+    public function where($column, ?Comparison $comparison = null, ?Logical $logical = null): FilterInterface
+    {
+        $column = is_string($column) ? $this->addAccent($column, '.') : $column;
+
+        $and = false;
+        if ((is_null($logical) || $logical->getOperator() != Sql:: OR) && !empty($this->queryGet(Sql::WHERE))) {
+            $and = true;
+            $logical = $this->logical()->and($column, $comparison, $logical);
+        }
+
+        if (!$column instanceof \Closure) {
+            $this->queryAdd(Sql::WHERE, $this->whereClause(
+                !$and ? $column : null,
+                !$and ? $comparison : null,
+                $logical
+            ));
+        } else {
+            $this->queryAdd(Sql::WHERE, $this->nestedWhereClause($column, $logical));
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $from
+     * @param $to
+     * @return FilterInterface
+     */
+    public function whereBetween($column, $from, $to): FilterInterface
+    {
+        $this->where($column, null, $this->logical()->between($from, $to));
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param array $values
+     * @return FilterInterface
+     */
+    public function whereIn($column, array $values = []): FilterInterface
+    {
+        $this->where($column, null, $this->logical()->in($values));
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param null|Comparison $comparison
+     * @param null|Logical $logical
+     * @return FilterInterface
+     */
+    public function whereNot($column, ?Comparison $comparison = null, ?Logical $logical = null): FilterInterface
+    {
+        $column = is_string($column) ? $this->addAccent($column, '.') : $column;
+
+        $this->where(null, null, $this->logical()->not($column, $comparison, $logical));
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $from
+     * @param $to
+     * @return FilterInterface
+     */
+    public function whereNotBetween($column, $from, $to): FilterInterface
+    {
+        $this->whereNot($column, null, $this->logical()->between($from, $to));
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param array $values
+     * @return FilterInterface
+     */
+    public function whereNotIn($column, array $values = []): FilterInterface
+    {
+        $this->whereNot($column, null, $this->logical()->in($values));
+
+        return $this;
     }
 }

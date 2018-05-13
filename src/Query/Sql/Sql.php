@@ -8,14 +8,17 @@ namespace QueryMule\Query\Sql;
  */
 class Sql
 {
-    const ALL = 'ALL';#
+    const ALL = 'ALL';
     const AND = 'AND';
+    const ANY = 'ANY';
     const AS = 'AS';
+    const BETWEEN = 'BETWEEN';
     const BY = 'BY';
     const COLS = 'COL';
     const COUNT = 'COUNT';
     const DELETE = 'DELETE';
     const DISTINCT = 'DISTINCT';
+    const EXISTS = 'EXISTS';
     const FETCH = 'fetch';
     const FETCH_ALL = 'fetchAll';
     const FETCH_COLUMN = 'fetchColumn';
@@ -47,6 +50,7 @@ class Sql
     const SQL_BRACKET_OPEN = '(';
     const SQL_BRACKET_CLOSE = ')';
     const SQL_QUESTION_MARK = '?';
+    const SOME = 'SOME';
     const TABLE = 'TABLE';
     const UNION = 'UNION';
     const UPDATE = 'UPDATE';

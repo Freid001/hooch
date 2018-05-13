@@ -18,7 +18,7 @@ trait Nested
      * @param bool $open
      * @return string
      */
-    private function nest(bool $open) : string
+    public function nested(bool $open) : string
     {
         $bracket = Sql::SQL_BRACKET_CLOSE;
         if ($this->nested) {
@@ -38,8 +38,20 @@ trait Nested
     /**
      * @return bool
      */
-    public function nested() : bool
+    public function isNested() : bool
     {
         return $this->nested;
     }
+
+    /**
+     * @param bool $bool
+     * @return $this
+     */
+    public function setNested(bool $bool)
+    {
+        $this->nested = $bool;
+
+        return $this;
+    }
+
 }

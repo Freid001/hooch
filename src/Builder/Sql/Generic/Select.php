@@ -65,35 +65,49 @@ class Select implements SelectInterface
         $this->queryAdd(Sql::SELECT, new Sql(Sql::SELECT));
     }
 
-    /**
-     * @return Comparison
-     */
-    public function comparison() : Comparison
+    public function having()
     {
-        return new Comparison();
     }
 
     /**
-     * @return Logical
-     */
-    public function logical() : Logical
-    {
-        return new Logical();
-    }
-
-    /**
-     * @param bool $ignore
+     * @param $column
+     * @param array $values
      * @return SelectInterface
      */
-    public function ignoreAccent($ignore = true) : SelectInterface
+    public function WhereNotIn($column, array $values = []): SelectInterface
     {
-        $this->ignoreAccentSymbol($ignore);
-
-        if (!empty($this->filter)) {
-            $this->filter->ignoreAccent($ignore);
-        }
+        $this->filter->whereNotIn($column, $values);
 
         return $this;
+    }
+
+    /**
+     * @param array $clauses
+     * @return Sql
+     */
+    public function build(array $clauses = [
+        Sql::SELECT,   // DONE
+        Sql::COLS,     // DONE
+        Sql::FROM,     // DONE
+        Sql::JOIN,     // <<<
+        Sql::WHERE,    // DONE
+        Sql::GROUP,    // DONE
+        Sql::ORDER,    // DONE
+        Sql::HAVING,   // <<<
+        Sql::LIMIT,    // DONE
+        Sql::OFFSET,   // DONE
+        Sql::UNION     // DONE
+    ]): Sql
+    {
+        if (in_array(Sql::WHERE, $clauses)) {
+            $this->queryAdd(Sql::WHERE, $this->filter->build([Sql::WHERE]));
+        }
+
+        $sql = $this->queryBuild($clauses);
+
+        $this->queryReset($clauses);
+
+        return $sql;
     }
 
     /**
@@ -101,7 +115,7 @@ class Select implements SelectInterface
      * @param null $alias
      * @return SelectInterface
      */
-    public function cols($cols = [Sql::SQL_STAR], $alias = null) : SelectInterface
+    public function cols($cols = [Sql::SQL_STAR], $alias = null): SelectInterface
     {
         $i = 0;
         foreach ($cols as $key => &$col) {
@@ -123,11 +137,21 @@ class Select implements SelectInterface
     }
 
     /**
+     * @return Comparison
+     */
+    public function comparison(): Comparison
+    {
+        return new Comparison();
+    }
+
+//    public function join(array $table, \Closure $on) {}
+
+    /**
      * @param RepositoryInterface $table
      * @param null $alias
      * @return SelectInterface
      */
-    public function from(RepositoryInterface $table, $alias = null) : SelectInterface
+    public function from(RepositoryInterface $table, $alias = null): SelectInterface
     {
         $this->queryAdd(Sql::FROM, $this->fromClause($table, $alias));
 
@@ -136,53 +160,35 @@ class Select implements SelectInterface
         return $this;
     }
 
-//    public function join(array $table, \Closure $on) {}
-
     /**
-     * @param array $table
-     * @param string $first
-     * @param string|null $operator
-     * @param string|null $second
-     * @return SelectInterface
-     * @throws SqlException
-     */
-    public function leftJoin(array $table, $first, $operator = null, $second = null) : SelectInterface
-    {
-        $keys = array_keys($table);
-
-        $alias = isset($keys[0]) ? $keys[0] : null;
-        $table = isset($table[$keys[0]]) ? $table[$keys[0]] : null;
-
-        if ($table instanceof RepositoryInterface) {
-            $this->queryAdd(Sql::JOIN, $this->joinClause(Sql::JOIN_LET, $table, $alias));
-            return $this->on($first, $operator, $second);
-        } else {
-            throw new SqlException('Table must be instance of RepositoryInterface');
-        }
-    }
-
-    /**
-     * @param string $first
-     * @param string|null $operator
-     * @param string|null $second
+     * @param string $column
+     * @param string|null $alias
      * @return SelectInterface
      */
-    public function on($first, $operator, $second) : SelectInterface
+    public function groupBy($column, $alias = null): SelectInterface
     {
-        $this->queryAdd(Sql::JOIN, $this->onClause($first, $operator, $second, Sql::ON));
+        $sql = $this->groupByClause(
+            $this->addAccent($column),
+            !empty($alias) ? $this->addAccent($alias) : $alias,
+            !empty($this->queryGet(Sql::GROUP))
+        );
+
+        $this->queryAdd(Sql::GROUP, $sql);
 
         return $this;
     }
 
     /**
-     * @param string $first
-     * @param string|null $operator
-     * @param string|null $second
+     * @param bool $ignore
      * @return SelectInterface
      */
-    public function orOn($first, $operator = null, $second = null) : SelectInterface
+    public function ignoreAccent($ignore = true): SelectInterface
     {
-        $this->queryAdd(Sql::JOIN, $this->onClause($first, $operator, $second, Sql:: OR));
+        $this->ignoreAccentSymbol($ignore);
+
+        if (!empty($this->filter)) {
+            $this->filter->ignoreAccent($ignore);
+        }
 
         return $this;
     }
@@ -228,14 +234,80 @@ class Select implements SelectInterface
 //    }
 
     /**
-     * @param $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
+     * @param array $table
+     * @param string $first
+     * @param string|null $operator
+     * @param string|null $second
+     * @return SelectInterface
+     * @throws SqlException
+     */
+    public function leftJoin(array $table, $first, $operator = null, $second = null): SelectInterface
+    {
+        $keys = array_keys($table);
+
+        $alias = isset($keys[0]) ? $keys[0] : null;
+        $table = isset($table[$keys[0]]) ? $table[$keys[0]] : null;
+
+        if ($table instanceof RepositoryInterface) {
+            $this->queryAdd(Sql::JOIN, $this->joinClause(Sql::JOIN_LET, $table, $alias));
+            return $this->on($first, $operator, $second);
+        } else {
+            throw new SqlException('Table must be instance of RepositoryInterface');
+        }
+    }
+
+    /**
+     * @param int $limit
      * @return SelectInterface
      */
-    public function where($column, ?Comparison $comparison = null, ?Logical $logical = null) : SelectInterface
+    public function limit($limit): SelectInterface
     {
-        $this->filter->where($column, $comparison, $logical);
+        $this->queryAdd(Sql::LIMIT, $this->limitClause($limit));
+
+        return $this;
+    }
+
+    /**
+     * @return Logical
+     */
+    public function logical(): Logical
+    {
+        return new Logical();
+    }
+
+    /**
+     * @param int $offset
+     * @return SelectInterface
+     */
+    public function offset($offset): SelectInterface
+    {
+        $this->queryAdd(Sql::OFFSET, $this->offsetClause($offset));
+
+        return $this;
+    }
+
+    /**
+     * @param string $first
+     * @param string|null $operator
+     * @param string|null $second
+     * @return SelectInterface
+     */
+    public function on($first, $operator, $second): SelectInterface
+    {
+        $this->queryAdd(Sql::JOIN, $this->onClause($first, $operator, $second, Sql::ON));
+
+        return $this;
+    }
+
+    /**
+     * @param string $first
+     * @param string|null $operator
+     * @param string|null $second
+     * @return SelectInterface
+     */
+    public function orOn($first, $operator = null, $second = null): SelectInterface
+    {
+        $this->queryAdd(Sql::JOIN, $this->onClause($first, $operator, $second, Sql:: OR));
 
         return $this;
     }
@@ -246,7 +318,7 @@ class Select implements SelectInterface
      * @param null|Logical $logical
      * @return SelectInterface
      */
-    public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null) : SelectInterface
+    public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null): SelectInterface
     {
         $this->filter->orWhere($column, $comparison, $logical);
 
@@ -254,13 +326,14 @@ class Select implements SelectInterface
     }
 
     /**
-     * @param string $column
-     * @param array $values
+     * @param $column
+     * @param $from
+     * @param $to
      * @return SelectInterface
      */
-    public function whereIn($column, array $values = []) : SelectInterface
+    public function orWhereBetween($column, $from, $to): SelectInterface
     {
-        $this->filter->whereIn($column, $values);
+        $this->filter->orWhereBetween($column, $from, $to);
 
         return $this;
     }
@@ -270,7 +343,7 @@ class Select implements SelectInterface
      * @param array $values
      * @return SelectInterface
      */
-    public function orWhereIn($column, array $values = []) : SelectInterface
+    public function orWhereIn($column, array $values = []): SelectInterface
     {
         $this->filter->orWhereIn($column, $values);
 
@@ -280,29 +353,37 @@ class Select implements SelectInterface
     /**
      * @param $column
      * @param null|Comparison $comparison
-     * @return FilterInterface
+     * @param null|Logical $logical
+     * @return SelectInterface
      */
-    public function whereNot($column, ?Comparison $comparison = null) : FilterInterface
+    public function orWhereNot($column, ?Comparison $comparison = null, ?Logical $logical = null): SelectInterface
     {
-        $this->filter->whereNot($column, $comparison);
+        $this->filter->orWhereNot($column, $comparison, $logical);
 
         return $this;
     }
 
     /**
-     * @param string $column
-     * @param string|null $alias
+     * @param $column
+     * @param $from
+     * @param $to
      * @return SelectInterface
      */
-    public function groupBy($column, $alias = null) : SelectInterface
+    public function orWhereNotBetween($column, $from, $to): SelectInterface
     {
-        $sql = $this->groupByClause(
-            $this->addAccent($column),
-            !empty($alias) ? $this->addAccent($alias) : $alias,
-            !empty($this->queryGet(Sql::GROUP))
-        );
+        $this->filter->orWhereNotBetween($column, $from, $to);
 
-        $this->queryAdd(Sql::GROUP,$sql);
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param array $values
+     * @return SelectInterface
+     */
+    public function orWhereNotIn($column, array $values = []): SelectInterface
+    {
+        $this->filter->orwhereNotIn($column, $values);
 
         return $this;
     }
@@ -313,7 +394,7 @@ class Select implements SelectInterface
      * @param null $alias
      * @return SelectInterface
      */
-    public function orderBy($column, $sort = 'desc', $alias = null) : SelectInterface
+    public function orderBy($column, $sort = 'desc', $alias = null): SelectInterface
     {
         $sql = $this->orderByClause(
             $this->addAccent($column),
@@ -322,32 +403,7 @@ class Select implements SelectInterface
             !empty($this->queryGet(Sql::ORDER))
         );
 
-        $this->queryAdd(Sql::ORDER,$sql);
-
-        return $this;
-    }
-
-    public function having()
-    {}
-
-    /**
-     * @param int $limit
-     * @return SelectInterface
-     */
-    public function limit($limit) : SelectInterface
-    {
-        $this->queryAdd(Sql::LIMIT,$this->limitClause($limit));
-
-        return $this;
-    }
-
-    /**
-     * @param int $offset
-     * @return SelectInterface
-     */
-    public function offset($offset) : SelectInterface
-    {
-        $this->queryAdd(Sql::OFFSET,$this->offsetClause($offset));
+        $this->queryAdd(Sql::ORDER, $sql);
 
         return $this;
     }
@@ -357,7 +413,7 @@ class Select implements SelectInterface
      * @param bool $all
      * @return SelectInterface
      */
-    public function union(SelectInterface $select, $all = false) : SelectInterface
+    public function union(SelectInterface $select, $all = false): SelectInterface
     {
         $this->queryAdd(Sql::UNION, $this->unionClause($select, $all));
 
@@ -365,31 +421,110 @@ class Select implements SelectInterface
     }
 
     /**
-     * @param array $clauses
-     * @return Sql
+     * @param $column
+     * @param null|Comparison $comparison
+     * @param null|Logical $logical
+     * @return SelectInterface
      */
-    public function build(array $clauses = [
-        Sql::SELECT,   // DONE
-        Sql::COLS,     // DONE
-        Sql::FROM,     // DONE
-        Sql::JOIN,     // <<<
-        Sql::WHERE,    // DONE
-        Sql::GROUP,    // DONE
-        Sql::ORDER,    // DONE
-        Sql::HAVING,   // <<<
-        Sql::LIMIT,    // DONE
-        Sql::OFFSET,   // DONE
-        Sql::UNION     // DONE
-    ]) : Sql
+    public function where($column, ?Comparison $comparison = null, ?Logical $logical = null): SelectInterface
     {
-        if (in_array(Sql::WHERE, $clauses)) {
-            $this->queryAdd(Sql::WHERE, $this->filter->build([Sql::WHERE]));
-        }
+        $this->filter->where($column, $comparison, $logical);
 
-        $sql = $this->queryBuild($clauses);
+        return $this;
+    }
 
-        $this->queryReset($clauses);
+    /**
+     * @param $column
+     * @param $from
+     * @param $to
+     * @return SelectInterface
+     */
+    public function whereBetween($column, $from, $to): SelectInterface
+    {
+        $this->filter->whereBetween($column, $from, $to);
 
-        return $sql;
+        return $this;
+    }
+
+    /**
+     * @param string $column
+     * @param array $values
+     * @return SelectInterface
+     */
+    public function whereIn($column, array $values = []): SelectInterface
+    {
+        $this->filter->whereIn($column, $values);
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param null|Comparison $comparison
+     * @param null|Logical $logical
+     * @return FilterInterface
+     */
+    public function whereNot($column, ?Comparison $comparison = null, ?Logical $logical = null): FilterInterface
+    {
+        $this->filter->whereNot($column, $comparison, $logical);
+
+        return $this;
+    }
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function whereExists(Sql $subQuery): FilterInterface
+    {
+        $this->filter->whereExists($subQuery);
+
+        return $this;
+    }
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function orWhereExists(Sql $subQuery): FilterInterface
+    {
+        $this->filter->orWhereExists($subQuery);
+
+        return $this;
+    }
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function orWhereNotExists(Sql $subQuery): FilterInterface
+    {
+        $this->filter->orWhereNotExists($subQuery);
+
+        return $this;
+    }
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function whereNotExists(Sql $subQuery): FilterInterface
+    {
+        $this->filter->whereNotExists($subQuery);
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $from
+     * @param $to
+     * @return SelectInterface
+     */
+    public function whereNotBetween($column, $from, $to): SelectInterface
+    {
+        $this->filter->whereNotBetween($column, $from, $to);
+
+        return $this;
     }
 }

@@ -23,30 +23,10 @@ class Comparison
     public function equalTo($value): Comparison
     {
         if ($value instanceof Sql) {
-            $this->sql = new Sql(Sql::SQL_EQUAL . Sql::SQL_SPACE . $value->sql(), $value->parameters());
+            $this->sql = new Sql(Sql::SQL_EQUAL . Sql::SQL_SPACE . Sql::SQL_BRACKET_OPEN . Sql::SQL_SPACE . $value->sql() . Sql::SQL_SPACE .  Sql::SQL_BRACKET_CLOSE . Sql::SQL_SPACE, $value->parameters());
         } else {
             $this->sql = new Sql(Sql::SQL_EQUAL . Sql::SQL_QUESTION_MARK, [$value]);
         }
-
-        return $this;
-    }
-
-    /**
-     * @param $value
-     * @return Comparison
-     */
-    public function wildcard($value): Comparison
-    {
-        return $this;
-    }
-
-    /**
-     * @param $value
-     * @return Comparison
-     */
-    public function like($value): Comparison
-    {
-        $this->sql = new Sql(Sql::SQL_LIKE . Sql::SQL_QUESTION_MARK, [$value]);
 
         return $this;
     }

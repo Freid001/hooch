@@ -339,6 +339,17 @@ class Select implements SelectInterface
     }
 
     /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function orWhereExists(Sql $subQuery): FilterInterface
+    {
+        $this->filter->orWhereExists($subQuery);
+
+        return $this;
+    }
+
+    /**
      * @param string $column
      * @param array $values
      * @return SelectInterface
@@ -372,6 +383,17 @@ class Select implements SelectInterface
     public function orWhereNotBetween($column, $from, $to): SelectInterface
     {
         $this->filter->orWhereNotBetween($column, $from, $to);
+
+        return $this;
+    }
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function orWhereNotExists(Sql $subQuery): FilterInterface
+    {
+        $this->filter->orWhereNotExists($subQuery);
 
         return $this;
     }
@@ -447,6 +469,17 @@ class Select implements SelectInterface
     }
 
     /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function whereExists(Sql $subQuery): FilterInterface
+    {
+        $this->filter->whereExists($subQuery);
+
+        return $this;
+    }
+
+    /**
      * @param string $column
      * @param array $values
      * @return SelectInterface
@@ -472,34 +505,14 @@ class Select implements SelectInterface
     }
 
     /**
-     * @param Sql $subQuery
-     * @return FilterInterface
+     * @param $column
+     * @param $from
+     * @param $to
+     * @return SelectInterface
      */
-    public function whereExists(Sql $subQuery): FilterInterface
+    public function whereNotBetween($column, $from, $to): SelectInterface
     {
-        $this->filter->whereExists($subQuery);
-
-        return $this;
-    }
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function orWhereExists(Sql $subQuery): FilterInterface
-    {
-        $this->filter->orWhereExists($subQuery);
-
-        return $this;
-    }
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function orWhereNotExists(Sql $subQuery): FilterInterface
-    {
-        $this->filter->orWhereNotExists($subQuery);
+        $this->filter->whereNotBetween($column, $from, $to);
 
         return $this;
     }
@@ -511,19 +524,6 @@ class Select implements SelectInterface
     public function whereNotExists(Sql $subQuery): FilterInterface
     {
         $this->filter->whereNotExists($subQuery);
-
-        return $this;
-    }
-
-    /**
-     * @param $column
-     * @param $from
-     * @param $to
-     * @return SelectInterface
-     */
-    public function whereNotBetween($column, $from, $to): SelectInterface
-    {
-        $this->filter->whereNotBetween($column, $from, $to);
 
         return $this;
     }

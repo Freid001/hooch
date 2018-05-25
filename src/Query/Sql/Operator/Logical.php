@@ -45,9 +45,9 @@ class Logical
      */
     public function and ($column, ?Comparison $comparison, ?Logical $logical): Logical
     {
-        $this->sql = $this->operatorWithColumn(Sql:: AND, $column, $comparison, $logical);
+        $this->sql = $this->operatorWithColumn(Sql::AND, $column, $comparison, $logical);
 
-        $this->operator = Sql:: AND;
+        $this->operator = Sql::AND;
 
         return $this;
     }

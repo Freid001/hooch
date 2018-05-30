@@ -16,10 +16,8 @@ trait HasOffsetClause
      * @param int $offset
      * @return Sql
      */
-    final protected function offsetClause($offset)
+    final protected function offsetClause(int $offset)
     {
-        $sql = '';
-        $sql .= Sql::OFFSET.' '.$offset;
-        return new Sql($sql);
+        return new Sql(Sql::OFFSET.' '.$offset);
     }
 }

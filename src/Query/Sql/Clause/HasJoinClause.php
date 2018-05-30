@@ -33,12 +33,12 @@ trait HasJoinClause
 
         $sql = '';
         switch ($type) {
-            case Sql::JOIN_LET:
-                $sql .= Sql::JOIN_LET . ' ' . $table->getName();
+            case Sql::JOIN_LEFT:
+                $sql .= Sql::JOIN_LEFT . ' ' . $table->getName();
                 break;
 
-            case "RIGHT JOIN":
-                $sql .= Sql::JOIN_LET . ' ' . $table->getName();
+            case Sql::JOIN_RIGHT:
+                $sql .= Sql::JOIN_RIGHT . ' ' . $table->getName();
                 break;
 
             case "INNER JOIN":
@@ -51,7 +51,7 @@ trait HasJoinClause
                 break;
 
             default:
-                throw new SqlException('Join type not supported.');
+                throw new SqlException('Join not supported.');
         }
 
         $sql .= !empty($alias) ? ' '.Sql::AS.' '.$alias : ' ';

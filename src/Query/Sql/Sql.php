@@ -29,7 +29,8 @@ class Sql
     const GROUP = 'GROUP BY';
     const HAVING = 'HAVING';
     const JOIN = 'JOIN';
-    const JOIN_LET = 'LEFT JOIN';
+    const JOIN_LEFT = 'LEFT JOIN';
+    const JOIN_RIGHT = 'LEFT RIGHT';
     const INSERT = 'INSERT';
     const IN = 'IN';
     const INTO = 'INTO';

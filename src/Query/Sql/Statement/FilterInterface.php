@@ -13,10 +13,10 @@ use QueryMule\Query\Sql\Sql;
 interface FilterInterface
 {
     /**
-     * @param bool $ignore
-     * @return FilterInterface
+     * @param array $clauses
+     * @return Sql
      */
-    public function ignoreAccent($ignore = true);
+    public function build(array $clauses = []): Sql;
 
     /**
      * @return Comparison
@@ -24,41 +24,15 @@ interface FilterInterface
     public function comparison();
 
     /**
+     * @param bool $ignore
+     * @return FilterInterface
+     */
+    public function ignoreAccent($ignore = true);
+
+    /**
      * @return Logical
      */
     public function logical();
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function whereExists(Sql $subQuery);
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function whereNotExists(Sql $subQuery);
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function orWhereExists(Sql $subQuery);
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function orWhereNotExists(Sql $subQuery);
-
-    /**
-     * @param $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
-     * @return FilterInterface
-     */
-    public function where($column, ?Comparison $comparison = null, ?Logical $logical = null);
 
     /**
      * @param $column
@@ -69,13 +43,6 @@ interface FilterInterface
     public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null);
 
     /**
-     * @param string $column
-     * @param array $values
-     * @return FilterInterface
-     */
-    public function whereIn($column, array $values = []);
-
-    /**
      * @param $column
      * @param $from
      * @param $to
@@ -84,19 +51,10 @@ interface FilterInterface
     public function orWhereBetween($column, $from, $to);
 
     /**
-     * @param $column
-     * @param $from
-     * @param $to
+     * @param Sql $subQuery
      * @return FilterInterface
      */
-    public function orWhereNotBetween($column, $from, $to);
-
-    /**
-     * @param $column
-     * @param array $values
-     * @return FilterInterface
-     */
-    public function orWhereNotIn($column, array $values = []);
+    public function orWhereExists(Sql $subQuery);
 
     /**
      * @param $column
@@ -115,18 +73,32 @@ interface FilterInterface
 
     /**
      * @param $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
+     * @param $from
+     * @param $to
      * @return FilterInterface
      */
-    public function whereNot($column, ?Comparison $comparison = null, ?Logical $logical = null);
+    public function orWhereNotBetween($column, $from, $to);
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function orWhereNotExists(Sql $subQuery);
 
     /**
      * @param $column
      * @param array $values
      * @return FilterInterface
      */
-    public function whereNotIn($column, array $values = []);
+    public function orWhereNotIn($column, array $values = []);
+
+    /**
+     * @param $column
+     * @param null|Comparison $comparison
+     * @param null|Logical $logical
+     * @return FilterInterface
+     */
+    public function where($column, ?Comparison $comparison = null, ?Logical $logical = null);
 
     /**
      * @param $column
@@ -137,6 +109,27 @@ interface FilterInterface
     public function whereBetween($column, $from, $to);
 
     /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function whereExists(Sql $subQuery);
+
+    /**
+     * @param string $column
+     * @param array $values
+     * @return FilterInterface
+     */
+    public function whereIn($column, array $values = []);
+
+    /**
+     * @param $column
+     * @param null|Comparison $comparison
+     * @param null|Logical $logical
+     * @return FilterInterface
+     */
+    public function whereNot($column, ?Comparison $comparison = null, ?Logical $logical = null);
+
+    /**
      * @param $column
      * @param $from
      * @param $to
@@ -145,8 +138,15 @@ interface FilterInterface
     public function whereNotBetween($column, $from, $to);
 
     /**
-     * @param array $clauses
-     * @return Sql
+     * @param Sql $subQuery
+     * @return FilterInterface
      */
-    public function build(array $clauses = []): Sql;
+    public function whereNotExists(Sql $subQuery);
+
+    /**
+     * @param $column
+     * @param array $values
+     * @return FilterInterface
+     */
+    public function whereNotIn($column, array $values = []);
 }

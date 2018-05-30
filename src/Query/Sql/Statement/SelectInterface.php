@@ -15,34 +15,30 @@ use QueryMule\Query\Sql\Operator\Comparison;
 interface SelectInterface extends FilterInterface
 {
     /**
+     * @param array $clauses
+     * @return Sql
+     */
+    public function build(array $clauses = []): Sql;
+
+    /**
      * @param bool $ignore
      * @return SelectInterface
      */
-    public function ignoreAccent($ignore = true) : SelectInterface;
+    public function ignoreAccent($ignore = true): SelectInterface;
 
     /**
      * @param array $cols
      * @param string|null $alias
      * @return SelectInterface
      */
-    public function cols($cols = [Sql::SQL_STAR], $alias = null) : SelectInterface;
+    public function cols($cols = [Sql::SQL_STAR], $alias = null): SelectInterface;
 
     /**
      * @param RepositoryInterface $table
      * @param string|null $alias
      * @return SelectInterface
      */
-    public function from(RepositoryInterface $table, $alias = null) : SelectInterface;
-
-    /**
-     * @param array $table
-     * @param string $first
-     * @param string|null $operator
-     * @param string|null $second
-     * @return SelectInterface
-     * @throws SqlException
-     */
-    public function leftJoin(array $table, $first, $operator = null, $second = null) : SelectInterface;
+    public function from(RepositoryInterface $table, $alias = null): SelectInterface;
 
 //    public function rightJoin() : SelectInterface;
 //
@@ -52,6 +48,34 @@ interface SelectInterface extends FilterInterface
 //
 //    public function outerJoin() : SelectInterface;
 
+    /**
+     * @param string $column
+     * @param string|null $alias
+     * @return SelectInterface
+     */
+    public function groupBy($column, $alias = null): SelectInterface;
+
+    /**
+     * @param array $table
+     * @param string $first
+     * @param string|null $operator
+     * @param string|null $second
+     * @return SelectInterface
+     * @throws SqlException
+     */
+    //public function join(array $table, $first, $operator = null, $second = null) : SelectInterface;
+
+    /**
+     * @param int $limit
+     * @return SelectInterface
+     */
+    public function limit(int $limit): SelectInterface;
+
+    /**
+     * @param int $offset
+     * @return SelectInterface
+     */
+    public function offset(int $offset): SelectInterface;
 
     /**
      * @param string $first
@@ -59,7 +83,7 @@ interface SelectInterface extends FilterInterface
      * @param string $second
      * @return SelectInterface
      */
-    public function on($first, $operator, $second) : SelectInterface;
+    public function on($first, $operator, $second): SelectInterface;
 
     /**
      * @param string $first
@@ -67,45 +91,20 @@ interface SelectInterface extends FilterInterface
      * @param string|null $second
      * @return SelectInterface
      */
-    public function orOn($first, $operator = null, $second = null) : SelectInterface;
+    public function orOn($first, $operator = null, $second = null): SelectInterface;
 
     /**
-     * @param string $column
-     * @param string|null $alias
-     * @return SelectInterface
-     */
-    public function groupBy($column, $alias = null) : SelectInterface;
-
-    /**
-     * @param string $column
+     * @param $column
      * @param string $sort
-     * @param null $alias
+     * @param null|string $alias
      * @return SelectInterface
      */
-    public function orderBy($column, $sort = 'desc', $alias = null) : SelectInterface;
-
-    /**
-     * @param int $limit
-     * @return SelectInterface
-     */
-    public function limit($limit) : SelectInterface;
-
-    /**
-     * @param int $offset
-     * @return SelectInterface
-     */
-    public function offset($offset) : SelectInterface;
+    public function orderBy($column, string $sort = 'desc', ?string $alias = null): SelectInterface;
 
     /**
      * @param SelectInterface $select
      * @param bool $all
      * @return SelectInterface
      */
-    public function union(SelectInterface $select, $all = false) : SelectInterface;
-
-    /**
-     * @param array $clauses
-     * @return Sql
-     */
-    public function build(array $clauses = []) : Sql;
+    public function union(SelectInterface $select, bool $all = false): SelectInterface;
 }

@@ -53,7 +53,7 @@ class DatabaseHandler implements DatabaseHandlerInterface
             self::DATABASE_ADAPTER
                 ] as $key){
             if(empty($dbh[$key])){
-                throw new DatabaseException($key." not set in config: ".$name);
+                throw new DatabaseException(sprintf("%u not set in config: %u",$key,$name));
             }
         }
 
@@ -73,7 +73,7 @@ class DatabaseHandler implements DatabaseHandlerInterface
                         break;
 
                     default:
-                        throw new DriverException('Driver unavailable');
+                        throw new DriverException('Driver unavailable!');
                 }
 
                 $username = !empty($dbh[self::DATABASE_USER]) ? $dbh[self::DATABASE_USER] : null;

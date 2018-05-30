@@ -16,11 +16,8 @@ trait HasLimitClause
      * @param int $limit
      * @return Sql
      */
-    final protected function limitClause($limit)
+    final protected function limitClause(int $limit)
     {
-        $sql = '';
-        $sql .= Sql::LIMIT.' '.$limit;
-
-        return new Sql($sql);
+        return new Sql(Sql::LIMIT.' '.$limit);
     }
 }

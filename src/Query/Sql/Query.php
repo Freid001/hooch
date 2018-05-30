@@ -20,15 +20,6 @@ trait Query
 
     /**
      * @param string $clause
-     * @return string|null
-     */
-    final protected function queryGet($clause)
-    {
-        return !empty($this->sql[$clause]) ? $this->sql[$clause] : null;
-    }
-
-    /**
-     * @param string $clause
      * @param Sql $sql
      */
     final protected function queryAdd($clause, Sql $sql)
@@ -37,18 +28,6 @@ trait Query
 
         foreach($sql->parameters() as $key => $parameter){
             $this->parameters[$clause][] = $parameter;
-        }
-    }
-
-    /**
-     * @param array $clauses
-     * @return void
-     */
-    final protected function queryReset(array $clauses)
-    {
-        foreach($clauses as $clause) {
-            unset($this->sql[$clause]);
-            unset($this->parameters[$clause]);
         }
     }
 
@@ -72,5 +51,26 @@ trait Query
             }
         }
         return new Sql($sql,$parameters);
+    }
+
+    /**
+     * @param string $clause
+     * @return string|null
+     */
+    final protected function queryGet($clause)
+    {
+        return !empty($this->sql[$clause]) ? $this->sql[$clause] : null;
+    }
+
+    /**
+     * @param array $clauses
+     * @return void
+     */
+    final protected function queryReset(array $clauses)
+    {
+        foreach($clauses as $clause) {
+            unset($this->sql[$clause]);
+            unset($this->parameters[$clause]);
+        }
     }
 }

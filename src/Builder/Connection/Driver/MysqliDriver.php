@@ -129,7 +129,6 @@ class MysqliDriver implements DriverInterface
     /**
      * @param Sql $sql
      * @return array|bool
-     * @throws DriverException
      */
     public function fetch(Sql $sql)
     {

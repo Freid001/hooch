@@ -87,7 +87,7 @@ class PdoDriver implements DriverInterface
                 break;
 
             default:
-                throw new DriverException('Driver: '.$this->driver.' not currently supported');
+                throw new DriverException(sprintf("Driver: %u not currently supported!",$this->driver));
         }
 
         return $this->filter;

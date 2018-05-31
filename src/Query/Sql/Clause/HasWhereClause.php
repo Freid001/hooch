@@ -34,7 +34,12 @@ trait HasWhereClause
         }
 
         $sql = "";
-        $sql .= !is_null($column) || !($logical->getOperator() == Sql:: AND || $logical->getOperator() == Sql:: OR) ? Sql::WHERE . Sql::SQL_SPACE : "";
+        if(!is_null($column) ||
+            !($logical->getOperator() == Sql:: AND || $logical->getOperator() == Sql:: OR)){
+            $sql .= Sql::WHERE . Sql::SQL_SPACE;
+            $sql .= $this->nested(true);
+        }
+
         $sql .= !is_null($column) ? $column . Sql::SQL_SPACE : "";
         $sql .= !is_null($comparison) ? $comparison->build()->sql() : "";
         $sql .= !is_null($logical) ? $logical->build()->sql() : "";
@@ -49,9 +54,14 @@ trait HasWhereClause
      */
     final protected function nestedWhereClause(\Closure $column, ?Logical $logical)
     {
-        $logical->setNested(true);
+        $this->setNested(true);
+
+        if($logical){
+           $logical->setNested(true);
+        }
+
         $column($this);
 
-        return new Sql($logical->setNested(true)->nested(false));
+        return new Sql($this->setNested(true)->nested(false));
     }
 }

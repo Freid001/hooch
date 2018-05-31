@@ -46,10 +46,10 @@ class FilterTest extends TestCase
 
     public function testSelectWhereAndNestedWhere()
     {
-        $query = $this->filter->where('col_a',$this->filter->comparison()->equalTo('some_value_a'))->where(function(\QueryMule\Query\Sql\Statement\FilterInterface $query){
+        $query = $this->filter->where('col_a',$this->filter->comparison()->equalTo('some_value_a'))->nestedWhere(function(\QueryMule\Query\Sql\Statement\FilterInterface $query){
             $query->where('col_b',$this->filter->comparison()->equalTo('some_value_b'));
             $query->where('col_c',$this->filter->comparison()->equalTo('some_value_c'));
-            $query->where(function(\QueryMule\Query\Sql\Statement\FilterInterface $query){
+            $query->nestedWhere(function(\QueryMule\Query\Sql\Statement\FilterInterface $query){
                 $query->where('col_d',$this->filter->comparison()->equalTo('some_value_d'));
             });
         })->build();

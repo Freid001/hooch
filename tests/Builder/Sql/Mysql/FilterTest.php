@@ -46,16 +46,29 @@ class FilterTest extends TestCase
 
     public function testSelectWhereAndNestedWhere()
     {
-        $query = $this->filter->where('col_a', $this->filter->comparison()->equalTo('some_value_a'))->where(function (\QueryMule\Query\Sql\Statement\FilterInterface $query) {
+        $query = $this->filter->where('col_a', $this->filter->comparison()->equalTo('some_value_a'))->nestedWhere(function (\QueryMule\Query\Sql\Statement\FilterInterface $query) {
             $query->where('col_b', $this->filter->comparison()->equalTo('some_value_b'));
             $query->where('col_c', $this->filter->comparison()->equalTo('some_value_c'));
-            $query->where(function (\QueryMule\Query\Sql\Statement\FilterInterface $query) {
+            $query->nestedWhere(function (\QueryMule\Query\Sql\Statement\FilterInterface $query) {
                 $query->where('col_d', $this->filter->comparison()->equalTo('some_value_d'));
             });
         })->build();
 
         $this->assertEquals("WHERE `col_a` =? AND ( `col_b` =? AND `col_c` =? AND ( `col_d` =? ) )", $query->sql());
         $this->assertEquals(['some_value_a', 'some_value_b', 'some_value_c', 'some_value_d'], $query->parameters());
+    }
+
+    public function testSelectNestedWhereOrNestedWhere()
+    {
+        $query = $this->filter->nestedWhere(function (\QueryMule\Query\Sql\Statement\FilterInterface $query) {
+            $query->where('col_a', $this->filter->comparison()->equalTo('some_value_a'));
+            $query->nestedWhere(function (\QueryMule\Query\Sql\Statement\FilterInterface $query) {
+                $query->orWhere('col_b', $this->filter->comparison()->equalTo('some_value_b'));
+            });
+        })->build();
+
+        $this->assertEquals("WHERE ( `col_a` =? OR ( `col_b` =? ) )", $query->sql());
+        $this->assertEquals(['some_value_a', 'some_value_b'], $query->parameters());
     }
 
     public function testSelectWhereAndWhere()

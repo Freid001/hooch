@@ -694,43 +694,43 @@ class SelectTest extends TestCase
         $this->assertEquals(['some_value', 'another_value'], $query->parameters());
     }
 
-    public function test()
-    {
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->leftJoin(['tt'=>$table], 'col_a','=','col_b');
-
-        $query = $this->select->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::JOIN
-        ]);
-
-         $this->assertEquals("", trim($query->sql()));
-         $this->assertEquals([], $query->parameters());
-    }
-
-    public function test2()
-    {
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->leftJoin(['tt'=>$table], function(Select $query){
-            $query->on('col_c','=','col_b');
-
-        });
-
-        $query = $this->select->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::JOIN
-        ]);
-
-        $this->assertEquals("", trim($query->sql()));
-        $this->assertEquals([], $query->parameters());
-    }
+//    public function test()
+//    {
+//        $table = $this->createMock(RepositoryInterface::class);
+//        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+//
+//        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->leftJoin(['tt'=>$table], 'col_a','=','col_b');
+//
+//        $query = $this->select->build([
+//            Sql::SELECT,
+//            Sql::COLS,
+//            Sql::FROM,
+//            Sql::JOIN
+//        ]);
+//
+//         $this->assertEquals("", trim($query->sql()));
+//         $this->assertEquals([], $query->parameters());
+//    }
+//
+//    public function test2()
+//    {
+//        $table = $this->createMock(RepositoryInterface::class);
+//        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+//
+//        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->leftJoin(['tt'=>$table], function(Select $query){
+//            $query->on('col_c','=','col_b');
+//
+//        });
+//
+//        $query = $this->select->build([
+//            Sql::SELECT,
+//            Sql::COLS,
+//            Sql::FROM,
+//            Sql::JOIN
+//        ]);
+//
+//        $this->assertEquals("", trim($query->sql()));
+//        $this->assertEquals([], $query->parameters());
+//    }
 }
 

@@ -205,15 +205,23 @@ class Filter implements FilterInterface
             $logical = $this->logical()->and($column, $comparison, $logical);
         }
 
-        if (!$column instanceof \Closure) {
-            $this->queryAdd(Sql::WHERE, $this->whereClause(
-                !$and ? $column : null,
-                !$and ? $comparison : null,
-                $logical
-            ));
-        } else {
-            $this->queryAdd(Sql::WHERE, $this->nestedWhereClause($column, $logical));
-        }
+        $this->queryAdd(Sql::WHERE, $this->whereClause(
+            !$and ? $column : null,
+            !$and ? $comparison : null,
+            $logical
+        ));
+
+        return $this;
+    }
+
+    public function nestedWhere(\Closure $column): FilterInterface
+    {
+        $this->setNested(true);
+        $this->logical()->setNested(true);
+
+        $column($this);
+
+        $this->queryAdd(Sql::WHERE, new Sql($this->setNested(true)->nested(false)));
 
         return $this;
     }

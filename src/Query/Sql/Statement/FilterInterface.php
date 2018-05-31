@@ -101,6 +101,12 @@ interface FilterInterface
     public function where($column, ?Comparison $comparison = null, ?Logical $logical = null);
 
     /**
+     * @param \Closure $column
+     * @return FilterInterface
+     */
+    public function nestedWhere(\Closure $column);
+
+    /**
      * @param $column
      * @param $from
      * @param $to

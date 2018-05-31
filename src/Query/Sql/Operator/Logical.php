@@ -25,6 +25,14 @@ class Logical
     private $operator;
 
     /**
+     * Logical constructor.
+     */
+    public function __construct()
+    {
+        $this->sql = new Sql(null);
+    }
+
+    /**
      * @param Sql $subQuery
      * @return Logical
      */
@@ -143,9 +151,7 @@ class Logical
      * @return Logical
      */
     public function like($value, $wildcardStart = false, $wildcardEnd = false): Logical
-    {
-
-    }
+    {}
 
     /**
      * @param $column

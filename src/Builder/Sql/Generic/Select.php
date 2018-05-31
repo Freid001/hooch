@@ -271,6 +271,13 @@ class Select implements SelectInterface
         return $this;
     }
 
+    public function nestedWhere(\Closure $column)
+    {
+        $this->filter->nestedWhere($column);
+
+        return $this;
+    }
+
     /**
      * @param $column
      * @param $from

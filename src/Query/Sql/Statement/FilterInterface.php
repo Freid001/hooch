@@ -35,6 +35,12 @@ interface FilterInterface
     public function logical();
 
     /**
+     * @param \Closure $column
+     * @return FilterInterface
+     */
+    public function nestedWhere(\Closure $column);
+
+    /**
      * @param $column
      * @param null|Comparison $comparison
      * @param null|Logical $logical
@@ -62,6 +68,14 @@ interface FilterInterface
      * @return FilterInterface
      */
     public function orWhereIn($column, array $values = []);
+
+    /**
+     * @param $column
+     * @param $value
+     * @param string $pattern
+     * @return FilterInterface
+     */
+    public function orWhereLike($column, $value, $pattern);
 
     /**
      * @param $column
@@ -94,17 +108,19 @@ interface FilterInterface
 
     /**
      * @param $column
+     * @param $value
+     * @param string $pattern
+     * @return FilterInterface
+     */
+    public function orWhereNotLike($column, $value, $pattern);
+
+    /**
+     * @param $column
      * @param null|Comparison $comparison
      * @param null|Logical $logical
      * @return FilterInterface
      */
     public function where($column, ?Comparison $comparison = null, ?Logical $logical = null);
-
-    /**
-     * @param \Closure $column
-     * @return FilterInterface
-     */
-    public function nestedWhere(\Closure $column);
 
     /**
      * @param $column
@@ -126,6 +142,14 @@ interface FilterInterface
      * @return FilterInterface
      */
     public function whereIn($column, array $values = []);
+
+    /**
+     * @param $column
+     * @param $value
+     * @param string $pattern
+     * @return FilterInterface
+     */
+    public function whereLike($column, $value, $pattern);
 
     /**
      * @param $column
@@ -155,4 +179,12 @@ interface FilterInterface
      * @return FilterInterface
      */
     public function whereNotIn($column, array $values = []);
+
+    /**
+     * @param $column
+     * @param $value
+     * @param string $pattern
+     * @return FilterInterface
+     */
+    public function whereNotLike($column, $value, $pattern);
 }

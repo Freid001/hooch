@@ -701,17 +701,16 @@ class SelectTest extends TestCase
 //
 //        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->leftJoin(['tt'=>$table], 'col_a','=','col_b');
 //
-//        $query = $this->select->build([
+//        $query = $this->select->whereNot('col_a',)->build([
 //            Sql::SELECT,
 //            Sql::COLS,
 //            Sql::FROM,
-//            Sql::JOIN
 //        ]);
 //
 //         $this->assertEquals("", trim($query->sql()));
 //         $this->assertEquals([], $query->parameters());
 //    }
-//
+
 //    public function test2()
 //    {
 //        $table = $this->createMock(RepositoryInterface::class);

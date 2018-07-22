@@ -87,6 +87,18 @@ class Filter implements FilterInterface
         return $this->logical;
     }
 
+    public function nestedWhere(\Closure $column): FilterInterface
+    {
+        $this->setNested(true);
+        $this->logical()->setNested(true);
+
+        $column($this);
+
+        $this->queryAdd(Sql::WHERE, new Sql($this->setNested(true)->nested(false)));
+
+        return $this;
+    }
+
     /**
      * @param string $column
      * @param null|Comparison $comparison
@@ -134,6 +146,19 @@ class Filter implements FilterInterface
     public function orWhereIn($column, array $values = []): FilterInterface
     {
         $this->orWhere($column, null, $this->logical()->in($values));
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $value
+     * @param string $pattern
+     * @return FilterInterface
+     */
+    public function orWhereLike($column, $value, $pattern = '%?%') : FilterInterface
+    {
+        $this->orWhere($column, null, $this->logical()->like($value, $pattern));
 
         return $this;
     }
@@ -190,6 +215,19 @@ class Filter implements FilterInterface
     }
 
     /**
+     * @param $column
+     * @param $value
+     * @param string $pattern
+     * @return FilterInterface
+     */
+    public function orWhereNotLike($column, $value, $pattern = '%?%') : FilterInterface
+    {
+        $this->orWhereNot($column, null, $this->logical()->like($value, $pattern));
+
+        return $this;
+    }
+
+    /**
      * @param string $column
      * @param null|Comparison $comparison
      * @param null|Logical $logical
@@ -210,18 +248,6 @@ class Filter implements FilterInterface
             !$and ? $comparison : null,
             $logical
         ));
-
-        return $this;
-    }
-
-    public function nestedWhere(\Closure $column): FilterInterface
-    {
-        $this->setNested(true);
-        $this->logical()->setNested(true);
-
-        $column($this);
-
-        $this->queryAdd(Sql::WHERE, new Sql($this->setNested(true)->nested(false)));
 
         return $this;
     }
@@ -258,6 +284,19 @@ class Filter implements FilterInterface
     public function whereIn($column, array $values = []): FilterInterface
     {
         $this->where($column, null, $this->logical()->in($values));
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $value
+     * @param string $pattern
+     * @return FilterInterface
+     */
+    public function whereLike($column, $value, $pattern = '%?%') : FilterInterface
+    {
+        $this->where($column, null, $this->logical()->like($value, $pattern));
 
         return $this;
     }
@@ -309,6 +348,19 @@ class Filter implements FilterInterface
     public function whereNotIn($column, array $values = []): FilterInterface
     {
         $this->whereNot($column, null, $this->logical()->in($values));
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $value
+     * @param string $pattern
+     * @return FilterInterface
+     */
+    public function whereNotLike($column, $value, $pattern = '%?%') : FilterInterface
+    {
+        $this->whereNot($column, null, $this->logical()->like($value, $pattern));
 
         return $this;
     }

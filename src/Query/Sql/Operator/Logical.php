@@ -53,9 +53,9 @@ class Logical
      */
     public function and ($column, ?Comparison $comparison, ?Logical $logical): Logical
     {
-        $this->sql = $this->operatorWithColumn(Sql::AND, $column, $comparison, $logical);
+        $this->sql = $this->operatorWithColumn(Sql:: AND, $column, $comparison, $logical);
 
-        $this->operator = Sql::AND;
+        $this->operator = Sql:: AND;
 
         return $this;
     }
@@ -146,12 +146,20 @@ class Logical
 
     /**
      * @param $value
-     * @param bool $wildcardStart
-     * @param bool $wildcardEnd
+     * @param string $pattern
      * @return Logical
      */
-    public function like($value, $wildcardStart = false, $wildcardEnd = false): Logical
-    {}
+    public function like($value, $pattern = '%?%'): Logical
+    {
+        $sql = Sql::SQL_LIKE . Sql::SQL_SPACE;
+        $sql .= strpos($pattern, Sql::SQL_QUESTION_MARK) !== false ? $pattern : Sql::SQL_QUESTION_MARK;
+
+        $this->sql = new Sql($sql, [$value]);
+
+        $this->operator = Sql::SQL_LIKE;
+
+        return $this;
+    }
 
     /**
      * @param $column

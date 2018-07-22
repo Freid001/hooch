@@ -65,10 +65,6 @@ class Select implements SelectInterface
         $this->queryAdd(Sql::SELECT, new Sql(Sql::SELECT));
     }
 
-    public function having()
-    {
-    }
-
     /**
      * @param $column
      * @param array $values
@@ -192,43 +188,6 @@ class Select implements SelectInterface
     }
 
     /**
-     * @param RepositoryInterface $table
-     * @param null|string $alias
-     * @param null|string $column
-     * @param null|Comparison $comparison
-     * @return SelectInterface
-     * @throws SqlException
-     */
-    public function join(RepositoryInterface $table, ?string $alias, $column, ?Comparison $comparison): SelectInterface
-    {
-
-        $this->queryAdd(Sql::JOIN, $this->joinClause(Sql::JOIN_LEFT, $table, $alias));
-
-
-
-//        if ($table instanceof RepositoryInterface) {
-//            $this->queryAdd(Sql::JOIN, $this->joinClause(Sql::JOIN_LET, $table, $alias));
-//            return $this->on($first, $operator, $second);
-//        } else {
-//            throw new SqlException('Table must be instance of RepositoryInterface');
-//        }
-    }
-
-    public function on($first, $operator, $second): SelectInterface
-    {
-        $this->queryAdd(Sql::JOIN, $this->onClause($first, $operator, $second, Sql::ON));
-
-        return $this;
-    }
-
-    public function orOn($first, $operator = null, $second = null): SelectInterface
-    {
-        $this->queryAdd(Sql::JOIN, $this->onClause($first, $operator, $second, Sql:: OR));
-
-        return $this;
-    }
-
-    /**
      * @param int $limit
      * @return SelectInterface
      */
@@ -247,6 +206,13 @@ class Select implements SelectInterface
         return new Logical();
     }
 
+    public function nestedWhere(\Closure $column)
+    {
+        $this->filter->nestedWhere($column);
+
+        return $this;
+    }
+
     /**
      * @param int $offset
      * @return SelectInterface
@@ -254,6 +220,20 @@ class Select implements SelectInterface
     public function offset(int $offset): SelectInterface
     {
         $this->queryAdd(Sql::OFFSET, $this->offsetClause($offset));
+
+        return $this;
+    }
+
+    public function on($first, $operator, $second): SelectInterface
+    {
+        $this->queryAdd(Sql::JOIN, $this->onClause($first, $operator, $second, Sql::ON));
+
+        return $this;
+    }
+
+    public function orOn($first, $operator = null, $second = null): SelectInterface
+    {
+        $this->queryAdd(Sql::JOIN, $this->onClause($first, $operator, $second, Sql:: OR));
 
         return $this;
     }
@@ -267,13 +247,6 @@ class Select implements SelectInterface
     public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null): SelectInterface
     {
         $this->filter->orWhere($column, $comparison, $logical);
-
-        return $this;
-    }
-
-    public function nestedWhere(\Closure $column)
-    {
-        $this->filter->nestedWhere($column);
 
         return $this;
     }
@@ -310,6 +283,19 @@ class Select implements SelectInterface
     public function orWhereIn($column, array $values = []): SelectInterface
     {
         $this->filter->orWhereIn($column, $values);
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $value
+     * @param string $pattern
+     * @return FilterInterface
+     */
+    public function orWhereLike($column, $value, $pattern): FilterInterface
+    {
+        $this->filter->orWhereLike($column, $value, $pattern);
 
         return $this;
     }
@@ -359,6 +345,19 @@ class Select implements SelectInterface
     public function orWhereNotIn($column, array $values = []): SelectInterface
     {
         $this->filter->orwhereNotIn($column, $values);
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $value
+     * @param string $pattern
+     * @return FilterInterface
+     */
+    public function orWhereNotLike($column, $value, $pattern): FilterInterface
+    {
+        $this->filter->orWhereNotLike($column, $value, $pattern);
 
         return $this;
     }
@@ -446,6 +445,19 @@ class Select implements SelectInterface
 
     /**
      * @param $column
+     * @param $value
+     * @param string $pattern
+     * @return FilterInterface
+     */
+    public function whereLike($column, $value, $pattern): FilterInterface
+    {
+        $this->filter->whereLike($column, $value, $pattern);
+
+        return $this;
+    }
+
+    /**
+     * @param $column
      * @param null|Comparison $comparison
      * @param null|Logical $logical
      * @return FilterInterface
@@ -479,5 +491,44 @@ class Select implements SelectInterface
         $this->filter->whereNotExists($subQuery);
 
         return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $value
+     * @param string $pattern
+     * @return FilterInterface
+     */
+    public function whereNotLike($column, $value, $pattern): FilterInterface
+    {
+        $this->filter->whereNotLike($column, $value, $pattern);
+
+        return $this;
+    }
+
+    public function having()
+    {
+    }
+
+    /**
+     * @param RepositoryInterface $table
+     * @param null|string $alias
+     * @param null|string $column
+     * @param null|Comparison $comparison
+     * @return SelectInterface
+     * @throws SqlException
+     */
+    public function join(RepositoryInterface $table, ?string $alias, $column, ?Comparison $comparison): SelectInterface
+    {
+
+        $this->queryAdd(Sql::JOIN, $this->joinClause(Sql::JOIN_LEFT, $table, $alias));
+
+
+//        if ($table instanceof RepositoryInterface) {
+//            $this->queryAdd(Sql::JOIN, $this->joinClause(Sql::JOIN_LET, $table, $alias));
+//            return $this->on($first, $operator, $second);
+//        } else {
+//            throw new SqlException('Table must be instance of RepositoryInterface');
+//        }
     }
 }

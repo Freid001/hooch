@@ -290,12 +290,11 @@ class Select implements SelectInterface
     /**
      * @param $column
      * @param $value
-     * @param string $pattern
      * @return FilterInterface
      */
-    public function orWhereLike($column, $value, $pattern): FilterInterface
+    public function orWhereLike($column, $value): FilterInterface
     {
-        $this->filter->orWhereLike($column, $value, $pattern);
+        $this->filter->orWhereLike($column, $value);
 
         return $this;
     }
@@ -352,12 +351,11 @@ class Select implements SelectInterface
     /**
      * @param $column
      * @param $value
-     * @param string $pattern
      * @return FilterInterface
      */
-    public function orWhereNotLike($column, $value, $pattern): FilterInterface
+    public function orWhereNotLike($column, $value): FilterInterface
     {
-        $this->filter->orWhereNotLike($column, $value, $pattern);
+        $this->filter->orWhereNotLike($column, $value);
 
         return $this;
     }
@@ -446,12 +444,11 @@ class Select implements SelectInterface
     /**
      * @param $column
      * @param $value
-     * @param string $pattern
      * @return FilterInterface
      */
-    public function whereLike($column, $value, $pattern): FilterInterface
+    public function whereLike($column, $value): FilterInterface
     {
-        $this->filter->whereLike($column, $value, $pattern);
+        $this->filter->whereLike($column, $value);
 
         return $this;
     }
@@ -496,12 +493,11 @@ class Select implements SelectInterface
     /**
      * @param $column
      * @param $value
-     * @param string $pattern
      * @return FilterInterface
      */
-    public function whereNotLike($column, $value, $pattern): FilterInterface
+    public function whereNotLike($column, $value): FilterInterface
     {
-        $this->filter->whereNotLike($column, $value, $pattern);
+        $this->filter->whereNotLike($column, $value);
 
         return $this;
     }

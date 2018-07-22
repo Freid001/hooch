@@ -146,13 +146,11 @@ class Logical
 
     /**
      * @param $value
-     * @param string $pattern
      * @return Logical
      */
-    public function like($value, $pattern = '%?%'): Logical
+    public function like($value): Logical
     {
-        $sql = Sql::SQL_LIKE . Sql::SQL_SPACE;
-        $sql .= strpos($pattern, Sql::SQL_QUESTION_MARK) !== false ? $pattern : Sql::SQL_QUESTION_MARK;
+        $sql = Sql::SQL_LIKE . Sql::SQL_SPACE . Sql::SQL_QUESTION_MARK;
 
         $this->sql = new Sql($sql, [$value]);
 

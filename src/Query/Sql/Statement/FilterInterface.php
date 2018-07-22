@@ -72,10 +72,9 @@ interface FilterInterface
     /**
      * @param $column
      * @param $value
-     * @param string $pattern
      * @return FilterInterface
      */
-    public function orWhereLike($column, $value, $pattern);
+    public function orWhereLike($column, $value);
 
     /**
      * @param $column
@@ -109,10 +108,9 @@ interface FilterInterface
     /**
      * @param $column
      * @param $value
-     * @param string $pattern
      * @return FilterInterface
      */
-    public function orWhereNotLike($column, $value, $pattern);
+    public function orWhereNotLike($column, $value);
 
     /**
      * @param $column
@@ -146,10 +144,9 @@ interface FilterInterface
     /**
      * @param $column
      * @param $value
-     * @param string $pattern
      * @return FilterInterface
      */
-    public function whereLike($column, $value, $pattern);
+    public function whereLike($column, $value);
 
     /**
      * @param $column
@@ -183,8 +180,7 @@ interface FilterInterface
     /**
      * @param $column
      * @param $value
-     * @param string $pattern
      * @return FilterInterface
      */
-    public function whereNotLike($column, $value, $pattern);
+    public function whereNotLike($column, $value);
 }

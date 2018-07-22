@@ -254,43 +254,43 @@ class FilterTest extends TestCase
 
     public function testWhereLike()
     {
-        $query = $this->filter->whereLike('col_a', 'some_value', '%?%')->build();
-        $this->assertEquals("WHERE `col_a` LIKE %?%", $query->sql());
-        $this->assertEquals(['some_value'], $query->parameters());
+        $query = $this->filter->whereLike('col_a', '%some_value%')->build();
+        $this->assertEquals("WHERE `col_a` LIKE ?", $query->sql());
+        $this->assertEquals(['%some_value%'], $query->parameters());
     }
 
     public function testWhereLikeOrLike()
     {
-        $query = $this->filter->whereLike('col_a', 'some_value', '%?%')->orWhereLike('col_b','some_value','%?%')->build();
-        $this->assertEquals("WHERE `col_a` LIKE %?% OR `col_b` LIKE %?%", $query->sql());
-        $this->assertEquals(['some_value','some_value'], $query->parameters());
+        $query = $this->filter->whereLike('col_a', '%some_value%')->orWhereLike('col_b','%some_value%')->build();
+        $this->assertEquals("WHERE `col_a` LIKE ? OR `col_b` LIKE ?", $query->sql());
+        $this->assertEquals(['%some_value%','%some_value%'], $query->parameters());
     }
 
     public function testWhereLikeAndLike()
     {
-        $query = $this->filter->whereLike('col_a', 'some_value', '%?%')->whereLike('col_b', 'some_value', '%?%')->build();
-        $this->assertEquals("WHERE `col_a` LIKE %?% AND `col_b` LIKE %?%", $query->sql());
-        $this->assertEquals(['some_value','some_value'], $query->parameters());
+        $query = $this->filter->whereLike('col_a', '%some_value%')->whereLike('col_b', '%some_value%')->build();
+        $this->assertEquals("WHERE `col_a` LIKE ? AND `col_b` LIKE ?", $query->sql());
+        $this->assertEquals(['%some_value%','%some_value%'], $query->parameters());
     }
 
     public function testWhereNotLike()
     {
-        $query = $this->filter->whereNotLike('col_a', 'some_value', '%?%')->build();
-        $this->assertEquals("WHERE NOT `col_a` LIKE %?%", $query->sql());
-        $this->assertEquals(['some_value'], $query->parameters());
+        $query = $this->filter->whereNotLike('col_a', '%some_value%')->build();
+        $this->assertEquals("WHERE NOT `col_a` LIKE ?", $query->sql());
+        $this->assertEquals(['%some_value%'], $query->parameters());
     }
 
     public function testWhereNotLikeOrNotLike()
     {
-        $query = $this->filter->whereNotLike('col_a', 'some_value', '%?%')->orWhereNotLike('col_b','some_value','%?%')->build();
-        $this->assertEquals("WHERE NOT `col_a` LIKE %?% OR NOT `col_b` LIKE %?%", $query->sql());
-        $this->assertEquals(['some_value','some_value'], $query->parameters());
+        $query = $this->filter->whereNotLike('col_a', '%some_value%')->orWhereNotLike('col_b','%some_value%')->build();
+        $this->assertEquals("WHERE NOT `col_a` LIKE ? OR NOT `col_b` LIKE ?", $query->sql());
+        $this->assertEquals(['%some_value%','%some_value%'], $query->parameters());
     }
 
     public function testWhereNotLikeAndNotLike()
     {
-        $query = $this->filter->whereNotLike('col_a', 'some_value', '%?%')->whereNotLike('col_b', 'some_value', '%?%')->build();
-        $this->assertEquals("WHERE NOT `col_a` LIKE %?% AND NOT `col_b` LIKE %?%", $query->sql());
-        $this->assertEquals(['some_value','some_value'], $query->parameters());
+        $query = $this->filter->whereNotLike('col_a', '%some_value%')->whereNotLike('col_b', '%some_value%')->build();
+        $this->assertEquals("WHERE NOT `col_a` LIKE ? AND NOT `col_b` LIKE ?", $query->sql());
+        $this->assertEquals(['%some_value%','%some_value%'], $query->parameters());
     }
 }

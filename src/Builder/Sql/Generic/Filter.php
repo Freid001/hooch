@@ -153,12 +153,11 @@ class Filter implements FilterInterface
     /**
      * @param $column
      * @param $value
-     * @param string $pattern
      * @return FilterInterface
      */
-    public function orWhereLike($column, $value, $pattern = '%?%') : FilterInterface
+    public function orWhereLike($column, $value) : FilterInterface
     {
-        $this->orWhere($column, null, $this->logical()->like($value, $pattern));
+        $this->orWhere($column, null, $this->logical()->like($value));
 
         return $this;
     }
@@ -217,12 +216,11 @@ class Filter implements FilterInterface
     /**
      * @param $column
      * @param $value
-     * @param string $pattern
      * @return FilterInterface
      */
-    public function orWhereNotLike($column, $value, $pattern = '%?%') : FilterInterface
+    public function orWhereNotLike($column, $value) : FilterInterface
     {
-        $this->orWhereNot($column, null, $this->logical()->like($value, $pattern));
+        $this->orWhereNot($column, null, $this->logical()->like($value));
 
         return $this;
     }
@@ -291,12 +289,11 @@ class Filter implements FilterInterface
     /**
      * @param $column
      * @param $value
-     * @param string $pattern
      * @return FilterInterface
      */
-    public function whereLike($column, $value, $pattern = '%?%') : FilterInterface
+    public function whereLike($column, $value) : FilterInterface
     {
-        $this->where($column, null, $this->logical()->like($value, $pattern));
+        $this->where($column, null, $this->logical()->like($value));
 
         return $this;
     }
@@ -355,12 +352,11 @@ class Filter implements FilterInterface
     /**
      * @param $column
      * @param $value
-     * @param string $pattern
      * @return FilterInterface
      */
-    public function whereNotLike($column, $value, $pattern = '%?%') : FilterInterface
+    public function whereNotLike($column, $value) : FilterInterface
     {
-        $this->whereNot($column, null, $this->logical()->like($value, $pattern));
+        $this->whereNot($column, null, $this->logical()->like($value));
 
         return $this;
     }

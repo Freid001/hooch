@@ -9,7 +9,7 @@ use QueryMule\Builder\Sql\Generic\Select as GenericSelect;
  * Class Select
  * @package QueryMule\Builder\Sql\Sqlite
  */
-class Select extends GenericSelect
+abstract class Select extends GenericSelect
 {
     /**
      * Select constructor.

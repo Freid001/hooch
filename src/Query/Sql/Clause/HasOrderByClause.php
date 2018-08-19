@@ -1,10 +1,9 @@
 <?php
 
 
-namespace QueryMule\Query\Sql\Clause;
+namespace QueryMule\Query\Builder\Clause;
 
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class HasOrderByClause
@@ -15,11 +14,10 @@ trait HasOrderByClause
     /**
      * @param string $column
      * @param string $sort
-     * @param bool $alias
      * @param bool $comma
      * @return Sql
      */
-    final protected function orderByClause($column, $sort = 'desc', $alias = false, $comma = false)
+    final protected function orderByClause($column, $sort = SQL::DESC, $comma = false)
     {
         $sql = '';
 

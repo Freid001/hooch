@@ -1,13 +1,11 @@
 <?php
 
 
-namespace QueryMule\Query\Sql\Clause;
+namespace QueryMule\Query\Builder\Clause;
 
 use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class HasJoinClause

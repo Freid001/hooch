@@ -12,7 +12,7 @@ use QueryMule\Query\Sql\Operator\Comparison;
  * Interface Select
  * @package QueryMule\Query\Sql\Statement
  */
-interface SelectInterface extends FilterInterface
+interface SelectInterface
 {
     /**
      * @param array $clauses
@@ -95,11 +95,15 @@ interface SelectInterface extends FilterInterface
 
     /**
      * @param $column
-     * @param string $sort
-     * @param null|string $alias
      * @return SelectInterface
      */
-    public function orderBy($column, string $sort = 'desc', ?string $alias = null): SelectInterface;
+    public function asc($column): SelectInterface;
+
+    /**
+     * @param $column
+     * @return SelectInterface
+     */
+    public function desc($column): SelectInterface;
 
     /**
      * @param SelectInterface $select

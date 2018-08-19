@@ -6,22 +6,22 @@ namespace QueryMule\Query\Sql;
  * Class Accent
  * @package QueryMule\Query\Sql
  */
-trait Accent
+class Accent
 {
     /**
      * @var string
      */
-    protected $accent;
+    private $accent;
 
     /**
      * @var bool
      */
-    protected $ignoreAccentSymbol = false;
+    private $ignoreAccentSymbol = false;
 
     /**
      * @param string $accent
      */
-    final protected function setAccent($accent)
+    final public function setAccent($accent)
     {
         $this->accent = $accent;
     }
@@ -29,7 +29,7 @@ trait Accent
     /**
      * @param bool $ignore
      */
-    final protected function ignoreAccentSymbol($ignore = true)
+    final public function ignoreAccentSymbol($ignore = true)
     {
         $this->ignoreAccentSymbol = $ignore;
     }
@@ -39,7 +39,7 @@ trait Accent
      * @param bool $delimiter
      * @return string
      */
-    final protected function addAccent($string,$delimiter = false)
+    final public function addAccent($string,$delimiter = false)
     {
         if($this->ignoreAccentSymbol){
             return $string;

@@ -11,7 +11,7 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
  * Class Select
  * @package QueryMule\Builder\Sql\Pgsql
  */
-class Select extends GenericSelect
+abstract class Select extends GenericSelect
 {
     /**
      * Select constructor.

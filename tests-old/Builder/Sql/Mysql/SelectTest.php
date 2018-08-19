@@ -574,7 +574,7 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->orderBy('col_a')->orderBy('col_b', 'asc');
+        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->desc('col_a')->asc('col_b');
         $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name ORDER BY `col_a` DESC ,`col_b` ASC", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
@@ -588,7 +588,7 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->orderBy('col_a', 'desc', 't')->orderBy('col_b', 'asc', 't');
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->desc('t.col_a')->asc('t.col_b');
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t ORDER BY `t`.`col_a` DESC ,`t`.`col_b` ASC", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,

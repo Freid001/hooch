@@ -8,7 +8,7 @@ use QueryMule\Builder\Sql\Generic\Filter as GenericFilter;
  * Class Filter
  * @package QueryMule\Builder\Sql\Pgsql
  */
-class Filter extends GenericFilter
+abstract class Filter extends GenericFilter
 {
     /**
      * Filter constructor.

@@ -2,185 +2,49 @@
 
 namespace QueryMule\Query\Sql\Statement;
 
-use QueryMule\Query\Sql\Operator\Comparison;
-use QueryMule\Query\Sql\Operator\Logical;
-use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Clause\NestedWhereInterface;
+use QueryMule\Query\Sql\Clause\OrWhereBetweenInterface;
+use QueryMule\Query\Sql\Clause\OrWhereExistsInterface;
+use QueryMule\Query\Sql\Clause\OrWhereInInterface;
+use QueryMule\Query\Sql\Clause\OrWhereInterface;
+use QueryMule\Query\Sql\Clause\OrWhereLikeInterface;
+use QueryMule\Query\Sql\Clause\OrWhereNotBetweenInterface;
+use QueryMule\Query\Sql\Clause\OrWhereNotExistsInterface;
+use QueryMule\Query\Sql\Clause\OrWhereNotInterface;
+use QueryMule\Query\Sql\Clause\OrWhereNotLikeInterface;
+use QueryMule\Query\Sql\Clause\WhereBetweenInterface;
+use QueryMule\Query\Sql\Clause\WhereExistsInterface;
+use QueryMule\Query\Sql\Clause\WhereInInterface;
+use QueryMule\Query\Sql\Clause\WhereInterface;
+use QueryMule\Query\Sql\Clause\WhereLikeInterface;
+use QueryMule\Query\Sql\Clause\WhereNotBetweenInterface;
+use QueryMule\Query\Sql\Clause\WhereNotExistsInterface;
+use QueryMule\Query\Sql\Clause\WhereNotInInterface;
+use QueryMule\Query\Sql\Clause\WhereNotInterface;
+use QueryMule\Query\Sql\Clause\WhereNotLikeInterface;
 
 /**
  * Interface FilterInterface
  * @package QueryMule\Query\Sql\Statement
  */
-interface FilterInterface
-{
-    /**
-     * @param array $clauses
-     * @return Sql
-     */
-    public function build(array $clauses = []): Sql;
-
-    /**
-     * @return Comparison
-     */
-    public function comparison();
-
-    /**
-     * @param bool $ignore
-     * @return FilterInterface
-     */
-    public function ignoreAccent($ignore = true);
-
-    /**
-     * @return Logical
-     */
-    public function logical();
-
-    /**
-     * @param \Closure $column
-     * @return FilterInterface
-     */
-    public function nestedWhere(\Closure $column);
-
-    /**
-     * @param $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
-     * @return FilterInterface
-     */
-    public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null);
-
-    /**
-     * @param $column
-     * @param $from
-     * @param $to
-     * @return FilterInterface
-     */
-    public function orWhereBetween($column, $from, $to);
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function orWhereExists(Sql $subQuery);
-
-    /**
-     * @param $column
-     * @param array $values
-     * @return FilterInterface
-     */
-    public function orWhereIn($column, array $values = []);
-
-    /**
-     * @param $column
-     * @param $value
-     * @return FilterInterface
-     */
-    public function orWhereLike($column, $value);
-
-    /**
-     * @param $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
-     * @return FilterInterface
-     */
-    public function orWhereNot($column, ?Comparison $comparison = null, ?Logical $logical = null);
-
-    /**
-     * @param $column
-     * @param $from
-     * @param $to
-     * @return FilterInterface
-     */
-    public function orWhereNotBetween($column, $from, $to);
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function orWhereNotExists(Sql $subQuery);
-
-    /**
-     * @param $column
-     * @param array $values
-     * @return FilterInterface
-     */
-    public function orWhereNotIn($column, array $values = []);
-
-    /**
-     * @param $column
-     * @param $value
-     * @return FilterInterface
-     */
-    public function orWhereNotLike($column, $value);
-
-    /**
-     * @param $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
-     * @return FilterInterface
-     */
-    public function where($column, ?Comparison $comparison = null, ?Logical $logical = null);
-
-    /**
-     * @param $column
-     * @param $from
-     * @param $to
-     * @return FilterInterface
-     */
-    public function whereBetween($column, $from, $to);
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function whereExists(Sql $subQuery);
-
-    /**
-     * @param string $column
-     * @param array $values
-     * @return FilterInterface
-     */
-    public function whereIn($column, array $values = []);
-
-    /**
-     * @param $column
-     * @param $value
-     * @return FilterInterface
-     */
-    public function whereLike($column, $value);
-
-    /**
-     * @param $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
-     * @return FilterInterface
-     */
-    public function whereNot($column, ?Comparison $comparison = null, ?Logical $logical = null);
-
-    /**
-     * @param $column
-     * @param $from
-     * @param $to
-     * @return FilterInterface
-     */
-    public function whereNotBetween($column, $from, $to);
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function whereNotExists(Sql $subQuery);
-
-    /**
-     * @param $column
-     * @param array $values
-     * @return FilterInterface
-     */
-    public function whereNotIn($column, array $values = []);
-
-    /**
-     * @param $column
-     * @param $value
-     * @return FilterInterface
-     */
-    public function whereNotLike($column, $value);
-}
+interface FilterInterface extends NestedWhereInterface,
+                                  OrWhereBetweenInterface,
+                                  OrWhereExistsInterface,
+                                  OrWhereInInterface,
+                                  OrWhereInterface,
+                                  OrWhereLikeInterface,
+                                  OrWhereNotBetweenInterface,
+                                  OrWhereNotExistsInterface,
+                                  OrWhereNotInterface,
+                                  OrWhereNotLikeInterface,
+                                  WhereBetweenInterface,
+                                  WhereExistsInterface,
+                                  WhereInInterface,
+                                  WhereInterface,
+                                  WhereLikeInterface,
+                                  WhereNotBetweenInterface,
+                                  WhereNotExistsInterface,
+                                  WhereNotInInterface,
+                                  WhereNotInterface,
+                                  WhereNotLikeInterface
+{}

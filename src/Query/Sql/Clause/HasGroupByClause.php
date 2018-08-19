@@ -1,10 +1,9 @@
 <?php
 
 
-namespace QueryMule\Query\Sql\Clause;
+namespace QueryMule\Query\Builder\Clause;
 
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class HasGroupByClause

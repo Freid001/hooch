@@ -12,11 +12,13 @@ class Sql
     const AND = 'AND';
     const ANY = 'ANY';
     const AS = 'AS';
+    const ASC = 'ASC';
     const BETWEEN = 'BETWEEN';
     const BY = 'BY';
     const COLS = 'COL';
     const COUNT = 'COUNT';
     const DELETE = 'DELETE';
+    const DESC = 'DESC';
     const DISTINCT = 'DISTINCT';
     const EXISTS = 'EXISTS';
     const FETCH = 'fetch';

@@ -6,6 +6,7 @@ namespace QueryMule\Builder\Sql\Common\Clause;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Clause\HasWhereClause;
 use QueryMule\Query\Sql\Clause\WhereInterface;
+use QueryMule\Query\Sql\Nested;
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\QueryClass;
@@ -17,8 +18,6 @@ use QueryMule\Query\Sql\Sql;
  */
 class Where implements WhereInterface
 {
-    use HasWhereClause;
-
     /**
      * @var QueryClass
      */
@@ -35,16 +34,23 @@ class Where implements WhereInterface
     private $accent;
 
     /**
+     * @var bool
+     */
+    private $nested;
+
+    /**
      * Where constructor.
      * @param QueryClass $query
      * @param Logical $logical
      * @param Accent $accent
+     * @param bool $nested
      */
-    public function __construct(QueryClass $query, Logical $logical, Accent $accent)
+    public function __construct(QueryClass $query, Logical $logical, Accent $accent, bool $nested = false)
     {
         $this->query = $query;
         $this->logical = $logical;
         $this->accent = $accent;
+        $this->nested = $nested;
     }
 
     /**
@@ -67,5 +73,36 @@ class Where implements WhereInterface
             !$and ? $comparison : null,
             $logical
         ));
+    }
+
+    /**
+     * @param null|string $column
+     * @param null|Comparison $comparison
+     * @param null|Logical $logical
+     * @return Sql
+     */
+    final protected function whereClause(?string $column, ?Comparison $comparison = null, ?Logical $logical = null)
+    {
+        $value = [];
+        if (!empty($comparison)) {
+            $value = array_merge($value, $comparison->build()->parameters());
+        }
+
+        if (!empty($logical)) {
+            $value = array_merge($value, $logical->build()->parameters());
+        }
+
+        $sql = "";
+        if(!is_null($column) ||
+            !($logical->getOperator() == Sql:: AND || $logical->getOperator() == Sql:: OR)){
+            $sql .= Sql::WHERE . Sql::SQL_SPACE;
+            $sql .= ($this->nested) ? Sql::SQL_BRACKET_OPEN : "";
+        }
+
+        $sql .= !is_null($column) ? $column . Sql::SQL_SPACE : "";
+        $sql .= !is_null($comparison) ? $comparison->build()->sql() : "";
+        $sql .= !is_null($logical) ? $logical->build()->sql() : "";
+
+        return new Sql($sql, $value);
     }
 }

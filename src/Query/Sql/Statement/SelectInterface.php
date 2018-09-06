@@ -12,7 +12,7 @@ use QueryMule\Query\Sql\Operator\Comparison;
  * Interface Select
  * @package QueryMule\Query\Sql\Statement
  */
-interface SelectInterface
+interface SelectInterface //extends FilterInterface
 {
     /**
      * @param array $clauses

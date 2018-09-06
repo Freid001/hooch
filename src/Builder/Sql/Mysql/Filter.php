@@ -46,28 +46,35 @@ class Filter implements FilterInterface
     private $logical;
 
     /**
+     * @var bool
+     */
+    private $nested;
+
+    /**
      * Filter constructor.
      * @param QueryClass $query
      * @param Logical $logical
+     * @param bool $nested
      */
-    public function __construct(QueryClass $query, Logical $logical)
+    public function __construct(QueryClass $query, Logical $logical, bool $nested = false)
     {
         $this->query = $query;
         $this->logical = $logical;
+        $this->nested = $nested;
     }
 
     /**
-     * @param \Closure $column
-     * @param FilterInterface $filter
+     * @param \Closure $callback
      * @return FilterInterface
      */
-    public function nestedWhere(\Closure $column, FilterInterface $filter): FilterInterface
+    public function nestedWhere(\Closure $callback): FilterInterface
     {
-        $common = new NestedWhere($this->query,$this->logical);
-        $common->nestedWhere($column, $this);
+        $common = new NestedWhere($this->query,$this->logical,new Filter($this->query,new Logical($this->nested), $this->nested));
+        $common->nestedWhere($callback);
 
         return $this;
     }
+
 
     /**
      * @param $column
@@ -238,7 +245,7 @@ class Filter implements FilterInterface
         $accent = new Accent();
         $accent->setAccent('`');
 
-        $common = new Where($this->query,$this->logical,$accent);
+        $common = new Where($this->query,$this->logical,$accent,$this->nested);
         $common->where($column, $comparison, $logical);
 
         return $this;

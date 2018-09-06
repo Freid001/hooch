@@ -3,9 +3,8 @@
 namespace QueryMule\Builder\Sql\Common\Clause;
 
 
-use QueryMule\Query\Sql\Accent;
-use QueryMule\Query\Sql\Clause\HasWhereClause;
 use QueryMule\Query\Sql\Clause\NestedWhereInterface;
+use QueryMule\Query\Sql\Nested;
 use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\QueryClass;
 use QueryMule\Query\Sql\Sql;
@@ -17,7 +16,8 @@ use QueryMule\Query\Sql\Statement\FilterInterface;
  */
 class NestedWhere implements NestedWhereInterface
 {
-    use HasWhereClause;
+    //use HasWhereClause;
+    use Nested;
 
     /**
      * @var QueryClass
@@ -30,26 +30,29 @@ class NestedWhere implements NestedWhereInterface
     private $logical;
 
     /**
+     * @var FilterInterface
+     */
+    private $filter;
+
+    /**
      * NestedWhere constructor.
      * @param QueryClass $query
      * @param Logical $logical
+     * @param FilterInterface $filter
      */
-    public function __construct(QueryClass $query, Logical $logical)
+    public function __construct(QueryClass $query, Logical $logical, FilterInterface $filter)
     {
         $this->query = $query;
         $this->logical = $logical;
+        $this->filter = $filter;
     }
 
     /**
-     * @param \Closure $column
-     * @param FilterInterface $filter
+     * @param \Closure $callback
      */
-    public function nestedWhere(\Closure $column, FilterInterface $filter): void
+    public function nestedWhere(\Closure $callback): void
     {
-        $this->setNested(true);
-        $this->logical->setNested(true);
-
-        $column($filter);
+        call_user_func($callback, $query = $this->filter);
 
         $this->query->add(Sql::WHERE, new Sql($this->setNested(true)->nested(false)));
     }

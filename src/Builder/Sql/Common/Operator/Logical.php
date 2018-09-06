@@ -12,8 +12,6 @@ use QueryMule\Query\Sql\Sql;
  */
 class Logical
 {
-    use Nested;
-
     /**
      * @var Sql
      */
@@ -25,11 +23,18 @@ class Logical
     private $operator;
 
     /**
-     * Logical constructor.
+     * @var bool
      */
-    public function __construct()
+    private $nested;
+
+    /**
+     * Logical constructor.
+     * @param bool $nested
+     */
+    public function __construct(bool $nested = false)
     {
         $this->sql = new Sql(null);
+        $this->nested = $nested;
     }
 
     /**
@@ -210,9 +215,9 @@ class Logical
     private function operatorWithSubQuery(string $operator, Sql $subQuery): Sql
     {
         $sql = $operator . Sql::SQL_SPACE;
-        $sql .= $this->setNested(true)->nested(true);
+        $sql .= ($this->nested) ? Sql::SQL_BRACKET_OPEN : "";
         $sql .= $subQuery->sql() . Sql::SQL_SPACE;
-        $sql .= $this->setNested(true)->nested(false);
+        $sql .= ($this->nested) ? Sql::SQL_BRACKET_CLOSE : "";
 
         return new Sql($sql, $subQuery->parameters());
     }
@@ -236,7 +241,7 @@ class Logical
         }
 
         $sql = $operator . Sql::SQL_SPACE;
-        $sql .= $this->nested(true);
+        $sql .= ($this->nested) ? Sql::SQL_BRACKET_OPEN : "";
         $sql .= is_string($column) ? $column . Sql::SQL_SPACE : "";
         $sql .= ($comparison instanceof Comparison) ? $comparison->build()->sql() : "";
         $sql .= ($logical instanceof Logical) ? $logical->build()->sql() : "";

@@ -5,7 +5,6 @@ namespace test\Builder\Sql\Common\Clause;
 
 use QueryMule\Builder\Sql\Common\Clause\NestedWhere;
 use PHPUnit\Framework\TestCase;
-use QueryMule\Builder\Sql\Mysql\Filter;
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\QueryClass;
@@ -29,17 +28,11 @@ class NestedWhereTest extends TestCase
      */
     private $comparison;
 
-    /**
-     * @var NestedWhere
-     */
-    private $clause;
-
     public function setUp()
     {
         $this->query = new QueryClass();
         $this->logical = new Logical();
         $this->comparison = new Comparison();
-        $this->clause = new NestedWhere($this->query, $this->logical, '`');
     }
 
     public function tearDown()
@@ -47,18 +40,28 @@ class NestedWhereTest extends TestCase
         $this->query = null;
         $this->logical = null;
         $this->comparison = null;
-        $this->clause = null;
     }
 
     public function testWhereAndNestedWhere()
     {
-        $this->clause->nestedWhere(function (FilterInterface $query) {
+        $filter = $this->createMock(FilterInterface::class);
+        $filter->expects($this->any())->method('where')->will(
+            $this->onConsecutiveCalls(
+                $this->query->add(Sql::WHERE, new Sql('WHERE ( `col_a` =?', ['some_value_a'])),
+                $this->query->add(Sql::WHERE, new Sql('AND `col_b` =?', ['some_value_b'])),
+                $this->query->add(Sql::WHERE, new Sql('AND ( `col_c` =? )', ['some_value_c']))
+            )
+        );
+
+        $clause = new NestedWhere($this->query, $this->logical, $filter);
+
+        $clause->nestedWhere(function (FilterInterface $query) {
             $query->where('col_a', $this->comparison->equalTo('some_value_a'));
             $query->where('col_b', $this->comparison->equalTo('some_value_b'));
             $query->nestedWhere(function (FilterInterface $query) {
                 $query->where('col_c', $this->comparison->equalTo('some_value_c'));
-            }, new Filter($this->query, $this->logical));
-        }, new Filter($this->query, $this->logical));
+            });
+        });
 
         $query = $this->query->build([
             Sql::WHERE
@@ -68,16 +71,32 @@ class NestedWhereTest extends TestCase
         $this->assertEquals(['some_value_a', 'some_value_b', 'some_value_c'], $query->parameters());
     }
 
-//    public function testNestedWhereOrNestedWhere()
-//    {
-//        $query = $this->filter->nestedWhere(function (\QueryMule\Query\Sql\Statement\FilterInterface $query) {
-//            $query->where('col_a', $this->filter->comparison()->equalTo('some_value_a'));
-//            $query->nestedWhere(function (\QueryMule\Query\Sql\Statement\FilterInterface $query) {
-//                $query->orWhere('col_b', $this->filter->comparison()->equalTo('some_value_b'));
-//            });
-//        })->build();
-//
-//        $this->assertEquals("WHERE ( `col_a` =? OR ( `col_b` =? ) )", $query->sql());
-//        $this->assertEquals(['some_value_a', 'some_value_b'], $query->parameters());
-//    }
+    public function testWhereOrNestedWhere()
+    {
+        $filter = $this->createMock(FilterInterface::class);
+        $filter->expects($this->any())->method('where')->will(
+            $this->onConsecutiveCalls(
+                $this->query->add(Sql::WHERE, new Sql('WHERE ( `col_a` =?', ['some_value_a'])),
+                $this->query->add(Sql::WHERE, new Sql('AND `col_b` =?', ['some_value_b'])),
+                $this->query->add(Sql::WHERE, new Sql('OR ( `col_c` =? )', ['some_value_c']))
+            )
+        );
+
+        $clause = new NestedWhere($this->query, $this->logical, $filter);
+
+        $clause->nestedWhere(function (FilterInterface $query) {
+            $query->where('col_a', $this->comparison->equalTo('some_value_a'));
+            $query->where('col_b', $this->comparison->equalTo('some_value_b'));
+            $query->nestedWhere(function (FilterInterface $query) {
+                $query->orWhere('col_c', $this->comparison->equalTo('some_value_c'));
+            });
+        });
+
+        $query = $this->query->build([
+            Sql::WHERE
+        ]);
+
+        $this->assertEquals("WHERE ( `col_a` =? AND `col_b` =? OR ( `col_c` =? ) )", $query->sql());
+        $this->assertEquals(['some_value_a', 'some_value_b', 'some_value_c'], $query->parameters());
+    }
 }

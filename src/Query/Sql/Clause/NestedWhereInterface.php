@@ -12,9 +12,8 @@ use QueryMule\Query\Sql\Statement\FilterInterface;
 interface NestedWhereInterface
 {
     /**
-     * @param \Closure $column
-     * @param FilterInterface $filter
+     * @param \Closure $callback
      * @return mixed
      */
-    public function nestedWhere(\Closure $column, FilterInterface $filter);
+    public function nestedWhere(\Closure $callback);
 }

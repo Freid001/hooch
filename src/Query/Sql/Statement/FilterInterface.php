@@ -2,6 +2,7 @@
 
 namespace QueryMule\Query\Sql\Statement;
 
+use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Sql\Clause\NestedWhereInterface;
 use QueryMule\Query\Sql\Clause\OrWhereBetweenInterface;
 use QueryMule\Query\Sql\Clause\OrWhereExistsInterface;
@@ -27,7 +28,8 @@ use QueryMule\Query\Sql\Clause\WhereNotLikeInterface;
  * Interface FilterInterface
  * @package QueryMule\Query\Sql\Statement
  */
-interface FilterInterface extends NestedWhereInterface,
+interface FilterInterface extends QueryBuilderInterface,
+                                  NestedWhereInterface,
                                   OrWhereBetweenInterface,
                                   OrWhereExistsInterface,
                                   OrWhereInInterface,

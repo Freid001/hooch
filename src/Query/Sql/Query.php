@@ -6,7 +6,7 @@ namespace QueryMule\Query\Sql;
  * Class Query
  * @package QueryMule\Query\Sql
  */
-trait Query
+class Query
 {
     /**
      * @var array
@@ -22,7 +22,7 @@ trait Query
      * @param string $clause
      * @param Sql $sql
      */
-    final protected function queryAdd($clause, Sql $sql)
+    public function add($clause, Sql $sql)
     {
         $this->sql[$clause] = !empty($this->sql[$clause]) ? $this->sql[$clause] . ' ' . $sql->sql() : $sql->sql();
 
@@ -35,7 +35,7 @@ trait Query
      * @param array $order
      * @return \QueryMule\Query\Sql\Sql
      */
-    final protected function queryBuild(array $order)
+    public function build(array $order)
     {
         $sql = '';
         $parameters = [];
@@ -57,7 +57,7 @@ trait Query
      * @param string $clause
      * @return string|null
      */
-    final protected function queryGet($clause)
+    public function get($clause)
     {
         return !empty($this->sql[$clause]) ? $this->sql[$clause] : null;
     }
@@ -66,7 +66,7 @@ trait Query
      * @param array $clauses
      * @return void
      */
-    final protected function queryReset(array $clauses)
+    public function reset(array $clauses)
     {
         foreach($clauses as $clause) {
             unset($this->sql[$clause]);

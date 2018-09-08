@@ -4,6 +4,7 @@ namespace QueryMule\Query\Sql\Clause;
 
 
 use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Statement\FilterInterface;
 
 /**
  * Interface WhereNotExistsInterface
@@ -13,7 +14,7 @@ interface WhereNotExistsInterface
 {
     /**
      * @param Sql $subQuery
-     * @return mixed
+     * @return FilterInterface
      */
     public function whereNotExists(Sql $subQuery);
 }

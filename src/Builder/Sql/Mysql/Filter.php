@@ -25,9 +25,10 @@ use QueryMule\Builder\Sql\Common\Clause\WhereNotLike;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
-use QueryMule\Query\Sql\QueryClass;
+use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Query\Sql\Statement\QueryBuilderInterface;
 
 /**
  * Class Filter
@@ -36,7 +37,7 @@ use QueryMule\Query\Sql\Statement\FilterInterface;
 class Filter implements FilterInterface
 {
     /**
-     * @var QueryClass
+     * @var Query
      */
     private $query;
 
@@ -46,21 +47,36 @@ class Filter implements FilterInterface
     private $logical;
 
     /**
-     * @var bool
+     * @var Accent
      */
-    private $nested;
+    private $accent;
 
     /**
      * Filter constructor.
-     * @param QueryClass $query
+     * @param Query $query
      * @param Logical $logical
-     * @param bool $nested
      */
-    public function __construct(QueryClass $query, Logical $logical, bool $nested = false)
+    public function __construct(Query $query, Logical $logical)
     {
         $this->query = $query;
         $this->logical = $logical;
-        $this->nested = $nested;
+        $this->accent = new Accent();
+        $this->accent->setSymbol('`');
+    }
+
+    /**
+     * @param array $clauses
+     * @return Sql
+     */
+    public function build(array $clauses = [
+        Sql::WHERE
+    ]): Sql
+    {
+        $sql = $this->query->build($clauses);
+
+        $this->query->reset($clauses);
+
+        return $sql;
     }
 
     /**
@@ -69,48 +85,8 @@ class Filter implements FilterInterface
      */
     public function nestedWhere(\Closure $callback): FilterInterface
     {
-        $common = new NestedWhere($this->query,$this->logical,new Filter($this->query,new Logical($this->nested), $this->nested));
+        $common = new NestedWhere($this->query, new Filter($this->query, $this->logical->setNested(true)));
         $common->nestedWhere($callback);
-
-        return $this;
-    }
-
-
-    /**
-     * @param $column
-     * @param $from
-     * @param $to
-     * @return FilterInterface
-     */
-    public function orWhereBetween($column, $from, $to): FilterInterface
-    {
-        $common = new OrWhereBetween($this->orWhere(null),$this->logical);
-        $common->orWhereBetween($column, $from, $to);
-
-        return $this;
-    }
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function orWhereExists(Sql $subQuery): FilterInterface
-    {
-        $common = new OrWhereExists($this->orWhere(null),$this->logical);
-        $common->orWhereExists($subQuery);
-
-        return $this;
-    }
-
-    /**
-     * @param $column
-     * @param array $values
-     * @return FilterInterface
-     */
-    public function orWhereIn($column, array $values = []): FilterInterface
-    {
-        $common = new OrWhereIn($this->orWhere(null),$this->logical);
-        $common->orWhereIn($column, $values);
 
         return $this;
     }
@@ -123,8 +99,47 @@ class Filter implements FilterInterface
      */
     public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null): FilterInterface
     {
-        $common = new OrWhere($this->where(null),$this->logical);
-        $common->orWhere($column,$comparison,$logical);
+        $common = new OrWhere($this, $this->logical);
+        $common->orWhere($this->accent->append($column, '.'), $comparison, $logical);
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $from
+     * @param $to
+     * @return FilterInterface
+     */
+    public function orWhereBetween($column, $from, $to): FilterInterface
+    {
+        $common = new OrWhereBetween($this, $this->logical);
+        $common->orWhereBetween($column, $from, $to);
+
+        return $this;
+    }
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function orWhereExists(Sql $subQuery): FilterInterface
+    {
+        $common = new OrWhereExists($this, $this->logical);
+        $common->orWhereExists($subQuery);
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param array $values
+     * @return FilterInterface
+     */
+    public function orWhereIn($column, array $values = []): FilterInterface
+    {
+        $common = new OrWhereIn($this, $this->logical);
+        $common->orWhereIn($column, $values);
 
         return $this;
     }
@@ -136,34 +151,8 @@ class Filter implements FilterInterface
      */
     public function orWhereLike($column, $value): FilterInterface
     {
-        $common = new OrWhereLike($this->orWhere(null),$this->logical);
-        $common->orWhereLike($column,$value);
-
-        return $this;
-    }
-
-    /**
-     * @param $column
-     * @param $from
-     * @param $to
-     * @return FilterInterface
-     */
-    public function orWhereNotBetween($column, $from, $to): FilterInterface
-    {
-        $common = new OrWhereNotBetween($this->orWhereNot(null),$this->logical);
-        $common->orWhereNotBetween($column,$from,$to);
-
-        return $this;
-    }
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function orWhereNotExists(Sql $subQuery): FilterInterface
-    {
-        $common = new OrWhereNotExists($this->orWhereNot(null),$this->logical);
-        $common->orWhereNotExists($subQuery);
+        $common = new OrWhereLike($this, $this->logical);
+        $common->orWhereLike($column, $value);
 
         return $this;
     }
@@ -176,8 +165,34 @@ class Filter implements FilterInterface
      */
     public function orWhereNot($column, ?Comparison $comparison = null, ?Logical $logical = null): FilterInterface
     {
-        $common = new OrWhereNot($this->orWhere(null),$this->logical);
-        $common->orWhereNot($column,$comparison,$logical);
+        $common = new OrWhereNot($this, $this->logical);
+        $common->orWhereNot($column, $comparison, $logical);
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $from
+     * @param $to
+     * @return FilterInterface
+     */
+    public function orWhereNotBetween($column, $from, $to): FilterInterface
+    {
+        $common = new OrWhereNotBetween($this, $this->logical);
+        $common->orWhereNotBetween($column, $from, $to);
+
+        return $this;
+    }
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function orWhereNotExists(Sql $subQuery): FilterInterface
+    {
+        $common = new OrWhereNotExists($this, $this->logical);
+        $common->orWhereNotExists($subQuery);
 
         return $this;
     }
@@ -189,47 +204,8 @@ class Filter implements FilterInterface
      */
     public function orWhereNotLike($column, $value): FilterInterface
     {
-        $common = new OrWhereNotLike($this->orWhere(null),$this->logical);
+        $common = new OrWhereNotLike($this, $this->logical);
         $common->orWhereNotLike($column, $value);
-
-        return $this;
-    }
-
-    /**
-     * @param $column
-     * @param $from
-     * @param $to
-     * @return FilterInterface
-     */
-    public function whereBetween($column, $from, $to): FilterInterface
-    {
-        $common = new WhereBetween($this->where(null),$this->logical);
-        $common->whereBetween($column, $from, $to);
-
-        return $this;
-    }
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function whereExists(Sql $subQuery): FilterInterface
-    {
-        $common = new WhereExists($this->where(null),$this->logical);
-        $common->whereExists($subQuery);
-
-        return $this;
-    }
-
-    /**
-     * @param $column
-     * @param array $values
-     * @return FilterInterface
-     */
-    public function whereIn($column, array $values = []): FilterInterface
-    {
-        $common = new WhereIn($this->where(null),$this->logical);
-        $common->whereIn($column, $values);
 
         return $this;
     }
@@ -242,11 +218,47 @@ class Filter implements FilterInterface
      */
     public function where($column, ?Comparison $comparison = null, ?Logical $logical = null): FilterInterface
     {
-        $accent = new Accent();
-        $accent->setAccent('`');
+        $common = new Where($this->query, $this->logical);
+        $common->where($this->accent->append($column, '.'), $comparison, $logical);
 
-        $common = new Where($this->query,$this->logical,$accent,$this->nested);
-        $common->where($column, $comparison, $logical);
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $from
+     * @param $to
+     * @return FilterInterface
+     */
+    public function whereBetween($column, $from, $to): FilterInterface
+    {
+        $common = new WhereBetween($this, $this->logical);
+        $common->whereBetween($column, $from, $to);
+
+        return $this;
+    }
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function whereExists(Sql $subQuery): FilterInterface
+    {
+        $common = new WhereExists($this, $this->logical);
+        $common->whereExists($subQuery);
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param array $values
+     * @return FilterInterface
+     */
+    public function whereIn($column, array $values = []): FilterInterface
+    {
+        $common = new WhereIn($this, $this->logical);
+        $common->whereIn($column, $values);
 
         return $this;
     }
@@ -258,47 +270,8 @@ class Filter implements FilterInterface
      */
     public function whereLike($column, $value): FilterInterface
     {
-        $common = new WhereLike($this->where(null),$this->logical);
+        $common = new WhereLike($this, $this->logical);
         $common->whereLike($column, $value);
-
-        return $this;
-    }
-
-    /**
-     * @param $column
-     * @param $from
-     * @param $to
-     * @return FilterInterface
-     */
-    public function whereNotBetween($column, $from, $to): FilterInterface
-    {
-        $common = new WhereNotBetween($this->whereNot(null),$this->logical);
-        $common->whereNotBetween($column, $from, $to);
-
-        return $this;
-    }
-
-    /**
-     * @param Sql $subQuery
-     * @return FilterInterface
-     */
-    public function whereNotExists(Sql $subQuery): FilterInterface
-    {
-        $common = new WhereNotExists($this->whereNot(null),$this->logical);
-        $common->whereNotExists($subQuery);
-
-        return $this;
-    }
-
-    /**
-     * @param $column
-     * @param array $values
-     * @return FilterInterface
-     */
-    public function whereNotIn($column, array $values = []): FilterInterface
-    {
-        $common = new WhereNotIn($this->whereNot(null),$this->logical);
-        $common->whereNotIn($column, $values);
 
         return $this;
     }
@@ -311,8 +284,47 @@ class Filter implements FilterInterface
      */
     public function whereNot($column, ?Comparison $comparison = null, ?Logical $logical = null): FilterInterface
     {
-        $common = new WhereNot($this->whereNot(null),$this->logical);
+        $common = new WhereNot($this, $this->logical);
         $common->whereNot($column, $comparison, $logical);
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $from
+     * @param $to
+     * @return FilterInterface
+     */
+    public function whereNotBetween($column, $from, $to): FilterInterface
+    {
+        $common = new WhereNotBetween($this, $this->logical);
+        $common->whereNotBetween($column, $from, $to);
+
+        return $this;
+    }
+
+    /**
+     * @param Sql $subQuery
+     * @return FilterInterface
+     */
+    public function whereNotExists(Sql $subQuery): FilterInterface
+    {
+        $common = new WhereNotExists($this, $this->logical);
+        $common->whereNotExists($subQuery);
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param array $values
+     * @return FilterInterface
+     */
+    public function whereNotIn($column, array $values = []): FilterInterface
+    {
+        $common = new WhereNotIn($this, $this->logical);
+        $common->whereNotIn($column, $values);
 
         return $this;
     }
@@ -324,7 +336,7 @@ class Filter implements FilterInterface
      */
     public function whereNotLike($column, $value): FilterInterface
     {
-        $common = new WhereNotLike($this->whereNot(null),$this->logical);
+        $common = new WhereNotLike($this, $this->logical);
         $common->whereNotLike($column, $value);
 
         return $this;

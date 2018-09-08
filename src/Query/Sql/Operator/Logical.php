@@ -29,12 +29,29 @@ class Logical
 
     /**
      * Logical constructor.
-     * @param bool $nested
      */
-    public function __construct(bool $nested = false)
+    public function __construct()
     {
         $this->sql = new Sql(null);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getNested()
+    {
+        return $this->nested;
+    }
+
+    /**
+     * @param bool $nested
+     * @return $this
+     */
+    public function setNested(Bool $nested = false)
+    {
         $this->nested = $nested;
+
+        return $this;
     }
 
     /**
@@ -215,9 +232,9 @@ class Logical
     private function operatorWithSubQuery(string $operator, Sql $subQuery): Sql
     {
         $sql = $operator . Sql::SQL_SPACE;
-        $sql .= ($this->nested) ? Sql::SQL_BRACKET_OPEN : "";
+        $sql .= Sql::SQL_BRACKET_OPEN;
         $sql .= $subQuery->sql() . Sql::SQL_SPACE;
-        $sql .= ($this->nested) ? Sql::SQL_BRACKET_CLOSE : "";
+        $sql .= Sql::SQL_BRACKET_CLOSE;
 
         return new Sql($sql, $subQuery->parameters());
     }
@@ -241,10 +258,14 @@ class Logical
         }
 
         $sql = $operator . Sql::SQL_SPACE;
-        $sql .= ($this->nested) ? Sql::SQL_BRACKET_OPEN : "";
-        $sql .= is_string($column) ? $column . Sql::SQL_SPACE : "";
+        $sql .= ($this->nested) ? Sql::SQL_BRACKET_OPEN . Sql::SQL_SPACE : "";
+        $sql .= (is_string($column)) ? $column . Sql::SQL_SPACE : "";
         $sql .= ($comparison instanceof Comparison) ? $comparison->build()->sql() : "";
         $sql .= ($logical instanceof Logical) ? $logical->build()->sql() : "";
+
+        if ($this->getNested()) {
+            $this->setNested(false);
+        }
 
         return new Sql($sql, $value);
     }

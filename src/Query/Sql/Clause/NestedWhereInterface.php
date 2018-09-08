@@ -2,8 +2,8 @@
 
 namespace QueryMule\Query\Sql\Clause;
 
-use QueryMule\Query\Sql\Statement\FilterInterface;
 
+use QueryMule\Query\Sql\Statement\FilterInterface;
 
 /**
  * Interface NestedWhereInterface
@@ -13,7 +13,7 @@ interface NestedWhereInterface
 {
     /**
      * @param \Closure $callback
-     * @return mixed
+     * @return FilterInterface
      */
     public function nestedWhere(\Closure $callback);
 }

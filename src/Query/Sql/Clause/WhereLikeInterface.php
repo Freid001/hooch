@@ -5,6 +5,7 @@ namespace QueryMule\Query\Sql\Clause;
 
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
+use QueryMule\Query\Sql\Statement\FilterInterface;
 
 /**
  * Interface WhereLikeInterface
@@ -15,7 +16,7 @@ interface WhereLikeInterface
     /**
      * @param $column
      * @param $value
-     * @return mixed
+     * @return FilterInterface
      */
     public function whereLike($column, $value);
 }

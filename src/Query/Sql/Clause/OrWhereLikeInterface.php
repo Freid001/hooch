@@ -3,8 +3,7 @@
 namespace QueryMule\Query\Sql\Clause;
 
 
-use QueryMule\Query\Sql\Operator\Comparison;
-use QueryMule\Query\Sql\Operator\Logical;
+use QueryMule\Query\Sql\Statement\FilterInterface;
 
 /**
  * Interface OrWhereLikeInterface
@@ -15,7 +14,7 @@ interface OrWhereLikeInterface
     /**
      * @param $column
      * @param $value
-     * @return mixed
+     * @return FilterInterface
      */
     public function orWhereLike($column, $value);
 }

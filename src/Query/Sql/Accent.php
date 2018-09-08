@@ -11,7 +11,7 @@ class Accent
     /**
      * @var string
      */
-    private $accent;
+    private $symbol;
 
     /**
      * @var bool
@@ -19,17 +19,17 @@ class Accent
     private $ignoreAccentSymbol = false;
 
     /**
-     * @param string $accent
+     * @param string $symbol
      */
-    final public function setAccent($accent)
+    public function setSymbol($symbol)
     {
-        $this->accent = $accent;
+        $this->symbol = $symbol;
     }
 
     /**
      * @param bool $ignore
      */
-    final public function ignoreAccentSymbol($ignore = true)
+    public function ignore($ignore = true)
     {
         $this->ignoreAccentSymbol = $ignore;
     }
@@ -39,9 +39,9 @@ class Accent
      * @param bool $delimiter
      * @return string
      */
-    final public function addAccent($string,$delimiter = false)
+    public function append($string, $delimiter = false)
     {
-        if($this->ignoreAccentSymbol){
+        if($this->ignoreAccentSymbol || !is_string($string)){
             return $string;
         }
 
@@ -50,12 +50,12 @@ class Accent
 
             $returnString = '';
             foreach($strings as $string){
-                $returnString .= !empty($returnString) ? $delimiter . $this->addAccent($string) : $this->addAccent($string);
+                $returnString .= !empty($returnString) ? $delimiter . $this->append($string) : $this->append($string);
             }
 
             return $returnString;
         }
 
-        return $this->accent.$string.$this->accent;
+        return $this->symbol.$string.$this->symbol;
     }
 }

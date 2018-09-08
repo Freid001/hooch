@@ -44,8 +44,6 @@ class OrWhere implements OrWhereInterface
      */
     public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null): void
     {
-        $column = is_string($column) ? $this->addAccent($column, '.') : $column;
-
         $this->clause->where(null, null, $this->logical->or($column, $comparison, $logical));
     }
 }

@@ -5,6 +5,7 @@ namespace QueryMule\Query\Sql\Clause;
 
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
+use QueryMule\Query\Sql\Statement\FilterInterface;
 
 /***
  * Interface OrWhereInterface
@@ -16,7 +17,7 @@ interface OrWhereInterface
      * @param $column
      * @param null|Comparison $comparison
      * @param null|Logical $logical
-     * @return mixed
+     * @return FilterInterface
      */
     public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null);
 }

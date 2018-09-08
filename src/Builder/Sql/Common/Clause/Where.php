@@ -9,7 +9,7 @@ use QueryMule\Query\Sql\Clause\WhereInterface;
 use QueryMule\Query\Sql\Nested;
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
-use QueryMule\Query\Sql\QueryClass;
+use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 
 /**
@@ -19,7 +19,7 @@ use QueryMule\Query\Sql\Sql;
 class Where implements WhereInterface
 {
     /**
-     * @var QueryClass
+     * @var Query
      */
     private $query;
 
@@ -29,28 +29,14 @@ class Where implements WhereInterface
     private $logical;
 
     /**
-     * @var Accent
-     */
-    private $accent;
-
-    /**
-     * @var bool
-     */
-    private $nested;
-
-    /**
      * Where constructor.
-     * @param QueryClass $query
+     * @param Query $query
      * @param Logical $logical
-     * @param Accent $accent
-     * @param bool $nested
      */
-    public function __construct(QueryClass $query, Logical $logical, Accent $accent, bool $nested = false)
+    public function __construct(Query $query, Logical $logical)
     {
         $this->query = $query;
         $this->logical = $logical;
-        $this->accent = $accent;
-        $this->nested = $nested;
     }
 
     /**
@@ -60,17 +46,26 @@ class Where implements WhereInterface
      */
     public function where($column, ?Comparison $comparison = null, ?Logical $logical = null): void
     {
-        $column = is_string($column) ? $this->accent->addAccent($column, '.') : $column;
+        $logical = is_null($logical) ? new Logical() : $logical;
 
-        $and = false;
-        if ((is_null($logical) || $logical->getOperator() != Sql:: OR) && !empty($this->query->get(Sql::WHERE))) {
-            $and = true;
-            $logical = $this->logical->and($column, $comparison, $logical);
+        if (!empty($this->query->get(Sql::WHERE))) {
+            if (empty($logical->getOperator()) || $logical->getOperator() == Sql::AND) {
+                if ($this->logical->getNested()) {
+                    $logical->setNested(true)->and($column, $comparison, $logical);
+                    $this->logical->setNested(false);
+                } else {
+                    $logical->and($column, $comparison, $logical);
+                }
+            }
         }
 
+//print_r($logical->getOperator());
+//print_r(!$logical->getOperator());
+//print_r($column);
+
         $this->query->add(Sql::WHERE, $this->whereClause(
-            !$and ? $column : null,
-            !$and ? $comparison : null,
+            !$logical->getOperator() ? $column : null,
+            !$logical->getOperator() ? $comparison : null,
             $logical
         ));
     }
@@ -81,7 +76,7 @@ class Where implements WhereInterface
      * @param null|Logical $logical
      * @return Sql
      */
-    final protected function whereClause(?string $column, ?Comparison $comparison = null, ?Logical $logical = null)
+    private function whereClause(?String $column, ?Comparison $comparison = null, ?Logical $logical = null)
     {
         $value = [];
         if (!empty($comparison)) {
@@ -93,10 +88,13 @@ class Where implements WhereInterface
         }
 
         $sql = "";
-        if(!is_null($column) ||
-            !($logical->getOperator() == Sql:: AND || $logical->getOperator() == Sql:: OR)){
+        if (is_null($logical) || !in_array($logical->getOperator(), [Sql::AND,Sql::OR])) {
             $sql .= Sql::WHERE . Sql::SQL_SPACE;
-            $sql .= ($this->nested) ? Sql::SQL_BRACKET_OPEN : "";
+
+            if ($this->logical->getNested()) {
+                $sql .= Sql::SQL_BRACKET_OPEN . Sql::SQL_SPACE;
+                $this->logical->setNested(false);
+            }
         }
 
         $sql .= !is_null($column) ? $column . Sql::SQL_SPACE : "";

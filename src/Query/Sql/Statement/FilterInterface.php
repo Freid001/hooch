@@ -11,6 +11,7 @@ use QueryMule\Query\Sql\Clause\OrWhereInterface;
 use QueryMule\Query\Sql\Clause\OrWhereLikeInterface;
 use QueryMule\Query\Sql\Clause\OrWhereNotBetweenInterface;
 use QueryMule\Query\Sql\Clause\OrWhereNotExistsInterface;
+use QueryMule\Query\Sql\Clause\OrWhereNotInInterface;
 use QueryMule\Query\Sql\Clause\OrWhereNotInterface;
 use QueryMule\Query\Sql\Clause\OrWhereNotLikeInterface;
 use QueryMule\Query\Sql\Clause\WhereBetweenInterface;
@@ -37,6 +38,7 @@ interface FilterInterface extends QueryBuilderInterface,
                                   OrWhereLikeInterface,
                                   OrWhereNotBetweenInterface,
                                   OrWhereNotExistsInterface,
+                                  OrWhereNotInInterface,
                                   OrWhereNotInterface,
                                   OrWhereNotLikeInterface,
                                   WhereBetweenInterface,
@@ -49,4 +51,11 @@ interface FilterInterface extends QueryBuilderInterface,
                                   WhereNotInInterface,
                                   WhereNotInterface,
                                   WhereNotLikeInterface
-{}
+{
+
+    /**
+     * @param bool $ignore
+     * @return FilterInterface
+     */
+    public function ignoreAccent($ignore = true);
+}

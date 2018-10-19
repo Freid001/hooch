@@ -20,17 +20,11 @@ trait HasLimit
      */
     public function limit(int $limit)
     {
-        $this->query()->add(Sql::LIMIT, $this->limitClause($limit));
+        $sql = new Sql(Sql::LIMIT);
+        $sql->append($limit);
+
+        $this->query()->add(Sql::LIMIT, $sql);
 
         return $this;
-    }
-
-    /**
-     * @param int $limit
-     * @return Sql
-     */
-    private function limitClause(int $limit)
-    {
-        return new Sql(Sql::LIMIT.' '.$limit);
     }
 }

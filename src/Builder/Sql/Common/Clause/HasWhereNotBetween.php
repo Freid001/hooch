@@ -23,7 +23,7 @@ trait HasWhereNotBetween
     public function whereNotBetween($column, $from, $to)
     {
         if($this instanceof FilterInterface) {
-            $this->whereNot($column, null, $this->logical()->between($from, $to));
+            $this->whereNot($column, null, $this->logical()->omitTrailingSpace()->between($from, $to));
         }
 
         return $this;

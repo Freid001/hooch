@@ -22,7 +22,7 @@ trait HasWhereIn
     public function whereIn($column, array $values = [])
     {
         if($this instanceof FilterInterface) {
-            $this->where($column, null, $this->logical()->in($values));
+            $this->where($column, null, $this->logical()->omitTrailingSpace()->in($values));
         }
 
         return $this;

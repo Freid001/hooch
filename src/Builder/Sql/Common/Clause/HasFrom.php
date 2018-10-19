@@ -43,10 +43,11 @@ trait HasFrom
      */
     private function fromClause(RepositoryInterface $table, $alias = null)
     {
-        $sql = '';
-        $sql .= Sql::FROM . Sql::SQL_SPACE . $table->getName();
-        $sql .= !empty($alias) ? Sql::SQL_SPACE.Sql:: AS.Sql::SQL_SPACE.$alias : null;
+        $sql = new Sql();
+        $sql->append(Sql::FROM);
+        $sql->append($table->getName());
+        $sql->appendIf(!empty($alias),Sql:: AS . Sql::SQL_SPACE . $alias);
 
-        return new Sql($sql);
+        return $sql;
     }
 }

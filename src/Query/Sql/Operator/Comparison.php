@@ -3,13 +3,14 @@
 
 namespace QueryMule\Query\Sql\Operator;
 
+use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Sql\Sql;
 
 /**
  * Class Comparison
  * @package QueryMule\Query\Sql\Operator
  */
-class Comparison
+class Comparison implements QueryBuilderInterface
 {
     /**
      * @var Sql
@@ -22,9 +23,10 @@ class Comparison
     private $operator;
 
     /**
+     * @param array $clauses
      * @return Sql
      */
-    public function build(): Sql
+    public function build(array $clauses = []): Sql
     {
         return $this->sql;
     }
@@ -140,36 +142,30 @@ class Comparison
     }
 
     /**
-     * @param $comparison
+     * @param $operator
      * @param Sql $sql
      * @return Sql
      */
-    private function operatorWithSql($comparison, Sql $sql)
+    private function operatorWithSql($operator, Sql $sql)
     {
-        return new Sql(
-            $comparison .
-            Sql::SQL_SPACE .
-            Sql::SQL_BRACKET_OPEN .
-            Sql::SQL_SPACE .
-            $sql->sql() .
-            Sql::SQL_SPACE .
-            Sql::SQL_BRACKET_CLOSE .
-            Sql::SQL_SPACE,
-            $sql->parameters()
-        );
+        $sqlObj = new Sql($operator);
+        $sqlObj->append(Sql::SQL_BRACKET_OPEN)
+               ->append($sql,[],false)
+               ->append(Sql::SQL_BRACKET_CLOSE);
+
+        return $sqlObj;
     }
 
     /**
-     * @param $comparison
+     * @param $operator
      * @param $value
      * @return Sql
      */
-    private function operatorWithValue($comparison, $value)
+    private function operatorWithValue($operator, $value)
     {
-        return new Sql(
-            $comparison .
-            Sql::SQL_QUESTION_MARK,
-            [$value]
-        );
+        $sql = new Sql($operator,[$value],false);
+        $sql->append(Sql::SQL_QUESTION_MARK,[],false);
+
+        return $sql;
     }
 }

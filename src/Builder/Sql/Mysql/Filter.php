@@ -23,6 +23,7 @@ use QueryMule\Builder\Sql\Common\Clause\HasWhereNotIn;
 use QueryMule\Builder\Sql\Common\Clause\HasWhereNotLike;
 use QueryMule\Builder\Sql\Common\Clause\HasNestedWhere;
 use QueryMule\Builder\Sql\Common\Clause\HasOrWhere;
+use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Query;
@@ -33,7 +34,7 @@ use QueryMule\Query\Sql\Statement\FilterInterface;
  * Class Filter
  * @package QueryMule\Builder\Sql\Mysql
  */
-class Filter implements FilterInterface
+class Filter implements QueryBuilderInterface, FilterInterface
 {
     use HasNestedWhere;
     use HasOrWhere;

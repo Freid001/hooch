@@ -22,7 +22,7 @@ trait HasOrWhereNotExists
     public function orWhereNotExists(Sql $subQuery)
     {
         if($this instanceof FilterInterface) {
-            $this->orWhereNot(null, null, $this->logical()->exists($subQuery));
+            $this->orWhereNot(null, null, $this->logical()->omitTrailingSpace()->exists($subQuery));
         }
 
         return $this;

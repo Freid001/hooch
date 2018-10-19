@@ -22,7 +22,7 @@ trait HasOrWhereNotLike
     public function orWhereNotLike($column, $values)
     {
         if ($this instanceof FilterInterface) {
-            $this->orWhereNot($column, null, $this->logical()->like($values));
+            $this->orWhereNot($column, null, $this->logical()->omitTrailingSpace()->like($values));
         }
 
         return $this;

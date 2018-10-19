@@ -3,14 +3,14 @@
 namespace QueryMule\Query\Sql\Operator;
 
 
-use QueryMule\Query\Sql\Nested;
+use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Sql\Sql;
 
 /**
  * Class HasLogicalOperator
  * @package QueryMule\Query\Sql\Operator
  */
-class Logical
+class Logical implements QueryBuilderInterface
 {
     /**
      * @var Sql
@@ -28,11 +28,17 @@ class Logical
     private $nested;
 
     /**
+     * @var bool
+     */
+    private $trailingSpace;
+
+    /**
      * Logical constructor.
      */
     public function __construct()
     {
         $this->sql = new Sql(null);
+        $this->trailingSpace = true;
     }
 
     /**
@@ -50,6 +56,16 @@ class Logical
     public function setNested(Bool $nested = false)
     {
         $this->nested = $nested;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function omitTrailingSpace()
+    {
+        $this->trailingSpace = false;
 
         return $this;
     }
@@ -102,15 +118,12 @@ class Logical
      */
     public function between($from, $to): Logical
     {
-        $sql = Sql::BETWEEN;
-        $sql .= Sql::SQL_SPACE;
-        $sql .= Sql::SQL_QUESTION_MARK;
-        $sql .= Sql::SQL_SPACE;
-        $sql .= Sql:: AND;
-        $sql .= Sql::SQL_SPACE;
-        $sql .= Sql::SQL_QUESTION_MARK;
+        $sql = new Sql(Sql::BETWEEN, [$from, $to]);
+        $sql->append(Sql::SQL_QUESTION_MARK);
+        $sql->append(Sql:: AND);
+        $sql->append(Sql::SQL_QUESTION_MARK,[],$this->trailingSpace);
 
-        $this->sql = new Sql($sql, [$from, $to]);
+        $this->sql = $sql;
 
         $this->operator = Sql::BETWEEN;
 
@@ -118,9 +131,10 @@ class Logical
     }
 
     /**
+     * @param array $clauses
      * @return Sql
      */
-    public function build(): Sql
+    public function build(array $clauses = []): Sql
     {
         return $this->sql;
     }
@@ -152,14 +166,14 @@ class Logical
      */
     public function in(array $values = []): Logical
     {
-        $sql = Sql::IN . Sql::SQL_SPACE;
-        $sql .= implode(Sql::SQL_SPACE, [
+        $sql = new Sql(Sql::IN, $values);
+        $sql->append(implode(Sql::SQL_SPACE, [
             Sql::SQL_BRACKET_OPEN,
             implode(",", array_fill(0, count($values), Sql::SQL_QUESTION_MARK)),
             Sql::SQL_BRACKET_CLOSE
-        ]);
+        ]), [], $this->trailingSpace);
 
-        $this->sql = new Sql($sql, $values);
+        $this->sql = $sql;
 
         $this->operator = Sql::IN;
 
@@ -172,9 +186,10 @@ class Logical
      */
     public function like($value): Logical
     {
-        $sql = Sql::SQL_LIKE . Sql::SQL_SPACE . Sql::SQL_QUESTION_MARK;
+        $sql = new Sql(Sql::SQL_LIKE, [$value]);
+        $sql->append(Sql::SQL_QUESTION_MARK,[],false);
 
-        $this->sql = new Sql($sql, [$value]);
+        $this->sql = $sql;
 
         $this->operator = Sql::SQL_LIKE;
 
@@ -204,9 +219,9 @@ class Logical
      */
     public function or ($column, ?Comparison $comparison, ?Logical $logical): Logical
     {
-        $this->sql = $this->operatorWithColumn(Sql:: OR, $column, $comparison, $logical);
+        $this->sql = $this->operatorWithColumn(Sql::OR, $column, $comparison, $logical);
 
-        $this->operator = Sql:: OR;
+        $this->operator = Sql::OR;
 
         return $this;
     }
@@ -231,12 +246,12 @@ class Logical
      */
     private function operatorWithSubQuery(string $operator, Sql $subQuery): Sql
     {
-        $sql = $operator . Sql::SQL_SPACE;
-        $sql .= Sql::SQL_BRACKET_OPEN;
-        $sql .= $subQuery->sql() . Sql::SQL_SPACE;
-        $sql .= Sql::SQL_BRACKET_CLOSE;
+        $sql = new Sql($operator, $subQuery->parameters());
+        $sql->append(Sql::SQL_BRACKET_OPEN);
+        $sql->append($subQuery->sql());
+        $sql->append(Sql::SQL_BRACKET_CLOSE);
 
-        return new Sql($sql, $subQuery->parameters());
+        return $sql;
     }
 
     /**
@@ -248,25 +263,18 @@ class Logical
      */
     private function operatorWithColumn(string $operator, $column, ?Comparison $comparison, ?Logical $logical): Sql
     {
-        $value = [];
-        if (!empty($comparison)) {
-            $value = array_merge($value, $comparison->build()->parameters());
-        }
-
-        if (!empty($logical)) {
-            $value = array_merge($value, $logical->build()->parameters());
-        }
-
-        $sql = $operator . Sql::SQL_SPACE;
-        $sql .= ($this->nested) ? Sql::SQL_BRACKET_OPEN . Sql::SQL_SPACE : "";
-        $sql .= (is_string($column)) ? $column . Sql::SQL_SPACE : "";
-        $sql .= ($comparison instanceof Comparison) ? $comparison->build()->sql() : "";
-        $sql .= ($logical instanceof Logical) ? $logical->build()->sql() : "";
+        $sql = new Sql($operator);
+        $sql->appendIf($this->nested, Sql::SQL_BRACKET_OPEN);
+        $sql->append($column);
+        $sql->appendIf(!is_null($comparison),$comparison,[],$this->trailingSpace);
+        $sql->appendIf(!is_null($logical),$logical,[],$this->trailingSpace);
 
         if ($this->getNested()) {
             $this->setNested(false);
         }
 
-        return new Sql($sql, $value);
+        $this->trailingSpace = true;
+
+        return $sql;
     }
 }

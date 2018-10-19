@@ -20,17 +20,11 @@ trait HasOffset
      */
     public function offset(int $offset)
     {
-        $this->query()->add(Sql::OFFSET, $this->offsetClause($offset));
+        $sql = new Sql(Sql::OFFSET);
+        $sql->append($offset);
+
+        $this->query()->add(Sql::OFFSET, $sql);
 
         return $this;
-    }
-
-    /**
-     * @param int $offset
-     * @return Sql
-     */
-    private function offsetClause(int $offset)
-    {
-        return new Sql(Sql::OFFSET.' '.$offset);
     }
 }

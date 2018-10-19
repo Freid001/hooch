@@ -6,10 +6,12 @@ namespace QueryMule\Builder\Sql\Mysql;
 use QueryMule\Builder\Sql\Common\Clause\HasCols;
 use QueryMule\Builder\Sql\Common\Clause\HasFrom;
 use QueryMule\Builder\Sql\Common\Clause\HasGroupBy;
+use QueryMule\Builder\Sql\Common\Clause\HasJoin;
 use QueryMule\Builder\Sql\Common\Clause\HasLimit;
 use QueryMule\Builder\Sql\Common\Clause\HasOffset;
 use QueryMule\Builder\Sql\Common\Clause\HasOrderBy;
 use QueryMule\Builder\Sql\Common\Clause\HasUnion;
+use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Operator\Comparison;
@@ -17,13 +19,14 @@ use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Query\Sql\Statement\OnInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class Select
  * @package QueryMule\Builder\Sql\Sqlite
  */
-class Select implements SelectInterface
+class Select implements QueryBuilderInterface, SelectInterface
 {
     use HasCols;
     use HasFrom;
@@ -32,6 +35,7 @@ class Select implements SelectInterface
     use HasOffset;
     use HasUnion;
     use HasOrderBy;
+    use HasJoin;
 
     /**
      * @var FilterInterface
@@ -62,6 +66,7 @@ class Select implements SelectInterface
     public function __construct(array $cols = [], RepositoryInterface $table = null, $accent = null)
     {
         $this->query = new Query();
+        $this->logical = new Logical();
         $this->accent = new Accent();
         $this->accent->setSymbol('`');
 
@@ -79,7 +84,7 @@ class Select implements SelectInterface
     /**
      * @return Accent
      */
-    protected function accent(): Accent
+    public function accent(): Accent
     {
         return $this->accent;
     }
@@ -87,7 +92,7 @@ class Select implements SelectInterface
     /**
      * @return Logical
      */
-    protected function logical(): Logical
+    public function logical(): Logical
     {
         return $this->logical;
     }
@@ -95,9 +100,17 @@ class Select implements SelectInterface
     /**
      * @return Query
      */
-    protected function query(): Query
+    public function query(): Query
     {
         return $this->query;
+    }
+
+    /**
+     * @return OnInterface
+     */
+    public function on(): OnInterface
+    {
+        return new On($this->query(),$this->logical());
     }
 
     /**

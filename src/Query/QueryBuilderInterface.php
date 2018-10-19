@@ -15,5 +15,5 @@ interface QueryBuilderInterface
      * @param array $clauses
      * @return Sql
      */
-    public function build(array $clauses): Sql;
+    public function build(array $clauses = []): Sql;
 }

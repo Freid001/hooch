@@ -21,8 +21,9 @@ trait HasOrWhereLike
      */
     public function orWhereLike($column, $value)
     {
+
         if($this instanceof FilterInterface) {
-            $this->orWhere($column, null, $this->logical()->like($value));
+            $this->orWhere($column, null, $this->logical()->omitTrailingSpace()->like($value));
         }
 
         return $this;

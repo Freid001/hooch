@@ -50,12 +50,12 @@ trait HasCols
      */
     private function columnClause($column, $alias = false, $as = false, $comma = false)
     {
-        $sql = null;
-        $sql .= !empty($comma) ? ',' : '';
-        $sql .= !empty($alias) ? $alias.'.' : '';
-        $sql .= $column;
-        $sql .= !empty($as) ? Sql::SQL_SPACE.Sql::AS.Sql::SQL_SPACE.$as : '';
+        $sql = new Sql();
+        $sql->appendIf($comma,',',[],false);
+        $sql->appendIf($alias,$alias.'.',[],false);
+        $sql->append($column);
+        $sql->appendIf($as,Sql::AS . Sql::SQL_SPACE . $as);
 
-        return new Sql($sql);
+        return $sql;
     }
 }

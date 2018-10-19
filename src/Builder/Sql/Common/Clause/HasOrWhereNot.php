@@ -25,7 +25,7 @@ trait HasOrWhereNot
     public function orWhereNot($column, ?Comparison $comparison = null, ?Logical $logical = null)
     {
         if($this instanceof FilterInterface) {
-            $this->orWhere(null, null, $this->logical()->not($this->accent()->append($column,'.'), $comparison, $logical));
+            $this->orWhere(null, null, $this->logical()->omitTrailingSpace()->not($this->accent()->append($column,'.'), $comparison, $logical));
         }
 
         return $this;

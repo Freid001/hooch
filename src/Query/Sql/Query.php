@@ -24,7 +24,7 @@ class Query
      */
     public function add($clause, Sql $sql)
     {
-        $this->sql[$clause] = !empty($this->sql[$clause]) ? $this->sql[$clause] . ' ' . $sql->sql() : $sql->sql();
+        $this->sql[$clause] = !empty($this->sql[$clause]) ? $this->sql[$clause] . $sql->sql() : $sql->sql();
 
         foreach($sql->parameters() as $key => $parameter){
             $this->parameters[$clause][] = $parameter;
@@ -42,7 +42,7 @@ class Query
         foreach($order as $clause){
             if(!empty($this->sql[$clause])) {
 
-                $sql .= !empty($sql) ? ' '.$this->sql[$clause] : $this->sql[$clause];
+                $sql .= !empty($sql) ? $this->sql[$clause] : $this->sql[$clause];
                 if(!empty($this->parameters[$clause])) {
                     foreach ($this->parameters[$clause] as $parameter) {
                         $parameters[] = $parameter;
@@ -50,7 +50,8 @@ class Query
                 }
             }
         }
-        return new Sql($sql,$parameters);
+
+        return new Sql($sql,$parameters,false);
     }
 
     /**
@@ -66,8 +67,13 @@ class Query
      * @param array $clauses
      * @return void
      */
-    public function reset(array $clauses)
+    public function reset(array $clauses = [])
     {
+        if(empty($clauses)){
+            $this->sql = [];
+            $this->parameters = [];
+        }
+
         foreach($clauses as $clause) {
             unset($this->sql[$clause]);
             unset($this->parameters[$clause]);

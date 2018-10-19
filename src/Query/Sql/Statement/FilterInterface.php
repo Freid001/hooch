@@ -29,8 +29,7 @@ use QueryMule\Query\Sql\Clause\WhereNotLikeInterface;
  * Interface FilterInterface
  * @package QueryMule\Query\Sql\Statement
  */
-interface FilterInterface extends QueryBuilderInterface,
-                                  NestedWhereInterface,
+interface FilterInterface extends NestedWhereInterface,
                                   OrWhereBetweenInterface,
                                   OrWhereExistsInterface,
                                   OrWhereInInterface,

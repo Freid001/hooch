@@ -22,7 +22,7 @@ trait HasOrWhereNotIn
     public function orWhereNotIn($column, array $values = [])
     {
         if($this instanceof FilterInterface) {
-            $this->orWhereNot($column, null, $this->logical()->in($values));
+            $this->orWhereNot($column, null, $this->logical()->omitTrailingSpace()->in($values));
         }
 
         return $this;

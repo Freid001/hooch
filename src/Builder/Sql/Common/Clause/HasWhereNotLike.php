@@ -16,13 +16,13 @@ trait HasWhereNotLike
 
     /**
      * @param $column
-     * @param $values
+     * @param $value
      * @return $this
      */
-    public function whereNotLike($column, $values)
+    public function whereNotLike($column, $value)
     {
         if($this instanceof FilterInterface) {
-            $this->whereNot($column, null, $this->logical()->like($values));
+            $this->whereNot($column, null, $this->logical()->omitTrailingSpace()->like($value));
         }
 
         return $this;

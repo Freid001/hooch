@@ -2,6 +2,8 @@
 
 namespace QueryMule\Query\Sql;
 
+use QueryMule\Query\QueryBuilderInterface;
+
 /**
  * Class Sql
  * @package QueryMule\Query\Sql
@@ -68,25 +70,68 @@ class Sql
     /**
      * @var array
      */
-    private $parameters;
+    private $parameters = [];
 
     /**
      * Sql constructor.
-     * @param string $sql
+     * @param null $sql
      * @param array $parameters
+     * @param bool $space
      */
-    public function __construct($sql, array $parameters = [])
+    public function __construct($sql = null, array $parameters = [], $space = true)
     {
-        $this->sql = $sql;
-        $this->parameters = $parameters;
+        $this->append($sql,$parameters,$space);
     }
 
     /**
-     * @return string
+     * @param $sql
+     * @param array $parameters
+     * @param bool $space
+     * @return $this
      */
-    public function sql()
+    public function append($sql, array $parameters = [], $space = true)
     {
-        return $this->sql;
+        if ($sql instanceof QueryBuilderInterface) {
+            $this->append($sql->build()->sql(), $sql->build()->parameters(),$space);
+
+            return $this;
+        }
+
+        if ($sql instanceof Sql) {
+            $this->append($sql->sql(), $sql->parameters(),$space);
+
+            return $this;
+        }
+
+        if (!empty($sql)) {
+            $this->sql .= $sql;
+
+            if($space){
+                $this->sql .= Sql::SQL_SPACE;
+            }
+        }
+
+        if (!empty($parameters)) {
+            $this->parameters = array_merge($this->parameters, $parameters);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $condition
+     * @param $sql
+     * @param array $parameters
+     * @param bool $space
+     * @return $this
+     */
+    public function appendIf($condition, $sql, array $parameters = [], $space = true)
+    {
+        if ($condition) {
+            $this->append($sql, $parameters, $space);
+        }
+
+        return $this;
     }
 
     /**
@@ -95,5 +140,13 @@ class Sql
     public function parameters(): array
     {
         return $this->parameters;
+    }
+
+    /**
+     * @return string
+     */
+    public function sql()
+    {
+        return $this->sql;
     }
 }

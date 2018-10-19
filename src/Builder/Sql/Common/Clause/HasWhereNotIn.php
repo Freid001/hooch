@@ -21,7 +21,7 @@ trait HasWhereNotIn
     public function whereNotIn($column, array $values = [])
     {
         if($this instanceof FilterInterface) {
-            $this->whereNot($column, null, $this->logical()->in($values));
+            $this->whereNot($column, null, $this->logical()->omitTrailingSpace()->in($values));
         }
 
         return $this;

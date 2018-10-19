@@ -4,8 +4,11 @@ declare(strict_types=1);
 namespace test\Builder\Sql\Mysql;
 
 use PHPUnit\Framework\TestCase;
+use QueryMule\Builder\Sql\Mysql\Filter;
+use QueryMule\Builder\Sql\Mysql\On;
 use QueryMule\Builder\Sql\Mysql\Select;
 use QueryMule\Query\Repository\RepositoryInterface;
+use QueryMule\Query\Sql\Operator\Operator;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
@@ -17,7 +20,7 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
 class SelectTest extends TestCase
 {
     /**
-     * @var SelectInterface
+     * @var Select
      */
     private $select;
 
@@ -40,10 +43,10 @@ class SelectTest extends TestCase
 
     public function testIgnoreAlias()
     {
-        $this->assertEquals("SELECT col_a ,col_b ,col_c", $this->select->ignoreAccent()->cols(['col_a', 'col_b', 'col_c'])->build([
+        $this->assertEquals("SELECT col_a ,col_b ,col_c", trim($this->select->ignoreAccent()->cols(['col_a', 'col_b', 'col_c'])->build([
             Sql::SELECT,
             Sql::COLS
-        ])->sql());
+        ])->sql()));
     }
 
     public function testSelectCols()
@@ -110,7 +113,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhere()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->once())->method('where');
         $filter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
@@ -122,7 +125,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $query = $this->select->cols(['col_a'])->from($table)->where('col_a', $this->select->comparison()->equalTo('some_value'))->build([
+        $query = $this->select->cols(['col_a'])->from($table)->where('col_a', Operator::comparison()->equalTo('some_value'))->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -135,7 +138,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhereNot()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->once())->method('whereNot');
         $filter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
@@ -147,7 +150,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $query = $this->select->cols(['col_a'])->from($table)->whereNot('col_a', $this->select->comparison()->equalTo('some_value'))->build([
+        $query = $this->select->cols(['col_a'])->from($table)->whereNot('col_a', Operator::comparison()->equalTo('some_value'))->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -160,7 +163,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhereNotOrWhereNot()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->once())->method('whereNot');
         $filter->expects($this->once())->method('orWhereNot');
         $filter->expects($this->once())->method('build')->will(
@@ -173,7 +176,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $query = $this->select->cols(['col_a'])->from($table)->whereNot('col_a', $this->select->comparison()->equalTo('some_value'))->orWhereNot('col_a', $this->select->comparison()->equalTo('another_value'))->build([
+        $query = $this->select->cols(['col_a'])->from($table)->whereNot('col_a', Operator::comparison()->equalTo('some_value'))->orWhereNot('col_a', Operator::comparison()->equalTo('another_value'))->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -186,7 +189,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhereOrWhere()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->once())->method('where');
         $filter->expects($this->once())->method('orWhere');
         $filter->expects($this->once())->method('build')->will(
@@ -199,7 +202,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->where('col_a', $this->select->comparison()->equalTo('some_value'))->orWhere('col_b', $this->select->comparison()->equalTo('another_value'))->build([
+        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->where('col_a', Operator::comparison()->equalTo('some_value'))->orWhere('col_b', Operator::comparison()->equalTo('another_value'))->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -212,7 +215,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhereAndWhere()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(2))->method('where');
         $filter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
@@ -224,7 +227,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->where('col_a', $this->select->comparison()->equalTo('some_value'))->where('col_b', $this->select->comparison()->equalTo('another_value'))->build([
+        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->where('col_a', Operator::comparison()->equalTo('some_value'))->where('col_b', Operator::comparison()->equalTo('another_value'))->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -237,7 +240,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhereIn()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(1))->method('whereIn');
         $filter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
@@ -262,7 +265,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhereInOrWhereIn()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(1))->method('whereIn');
         $filter->expects($this->exactly(1))->method('orWhereIn');
         $filter->expects($this->once())->method('build')->will(
@@ -288,7 +291,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhereNotIn()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(1))->method('whereNotIn');
         $filter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
@@ -313,7 +316,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhereNotInOrWhereNotIn()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(1))->method('whereNotIn');
         $filter->expects($this->exactly(1))->method('orWhereNotIn');
         $filter->expects($this->once())->method('build')->will(
@@ -339,7 +342,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhereBetween()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(1))->method('whereBetween');
         $filter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
@@ -364,7 +367,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhereBetweenOrWhereBetween()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(1))->method('whereBetween');
         $filter->expects($this->exactly(1))->method('orWhereBetween');
         $filter->expects($this->once())->method('build')->will(
@@ -390,7 +393,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhereNotBetween()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(1))->method('whereNotBetween');
         $filter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
@@ -415,7 +418,7 @@ class SelectTest extends TestCase
 
     public function testSelectNotWhereBetweenOrNotWhereBetween()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(1))->method('whereNotBetween');
         $filter->expects($this->exactly(1))->method('orWhereNotBetween');
         $filter->expects($this->once())->method('build')->will(
@@ -441,7 +444,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhereExists()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(1))->method('whereExists');
         $filter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
@@ -466,7 +469,7 @@ class SelectTest extends TestCase
 
     public function testSelectNotWhereExists()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(1))->method('whereNotExists');
         $filter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
@@ -491,7 +494,7 @@ class SelectTest extends TestCase
 
     public function testSelectWhereExistsOrWhereExists()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(1))->method('whereExists');
         $filter->expects($this->exactly(1))->method('orWhereExists');
         $filter->expects($this->once())->method('build')->will(
@@ -517,7 +520,7 @@ class SelectTest extends TestCase
 
     public function testSelectNotWhereExistsOrNotWhereExists()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(1))->method('whereNotExists');
         $filter->expects($this->exactly(1))->method('orWhereNotExists');
         $filter->expects($this->once())->method('build')->will(
@@ -574,7 +577,7 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->desc('col_a')->asc('col_b');
+        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->orderBy('col_a',Sql::DESC)->orderBy('col_b',Sql::ASC);
         $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name ORDER BY `col_a` DESC ,`col_b` ASC", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
@@ -588,7 +591,7 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->desc('t.col_a')->asc('t.col_b');
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->orderBy('t.col_a',Sql::DESC)->orderBy('t.col_b',Sql::ASC);
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t ORDER BY `t`.`col_a` DESC ,`t`.`col_b` ASC", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
@@ -636,7 +639,7 @@ class SelectTest extends TestCase
 
     public function testSelectColsFromWhereUnionSelectColsFromWhereWithAlias()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(2))->method('build')->will(
             $this->onConsecutiveCalls(
                 new Sql('WHERE `tt`.`col_a` =?', ['another_value']),
@@ -650,7 +653,7 @@ class SelectTest extends TestCase
 
         $unionSelect = new Select();
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->where('col_a', $this->select->comparison()->equalTo('some_value'))->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table, 'tt')->where('col_a', $this->select->comparison()->equalTo('another_value')), false);
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->where('col_a', Operator::comparison()->equalTo('some_value'))->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table, 'tt')->where('col_a', Operator::comparison()->equalTo('another_value')), false);
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -666,7 +669,7 @@ class SelectTest extends TestCase
 
     public function testSelectColsFromWhereUnionAllSelectColsFromWhere()
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(Filter::class);
         $filter->expects($this->exactly(2))->method('build')->will(
             $this->onConsecutiveCalls(
                 new Sql('WHERE `tt`.`col_a` =?', ['another_value']),
@@ -680,7 +683,7 @@ class SelectTest extends TestCase
 
         $unionSelect = new Select();
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->where('col_a', $this->select->comparison()->equalTo('some_value'))->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table, 'tt')->where('col_a', $this->select->comparison()->equalTo('another_value')), true);
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->where('col_a', Operator::comparison()->equalTo('some_value'))->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table, 'tt')->where('col_a', Operator::comparison()->equalTo('another_value')), true);
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -711,25 +714,34 @@ class SelectTest extends TestCase
 //         $this->assertEquals([], $query->parameters());
 //    }
 
-//    public function test2()
-//    {
+    public function test2()
+    {
+        $filter = $this->createMock(Filter::class);
+//        $filter->expects($this->any())->method('build')->will(
+////            $this->onConsecutiveCalls(
+////                new Sql('WHERE `tt`.`col_a` =?', ['another_value'])
+////            )
+//        );
+
 //        $table = $this->createMock(RepositoryInterface::class);
 //        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+//        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 //
-//        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->leftJoin(['tt'=>$table], function(Select $query){
-//            $query->on('col_c','=','col_b');
+//        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->join(Sql::JOIN_LEFT, $table, function(On $query){
 //
+//            //$query->on('col_c',Operator::comparison()->equalTo('col_b'));
+//
+//            $query->nestedWhere(function (Filter $filter){
+//                $filter->orWhere('1',Operator::comparison()->equalTo('1'));
+//                $filter->where('2',Operator::comparison()->equalTo('1'));
+//            });
+//
+//            $query->where('col_d',Operator::comparison()->equalTo('abc'));
 //        });
 //
-//        $query = $this->select->build([
-//            Sql::SELECT,
-//            Sql::COLS,
-//            Sql::FROM,
-//            Sql::JOIN
-//        ]);
+//        $query = $this->select->build();
 //
 //        $this->assertEquals("", trim($query->sql()));
 //        $this->assertEquals([], $query->parameters());
-//    }
+    }
 }
-

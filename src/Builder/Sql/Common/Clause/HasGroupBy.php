@@ -40,16 +40,12 @@ trait HasGroupBy
      */
     private function groupByClause($column, $alias = false, $comma = false)
     {
-        $sql = '';
+        $sql = new Sql();
+        $sql->appendIf(!$comma,Sql::GROUP);
+        $sql->appendIf($comma,',',[],false);
+        $sql->appendIf(!empty($alias),$alias.'.',[],false);
+        $sql->append($column);
 
-        if($comma) {
-            $sql .= ',';
-            $sql .= !empty($alias) ? $alias.'.'.$column : $column;
-        }else {
-            $sql = Sql::GROUP;
-            $sql .= !empty($alias) ? ' '.$alias.'.'.$column : ' '.$column;
-        }
-
-        return new Sql($sql);
+        return $sql;
     }
 }

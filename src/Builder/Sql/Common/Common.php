@@ -15,16 +15,16 @@ trait Common
     /**
      * @return Query
      */
-    abstract protected function query(): Query;
+    abstract public function query(): Query;
 
     /**
      * @return Logical
      */
-    abstract protected function logical(): Logical;
+    abstract public function logical(): Logical;
 
     /**
      * @return Accent
      */
-    abstract protected function accent(): Accent;
+    abstract public function accent(): Accent;
 
 }

@@ -3,7 +3,6 @@
 namespace QueryMule\Builder\Sql\Pgsql;
 
 use QueryMule\Query\Repository\RepositoryInterface;
-use QueryMule\Builder\Sql\Generic\Select as GenericSelect;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
@@ -11,7 +10,7 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
  * Class Select
  * @package QueryMule\Builder\Sql\Pgsql
  */
-abstract class Select extends GenericSelect
+abstract class Select
 {
     /**
      * Select constructor.
@@ -20,7 +19,7 @@ abstract class Select extends GenericSelect
      */
     public function __construct(array $cols = [], RepositoryInterface $table = null)
     {
-        parent::__construct($cols, $table, "'");
+        //parent::__construct($cols, $table, "'");
     }
 
     /**

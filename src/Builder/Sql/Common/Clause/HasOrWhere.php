@@ -25,7 +25,7 @@ trait HasOrWhere
     public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null)
     {
         if($this instanceof FilterInterface) {
-            $this->where(null, null, $this->logical()->or($this->accent()->append($column,'.'), $comparison, $logical));
+            $this->where(null, null, $this->logical()->omitTrailingSpace()->or($this->accent()->append($column,'.'), $comparison, $logical));
         }
 
         return $this;

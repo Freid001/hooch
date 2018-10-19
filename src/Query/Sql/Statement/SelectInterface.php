@@ -100,4 +100,13 @@ interface SelectInterface extends FilterInterface
      * @return SelectInterface
      */
     public function union(SelectInterface $select, bool $all = false);
+
+    /**
+     * @param $type
+     * @param RepositoryInterface $table
+     * @param $first
+     * @param null|Comparison $comparison
+     * @return mixed
+     */
+    public function join($type, RepositoryInterface $table, $first, ?Comparison $comparison = null);
 }

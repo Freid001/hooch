@@ -40,20 +40,13 @@ trait HasOrderBy
      */
     private function orderByClause($column, $sort = SQL::DESC, $comma = false)
     {
-        $sql = '';
+        $sql = new Sql();
+        $sql->appendIf(!$comma,Sql::ORDER);
+        $sql->appendIf(!$comma,Sql::BY);
+        $sql->appendIf($comma,',',[],false);
+        $sql->append($column);
+        $sql->append(strtoupper($sort));
 
-        if($comma) {
-            $sql .= ',';
-            $sql .= !empty($alias) ? $alias.'.'.$column : $column;
-            $sql .= ' '.strtoupper($sort);
-        }else {
-            $sql = Sql::ORDER;
-            $sql .= Sql::SQL_SPACE;
-            $sql .= Sql::BY;
-            $sql .= !empty($alias) ? ' '.$alias.'.'.$column : ' '.$column;
-            $sql .= ' '.strtoupper($sort);
-        }
-
-        return new Sql($sql);
+        return $sql;
     }
 }

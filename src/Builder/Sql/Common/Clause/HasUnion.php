@@ -36,11 +36,10 @@ trait HasUnion
     {
         $query = $select->build();
 
-        $sql = '';
-        $sql .= Sql::UNION;
-        $sql .= !empty($all) ? ' '.Sql::ALL.' ' : ' ';
-        $sql .= $query->sql();
+        $sql = new Sql(Sql::UNION,$query->parameters());
+        $sql->appendIf(!empty($all),Sql::ALL);
+        $sql->append($query->sql());
 
-        return new Sql($sql,$query->parameters());
+        return $sql;
     }
 }

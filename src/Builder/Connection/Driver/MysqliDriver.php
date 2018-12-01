@@ -11,6 +11,7 @@ use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
+use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
@@ -67,7 +68,10 @@ class MysqliDriver implements DriverInterface
      */
     public function filter() : FilterInterface
     {
-        $this->filter = new Filter();
+        $this->filter = new Filter(
+            new Query(),
+            new Logical()
+        );
 
         return $this->filter;
     }
@@ -128,7 +132,8 @@ class MysqliDriver implements DriverInterface
 
     /**
      * @param Sql $sql
-     * @return array|bool
+     * @return array|mixed|null
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function fetch(Sql $sql)
     {
@@ -137,8 +142,8 @@ class MysqliDriver implements DriverInterface
 
     /**
      * @param Sql $sql
-     * @return array|bool
-     * @throws DriverException
+     * @return array|mixed|null
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function fetchAll(Sql $sql)
     {
@@ -148,7 +153,8 @@ class MysqliDriver implements DriverInterface
     /**
      * @param Sql $sql
      * @param string $method
-     * @return array|bool
+     * @return array|mixed|null
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     private function execute(Sql $sql, string $method)
     {

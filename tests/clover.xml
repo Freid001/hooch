@@ -1,0 +1,1258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1543703440">
+  <project timestamp="1543703440">
+    <package name="QueryMule\Builder\Connection">
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Connection/Config.php">
+        <class name="QueryMule\Builder\Connection\Config" namespace="QueryMule\Builder\Connection" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="5" methods="4" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="4" elements="13" coveredelements="5"/>
+        </class>
+        <line num="32" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="34" type="stmt" count="1"/>
+        <line num="35" type="stmt" count="1"/>
+        <line num="40" type="method" name="setLogger" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="42" type="stmt" count="0"/>
+        <line num="43" type="stmt" count="0"/>
+        <line num="48" type="method" name="setConfigs" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="50" type="stmt" count="0"/>
+        <line num="51" type="stmt" count="0"/>
+        <line num="58" type="method" name="dbh" visibility="public" complexity="2" crap="2.15" count="1"/>
+        <line num="60" type="stmt" count="1"/>
+        <line num="61" type="stmt" count="0"/>
+        <line num="64" type="stmt" count="1"/>
+        <metrics loc="66" ncloc="42" classes="1" methods="4" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="4" elements="13" coveredelements="5"/>
+      </file>
+    </package>
+    <package name="QueryMule\Builder\Connection\Driver">
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Connection/Driver/MysqliDriver.php">
+        <class name="QueryMule\Builder\Connection\Driver\MysqliDriver" namespace="QueryMule\Builder\Connection\Driver" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="21" methods="9" coveredmethods="9" conditionals="0" coveredconditionals="0" statements="70" coveredstatements="70" elements="79" coveredelements="79"/>
+        </class>
+        <line num="60" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="9"/>
+        <line num="62" type="stmt" count="9"/>
+        <line num="63" type="stmt" count="9"/>
+        <line num="64" type="stmt" count="9"/>
+        <line num="69" type="method" name="filter" visibility="public" complexity="1" crap="1" count="3"/>
+        <line num="71" type="stmt" count="3"/>
+        <line num="72" type="stmt" count="3"/>
+        <line num="73" type="stmt" count="3"/>
+        <line num="76" type="stmt" count="3"/>
+        <line num="84" type="method" name="select" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="86" type="stmt" count="2"/>
+        <line num="88" type="stmt" count="2"/>
+        <line num="95" type="method" name="getStatement" visibility="public" complexity="3" crap="3" count="2"/>
+        <line num="97" type="stmt" count="2"/>
+        <line num="99" type="stmt" count="2"/>
+        <line num="100" type="stmt" count="2"/>
+        <line num="101" type="stmt" count="2"/>
+        <line num="103" type="stmt" count="2"/>
+        <line num="104" type="stmt" count="2"/>
+        <line num="105" type="stmt" count="2"/>
+        <line num="108" type="stmt" count="2"/>
+        <line num="114" type="method" name="reset" visibility="public" complexity="1" crap="1" count="4"/>
+        <line num="116" type="stmt" count="4"/>
+        <line num="117" type="stmt" count="4"/>
+        <line num="118" type="stmt" count="4"/>
+        <line num="125" type="method" name="cache" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="127" type="stmt" count="2"/>
+        <line num="128" type="stmt" count="2"/>
+        <line num="130" type="stmt" count="2"/>
+        <line num="138" type="method" name="fetch" visibility="public" complexity="1" crap="1" count="5"/>
+        <line num="140" type="stmt" count="5"/>
+        <line num="148" type="method" name="fetchAll" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="150" type="stmt" count="1"/>
+        <line num="159" type="method" name="execute" visibility="private" complexity="11" crap="11" count="6"/>
+        <line num="161" type="stmt" count="6"/>
+        <line num="162" type="stmt" count="6"/>
+        <line num="163" type="stmt" count="6"/>
+        <line num="165" type="stmt" count="6"/>
+        <line num="166" type="stmt" count="5"/>
+        <line num="168" type="stmt" count="5"/>
+        <line num="169" type="stmt" count="5"/>
+        <line num="170" type="stmt" count="1"/>
+        <line num="171" type="stmt" count="1"/>
+        <line num="172" type="stmt" count="1"/>
+        <line num="173" type="stmt" count="1"/>
+        <line num="175" type="stmt" count="1"/>
+        <line num="176" type="stmt" count="1"/>
+        <line num="177" type="stmt" count="1"/>
+        <line num="179" type="stmt" count="1"/>
+        <line num="180" type="stmt" count="1"/>
+        <line num="181" type="stmt" count="1"/>
+        <line num="184" type="stmt" count="1"/>
+        <line num="185" type="stmt" count="1"/>
+        <line num="188" type="stmt" count="1"/>
+        <line num="191" type="stmt" count="5"/>
+        <line num="193" type="stmt" count="5"/>
+        <line num="194" type="stmt" count="2"/>
+        <line num="195" type="stmt" count="2"/>
+        <line num="196" type="stmt" count="2"/>
+        <line num="199" type="stmt" count="2"/>
+        <line num="202" type="stmt" count="3"/>
+        <line num="204" type="stmt" count="3"/>
+        <line num="205" type="stmt" count="2"/>
+        <line num="206" type="stmt" count="2"/>
+        <line num="207" type="stmt" count="1"/>
+        <line num="208" type="stmt" count="1"/>
+        <line num="209" type="stmt" count="1"/>
+        <line num="212" type="stmt" count="3"/>
+        <line num="213" type="stmt" count="3"/>
+        <line num="216" type="stmt" count="1"/>
+        <line num="217" type="stmt" count="1"/>
+        <line num="220" type="stmt" count="4"/>
+        <line num="222" type="stmt" count="4"/>
+        <line num="223" type="stmt" count="4"/>
+        <line num="224" type="stmt" count="4"/>
+        <line num="225" type="stmt" count="4"/>
+        <line num="226" type="stmt" count="4"/>
+        <line num="227" type="stmt" count="4"/>
+        <line num="230" type="stmt" count="4"/>
+        <metrics loc="232" ncloc="169" classes="1" methods="9" coveredmethods="9" conditionals="0" coveredconditionals="0" statements="70" coveredstatements="70" elements="79" coveredelements="79"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Connection/Driver/PdoDriver.php">
+        <class name="QueryMule\Builder\Connection\Driver\PdoDriver" namespace="QueryMule\Builder\Connection\Driver" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="24" methods="9" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="73" coveredstatements="52" elements="82" coveredelements="58"/>
+        </class>
+        <line num="62" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="7"/>
+        <line num="64" type="stmt" count="7"/>
+        <line num="65" type="stmt" count="7"/>
+        <line num="66" type="stmt" count="7"/>
+        <line num="67" type="stmt" count="7"/>
+        <line num="73" type="method" name="filter" visibility="public" complexity="4" crap="6.50" count="2"/>
+        <line num="75" type="stmt" count="2"/>
+        <line num="76" type="stmt" count="2"/>
+        <line num="77" type="stmt" count="2"/>
+        <line num="78" type="stmt" count="0"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="81" type="stmt" count="2"/>
+        <line num="82" type="stmt" count="0"/>
+        <line num="83" type="stmt" count="0"/>
+        <line num="85" type="stmt" count="2"/>
+        <line num="86" type="stmt" count="0"/>
+        <line num="87" type="stmt" count="0"/>
+        <line num="90" type="stmt" count="2"/>
+        <line num="93" type="stmt" count="0"/>
+        <line num="102" type="method" name="select" visibility="public" complexity="4" crap="20.00" count="0"/>
+        <line num="104" type="stmt" count="0"/>
+        <line num="105" type="stmt" count="0"/>
+        <line num="106" type="stmt" count="0"/>
+        <line num="107" type="stmt" count="0"/>
+        <line num="108" type="stmt" count="0"/>
+        <line num="110" type="stmt" count="0"/>
+        <line num="112" type="stmt" count="0"/>
+        <line num="114" type="stmt" count="0"/>
+        <line num="116" type="stmt" count="0"/>
+        <line num="119" type="stmt" count="0"/>
+        <line num="122" type="stmt" count="0"/>
+        <line num="129" type="method" name="getStatement" visibility="public" complexity="3" crap="3.47" count="1"/>
+        <line num="131" type="stmt" count="1"/>
+        <line num="133" type="stmt" count="1"/>
+        <line num="134" type="stmt" count="1"/>
+        <line num="135" type="stmt" count="1"/>
+        <line num="137" type="stmt" count="0"/>
+        <line num="138" type="stmt" count="0"/>
+        <line num="139" type="stmt" count="0"/>
+        <line num="142" type="stmt" count="1"/>
+        <line num="148" type="method" name="reset" visibility="public" complexity="1" crap="1" count="4"/>
+        <line num="150" type="stmt" count="4"/>
+        <line num="151" type="stmt" count="4"/>
+        <line num="152" type="stmt" count="4"/>
+        <line num="159" type="method" name="cache" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="161" type="stmt" count="2"/>
+        <line num="162" type="stmt" count="2"/>
+        <line num="164" type="stmt" count="2"/>
+        <line num="171" type="method" name="fetch" visibility="public" complexity="1" crap="1" count="4"/>
+        <line num="173" type="stmt" count="4"/>
+        <line num="180" type="method" name="fetchAll" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="182" type="stmt" count="1"/>
+        <line num="190" type="method" name="execute" visibility="private" complexity="8" crap="8" count="5"/>
+        <line num="192" type="stmt" count="5"/>
+        <line num="193" type="stmt" count="5"/>
+        <line num="194" type="stmt" count="5"/>
+        <line num="196" type="stmt" count="5"/>
+        <line num="197" type="stmt" count="4"/>
+        <line num="199" type="stmt" count="4"/>
+        <line num="200" type="stmt" count="1"/>
+        <line num="201" type="stmt" count="1"/>
+        <line num="202" type="stmt" count="1"/>
+        <line num="205" type="stmt" count="1"/>
+        <line num="208" type="stmt" count="3"/>
+        <line num="210" type="stmt" count="3"/>
+        <line num="211" type="stmt" count="2"/>
+        <line num="212" type="stmt" count="2"/>
+        <line num="213" type="stmt" count="1"/>
+        <line num="214" type="stmt" count="1"/>
+        <line num="215" type="stmt" count="1"/>
+        <line num="218" type="stmt" count="3"/>
+        <line num="219" type="stmt" count="3"/>
+        <line num="222" type="stmt" count="1"/>
+        <line num="223" type="stmt" count="1"/>
+        <line num="226" type="stmt" count="4"/>
+        <line num="228" type="stmt" count="4"/>
+        <line num="229" type="stmt" count="4"/>
+        <line num="230" type="stmt" count="4"/>
+        <line num="231" type="stmt" count="4"/>
+        <line num="232" type="stmt" count="4"/>
+        <line num="233" type="stmt" count="4"/>
+        <line num="236" type="stmt" count="4"/>
+        <metrics loc="238" ncloc="169" classes="1" methods="9" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="73" coveredstatements="52" elements="82" coveredelements="58"/>
+      </file>
+    </package>
+    <package name="QueryMule\Builder\Connection\Handler">
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Connection/Handler/DatabaseHandler.php">
+        <class name="QueryMule\Builder\Connection\Handler\DatabaseHandler" namespace="QueryMule\Builder\Connection\Handler" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="10" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="25" coveredstatements="0" elements="27" coveredelements="0"/>
+        </class>
+        <line num="48" type="method" name="__construct" visibility="public" complexity="9" crap="90.00" count="0"/>
+        <line num="52" type="stmt" count="0"/>
+        <line num="53" type="stmt" count="0"/>
+        <line num="55" type="stmt" count="0"/>
+        <line num="56" type="stmt" count="0"/>
+        <line num="61" type="stmt" count="0"/>
+        <line num="64" type="stmt" count="0"/>
+        <line num="65" type="stmt" count="0"/>
+        <line num="66" type="stmt" count="0"/>
+        <line num="67" type="stmt" count="0"/>
+        <line num="68" type="stmt" count="0"/>
+        <line num="69" type="stmt" count="0"/>
+        <line num="71" type="stmt" count="0"/>
+        <line num="72" type="stmt" count="0"/>
+        <line num="73" type="stmt" count="0"/>
+        <line num="76" type="stmt" count="0"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="80" type="stmt" count="0"/>
+        <line num="82" type="stmt" count="0"/>
+        <line num="83" type="stmt" count="0"/>
+        <line num="85" type="stmt" count="0"/>
+        <line num="86" type="stmt" count="0"/>
+        <line num="87" type="stmt" count="0"/>
+        <line num="90" type="stmt" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="97" type="method" name="driver" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="99" type="stmt" count="0"/>
+        <metrics loc="101" ncloc="74" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="25" coveredstatements="0" elements="27" coveredelements="0"/>
+      </file>
+    </package>
+    <package name="QueryMule\Builder\Exception">
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Exception/DatabaseException.php">
+        <class name="QueryMule\Builder\Exception\DatabaseException" namespace="QueryMule\Builder\Exception" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="12" ncloc="8" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Exception/DriverException.php">
+        <class name="QueryMule\Builder\Exception\DriverException" namespace="QueryMule\Builder\Exception" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="12" ncloc="8" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Exception/SqlException.php">
+        <class name="QueryMule\Builder\Exception\SqlException" namespace="QueryMule\Builder\Exception" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="12" ncloc="8" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+    </package>
+    <package name="QueryMule\Builder\Sql\Common\Clause">
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasCols.php">
+        <class name="HasCols" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="7" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="17" coveredstatements="17" elements="19" coveredelements="19"/>
+        </class>
+        <line num="23" type="method" name="cols" visibility="public" complexity="6" crap="6" count="33"/>
+        <line num="25" type="stmt" count="33"/>
+        <line num="26" type="stmt" count="33"/>
+        <line num="27" type="stmt" count="33"/>
+        <line num="28" type="stmt" count="26"/>
+        <line num="31" type="stmt" count="33"/>
+        <line num="32" type="stmt" count="33"/>
+        <line num="33" type="stmt" count="33"/>
+        <line num="34" type="stmt" count="33"/>
+        <line num="35" type="stmt" count="33"/>
+        <line num="38" type="stmt" count="33"/>
+        <line num="41" type="stmt" count="33"/>
+        <line num="51" type="method" name="columnClause" visibility="private" complexity="1" crap="1" count="33"/>
+        <line num="53" type="stmt" count="33"/>
+        <line num="54" type="stmt" count="33"/>
+        <line num="55" type="stmt" count="33"/>
+        <line num="56" type="stmt" count="33"/>
+        <line num="57" type="stmt" count="33"/>
+        <line num="59" type="stmt" count="33"/>
+        <metrics loc="61" ncloc="43" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="17" coveredstatements="17" elements="19" coveredelements="19"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasFrom.php">
+        <class name="HasFrom" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="3" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="8" elements="10" coveredelements="10"/>
+        </class>
+        <line num="30" type="method" name="from" visibility="public" complexity="1" crap="1" count="28"/>
+        <line num="32" type="stmt" count="28"/>
+        <line num="34" type="stmt" count="28"/>
+        <line num="36" type="stmt" count="28"/>
+        <line num="44" type="method" name="fromClause" visibility="private" complexity="1" crap="1" count="28"/>
+        <line num="46" type="stmt" count="28"/>
+        <line num="47" type="stmt" count="28"/>
+        <line num="48" type="stmt" count="28"/>
+        <line num="49" type="stmt" count="28"/>
+        <line num="51" type="stmt" count="28"/>
+        <metrics loc="53" ncloc="35" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="8" elements="10" coveredelements="10"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasGroupBy.php">
+        <class name="HasGroupBy" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="3" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="14" coveredelements="14"/>
+        </class>
+        <line num="22" type="method" name="groupBy" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="24" type="stmt" count="2"/>
+        <line num="25" type="stmt" count="2"/>
+        <line num="26" type="stmt" count="2"/>
+        <line num="27" type="stmt" count="2"/>
+        <line num="30" type="stmt" count="2"/>
+        <line num="32" type="stmt" count="2"/>
+        <line num="41" type="method" name="groupByClause" visibility="private" complexity="1" crap="1" count="2"/>
+        <line num="43" type="stmt" count="2"/>
+        <line num="44" type="stmt" count="2"/>
+        <line num="45" type="stmt" count="2"/>
+        <line num="46" type="stmt" count="2"/>
+        <line num="47" type="stmt" count="2"/>
+        <line num="49" type="stmt" count="2"/>
+        <metrics loc="51" ncloc="36" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="14" coveredelements="14"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasJoin.php">
+        <class name="HasJoin" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="5" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="8" coveredelements="0"/>
+        </class>
+        <line num="32" type="method" name="join" visibility="public" complexity="4" crap="20.00" count="0"/>
+        <line num="34" type="stmt" count="0"/>
+        <line num="36" type="stmt" count="0"/>
+        <line num="37" type="stmt" count="0"/>
+        <line num="38" type="stmt" count="0"/>
+        <line num="39" type="stmt" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <line num="43" type="stmt" count="0"/>
+        <metrics loc="44" ncloc="30" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="8" coveredelements="0"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasLimit.php">
+        <class name="HasLimit" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="5" coveredelements="5"/>
+        </class>
+        <line num="21" type="method" name="limit" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="23" type="stmt" count="2"/>
+        <line num="24" type="stmt" count="2"/>
+        <line num="26" type="stmt" count="2"/>
+        <line num="28" type="stmt" count="2"/>
+        <metrics loc="30" ncloc="22" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="5" coveredelements="5"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasNestedWhere.php">
+        <class name="HasNestedWhere" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="5" elements="7" coveredelements="5"/>
+        </class>
+        <line num="26" type="method" name="nestedWhere" visibility="public" complexity="2" crap="2.02" count="2"/>
+        <line num="28" type="stmt" count="2"/>
+        <line num="30" type="stmt" count="2"/>
+        <line num="32" type="stmt" count="2"/>
+        <line num="33" type="stmt" count="0"/>
+        <line num="35" type="stmt" count="2"/>
+        <line num="38" type="stmt" count="2"/>
+        <metrics loc="40" ncloc="32" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="5" elements="7" coveredelements="5"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasOffset.php">
+        <class name="HasOffset" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="5" coveredelements="5"/>
+        </class>
+        <line num="21" type="method" name="offset" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="23" type="stmt" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="26" type="stmt" count="1"/>
+        <line num="28" type="stmt" count="1"/>
+        <metrics loc="30" ncloc="22" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="5" coveredelements="5"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasOrWhere.php">
+        <class name="HasOrWhere" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="4" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="25" type="method" name="orWhere" visibility="public" complexity="4" crap="4" count="10"/>
+        <line num="27" type="stmt" count="10"/>
+        <line num="28" type="stmt" count="10"/>
+        <line num="31" type="stmt" count="10"/>
+        <metrics loc="33" ncloc="23" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasOrWhereBetween.php">
+        <class name="HasOrWhereBetween" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="23" type="method" name="orWhereBetween" visibility="public" complexity="2" crap="2" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="26" type="stmt" count="1"/>
+        <line num="29" type="stmt" count="1"/>
+        <metrics loc="31" ncloc="21" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasOrWhereExists.php">
+        <class name="HasOrWhereExists" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="22" type="method" name="orWhereExists" visibility="public" complexity="2" crap="2" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="28" type="stmt" count="1"/>
+        <metrics loc="30" ncloc="22" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasOrWhereIn.php">
+        <class name="HasOrWhereIn" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="22" type="method" name="orWhereIn" visibility="public" complexity="2" crap="2" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="28" type="stmt" count="1"/>
+        <metrics loc="30" ncloc="21" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasOrWhereLike.php">
+        <class name="HasOrWhereLike" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="22" type="method" name="orWhereLike" visibility="public" complexity="2" crap="2" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="26" type="stmt" count="1"/>
+        <line num="29" type="stmt" count="1"/>
+        <metrics loc="31" ncloc="22" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasOrWhereNot.php">
+        <class name="HasOrWhereNot" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="4" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="25" type="method" name="orWhereNot" visibility="public" complexity="4" crap="4" count="4"/>
+        <line num="27" type="stmt" count="4"/>
+        <line num="28" type="stmt" count="4"/>
+        <line num="31" type="stmt" count="4"/>
+        <metrics loc="33" ncloc="23" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasOrWhereNotBetween.php">
+        <class name="HasOrWhereNotBetween" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="23" type="method" name="orWhereNotBetween" visibility="public" complexity="2" crap="2" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="26" type="stmt" count="1"/>
+        <line num="29" type="stmt" count="1"/>
+        <metrics loc="31" ncloc="21" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasOrWhereNotExists.php">
+        <class name="HasOrWhereNotExists" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="22" type="method" name="orWhereNotExists" visibility="public" complexity="2" crap="2" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="28" type="stmt" count="1"/>
+        <metrics loc="30" ncloc="22" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasOrWhereNotIn.php">
+        <class name="HasOrWhereNotIn" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="22" type="method" name="orWhereNotIn" visibility="public" complexity="2" crap="2" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="28" type="stmt" count="1"/>
+        <metrics loc="30" ncloc="21" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasOrWhereNotLike.php">
+        <class name="HasOrWhereNotLike" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="22" type="method" name="orWhereNotLike" visibility="public" complexity="2" crap="2" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="28" type="stmt" count="1"/>
+        <metrics loc="30" ncloc="21" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasOrderBy.php">
+        <class name="HasOrderBy" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="13" elements="15" coveredelements="15"/>
+        </class>
+        <line num="22" type="method" name="orderBy" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="24" type="stmt" count="2"/>
+        <line num="25" type="stmt" count="2"/>
+        <line num="26" type="stmt" count="2"/>
+        <line num="27" type="stmt" count="2"/>
+        <line num="30" type="stmt" count="2"/>
+        <line num="32" type="stmt" count="2"/>
+        <line num="41" type="method" name="orderByClause" visibility="private" complexity="1" crap="1" count="2"/>
+        <line num="43" type="stmt" count="2"/>
+        <line num="44" type="stmt" count="2"/>
+        <line num="45" type="stmt" count="2"/>
+        <line num="46" type="stmt" count="2"/>
+        <line num="47" type="stmt" count="2"/>
+        <line num="48" type="stmt" count="2"/>
+        <line num="50" type="stmt" count="2"/>
+        <metrics loc="52" ncloc="37" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="13" elements="15" coveredelements="15"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasUnion.php">
+        <class name="HasUnion" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="9" coveredelements="9"/>
+        </class>
+        <line num="23" type="method" name="union" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="25" type="stmt" count="2"/>
+        <line num="27" type="stmt" count="2"/>
+        <line num="35" type="method" name="unionClause" visibility="private" complexity="1" crap="1" count="2"/>
+        <line num="37" type="stmt" count="2"/>
+        <line num="39" type="stmt" count="2"/>
+        <line num="40" type="stmt" count="2"/>
+        <line num="41" type="stmt" count="2"/>
+        <line num="43" type="stmt" count="2"/>
+        <metrics loc="45" ncloc="31" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="9" coveredelements="9"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasWhere.php">
+        <class name="HasWhere" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="26" methods="6" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="38" coveredstatements="36" elements="44" coveredelements="40"/>
+        </class>
+        <line num="26" type="method" name="where" visibility="public" complexity="4" crap="4" count="31"/>
+        <line num="28" type="stmt" count="31"/>
+        <line num="30" type="stmt" count="31"/>
+        <line num="31" type="stmt" count="31"/>
+        <line num="32" type="stmt" count="31"/>
+        <line num="33" type="stmt" count="31"/>
+        <line num="35" type="stmt" count="31"/>
+        <line num="37" type="stmt" count="31"/>
+        <line num="38" type="stmt" count="6"/>
+        <line num="39" type="stmt" count="6"/>
+        <line num="42" type="stmt" count="31"/>
+        <line num="44" type="stmt" count="31"/>
+        <line num="51" type="method" name="operator" visibility="private" complexity="7" crap="7" count="31"/>
+        <line num="53" type="stmt" count="31"/>
+        <line num="54" type="stmt" count="31"/>
+        <line num="55" type="stmt" count="27"/>
+        <line num="58" type="stmt" count="31"/>
+        <line num="59" type="stmt" count="20"/>
+        <line num="60" type="stmt" count="10"/>
+        <line num="64" type="stmt" count="31"/>
+        <line num="72" type="method" name="appendBracket" visibility="private" complexity="6" crap="6.10" count="31"/>
+        <line num="74" type="stmt" count="31"/>
+        <line num="75" type="stmt" count="20"/>
+        <line num="78" type="stmt" count="31"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="82" type="stmt" count="31"/>
+        <line num="83" type="stmt" count="31"/>
+        <line num="84" type="stmt" count="31"/>
+        <line num="93" type="method" name="appendColumn" visibility="private" complexity="2" crap="2" count="31"/>
+        <line num="95" type="stmt" count="31"/>
+        <line num="96" type="stmt" count="31"/>
+        <line num="99" type="stmt" count="20"/>
+        <line num="109" type="method" name="appendAnd" visibility="private" complexity="5" crap="5" count="31"/>
+        <line num="111" type="stmt" count="31"/>
+        <line num="112" type="stmt" count="31"/>
+        <line num="115" type="stmt" count="10"/>
+        <line num="116" type="stmt" count="10"/>
+        <line num="117" type="stmt" count="10"/>
+        <line num="118" type="stmt" count="10"/>
+        <line num="121" type="stmt" count="10"/>
+        <line num="127" type="method" name="whereJoin" visibility="private" complexity="2" crap="2.15" count="31"/>
+        <line num="129" type="stmt" count="31"/>
+        <line num="130" type="stmt" count="0"/>
+        <line num="132" type="stmt" count="31"/>
+        <metrics loc="135" ncloc="101" classes="1" methods="6" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="38" coveredstatements="36" elements="44" coveredelements="40"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasWhereBetween.php">
+        <class name="HasWhereBetween" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="23" type="method" name="whereBetween" visibility="public" complexity="2" crap="2" count="3"/>
+        <line num="25" type="stmt" count="3"/>
+        <line num="26" type="stmt" count="3"/>
+        <line num="29" type="stmt" count="3"/>
+        <metrics loc="30" ncloc="20" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasWhereExists.php">
+        <class name="HasWhereExists" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="22" type="method" name="whereExists" visibility="public" complexity="2" crap="2" count="3"/>
+        <line num="24" type="stmt" count="3"/>
+        <line num="25" type="stmt" count="3"/>
+        <line num="28" type="stmt" count="3"/>
+        <metrics loc="30" ncloc="22" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasWhereIn.php">
+        <class name="HasWhereIn" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="22" type="method" name="whereIn" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="24" type="stmt" count="2"/>
+        <line num="25" type="stmt" count="2"/>
+        <line num="28" type="stmt" count="2"/>
+        <metrics loc="30" ncloc="21" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasWhereLike.php">
+        <class name="HasWhereLike" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="22" type="method" name="whereLike" visibility="public" complexity="2" crap="2" count="3"/>
+        <line num="24" type="stmt" count="3"/>
+        <line num="25" type="stmt" count="3"/>
+        <line num="28" type="stmt" count="3"/>
+        <metrics loc="30" ncloc="21" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasWhereNot.php">
+        <class name="HasWhereNot" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="4" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="25" type="method" name="whereNot" visibility="public" complexity="4" crap="4" count="14"/>
+        <line num="27" type="stmt" count="14"/>
+        <line num="28" type="stmt" count="14"/>
+        <line num="31" type="stmt" count="14"/>
+        <metrics loc="33" ncloc="23" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasWhereNotBetween.php">
+        <class name="HasWhereNotBetween" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="23" type="method" name="whereNotBetween" visibility="public" complexity="2" crap="2" count="3"/>
+        <line num="25" type="stmt" count="3"/>
+        <line num="26" type="stmt" count="3"/>
+        <line num="29" type="stmt" count="3"/>
+        <metrics loc="31" ncloc="21" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasWhereNotExists.php">
+        <class name="HasWhereNotExists" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="22" type="method" name="whereNotExists" visibility="public" complexity="2" crap="2" count="3"/>
+        <line num="24" type="stmt" count="3"/>
+        <line num="25" type="stmt" count="3"/>
+        <line num="28" type="stmt" count="3"/>
+        <metrics loc="30" ncloc="22" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasWhereNotIn.php">
+        <class name="HasWhereNotIn" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="21" type="method" name="whereNotIn" visibility="public" complexity="2" crap="2" count="3"/>
+        <line num="23" type="stmt" count="3"/>
+        <line num="24" type="stmt" count="3"/>
+        <line num="27" type="stmt" count="3"/>
+        <metrics loc="29" ncloc="20" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Clause/HasWhereNotLike.php">
+        <class name="HasWhereNotLike" namespace="QueryMule\Builder\Sql\Common\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="22" type="method" name="whereNotLike" visibility="public" complexity="2" crap="2" count="3"/>
+        <line num="24" type="stmt" count="3"/>
+        <line num="25" type="stmt" count="3"/>
+        <line num="28" type="stmt" count="3"/>
+        <metrics loc="30" ncloc="21" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+    </package>
+    <package name="QueryMule\Builder\Sql\Common">
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Common/Common.php">
+        <class name="Common" namespace="QueryMule\Builder\Sql\Common" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="3" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="29" ncloc="16" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+    </package>
+    <package name="QueryMule\Builder\Sql\Mysql">
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Mysql/Filter.php">
+        <class name="QueryMule\Builder\Sql\Mysql\Filter" namespace="QueryMule\Builder\Sql\Mysql" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="7" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="11" elements="21" coveredelements="16"/>
+        </class>
+        <line num="81" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="34"/>
+        <line num="83" type="stmt" count="34"/>
+        <line num="84" type="stmt" count="34"/>
+        <line num="85" type="stmt" count="34"/>
+        <line num="86" type="stmt" count="34"/>
+        <line num="87" type="stmt" count="34"/>
+        <line num="92" type="method" name="query" visibility="protected" complexity="1" crap="1" count="31"/>
+        <line num="94" type="stmt" count="31"/>
+        <line num="100" type="method" name="logical" visibility="public" complexity="1" crap="1" count="31"/>
+        <line num="102" type="stmt" count="31"/>
+        <line num="108" type="method" name="accent" visibility="protected" complexity="1" crap="1" count="31"/>
+        <line num="110" type="stmt" count="31"/>
+        <line num="117" type="method" name="build" visibility="public" complexity="1" crap="1" count="31"/>
+        <line num="121" type="stmt" count="31"/>
+        <line num="123" type="stmt" count="31"/>
+        <line num="125" type="stmt" count="31"/>
+        <line num="132" type="method" name="ignoreAccent" visibility="public" complexity="2" crap="6.00" count="0"/>
+        <line num="134" type="stmt" count="0"/>
+        <line num="136" type="stmt" count="0"/>
+        <line num="137" type="stmt" count="0"/>
+        <line num="140" type="stmt" count="0"/>
+        <metrics loc="142" ncloc="107" classes="1" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="11" elements="21" coveredelements="16"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Mysql/On.php">
+        <class name="QueryMule\Builder\Sql\Mysql\On" namespace="QueryMule\Builder\Sql\Mysql" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="4" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="0" elements="10" coveredelements="0"/>
+        </class>
+        <line num="24" type="method" name="on" visibility="public" complexity="2" crap="6.00" count="0"/>
+        <line num="26" type="stmt" count="0"/>
+        <line num="28" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <line num="32" type="stmt" count="0"/>
+        <line num="34" type="stmt" count="0"/>
+        <line num="42" type="method" name="orOn" visibility="public" complexity="2" crap="6.00" count="0"/>
+        <line num="44" type="stmt" count="0"/>
+        <line num="46" type="stmt" count="0"/>
+        <metrics loc="47" ncloc="33" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="0" elements="10" coveredelements="0"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Mysql/Select.php">
+        <class name="QueryMule\Builder\Sql\Mysql\Select" namespace="QueryMule\Builder\Sql\Mysql" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="41" methods="29" coveredmethods="21" conditionals="0" coveredconditionals="0" statements="67" coveredstatements="54" elements="96" coveredelements="75"/>
+        </class>
+        <line num="66" type="method" name="__construct" visibility="public" complexity="3" crap="3" count="35"/>
+        <line num="68" type="stmt" count="35"/>
+        <line num="69" type="stmt" count="35"/>
+        <line num="70" type="stmt" count="35"/>
+        <line num="71" type="stmt" count="35"/>
+        <line num="73" type="stmt" count="35"/>
+        <line num="74" type="stmt" count="1"/>
+        <line num="77" type="stmt" count="35"/>
+        <line num="78" type="stmt" count="1"/>
+        <line num="81" type="stmt" count="35"/>
+        <line num="82" type="stmt" count="35"/>
+        <line num="87" type="method" name="accent" visibility="public" complexity="1" crap="1" count="31"/>
+        <line num="89" type="stmt" count="31"/>
+        <line num="95" type="method" name="logical" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="97" type="stmt" count="0"/>
+        <line num="103" type="method" name="query" visibility="public" complexity="1" crap="1" count="33"/>
+        <line num="105" type="stmt" count="33"/>
+        <line num="111" type="method" name="on" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="113" type="stmt" count="0"/>
+        <line num="120" type="method" name="build" visibility="public" complexity="2" crap="2" count="34"/>
+        <line num="134" type="stmt" count="34"/>
+        <line num="135" type="stmt" count="19"/>
+        <line num="138" type="stmt" count="34"/>
+        <line num="140" type="stmt" count="34"/>
+        <line num="142" type="stmt" count="34"/>
+        <line num="149" type="method" name="nestedWhere" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="151" type="stmt" count="0"/>
+        <line num="153" type="stmt" count="0"/>
+        <line num="162" type="method" name="orWhere" visibility="public" complexity="3" crap="3" count="1"/>
+        <line num="164" type="stmt" count="1"/>
+        <line num="166" type="stmt" count="1"/>
+        <line num="175" type="method" name="orWhereBetween" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="177" type="stmt" count="1"/>
+        <line num="179" type="stmt" count="1"/>
+        <line num="186" type="method" name="orWhereExists" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="188" type="stmt" count="1"/>
+        <line num="190" type="stmt" count="1"/>
+        <line num="198" type="method" name="orWhereIn" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="200" type="stmt" count="1"/>
+        <line num="202" type="stmt" count="1"/>
+        <line num="210" type="method" name="orWhereLike" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="212" type="stmt" count="0"/>
+        <line num="214" type="stmt" count="0"/>
+        <line num="223" type="method" name="orWhereNot" visibility="public" complexity="3" crap="3" count="1"/>
+        <line num="225" type="stmt" count="1"/>
+        <line num="227" type="stmt" count="1"/>
+        <line num="236" type="method" name="orWhereNotBetween" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="238" type="stmt" count="1"/>
+        <line num="240" type="stmt" count="1"/>
+        <line num="247" type="method" name="orWhereNotExists" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="249" type="stmt" count="1"/>
+        <line num="251" type="stmt" count="1"/>
+        <line num="259" type="method" name="orWhereNotIn" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="261" type="stmt" count="1"/>
+        <line num="263" type="stmt" count="1"/>
+        <line num="271" type="method" name="orWhereNotLike" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="273" type="stmt" count="0"/>
+        <line num="275" type="stmt" count="0"/>
+        <line num="284" type="method" name="where" visibility="public" complexity="3" crap="3" count="5"/>
+        <line num="286" type="stmt" count="5"/>
+        <line num="288" type="stmt" count="5"/>
+        <line num="297" type="method" name="whereBetween" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="299" type="stmt" count="2"/>
+        <line num="301" type="stmt" count="2"/>
+        <line num="308" type="method" name="whereExists" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="310" type="stmt" count="2"/>
+        <line num="312" type="stmt" count="2"/>
+        <line num="320" type="method" name="whereIn" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="322" type="stmt" count="2"/>
+        <line num="324" type="stmt" count="2"/>
+        <line num="332" type="method" name="whereLike" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="334" type="stmt" count="0"/>
+        <line num="336" type="stmt" count="0"/>
+        <line num="345" type="method" name="whereNot" visibility="public" complexity="3" crap="3" count="2"/>
+        <line num="347" type="stmt" count="2"/>
+        <line num="349" type="stmt" count="2"/>
+        <line num="358" type="method" name="whereNotBetween" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="360" type="stmt" count="2"/>
+        <line num="362" type="stmt" count="2"/>
+        <line num="369" type="method" name="whereNotExists" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="371" type="stmt" count="2"/>
+        <line num="373" type="stmt" count="2"/>
+        <line num="381" type="method" name="whereNotIn" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="383" type="stmt" count="2"/>
+        <line num="385" type="stmt" count="2"/>
+        <line num="393" type="method" name="whereNotLike" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="395" type="stmt" count="0"/>
+        <line num="397" type="stmt" count="0"/>
+        <line num="404" type="method" name="ignoreAccent" visibility="public" complexity="2" crap="2.06" count="1"/>
+        <line num="406" type="stmt" count="1"/>
+        <line num="408" type="stmt" count="1"/>
+        <line num="409" type="stmt" count="0"/>
+        <line num="412" type="stmt" count="1"/>
+        <line num="418" type="method" name="setFilter" visibility="public" complexity="1" crap="1" count="28"/>
+        <line num="420" type="stmt" count="28"/>
+        <line num="421" type="stmt" count="28"/>
+        <metrics loc="421" ncloc="246" classes="1" methods="29" coveredmethods="21" conditionals="0" coveredconditionals="0" statements="67" coveredstatements="54" elements="96" coveredelements="75"/>
+      </file>
+    </package>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Pgsql/Filter.php">
+      <metrics loc="20" ncloc="-4" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <package name="QueryMule\Builder\Sql\Pgsql">
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Pgsql/Select.php">
+        <class name="QueryMule\Builder\Sql\Pgsql\Select" namespace="QueryMule\Builder\Sql\Pgsql" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="7" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="0" elements="15" coveredelements="0"/>
+        </class>
+        <line num="20" type="method" name="__construct" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="23" type="stmt" count="0"/>
+        <line num="30" type="method" name="cols" visibility="public" complexity="6" crap="42.00" count="0"/>
+        <line num="32" type="stmt" count="0"/>
+        <line num="33" type="stmt" count="0"/>
+        <line num="34" type="stmt" count="0"/>
+        <line num="35" type="stmt" count="0"/>
+        <line num="38" type="stmt" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <line num="41" type="stmt" count="0"/>
+        <line num="42" type="stmt" count="0"/>
+        <line num="43" type="stmt" count="0"/>
+        <line num="44" type="stmt" count="0"/>
+        <line num="47" type="stmt" count="0"/>
+        <line num="50" type="stmt" count="0"/>
+        <metrics loc="52" ncloc="32" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="0" elements="15" coveredelements="0"/>
+      </file>
+    </package>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Sqlite/Filter.php">
+      <metrics loc="20" ncloc="-4" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <package name="QueryMule\Builder\Sql\Sqlite">
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Builder/Sql/Sqlite/Select.php">
+        <class name="QueryMule\Builder\Sql\Sqlite\Select" namespace="QueryMule\Builder\Sql\Sqlite" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="0" elements="2" coveredelements="0"/>
+        </class>
+        <line num="18" type="method" name="__construct" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="21" type="stmt" count="0"/>
+        <metrics loc="22" ncloc="11" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="0" elements="2" coveredelements="0"/>
+      </file>
+    </package>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Connection/DatabaseInterface.php">
+      <metrics loc="18" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Connection/Driver/DriverInterface.php">
+      <metrics loc="57" ncloc="30" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Connection/Handler/DatabaseHandlerInterface.php">
+      <metrics loc="17" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/QueryBuilderInterface.php">
+      <metrics loc="18" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Repository/RepositoryInterface.php">
+      <metrics loc="23" ncloc="13" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <package name="QueryMule\Query\Repository\Table">
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Repository/Table/AbstractTable.php">
+        <class name="QueryMule\Query\Repository\Table\AbstractTable" namespace="QueryMule\Query\Repository\Table" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="6" methods="3" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="9" elements="15" coveredelements="10"/>
+        </class>
+        <line num="37" type="method" name="__construct" visibility="public" complexity="3" crap="3.07" count="2"/>
+        <line num="39" type="stmt" count="2"/>
+        <line num="41" type="stmt" count="2"/>
+        <line num="42" type="stmt" count="2"/>
+        <line num="43" type="stmt" count="0"/>
+        <line num="45" type="stmt" count="2"/>
+        <line num="48" type="stmt" count="1"/>
+        <line num="49" type="stmt" count="1"/>
+        <line num="50" type="stmt" count="0"/>
+        <line num="52" type="stmt" count="1"/>
+        <line num="54" type="stmt" count="1"/>
+        <line num="65" type="method" name="select" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="67" type="stmt" count="0"/>
+        <line num="73" type="method" name="filter" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="75" type="stmt" count="1"/>
+        <metrics loc="77" ncloc="50" classes="1" methods="3" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="9" elements="15" coveredelements="10"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Repository/Table/Table.php">
+        <class name="QueryMule\Query\Repository\Table\Table" namespace="QueryMule\Query\Repository\Table" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="4" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="10" coveredelements="10"/>
+        </class>
+        <line num="21" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="23" type="stmt" count="2"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="30" type="method" name="make" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="32" type="stmt" count="2"/>
+        <line num="39" type="method" name="setName" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="41" type="stmt" count="1"/>
+        <line num="43" type="stmt" count="1"/>
+        <line num="49" type="method" name="getName" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="51" type="stmt" count="1"/>
+        <metrics loc="53" ncloc="31" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="10" coveredelements="10"/>
+      </file>
+    </package>
+    <package name="QueryMule\Query\Sql">
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Accent.php">
+        <class name="QueryMule\Query\Sql\Accent" namespace="QueryMule\Query\Sql" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="8" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="13" elements="16" coveredelements="16"/>
+        </class>
+        <line num="24" type="method" name="setSymbol" visibility="public" complexity="1" crap="1" count="67"/>
+        <line num="26" type="stmt" count="67"/>
+        <line num="27" type="stmt" count="67"/>
+        <line num="32" type="method" name="ignore" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="34" type="stmt" count="1"/>
+        <line num="35" type="stmt" count="1"/>
+        <line num="42" type="method" name="append" visibility="public" complexity="6" crap="6" count="62"/>
+        <line num="44" type="stmt" count="62"/>
+        <line num="45" type="stmt" count="23"/>
+        <line num="48" type="stmt" count="55"/>
+        <line num="49" type="stmt" count="27"/>
+        <line num="51" type="stmt" count="27"/>
+        <line num="52" type="stmt" count="27"/>
+        <line num="53" type="stmt" count="27"/>
+        <line num="56" type="stmt" count="27"/>
+        <line num="59" type="stmt" count="55"/>
+        <metrics loc="61" ncloc="40" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="13" elements="16" coveredelements="16"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Query.php">
+        <class name="QueryMule\Query\Sql\Query" namespace="QueryMule\Query\Sql" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="14" methods="4" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="19" elements="25" coveredelements="22"/>
+        </class>
+        <line num="25" type="method" name="add" visibility="public" complexity="3" crap="3" count="66"/>
+        <line num="27" type="stmt" count="66"/>
+        <line num="29" type="stmt" count="66"/>
+        <line num="30" type="stmt" count="40"/>
+        <line num="32" type="stmt" count="66"/>
+        <line num="38" type="method" name="build" visibility="public" complexity="6" crap="6" count="65"/>
+        <line num="40" type="stmt" count="65"/>
+        <line num="41" type="stmt" count="65"/>
+        <line num="42" type="stmt" count="65"/>
+        <line num="43" type="stmt" count="65"/>
+        <line num="45" type="stmt" count="65"/>
+        <line num="46" type="stmt" count="65"/>
+        <line num="47" type="stmt" count="40"/>
+        <line num="48" type="stmt" count="65"/>
+        <line num="54" type="stmt" count="65"/>
+        <line num="61" type="method" name="get" visibility="public" complexity="2" crap="2" count="64"/>
+        <line num="63" type="stmt" count="64"/>
+        <line num="70" type="method" name="reset" visibility="public" complexity="3" crap="3.21" count="65"/>
+        <line num="72" type="stmt" count="65"/>
+        <line num="73" type="stmt" count="0"/>
+        <line num="74" type="stmt" count="0"/>
+        <line num="77" type="stmt" count="65"/>
+        <line num="78" type="stmt" count="65"/>
+        <line num="79" type="stmt" count="65"/>
+        <line num="81" type="stmt" count="65"/>
+        <metrics loc="82" ncloc="56" classes="1" methods="4" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="19" elements="25" coveredelements="22"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Sql.php">
+        <class name="QueryMule\Query\Sql\Sql" namespace="QueryMule\Query\Sql" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="11" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="26" elements="31" coveredelements="31"/>
+        </class>
+        <line num="81" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="92"/>
+        <line num="83" type="stmt" count="92"/>
+        <line num="84" type="stmt" count="92"/>
+        <line num="92" type="method" name="append" visibility="public" complexity="6" crap="6" count="92"/>
+        <line num="94" type="stmt" count="92"/>
+        <line num="95" type="stmt" count="31"/>
+        <line num="96" type="stmt" count="31"/>
+        <line num="97" type="stmt" count="31"/>
+        <line num="98" type="stmt" count="31"/>
+        <line num="101" type="stmt" count="31"/>
+        <line num="104" type="stmt" count="92"/>
+        <line num="105" type="stmt" count="6"/>
+        <line num="106" type="stmt" count="6"/>
+        <line num="107" type="stmt" count="6"/>
+        <line num="108" type="stmt" count="6"/>
+        <line num="111" type="stmt" count="6"/>
+        <line num="114" type="stmt" count="92"/>
+        <line num="115" type="stmt" count="79"/>
+        <line num="117" type="stmt" count="79"/>
+        <line num="118" type="stmt" count="72"/>
+        <line num="122" type="stmt" count="92"/>
+        <line num="123" type="stmt" count="54"/>
+        <line num="126" type="stmt" count="92"/>
+        <line num="136" type="method" name="appendIf" visibility="public" complexity="2" crap="2" count="64"/>
+        <line num="138" type="stmt" count="64"/>
+        <line num="139" type="stmt" count="55"/>
+        <line num="142" type="stmt" count="64"/>
+        <line num="148" type="method" name="parameters" visibility="public" complexity="1" crap="1" count="90"/>
+        <line num="150" type="stmt" count="90"/>
+        <line num="156" type="method" name="sql" visibility="public" complexity="1" crap="1" count="90"/>
+        <line num="158" type="stmt" count="90"/>
+        <metrics loc="160" ncloc="125" classes="1" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="26" elements="31" coveredelements="31"/>
+      </file>
+    </package>
+    <package name="QueryMule\Query\Builder\Clause">
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/HasHavingClause.php">
+        <class name="HasHavingClause" namespace="QueryMule\Query\Builder\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="0" elements="4" coveredelements="0"/>
+        </class>
+        <line num="20" type="method" name="havingClause" visibility="protected" complexity="1" crap="2.00" count="0"/>
+        <line num="22" type="stmt" count="0"/>
+        <line num="23" type="stmt" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <metrics loc="27" ncloc="17" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="0" elements="4" coveredelements="0"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/HasJoinClause.php">
+        <class name="HasJoinClause" namespace="QueryMule\Query\Builder\Clause" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="10" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="23" coveredstatements="0" elements="25" coveredelements="0"/>
+        </class>
+        <line num="28" type="method" name="joinClause" visibility="protected" complexity="7" crap="56.00" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <line num="32" type="stmt" count="0"/>
+        <line num="34" type="stmt" count="0"/>
+        <line num="35" type="stmt" count="0"/>
+        <line num="36" type="stmt" count="0"/>
+        <line num="38" type="stmt" count="0"/>
+        <line num="39" type="stmt" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <line num="42" type="stmt" count="0"/>
+        <line num="43" type="stmt" count="0"/>
+        <line num="45" type="stmt" count="0"/>
+        <line num="46" type="stmt" count="0"/>
+        <line num="48" type="stmt" count="0"/>
+        <line num="49" type="stmt" count="0"/>
+        <line num="52" type="stmt" count="0"/>
+        <line num="55" type="stmt" count="0"/>
+        <line num="57" type="stmt" count="0"/>
+        <line num="66" type="method" name="onClause" visibility="protected" complexity="3" crap="12.00" count="0"/>
+        <line num="68" type="stmt" count="0"/>
+        <line num="69" type="stmt" count="0"/>
+        <line num="70" type="stmt" count="0"/>
+        <line num="71" type="stmt" count="0"/>
+        <line num="72" type="stmt" count="0"/>
+        <line num="74" type="stmt" count="0"/>
+        <metrics loc="76" ncloc="56" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="23" coveredstatements="0" elements="25" coveredelements="0"/>
+      </file>
+    </package>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/NestedWhereInterface.php">
+      <metrics loc="18" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/OrWhereBetweenInterface.php">
+      <metrics loc="20" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/OrWhereExistsInterface.php">
+      <metrics loc="19" ncloc="11" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/OrWhereInInterface.php">
+      <metrics loc="19" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/OrWhereInterface.php">
+      <metrics loc="22" ncloc="12" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/OrWhereLikeInterface.php">
+      <metrics loc="19" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/OrWhereNotBetweenInterface.php">
+      <metrics loc="20" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/OrWhereNotExistsInterface.php">
+      <metrics loc="20" ncloc="12" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/OrWhereNotInInterface.php">
+      <metrics loc="19" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/OrWhereNotInterface.php">
+      <metrics loc="22" ncloc="12" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/OrWhereNotLikeInterface.php">
+      <metrics loc="19" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/WhereBetweenInterface.php">
+      <metrics loc="20" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/WhereExistsInterface.php">
+      <metrics loc="19" ncloc="11" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/WhereInInterface.php">
+      <metrics loc="19" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/WhereInterface.php">
+      <metrics loc="22" ncloc="12" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/WhereLikeInterface.php">
+      <metrics loc="21" ncloc="12" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/WhereNotBetweenInterface.php">
+      <metrics loc="20" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/WhereNotExistsInterface.php">
+      <metrics loc="21" ncloc="13" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/WhereNotInInterface.php">
+      <metrics loc="21" ncloc="12" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/WhereNotInterface.php">
+      <metrics loc="22" ncloc="12" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Clause/WhereNotLikeInterface.php">
+      <metrics loc="19" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <package name="QueryMule\Query\Sql\Operator">
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Operator/Comparison.php">
+        <class name="QueryMule\Query\Sql\Operator\Comparison" namespace="QueryMule\Query\Sql\Operator" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="16" methods="10" coveredmethods="9" conditionals="0" coveredconditionals="0" statements="40" coveredstatements="39" elements="50" coveredelements="48"/>
+        </class>
+        <line num="29" type="method" name="build" visibility="public" complexity="1" crap="1" count="20"/>
+        <line num="31" type="stmt" count="20"/>
+        <line num="38" type="method" name="equalTo" visibility="public" complexity="2" crap="2" count="17"/>
+        <line num="40" type="stmt" count="17"/>
+        <line num="41" type="stmt" count="1"/>
+        <line num="43" type="stmt" count="16"/>
+        <line num="46" type="stmt" count="17"/>
+        <line num="48" type="stmt" count="17"/>
+        <line num="54" type="method" name="getOperator" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="56" type="stmt" count="0"/>
+        <line num="63" type="method" name="greaterThan" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="65" type="stmt" count="2"/>
+        <line num="66" type="stmt" count="1"/>
+        <line num="68" type="stmt" count="1"/>
+        <line num="71" type="stmt" count="2"/>
+        <line num="73" type="stmt" count="2"/>
+        <line num="80" type="method" name="greaterThanEqualTo" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="82" type="stmt" count="2"/>
+        <line num="83" type="stmt" count="1"/>
+        <line num="85" type="stmt" count="1"/>
+        <line num="88" type="stmt" count="2"/>
+        <line num="90" type="stmt" count="2"/>
+        <line num="97" type="method" name="lessThan" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="99" type="stmt" count="2"/>
+        <line num="100" type="stmt" count="1"/>
+        <line num="102" type="stmt" count="1"/>
+        <line num="105" type="stmt" count="2"/>
+        <line num="107" type="stmt" count="2"/>
+        <line num="114" type="method" name="lessThanEqualTo" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="116" type="stmt" count="2"/>
+        <line num="117" type="stmt" count="1"/>
+        <line num="119" type="stmt" count="1"/>
+        <line num="122" type="stmt" count="2"/>
+        <line num="124" type="stmt" count="2"/>
+        <line num="131" type="method" name="notEqualTo" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="133" type="stmt" count="2"/>
+        <line num="134" type="stmt" count="1"/>
+        <line num="136" type="stmt" count="1"/>
+        <line num="139" type="stmt" count="2"/>
+        <line num="141" type="stmt" count="2"/>
+        <line num="149" type="method" name="operatorWithSql" visibility="private" complexity="1" crap="1" count="6"/>
+        <line num="151" type="stmt" count="6"/>
+        <line num="152" type="stmt" count="6"/>
+        <line num="153" type="stmt" count="6"/>
+        <line num="154" type="stmt" count="6"/>
+        <line num="156" type="stmt" count="6"/>
+        <line num="164" type="method" name="operatorWithValue" visibility="private" complexity="1" crap="1" count="21"/>
+        <line num="166" type="stmt" count="21"/>
+        <line num="167" type="stmt" count="21"/>
+        <line num="169" type="stmt" count="21"/>
+        <metrics loc="170" ncloc="119" classes="1" methods="10" coveredmethods="9" conditionals="0" coveredconditionals="0" statements="40" coveredstatements="39" elements="50" coveredelements="48"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Operator/Logical.php">
+        <class name="QueryMule\Query\Sql\Operator\Logical" namespace="QueryMule\Query\Sql\Operator" fullPackage="QueryMule" package="QueryMule">
+          <metrics complexity="34" methods="18" coveredmethods="15" conditionals="0" coveredconditionals="0" statements="66" coveredstatements="57" elements="84" coveredelements="72"/>
+        </class>
+        <line num="38" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="67"/>
+        <line num="40" type="stmt" count="67"/>
+        <line num="41" type="stmt" count="67"/>
+        <line num="42" type="stmt" count="67"/>
+        <line num="47" type="method" name="getNested" visibility="public" complexity="1" crap="1" count="31"/>
+        <line num="49" type="stmt" count="31"/>
+        <line num="56" type="method" name="setNested" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="58" type="stmt" count="2"/>
+        <line num="60" type="stmt" count="2"/>
+        <line num="66" type="method" name="omitTrailingSpace" visibility="public" complexity="1" crap="1" count="31"/>
+        <line num="68" type="stmt" count="31"/>
+        <line num="70" type="stmt" count="31"/>
+        <line num="77" type="method" name="all" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="81" type="stmt" count="0"/>
+        <line num="83" type="stmt" count="0"/>
+        <line num="92" type="method" name="and" visibility="public" complexity="6" crap="6" count="10"/>
+        <line num="94" type="stmt" count="10"/>
+        <line num="96" type="stmt" count="10"/>
+        <line num="98" type="stmt" count="10"/>
+        <line num="105" type="method" name="any" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="107" type="stmt" count="0"/>
+        <line num="109" type="stmt" count="0"/>
+        <line num="111" type="stmt" count="0"/>
+        <line num="119" type="method" name="between" visibility="public" complexity="2" crap="2" count="6"/>
+        <line num="121" type="stmt" count="6"/>
+        <line num="122" type="stmt" count="6"/>
+        <line num="123" type="stmt" count="6"/>
+        <line num="124" type="stmt" count="6"/>
+        <line num="126" type="stmt" count="6"/>
+        <line num="128" type="stmt" count="6"/>
+        <line num="130" type="stmt" count="6"/>
+        <line num="137" type="method" name="build" visibility="public" complexity="1" crap="1" count="31"/>
+        <line num="139" type="stmt" count="31"/>
+        <line num="146" type="method" name="exists" visibility="public" complexity="1" crap="1" count="6"/>
+        <line num="148" type="stmt" count="6"/>
+        <line num="150" type="stmt" count="6"/>
+        <line num="152" type="stmt" count="6"/>
+        <line num="158" type="method" name="getOperator" visibility="public" complexity="1" crap="1" count="31"/>
+        <line num="160" type="stmt" count="31"/>
+        <line num="167" type="method" name="in" visibility="public" complexity="1" crap="1" count="5"/>
+        <line num="169" type="stmt" count="5"/>
+        <line num="170" type="stmt" count="5"/>
+        <line num="171" type="stmt" count="5"/>
+        <line num="172" type="stmt" count="5"/>
+        <line num="173" type="stmt" count="5"/>
+        <line num="174" type="stmt" count="5"/>
+        <line num="176" type="stmt" count="5"/>
+        <line num="178" type="stmt" count="5"/>
+        <line num="180" type="stmt" count="5"/>
+        <line num="187" type="method" name="like" visibility="public" complexity="1" crap="1" count="6"/>
+        <line num="189" type="stmt" count="6"/>
+        <line num="190" type="stmt" count="6"/>
+        <line num="192" type="stmt" count="6"/>
+        <line num="194" type="stmt" count="6"/>
+        <line num="196" type="stmt" count="6"/>
+        <line num="205" type="method" name="not" visibility="public" complexity="3" crap="3" count="14"/>
+        <line num="207" type="stmt" count="14"/>
+        <line num="209" type="stmt" count="14"/>
+        <line num="211" type="stmt" count="14"/>
+        <line num="220" type="method" name="or" visibility="public" complexity="6" crap="6" count="10"/>
+        <line num="222" type="stmt" count="10"/>
+        <line num="224" type="stmt" count="10"/>
+        <line num="226" type="stmt" count="10"/>
+        <line num="233" type="method" name="some" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="235" type="stmt" count="0"/>
+        <line num="237" type="stmt" count="0"/>
+        <line num="239" type="stmt" count="0"/>
+        <line num="247" type="method" name="operatorWithSubQuery" visibility="private" complexity="1" crap="1" count="6"/>
+        <line num="249" type="stmt" count="6"/>
+        <line num="250" type="stmt" count="6"/>
+        <line num="251" type="stmt" count="6"/>
+        <line num="252" type="stmt" count="6"/>
+        <line num="254" type="stmt" count="6"/>
+        <line num="264" type="method" name="operatorWithColumn" visibility="private" complexity="4" crap="4" count="25"/>
+        <line num="266" type="stmt" count="25"/>
+        <line num="267" type="stmt" count="25"/>
+        <line num="268" type="stmt" count="25"/>
+        <line num="269" type="stmt" count="25"/>
+        <line num="270" type="stmt" count="25"/>
+        <line num="272" type="stmt" count="25"/>
+        <line num="273" type="stmt" count="2"/>
+        <line num="276" type="stmt" count="25"/>
+        <line num="278" type="stmt" count="25"/>
+        <metrics loc="280" ncloc="185" classes="1" methods="18" coveredmethods="15" conditionals="0" coveredconditionals="0" statements="66" coveredstatements="57" elements="84" coveredelements="72"/>
+      </file>
+      <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Operator/Operator.php">
+        <class name="QueryMule\Query\Sql\Operator\Operator" namespace="QueryMule\Query\Sql\Operator">
+          <metrics complexity="2" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="1" elements="4" coveredelements="2"/>
+        </class>
+        <line num="13" type="method" name="comparison" visibility="public" complexity="1" crap="1" count="15"/>
+        <line num="15" type="stmt" count="15"/>
+        <line num="21" type="method" name="logical" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="23" type="stmt" count="0"/>
+        <metrics loc="24" ncloc="15" classes="1" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="1" elements="4" coveredelements="2"/>
+      </file>
+    </package>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Statement/FilterInterface.php">
+      <metrics loc="60" ncloc="52" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Statement/OnInterface.php">
+      <metrics loc="26" ncloc="12" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/mnt/c/Users/firei/www/query-mule/src/Query/Sql/Statement/SelectInterface.php">
+      <metrics loc="112" ncloc="24" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <metrics files="83" loc="4311" ncloc="2796" classes="48" methods="155" coveredmethods="118" conditionals="0" coveredconditionals="0" statements="666" coveredstatements="524" elements="821" coveredelements="642"/>
+  </project>
+</coverage>

@@ -108,11 +108,11 @@ class PdoDriver implements DriverInterface
                 break;
 
             case self::DRIVER_PGSQL:
-                $this->select = new \QueryMule\Builder\Sql\Pgsql\Select($cols, $repository);
+                //$this->select = new \QueryMule\Builder\Sql\Pgsql\Select($cols, $repository);
                 break;
 
             case self::DRIVER_SQLITE:
-                $this->select = new \QueryMule\Builder\Sql\Sqlite\Select($cols, $repository);
+                //$this->select = new \QueryMule\Builder\Sql\Sqlite\Select($cols, $repository);
                 break;
 
             default:

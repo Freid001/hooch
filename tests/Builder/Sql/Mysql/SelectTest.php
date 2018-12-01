@@ -714,34 +714,34 @@ class SelectTest extends TestCase
 //         $this->assertEquals([], $query->parameters());
 //    }
 
-    public function test2()
-    {
-        $filter = $this->createMock(Filter::class);
-//        $filter->expects($this->any())->method('build')->will(
-////            $this->onConsecutiveCalls(
-////                new Sql('WHERE `tt`.`col_a` =?', ['another_value'])
-////            )
-//        );
-
-//        $table = $this->createMock(RepositoryInterface::class);
-//        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-//        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
+//    public function test2()
+//    {
+//        $filter = $this->createMock(Filter::class);
+////        $filter->expects($this->any())->method('build')->will(
+//////            $this->onConsecutiveCalls(
+//////                new Sql('WHERE `tt`.`col_a` =?', ['another_value'])
+//////            )
+////        );
 //
-//        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->join(Sql::JOIN_LEFT, $table, function(On $query){
-//
-//            //$query->on('col_c',Operator::comparison()->equalTo('col_b'));
-//
-//            $query->nestedWhere(function (Filter $filter){
-//                $filter->orWhere('1',Operator::comparison()->equalTo('1'));
-//                $filter->where('2',Operator::comparison()->equalTo('1'));
-//            });
-//
-//            $query->where('col_d',Operator::comparison()->equalTo('abc'));
-//        });
-//
-//        $query = $this->select->build();
-//
-//        $this->assertEquals("", trim($query->sql()));
-//        $this->assertEquals([], $query->parameters());
-    }
+////        $table = $this->createMock(RepositoryInterface::class);
+////        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+////        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
+////
+////        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->join(Sql::JOIN_LEFT, $table, function(On $query){
+////
+////            //$query->on('col_c',Operator::comparison()->equalTo('col_b'));
+////
+////            $query->nestedWhere(function (Filter $filter){
+////                $filter->orWhere('1',Operator::comparison()->equalTo('1'));
+////                $filter->where('2',Operator::comparison()->equalTo('1'));
+////            });
+////
+////            $query->where('col_d',Operator::comparison()->equalTo('abc'));
+////        });
+////
+////        $query = $this->select->build();
+////
+////        $this->assertEquals("", trim($query->sql()));
+////        $this->assertEquals([], $query->parameters());
+//    }
 }

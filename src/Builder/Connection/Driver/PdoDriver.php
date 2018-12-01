@@ -9,6 +9,7 @@ use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
+use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
@@ -75,15 +76,15 @@ class PdoDriver implements DriverInterface
         $this->filter = null;
         switch($this->driver){
             case self::DRIVER_MYSQL:
-                $this->filter = new \QueryMule\Builder\Sql\Mysql\Filter();
+                $this->filter = new \QueryMule\Builder\Sql\Mysql\Filter(new Query(), new Logical());
                 break;
 
             case self::DRIVER_PGSQL:
-                $this->filter = new \QueryMule\Builder\Sql\Pgsql\Filter();
+                //$this->filter = new \QueryMule\Builder\Sql\Pgsql\Filter();
                 break;
 
             case self::DRIVER_SQLITE:
-                $this->filter = new \QueryMule\Builder\Sql\Sqlite\Filter();
+                //$this->filter = new \QueryMule\Builder\Sql\Sqlite\Filter();
                 break;
 
             default:

@@ -38,7 +38,7 @@ class Select implements QueryBuilderInterface, SelectInterface
     use HasJoin;
 
     /**
-     * @var FilterInterface
+     * @var FilterInterface|QueryBuilderInterface
      */
     private $filter;
 

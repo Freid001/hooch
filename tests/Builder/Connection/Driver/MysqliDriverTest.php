@@ -223,7 +223,7 @@ class MysqliDriverTest extends TestCase
         $select = $driver->select([Sql::SQL_STAR], Table::make($driver)->setName('some_table'));
 
         $this->assertTrue($select instanceof SelectInterface);
-        $this->assertEquals("SELECT * FROM some_table",$select->build([
+        $this->assertEquals("SELECT * FROM some_table ",$select->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM

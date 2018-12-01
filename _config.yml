@@ -1,1 +1,7 @@
 theme: jekyll-theme-architect
+title: Query Mule
+description: Database abstraction layer (DBAL) and fluent query builder for PHP.
+show_downloads: true
+author:
+  name: Fraser Reid
+  url: https://freid001.github.io/

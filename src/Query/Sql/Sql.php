@@ -92,13 +92,21 @@ class Sql
     public function append($sql, array $parameters = [], $space = true)
     {
         if ($sql instanceof QueryBuilderInterface) {
-            $this->append($sql->build()->sql(), $sql->build()->parameters(),$space);
+            $this->append(
+                $sql->build()->sql(),
+                $sql->build()->parameters(),
+                $space
+            );
 
             return $this;
         }
 
         if ($sql instanceof Sql) {
-            $this->append($sql->sql(), $sql->parameters(),$space);
+            $this->append(
+                $sql->sql(),
+                $sql->parameters(),
+                $space
+            );
 
             return $this;
         }

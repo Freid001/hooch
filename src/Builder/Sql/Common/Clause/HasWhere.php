@@ -25,37 +25,100 @@ trait HasWhere
      */
     public function where($column, ?Comparison $comparison = null, ?Logical $logical = null)
     {
-        $sql = new Sql();
         $column = $this->accent()->append($column, '.');
-        $operator = !is_null($logical) ? $logical->getOperator() : null;
+
+        $sql = new Sql();
+        $sql = $this->appendBracket($sql, $logical);
+        $sql = $this->appendColumn($sql, $column);
+        $sql = $this->appendAnd($sql, $column, $comparison, $logical);
+
+        $sql->append($this->logical()->omitTrailingSpace());
+
+        if(empty($this->logical()->getOperator())) {
+            $sql->appendIf(!is_null($comparison), $comparison);
+            $sql->appendIf(!is_null($logical), $logical);
+        }
+
+        $this->query()->add($this->whereJoin(), $sql);
+
+        return $this;
+    }
+
+    /**
+     * @param Logical $logical
+     * @return string|null
+     */
+    private function operator(?Logical $logical)
+    {
+        $operator = null;
+        if (!is_null($logical)) {
+            $operator = $logical->getOperator();
+        }
 
         if (!empty($this->query()->get(Sql::WHERE))) {
-            if ($operator != Sql:: OR) {
+            if ($operator !== Sql:: OR) {
                 $operator = Sql:: AND;
             }
         }
 
-        if (empty($this->query()->get(Sql::WHERE)) && !in_array($operator, [Sql:: AND, Sql:: OR])) {
-            $sql->append($this->whereJoin())->appendIf($this->logical()->getNested(), Sql::SQL_BRACKET_OPEN);
+        return $operator;
+    }
+
+    /**
+     * @param Sql $sql
+     * @param Logical|null $logical
+     * @return Sql
+     */
+    private function appendBracket(Sql $sql, ?Logical $logical)
+    {
+        if (!empty($this->query()->get(Sql::WHERE))){
+            return $sql;
         }
 
-        if (!empty($this->query()->get(Sql::WHERE))) {
-            if ($operator != Sql::OR) {
-                if ($this->logical()->getNested()) {
-                    $logical->setNested(true)->and($column, $comparison, $logical);
-                    $this->logical()->setNested(false);
-                } else {
-                    $logical->and($column, $comparison, $logical);
-                }
-            }
-        }else {
-            $sql->append($column);
+        if(in_array($this->operator($logical), [Sql:: AND, Sql:: OR])){
+            return $sql;
         }
 
-        $this->query()->add($this->whereJoin(),$sql->appendIf(!is_null($comparison),$comparison)
-                                                   ->appendIf(!is_null($logical),$logical));
+        return $sql->append($this->whereJoin())->appendIf(
+            $this->logical()->getNested(),
+            Sql::SQL_BRACKET_OPEN
+        );
+    }
 
-        return $this;
+    /**
+     * @param Sql $sql
+     * @param $column
+     * @return Sql
+     */
+    private function appendColumn(Sql $sql, $column)
+    {
+        if (empty($this->query()->get(Sql::WHERE))) {
+            return $sql->append($column);
+        }
+
+        return $sql;
+    }
+
+    /**
+     * @param Sql $sql
+     * @param $column
+     * @param Comparison|null $comparison
+     * @param Logical|null $logical
+     * @return Sql
+     */
+    private function appendAnd(Sql $sql, $column, ?Comparison $comparison, ?Logical $logical)
+    {
+        if ($this->operator($logical) !== Sql:: AND) {
+            return $sql;
+        }
+
+        $this->logical()->and(
+            $column,
+            $comparison,
+            $logical
+        );
+
+        return $sql;
     }
 
     /**

@@ -211,79 +211,65 @@ class FilterTest extends TestCase
         $this->assertEquals([1, 2, 3, 4], $query->parameters());
     }
 
-//    public function testWhereExists()
-//    {
-//        $query = $this->filter->whereExists(new Sql(" SELECT * FROM some_table_name"))->build([
-//            Sql::WHERE
-//        ]);
-//
-//        $this->assertEquals("WHERE EXISTS (SELECT * FROM some_table_name )", trim($query->sql()));
-//        $this->assertEquals([], $query->parameters());
-//    }
+    public function testWhereExists()
+    {
+        $query = $this->filter->whereExists(new Sql(" SELECT * FROM some_table_name"))->build([
+            Sql::WHERE
+        ]);
 
-//    public function testWhereNotExists()
-//    {
-//        $table = $this->createMock(RepositoryInterface::class);
-//        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-//
-//        $select = new Select();
-//
-//        $query = $this->filter->whereNotExists($select->cols()->from($table)->build())->build();
-//        $this->assertEquals("WHERE NOT EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
-//        $this->assertEquals([], $query->parameters());
-//    }
+        $this->assertEquals("WHERE EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
+        $this->assertEquals([], $query->parameters());
+    }
 
-//    public function testWhereExistsOrExists()
-//    {
-//        $table = $this->createMock(RepositoryInterface::class);
-//        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-//
-//        $select = new Select();
-//        $select2 = new Select();
-//
-//        $query = $this->filter->whereExists($select->cols()->from($table)->build())->orWhereExists($select2->cols()->from($table)->build())->build();
-//        $this->assertEquals("WHERE EXISTS ( SELECT * FROM some_table_name ) OR EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
-//        $this->assertEquals([], $query->parameters());
-//    }
+    public function testWhereNotExists()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
-//    public function testWhereNotExistsOrNotExists()
-//    {
-//        $table = $this->createMock(RepositoryInterface::class);
-//        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-//
-//        $select = new Select();
-//        $select2 = new Select();
-//
-//        $query = $this->filter->whereNotExists($select->cols()->from($table)->build())->orWhereNotExists($select2->cols()->from($table)->build())->build();
-//        $this->assertEquals("WHERE NOT EXISTS ( SELECT * FROM some_table_name ) OR NOT EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
-//        $this->assertEquals([], $query->parameters());
-//    }
+        $query = $this->filter->whereNotExists(new Sql(" SELECT * FROM some_table_name"))->build();
+        $this->assertEquals("WHERE NOT EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
+        $this->assertEquals([], $query->parameters());
+    }
 
-//    public function testWhereExistsAndExists()
-//    {
-//        $table = $this->createMock(RepositoryInterface::class);
-//        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-//
-//        $select = new Select();
-//        $select2 = new Select();
-//
-//        $query = $this->filter->whereExists($select->cols()->from($table)->build())->whereExists($select2->cols()->from($table)->build())->build();
-//        $this->assertEquals("WHERE EXISTS ( SELECT * FROM some_table_name ) AND EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
-//        $this->assertEquals([], $query->parameters());
-//    }
+    public function testWhereExistsOrExists()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
-//    public function testWhereNotExistsAndNotExists()
-//    {
-//        $table = $this->createMock(RepositoryInterface::class);
-//        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-//
-//        $select = new Select();
-//        $select2 = new Select();
-//
-//        $query = $this->filter->whereNotExists($select->cols()->from($table)->build())->whereNotExists($select2->cols()->from($table)->build())->build();
-//        $this->assertEquals("WHERE NOT EXISTS ( SELECT * FROM some_table_name ) AND NOT EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
-//        $this->assertEquals([], $query->parameters());
-//    }
+        $query = $this->filter->whereExists(new Sql(" SELECT * FROM some_table_name"))->orWhereExists(new Sql(" SELECT * FROM some_table_name"))->build();
+        $this->assertEquals("WHERE EXISTS ( SELECT * FROM some_table_name ) OR EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
+        $this->assertEquals([], $query->parameters());
+    }
+
+    public function testWhereNotExistsOrNotExists()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
+        $query = $this->filter->whereNotExists(new Sql(" SELECT * FROM some_table_name"))->orWhereNotExists(new Sql(" SELECT * FROM some_table_name"))->build();
+        $this->assertEquals("WHERE NOT EXISTS ( SELECT * FROM some_table_name ) OR NOT EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
+        $this->assertEquals([], $query->parameters());
+    }
+
+    public function testWhereExistsAndExists()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
+        $query = $this->filter->whereExists(new Sql(" SELECT * FROM some_table_name"))->whereExists(new Sql(" SELECT * FROM some_table_name"))->build();
+        $this->assertEquals("WHERE EXISTS ( SELECT * FROM some_table_name ) AND EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
+        $this->assertEquals([], $query->parameters());
+    }
+
+    public function testWhereNotExistsAndNotExists()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
+        $query = $this->filter->whereNotExists(new Sql(" SELECT * FROM some_table_name"))->whereNotExists(new Sql(" SELECT * FROM some_table_name"))->build();
+        $this->assertEquals("WHERE NOT EXISTS ( SELECT * FROM some_table_name ) AND NOT EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
+        $this->assertEquals([], $query->parameters());
+    }
 
     public function testWhereLike()
     {

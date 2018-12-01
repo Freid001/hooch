@@ -247,9 +247,9 @@ class Logical implements QueryBuilderInterface
     private function operatorWithSubQuery(string $operator, Sql $subQuery): Sql
     {
         $sql = new Sql($operator, $subQuery->parameters());
-        $sql->append(Sql::SQL_BRACKET_OPEN);
-        $sql->append($subQuery->sql());
-        $sql->append(Sql::SQL_BRACKET_CLOSE);
+        $sql->append(Sql::SQL_BRACKET_OPEN, [], $this->trailingSpace);
+        $sql->append($subQuery->sql(), [], $this->trailingSpace);
+        $sql->append(Sql::SQL_BRACKET_CLOSE, [], $this->trailingSpace);
 
         return $sql;
     }

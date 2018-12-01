@@ -97,7 +97,7 @@ class Filter implements QueryBuilderInterface, FilterInterface
     /**
      * @return Logical
      */
-    protected function logical(): Logical
+    public function logical(): Logical
     {
         return $this->logical;
     }

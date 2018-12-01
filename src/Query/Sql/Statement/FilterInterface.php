@@ -24,6 +24,7 @@ use QueryMule\Query\Sql\Clause\WhereNotExistsInterface;
 use QueryMule\Query\Sql\Clause\WhereNotInInterface;
 use QueryMule\Query\Sql\Clause\WhereNotInterface;
 use QueryMule\Query\Sql\Clause\WhereNotLikeInterface;
+use QueryMule\Query\Sql\Operator\Logical;
 
 /**
  * Interface FilterInterface

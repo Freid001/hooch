@@ -1,13 +1,11 @@
 <?php
 
 
-namespace QueryMule\Query\Sql\Clause;
+namespace QueryMule\Query\Builder\Clause;
 
 use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class HasJoinClause
@@ -33,12 +31,12 @@ trait HasJoinClause
 
         $sql = '';
         switch ($type) {
-            case FilterInterface::LEFT_JOIN:
-                $sql .= FilterInterface::LEFT_JOIN . ' ' . $table->getName();
+            case Sql::JOIN_LEFT:
+                $sql .= Sql::JOIN_LEFT . ' ' . $table->getName();
                 break;
 
-            case "RIGHT JOIN":
-                $sql .= FilterInterface::LEFT_JOIN . ' ' . $table->getName();
+            case Sql::JOIN_RIGHT:
+                $sql .= Sql::JOIN_RIGHT . ' ' . $table->getName();
                 break;
 
             case "INNER JOIN":
@@ -51,10 +49,10 @@ trait HasJoinClause
                 break;
 
             default:
-                throw new SqlException('Join type not supported.');
+                throw new SqlException('Join not supported.');
         }
 
-        $sql .= !empty($alias) ? ' '.SelectInterface::AS.' '.$alias : ' ';
+        $sql .= !empty($alias) ? ' '.Sql::AS.' '.$alias : ' ';
 
         return new Sql($sql);
     }
@@ -65,10 +63,10 @@ trait HasJoinClause
      * @param string|null $second
      * @return Sql
      */
-    final protected function onClause($first, $operator = null, $second = null, $clause = FilterInterface::ON)
+    final protected function onClause($first, $operator = null, $second = null, $clause = Sql::ON)
     {
         $sql = '';
-        $sql .= ($this->ignoreOnClause) ? FilterInterface::AND : $clause;
+        $sql .= ($this->ignoreOnClause) ? Sql::AND : $clause;
         $sql .= ' '.$first;
         $sql .= ' '.$operator;
         $sql .= ' '.$second;

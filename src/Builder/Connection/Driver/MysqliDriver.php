@@ -9,6 +9,8 @@ use QueryMule\Builder\Sql\Mysql\Filter;
 use QueryMule\Builder\Sql\Mysql\Select;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
+use QueryMule\Query\Sql\Operator\Comparison;
+use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
@@ -127,7 +129,6 @@ class MysqliDriver implements DriverInterface
     /**
      * @param Sql $sql
      * @return array|bool
-     * @throws DriverException
      */
     public function fetch(Sql $sql)
     {

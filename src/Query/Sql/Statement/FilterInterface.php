@@ -2,48 +2,60 @@
 
 namespace QueryMule\Query\Sql\Statement;
 
-use QueryMule\Builder\Exception\SqlException;
-use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\QueryBuilderInterface;
+use QueryMule\Query\Sql\Clause\NestedWhereInterface;
+use QueryMule\Query\Sql\Clause\OrWhereBetweenInterface;
+use QueryMule\Query\Sql\Clause\OrWhereExistsInterface;
+use QueryMule\Query\Sql\Clause\OrWhereInInterface;
+use QueryMule\Query\Sql\Clause\OrWhereInterface;
+use QueryMule\Query\Sql\Clause\OrWhereLikeInterface;
+use QueryMule\Query\Sql\Clause\OrWhereNotBetweenInterface;
+use QueryMule\Query\Sql\Clause\OrWhereNotExistsInterface;
+use QueryMule\Query\Sql\Clause\OrWhereNotInInterface;
+use QueryMule\Query\Sql\Clause\OrWhereNotInterface;
+use QueryMule\Query\Sql\Clause\OrWhereNotLikeInterface;
+use QueryMule\Query\Sql\Clause\WhereBetweenInterface;
+use QueryMule\Query\Sql\Clause\WhereExistsInterface;
+use QueryMule\Query\Sql\Clause\WhereInInterface;
+use QueryMule\Query\Sql\Clause\WhereInterface;
+use QueryMule\Query\Sql\Clause\WhereLikeInterface;
+use QueryMule\Query\Sql\Clause\WhereNotBetweenInterface;
+use QueryMule\Query\Sql\Clause\WhereNotExistsInterface;
+use QueryMule\Query\Sql\Clause\WhereNotInInterface;
+use QueryMule\Query\Sql\Clause\WhereNotInterface;
+use QueryMule\Query\Sql\Clause\WhereNotLikeInterface;
+use QueryMule\Query\Sql\Operator\Logical;
 
 /**
  * Interface FilterInterface
  * @package QueryMule\Query\Sql\Statement
  */
-interface FilterInterface
+interface FilterInterface extends NestedWhereInterface,
+                                  OrWhereBetweenInterface,
+                                  OrWhereExistsInterface,
+                                  OrWhereInInterface,
+                                  OrWhereInterface,
+                                  OrWhereLikeInterface,
+                                  OrWhereNotBetweenInterface,
+                                  OrWhereNotExistsInterface,
+                                  OrWhereNotInInterface,
+                                  OrWhereNotInterface,
+                                  OrWhereNotLikeInterface,
+                                  WhereBetweenInterface,
+                                  WhereExistsInterface,
+                                  WhereInInterface,
+                                  WhereInterface,
+                                  WhereLikeInterface,
+                                  WhereNotBetweenInterface,
+                                  WhereNotExistsInterface,
+                                  WhereNotInInterface,
+                                  WhereNotInterface,
+                                  WhereNotLikeInterface
 {
-    const WHERE = 'WHERE';
-    const AND = 'AND';
-    const OR = 'OR';
-    const ON = 'ON';
-    const JOIN = 'JOIN';
-    const LEFT_JOIN = 'LEFT JOIN';
 
     /**
      * @param bool $ignore
      * @return FilterInterface
      */
     public function ignoreAccent($ignore = true);
-
-    /**
-     * @param string $column
-     * @param string|null $operator
-     * @param string|null $value
-     * @param string $clause
-     * @return FilterInterface
-     */
-    public function where($column, $operator = null, $value = null, $clause = self::WHERE);
-
-     /**
-      * @param string $column
-      * @param string|null $operator
-      * @param string|null $value
-      * @return FilterInterface
-      */
-    public function orWhere($column, $operator = null, $value = null);
-
-    /**
-     * @param array $clauses
-     * @return Sql
-     */
-    public function build(array $clauses = []) : Sql;
 }

@@ -3,13 +3,12 @@
 namespace QueryMule\Builder\Sql\Sqlite;
 
 use QueryMule\Query\Repository\RepositoryInterface;
-use QueryMule\Builder\Sql\Generic\Select as GenericSelect;
 
 /**
  * Class Select
  * @package QueryMule\Builder\Sql\Sqlite
  */
-class Select extends GenericSelect
+abstract class Select
 {
     /**
      * Select constructor.
@@ -18,6 +17,6 @@ class Select extends GenericSelect
      */
     public function __construct(array $cols = [], RepositoryInterface $table = null)
     {
-        parent::__construct($cols, $table, '`');
+        //parent::__construct($cols, $table, '`');
     }
 }

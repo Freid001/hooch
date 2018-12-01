@@ -3,14 +3,14 @@
 namespace QueryMule\Builder\Sql\Pgsql;
 
 use QueryMule\Query\Repository\RepositoryInterface;
-use QueryMule\Builder\Sql\Generic\Select as GenericSelect;
+use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class Select
  * @package QueryMule\Builder\Sql\Pgsql
  */
-class Select extends GenericSelect
+abstract class Select
 {
     /**
      * Select constructor.
@@ -19,7 +19,7 @@ class Select extends GenericSelect
      */
     public function __construct(array $cols = [], RepositoryInterface $table = null)
     {
-        parent::__construct($cols, $table, "'");
+        //parent::__construct($cols, $table, "'");
     }
 
     /**
@@ -27,7 +27,7 @@ class Select extends GenericSelect
      * @param null $alias
      * @return SelectInterface
      */
-    final public function cols($cols = [self::SQL_STAR], $alias = null) : SelectInterface
+    final public function cols($cols = [Sql::SQL_STAR], $alias = null) : SelectInterface
     {
         $i = 0;
         foreach($cols as $key => &$col){
@@ -38,13 +38,13 @@ class Select extends GenericSelect
             $col = !empty($alias) ? $alias.'.'.$col : $col; // append alias before adding accents
 
             $sql = $this->columnClause(
-                ($col !== self::SQL_STAR) ? $this->addAccent($col,'.') : $col,
+                ($col !== Sql::SQL_STAR) ? $this->addAccent($col,'.') : $col,
                 false,
                 ($key !== $i) ? $key : null,
-                !empty($this->queryGet(self::COLS))
+                !empty($this->queryGet(Sql::COLS))
             );
 
-            $this->queryAdd(self::COLS,$sql);
+            $this->queryAdd(Sql::COLS,$sql);
         }
 
         return $this;

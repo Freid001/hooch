@@ -4,6 +4,8 @@ namespace QueryMule\Query\Connection\Driver;
 
 use Psr\SimpleCache\CacheInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
+use QueryMule\Query\Sql\Operator\Comparison;
+use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;

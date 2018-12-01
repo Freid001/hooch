@@ -1,10 +1,9 @@
 <?php
 
 
-namespace QueryMule\Query\Sql\Clause;
+namespace QueryMule\Query\Builder\Clause;
 
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class HasHavingClause
@@ -21,7 +20,7 @@ trait HasHavingClause
     final protected function havingClause($column,$operator = null,$value = null)
     {
         $sql = '';
-        $sql .= SelectInterface::HAVING.' '.$column.' '.$operator;
+        $sql .= Sql::HAVING.' '.$column.' '.$operator;
 
         return new Sql($sql,$value);
     }

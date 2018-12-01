@@ -6,7 +6,7 @@ namespace QueryMule\Query\Sql;
  * Class Query
  * @package QueryMule\Query\Sql
  */
-trait Query
+class Query
 {
     /**
      * @var array
@@ -19,58 +19,64 @@ trait Query
     protected $parameters = [];
 
     /**
-     * @param string $type
-     * @return string|null
+     * @param string $clause
+     * @param Sql $sql
      */
-    final protected function queryGet($type)
+    public function add($clause, Sql $sql)
     {
-        return !empty($this->sql[$type]) ? $this->sql[$type] : null;
+        $this->sql[$clause] = !empty($this->sql[$clause]) ? $this->sql[$clause] . $sql->sql() : $sql->sql();
+
+        foreach($sql->parameters() as $key => $parameter){
+            $this->parameters[$clause][] = $parameter;
+        }
     }
 
     /**
-     * @param string $type
-     * @param Sql $sql
+     * @param array $order
+     * @return \QueryMule\Query\Sql\Sql
      */
-    final protected function queryAdd($type, Sql $sql)
+    public function build(array $order)
     {
-        $this->sql[$type] = !empty($this->sql[$type]) ? $this->sql[$type] . ' ' . $sql->sql() : $sql->sql();
+        $sql = '';
+        $parameters = [];
+        foreach($order as $clause){
+            if(!empty($this->sql[$clause])) {
 
-        foreach($sql->parameters() as $key => $parameter){
-            $this->parameters[$type][] = $parameter;
+                $sql .= !empty($sql) ? $this->sql[$clause] : $this->sql[$clause];
+                if(!empty($this->parameters[$clause])) {
+                    foreach ($this->parameters[$clause] as $parameter) {
+                        $parameters[] = $parameter;
+                    }
+                }
+            }
         }
+
+        return new Sql($sql,$parameters,false);
+    }
+
+    /**
+     * @param string $clause
+     * @return string|null
+     */
+    public function get($clause)
+    {
+        return !empty($this->sql[$clause]) ? $this->sql[$clause] : null;
     }
 
     /**
      * @param array $clauses
      * @return void
      */
-    final protected function queryReset(array $clauses)
+    public function reset(array $clauses = [])
     {
+        if(empty($clauses)){
+            $this->sql = [];
+            $this->parameters = [];
+        }
+
         foreach($clauses as $clause) {
             unset($this->sql[$clause]);
             unset($this->parameters[$clause]);
         }
-    }
-
-    /**
-     * @param array $buildOrder
-     * @return \QueryMule\Query\Sql\Sql
-     */
-    final protected function queryBuild(array $buildOrder)
-    {
-        $sql = '';
-        $parameters = [];
-        foreach($buildOrder as $type){
-            if(!empty($this->sql[$type])) {
-
-                $sql .= !empty($sql) ? ' '.$this->sql[$type] : $this->sql[$type];
-                if(!empty($this->parameters[$type])) {
-                    foreach ($this->parameters[$type] as $parameter) {
-                        $parameters[] = $parameter;
-                    }
-                }
-            }
-        }
-        return new Sql($sql,$parameters);
     }
 }

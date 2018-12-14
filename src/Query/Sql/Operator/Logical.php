@@ -78,6 +78,8 @@ class Logical implements QueryBuilderInterface
     {
         $this->sql = $this->operatorWithSubQuery(Sql::ALL, $subQuery);
 
+
+
         $this->operator = Sql::ALL;
 
         return $this;

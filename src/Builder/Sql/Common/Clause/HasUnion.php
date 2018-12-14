@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Builder\Sql\Common\Clause;
 
 
@@ -32,7 +34,7 @@ trait HasUnion
      * @param bool $all
      * @return Sql
      */
-    private function unionClause(SelectInterface $select, $all = false)
+    private function unionClause(SelectInterface $select, bool $all = false): Sql
     {
         $query = $select->build();
 

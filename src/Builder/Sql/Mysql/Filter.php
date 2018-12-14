@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Builder\Sql\Mysql;
 
 use QueryMule\Builder\Sql\Common\Clause\HasOrWhereBetween;
@@ -17,6 +19,7 @@ use QueryMule\Builder\Sql\Common\Clause\HasWhereExists;
 use QueryMule\Builder\Sql\Common\Clause\HasWhereIn;
 use QueryMule\Builder\Sql\Common\Clause\HasWhereLike;
 use QueryMule\Builder\Sql\Common\Clause\HasWhereNot;
+use QueryMule\Builder\Sql\Common\Clause\HasWhereNotAny;
 use QueryMule\Builder\Sql\Common\Clause\HasWhereNotBetween;
 use QueryMule\Builder\Sql\Common\Clause\HasWhereNotExists;
 use QueryMule\Builder\Sql\Common\Clause\HasWhereNotIn;
@@ -77,37 +80,13 @@ class Filter implements QueryBuilderInterface, FilterInterface
      * Filter constructor.
      * @param Query $query
      * @param Logical $logical
+     * @param Accent $accent
      */
-    public function __construct(Query $query, Logical $logical)
+    public function __construct(Query $query, Logical $logical, Accent $accent)
     {
         $this->query = $query;
         $this->logical = $logical;
-        $this->accent = new Accent();
-        $this->accent->setSymbol('`');
-    }
-
-    /**
-     * @return Query
-     */
-    protected function query(): Query
-    {
-        return $this->query;
-    }
-
-    /**
-     * @return Logical
-     */
-    public function logical(): Logical
-    {
-        return $this->logical;
-    }
-
-    /**
-     * @return Accent
-     */
-    protected function accent(): Accent
-    {
-        return $this->accent;
+        $this->accent = $accent;
     }
 
     /**
@@ -126,17 +105,26 @@ class Filter implements QueryBuilderInterface, FilterInterface
     }
 
     /**
-     * @param bool $ignore
-     * @return $this|FilterInterface
+     * @return Accent
      */
-    public function ignoreAccent($ignore = true)
+    protected function accent(): Accent
     {
-        $this->accent->ignore($ignore);
+        return $this->accent;
+    }
 
-        if (!empty($this->filter)) {
-            $this->filter->accent()->ignore($ignore);
-        }
+    /**
+     * @return Logical
+     */
+    protected function logical(): Logical
+    {
+        return $this->logical;
+    }
 
-        return $this;
+    /**
+     * @return Query
+     */
+    protected function query(): Query
+    {
+        return $this->query;
     }
 }

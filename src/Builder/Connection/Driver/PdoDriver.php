@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Builder\Connection\Driver;
 
 use Psr\Log\LoggerInterface;
@@ -7,6 +9,7 @@ use Psr\SimpleCache\CacheInterface;
 use QueryMule\Builder\Exception\DriverException;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
+use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Query;
@@ -76,7 +79,7 @@ class PdoDriver implements DriverInterface
         $this->filter = null;
         switch($this->driver){
             case self::DRIVER_MYSQL:
-                $this->filter = new \QueryMule\Builder\Sql\Mysql\Filter(new Query(), new Logical());
+                $this->filter = new \QueryMule\Builder\Sql\Mysql\Filter(new Query(), new Logical(), new Accent());
                 break;
 
             case self::DRIVER_PGSQL:
@@ -105,7 +108,13 @@ class PdoDriver implements DriverInterface
         $this->select = null;
         switch($this->driver){
             case self::DRIVER_MYSQL:
-                $this->select = new \QueryMule\Builder\Sql\Mysql\Select($cols, $repository);
+                $this->select = new \QueryMule\Builder\Sql\MySql\Select(
+                    new Query(),
+                    new Logical(),
+                    new Accent(),
+                    $repository,
+                    $cols
+                );
                 break;
 
             case self::DRIVER_PGSQL:
@@ -167,7 +176,8 @@ class PdoDriver implements DriverInterface
 
     /**
      * @param Sql $sql
-     * @return array|bool
+     * @return array|bool|mixed
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function fetch(Sql $sql)
     {
@@ -176,7 +186,8 @@ class PdoDriver implements DriverInterface
 
     /**
      * @param Sql $sql
-     * @return array|bool
+     * @return array|bool|mixed
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function fetchAll(Sql $sql)
     {
@@ -187,6 +198,7 @@ class PdoDriver implements DriverInterface
      * @param Sql $sql
      * @param string $method
      * @return array|bool|mixed
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     private function execute(Sql $sql, string $method)
     {
@@ -221,7 +233,7 @@ class PdoDriver implements DriverInterface
             }
         }else {
             $cache = true;
-            $result = json_decode($this->cache->get($key));
+            $result = json_decode((string)$this->cache->get($key));
         }
 
         $this->reset();

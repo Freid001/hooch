@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Builder\Sql\Common\Clause;
 
 
+use PhpParser\Node\Scalar\String_;
 use QueryMule\Builder\Sql\Common\Common;
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
@@ -45,17 +48,17 @@ trait HasWhere
     }
 
     /**
-     * @param Logical $logical
-     * @return string|null
+     * @param Logical|null $logical
+     * @return String|null
      */
-    private function operator(?Logical $logical)
+    private function operator(?Logical $logical): ?String
     {
         $operator = null;
         if (!is_null($logical)) {
             $operator = $logical->getOperator();
         }
 
-        if (!empty($this->query()->get(Sql::WHERE))) {
+        if (!empty($this->query()->get($this->whereJoin()))) {
             if ($operator !== Sql:: OR) {
                 $operator = Sql:: AND;
             }
@@ -69,9 +72,9 @@ trait HasWhere
      * @param Logical|null $logical
      * @return Sql
      */
-    private function appendBracket(Sql $sql, ?Logical $logical)
+    private function appendBracket(Sql $sql, ?Logical $logical): Sql
     {
-        if (!empty($this->query()->get(Sql::WHERE))){
+        if (!empty($this->query()->get($this->whereJoin()))){
             return $sql;
         }
 
@@ -90,9 +93,9 @@ trait HasWhere
      * @param $column
      * @return Sql
      */
-    private function appendColumn(Sql $sql, $column)
+    private function appendColumn(Sql $sql, $column): Sql
     {
-        if (empty($this->query()->get(Sql::WHERE))) {
+        if (empty($this->query()->get($this->whereJoin()))) {
             return $sql->append($column);
         }
 
@@ -106,7 +109,7 @@ trait HasWhere
      * @param Logical|null $logical
      * @return Sql
      */
-    private function appendAnd(Sql $sql, $column, ?Comparison $comparison, ?Logical $logical)
+    private function appendAnd(Sql $sql, $column, ?Comparison $comparison, ?Logical $logical): Sql
     {
         if ($this->operator($logical) !== Sql:: AND) {
             return $sql;
@@ -124,7 +127,7 @@ trait HasWhere
     /**
      * @return string
      */
-    private function whereJoin()
+    private function whereJoin(): String
     {
         if ($this instanceof OnInterface) {
             return Sql::JOIN;

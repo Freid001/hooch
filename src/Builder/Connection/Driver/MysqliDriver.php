@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Builder\Connection\Driver;
 
 use Psr\Log\LoggerInterface;
@@ -9,6 +11,7 @@ use QueryMule\Builder\Sql\Mysql\Filter;
 use QueryMule\Builder\Sql\Mysql\Select;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
+use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Query;
@@ -70,7 +73,8 @@ class MysqliDriver implements DriverInterface
     {
         $this->filter = new Filter(
             new Query(),
-            new Logical()
+            new Logical(),
+            new Accent()
         );
 
         return $this->filter;
@@ -81,9 +85,15 @@ class MysqliDriver implements DriverInterface
      * @param RepositoryInterface|null $repository
      * @return SelectInterface
      */
-    public function select(array $cols = [],RepositoryInterface $repository = null) : SelectInterface
+    public function select(array $cols = [],RepositoryInterface $repository = null): SelectInterface
     {
-        $this->select = new Select($cols, $repository);
+        $this->select = new Select(
+            new Query(),
+            new Logical(),
+            new Accent(),
+            $repository,
+            $cols
+        );
 
         return $this->select ;
     }
@@ -214,7 +224,7 @@ class MysqliDriver implements DriverInterface
             }
         }else {
             $cache = true;
-            $result = json_decode($this->cache->get($key));
+            $result = json_decode((string)$this->cache->get($key));
         }
 
         $this->reset();

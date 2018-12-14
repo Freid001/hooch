@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Builder\Connection;
 
 use Psr\Log\LoggerAwareInterface;

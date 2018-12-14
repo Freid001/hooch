@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Builder\Sql\Common\Clause;
 
 
@@ -38,7 +40,7 @@ trait HasOrderBy
      * @param bool $comma
      * @return Sql
      */
-    private function orderByClause($column, $sort = SQL::DESC, $comma = false)
+    private function orderByClause($column, $sort = SQL::DESC, $comma = false): Sql
     {
         $sql = new Sql();
         $sql->appendIf(!$comma,Sql::ORDER);

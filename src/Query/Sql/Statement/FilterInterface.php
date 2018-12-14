@@ -2,7 +2,7 @@
 
 namespace QueryMule\Query\Sql\Statement;
 
-use QueryMule\Query\QueryBuilderInterface;
+
 use QueryMule\Query\Sql\Clause\NestedWhereInterface;
 use QueryMule\Query\Sql\Clause\OrWhereBetweenInterface;
 use QueryMule\Query\Sql\Clause\OrWhereExistsInterface;
@@ -24,7 +24,7 @@ use QueryMule\Query\Sql\Clause\WhereNotExistsInterface;
 use QueryMule\Query\Sql\Clause\WhereNotInInterface;
 use QueryMule\Query\Sql\Clause\WhereNotInterface;
 use QueryMule\Query\Sql\Clause\WhereNotLikeInterface;
-use QueryMule\Query\Sql\Operator\Logical;
+
 
 /**
  * Interface FilterInterface
@@ -51,11 +51,4 @@ interface FilterInterface extends NestedWhereInterface,
                                   WhereNotInInterface,
                                   WhereNotInterface,
                                   WhereNotLikeInterface
-{
-
-    /**
-     * @param bool $ignore
-     * @return FilterInterface
-     */
-    public function ignoreAccent($ignore = true);
-}
+{}

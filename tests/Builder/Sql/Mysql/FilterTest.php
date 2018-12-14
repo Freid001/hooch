@@ -6,6 +6,7 @@ namespace test\Builder\Sql\MySql;
 use PHPUnit\Framework\TestCase;
 use QueryMule\Builder\Sql\MySql\Filter;
 use QueryMule\Query\Repository\RepositoryInterface;
+use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Operator\Operator;
@@ -30,6 +31,11 @@ class FilterTest extends TestCase
     private $logical;
 
     /**
+     * @var Accent
+     */
+    private $accent;
+
+    /**
      * @var Filter
      */
     private $filter;
@@ -38,13 +44,16 @@ class FilterTest extends TestCase
     {
         $this->query = new Query();
         $this->logical = new Logical();
-        $this->filter = new Filter($this->query,$this->logical);
+        $this->accent = new Accent();
+        $this->accent->setSymbol('`');
+        $this->filter = new Filter($this->query,$this->logical,$this->accent);
     }
 
     public function tearDown()
     {
         $this->query = null;
         $this->logical = null;
+        $this->accent = null;
         $this->filter = null;
     }
 
@@ -313,5 +322,45 @@ class FilterTest extends TestCase
         $query = $this->filter->whereNotLike('col_a', '%some_value%')->whereNotLike('col_b', '%some_value%')->build();
         $this->assertEquals("WHERE NOT `col_a` LIKE ? AND NOT `col_b` LIKE ?", trim($query->sql()));
         $this->assertEquals(['%some_value%','%some_value%'], $query->parameters());
+    }
+
+    public function testWhereColEqualsAll()
+    {
+        $logical = new Logical();
+        $comparison = new Comparison();
+
+        $query = $this->filter->where('col_a', $comparison->equalTo($logical->all(new Sql('select * from some_table',[],false))))->build();
+        $this->assertEquals("WHERE `col_a` <> ALL ( select * from some_table )", trim($query->sql()));
+        $this->assertEquals([], $query->parameters());
+    }
+
+    public function testWhereColEqualsAny()
+    {
+        $logical = new Logical();
+        $comparison = new Comparison();
+
+        $query = $this->filter->where('col_a', $comparison->equalTo($logical->any(new Sql('select * from some_table',[],false))))->build();
+        $this->assertEquals("WHERE `col_a` <> ANY ( select * from some_table )", trim($query->sql()));
+        $this->assertEquals([], $query->parameters());
+    }
+
+    public function testWhereColEqualsSome()
+    {
+        $logical = new Logical();
+        $comparison = new Comparison();
+
+        $query = $this->filter->where('col_a', $comparison->equalTo($logical->some(new Sql('select * from some_table',[],false))))->build();
+        $this->assertEquals("WHERE `col_a` <> SOME ( select * from some_table )", trim($query->sql()));
+        $this->assertEquals([], $query->parameters());
+    }
+
+    public function testWhereColEqualsExists()
+    {
+        $logical = new Logical();
+        $comparison = new Comparison();
+
+        $query = $this->filter->where('col_a', $comparison->equalTo($logical->exists(new Sql('select * from some_table',[],false))))->build();
+        $this->assertEquals("WHERE `col_a` <> EXISTS ( select * from some_table )", trim($query->sql()));
+        $this->assertEquals([], $query->parameters());
     }
 }

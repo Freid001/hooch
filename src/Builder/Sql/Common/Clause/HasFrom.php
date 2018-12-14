@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Builder\Sql\Common\Clause;
 
 
@@ -20,7 +22,7 @@ trait HasFrom
      * @param FilterInterface $filter
      * @return mixed
      */
-    abstract public function setFilter(FilterInterface $filter);
+    abstract protected function setFilter(FilterInterface $filter);
 
     /**
      * @param RepositoryInterface $table
@@ -41,7 +43,7 @@ trait HasFrom
      * @param null $alias
      * @return Sql
      */
-    private function fromClause(RepositoryInterface $table, $alias = null)
+    private function fromClause(RepositoryInterface $table, $alias = null): Sql
     {
         $sql = new Sql();
         $sql->append(Sql::FROM);

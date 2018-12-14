@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Builder\Sql\Common\Clause;
 
 
@@ -42,13 +44,13 @@ trait HasCols
     }
 
     /**
-     * @param string $column
+     * @param $column
      * @param bool $alias
      * @param bool $as
      * @param bool $comma
      * @return Sql
      */
-    private function columnClause($column, $alias = false, $as = false, $comma = false)
+    private function columnClause($column, $alias = false, $as = false, $comma = false): Sql
     {
         $sql = new Sql();
         $sql->appendIf($comma,',',[],false);

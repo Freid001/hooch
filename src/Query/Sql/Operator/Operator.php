@@ -8,7 +8,7 @@ namespace QueryMule\Query\Sql\Operator;
 class Operator
 {
     /**
-     * @return Comparison#
+     * @return Comparison
      */
     public static function comparison()
     {

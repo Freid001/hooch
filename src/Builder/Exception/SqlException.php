@@ -7,6 +7,4 @@ namespace QueryMule\Builder\Exception;
  * @package QueryMule\Builder\Exception
  */
 class SqlException extends \Exception
-{
-
-}
+{}

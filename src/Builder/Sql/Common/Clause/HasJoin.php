@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Builder\Sql\Common\Clause;
 
 
 use QueryMule\Builder\Sql\Common\Common;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Operator\Comparison;
+use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\OnInterface;
 
@@ -20,25 +23,34 @@ trait HasJoin
     /**
      * @return OnInterface
      */
-    abstract public function on(): OnInterface;
+    abstract protected function on(): OnInterface;
 
     /**
-     * @param $type
+     * @param string $type
      * @param RepositoryInterface $table
-     * @param $column
-     * @param null|Comparison $comparison
+     * @param string|null $alias
+     * @param string $column
+     * @param Comparison|null $comparison
+     * @param Logical|null $logical
      * @return $this
      */
-    public function join($type, RepositoryInterface $table, $column, ?Comparison $comparison = null)
+    public function join(string $type, RepositoryInterface $table, ?string $alias, string $column, ?Comparison $comparison, ?Logical $logical)
     {
-        $this->query()->add(Sql::JOIN,new Sql($type . Sql::SQL_SPACE . $table->getName() . " AS tt"));
+        $sql = new Sql();
+        $sql->append($type);
+        $sql->append($table->getName());
+        $sql->appendIf(!empty($alias),Sql:: AS . Sql::SQL_SPACE . $alias);
 
         if ($column instanceof \Closure) {
             call_user_func($column, $query = $this->on());
-        }else if (!empty($comparison)) {
-            $this->query()->add(Sql::JOIN,new Sql($column . Sql::SQL_SPACE));
-            $this->query()->add(Sql::JOIN,$comparison->build());
+        }else {
+            $sql->append(Sql::ON);
+            $sql->append($column);
+            $sql->appendIf(!is_null($comparison), $comparison);
+            $sql->appendIf(!is_null($logical), $logical);
         }
+
+        $this->query()->add(Sql::JOIN, $sql);
 
         return $this;
     }

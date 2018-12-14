@@ -39,6 +39,8 @@ class Comparison implements QueryBuilderInterface
     {
         if ($value instanceof Sql) {
             $this->sql = $this->operatorWithSql(Sql::SQL_EQUAL, $value);
+        } else if ($value instanceof Logical) {
+            $this->sql = $this->operatorWithSql(Sql::SQL_LESS_THAN . Sql::SQL_GREATER_THAN, $value->build(), false);
         } else {
             $this->sql = $this->operatorWithValue(Sql::SQL_EQUAL, $value);
         }
@@ -64,6 +66,8 @@ class Comparison implements QueryBuilderInterface
     {
         if ($value instanceof Sql) {
             $this->sql = $this->operatorWithSql(Sql::SQL_GREATER_THAN, $value);
+        } else if ($value instanceof Logical) {
+            $this->sql = $this->operatorWithSql(Sql::SQL_LESS_THAN . Sql::SQL_GREATER_THAN, $value->build(), false);
         } else {
             $this->sql = $this->operatorWithValue(Sql::SQL_GREATER_THAN, $value);
         }
@@ -81,6 +85,8 @@ class Comparison implements QueryBuilderInterface
     {
         if ($value instanceof Sql) {
             $this->sql = $this->operatorWithSql(Sql::SQL_GREATER_THAN . Sql::SQL_EQUAL, $value);
+        } else if ($value instanceof Logical) {
+            $this->sql = $this->operatorWithSql(Sql::SQL_LESS_THAN . Sql::SQL_GREATER_THAN, $value->build(), false);
         } else {
             $this->sql = $this->operatorWithValue(Sql::SQL_GREATER_THAN . Sql::SQL_EQUAL, $value);
         }
@@ -98,6 +104,8 @@ class Comparison implements QueryBuilderInterface
     {
         if ($value instanceof Sql) {
             $this->sql = $this->operatorWithSql(Sql::SQL_LESS_THAN, $value);
+        } else if ($value instanceof Logical) {
+            $this->sql = $this->operatorWithSql(Sql::SQL_LESS_THAN . Sql::SQL_GREATER_THAN, $value->build(), false);
         } else {
             $this->sql = $this->operatorWithValue(Sql::SQL_LESS_THAN, $value);
         }
@@ -115,6 +123,8 @@ class Comparison implements QueryBuilderInterface
     {
         if ($value instanceof Sql) {
             $this->sql = $this->operatorWithSql(Sql::SQL_LESS_THAN . Sql::SQL_EQUAL, $value);
+        } else if ($value instanceof Logical) {
+            $this->sql = $this->operatorWithSql(Sql::SQL_LESS_THAN . Sql::SQL_GREATER_THAN, $value->build(), false);
         } else {
             $this->sql = $this->operatorWithValue(Sql::SQL_LESS_THAN . Sql::SQL_EQUAL, $value);
         }
@@ -132,6 +142,8 @@ class Comparison implements QueryBuilderInterface
     {
         if ($value instanceof Sql) {
             $this->sql = $this->operatorWithSql(Sql::SQL_LESS_THAN . Sql::SQL_GREATER_THAN, $value);
+        } else if ($value instanceof Logical) {
+            $this->sql = $this->operatorWithSql(Sql::SQL_LESS_THAN . Sql::SQL_GREATER_THAN, $value->build(), false);
         } else {
             $this->sql = $this->operatorWithValue(Sql::SQL_LESS_THAN . Sql::SQL_GREATER_THAN, $value);
         }
@@ -144,14 +156,15 @@ class Comparison implements QueryBuilderInterface
     /**
      * @param $operator
      * @param Sql $sql
+     * @param bool $subQuery
      * @return Sql
      */
-    private function operatorWithSql($operator, Sql $sql)
+    private function operatorWithSql($operator, Sql $sql, bool $subQuery = true)
     {
         $sqlObj = new Sql($operator);
-        $sqlObj->append(Sql::SQL_BRACKET_OPEN)
+        $sqlObj->appendIf($subQuery,Sql::SQL_BRACKET_OPEN)
                ->append($sql,[],false)
-               ->append(Sql::SQL_BRACKET_CLOSE);
+               ->appendIf($subQuery,Sql::SQL_BRACKET_CLOSE);
 
         return $sqlObj;
     }

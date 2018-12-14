@@ -12,7 +12,7 @@ use QueryMule\Query\Sql\Operator\Comparison;
  * Interface Select
  * @package QueryMule\Query\Sql\Statement
  */
-interface SelectInterface extends FilterInterface
+interface SelectInterface
 {
     /**
      * @param array $clauses
@@ -50,14 +50,15 @@ interface SelectInterface extends FilterInterface
     public function groupBy($column, $alias = null);
 
     /**
-     * @param array $table
-     * @param string $first
-     * @param string|null $operator
-     * @param string|null $second
+     * @param string $type
+     * @param RepositoryInterface $table
+     * @param string|null $alias
+     * @param string $column
+     * @param Comparison|null $comparison
+     * @param Logical|null $logical
      * @return SelectInterface
-     * @throws SqlException
      */
-    //public function join(array $table, $first, $operator = null, $second = null) : SelectInterface;
+    public function join(string $type, RepositoryInterface $table, ?string $alias, string $column, ?Comparison $comparison, ?Logical $logical);
 
     /**
      * @param int $limit
@@ -100,13 +101,4 @@ interface SelectInterface extends FilterInterface
      * @return SelectInterface
      */
     public function union(SelectInterface $select, bool $all = false);
-
-    /**
-     * @param $type
-     * @param RepositoryInterface $table
-     * @param $first
-     * @param null|Comparison $comparison
-     * @return mixed
-     */
-    public function join($type, RepositoryInterface $table, $first, ?Comparison $comparison = null);
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Builder\Sql\Common\Clause;
 
 
@@ -33,12 +35,12 @@ trait HasGroupBy
     }
 
     /**
-     * @param string $column
+     * @param $column
      * @param bool $alias
      * @param bool $comma
      * @return Sql
      */
-    private function groupByClause($column, $alias = false, $comma = false)
+    private function groupByClause($column, $alias = false, $comma = false): Sql
     {
         $sql = new Sql();
         $sql->appendIf(!$comma,Sql::GROUP);

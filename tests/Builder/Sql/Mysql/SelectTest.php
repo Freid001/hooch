@@ -8,7 +8,10 @@ use QueryMule\Builder\Sql\Mysql\Filter;
 use QueryMule\Builder\Sql\Mysql\On;
 use QueryMule\Builder\Sql\Mysql\Select;
 use QueryMule\Query\Repository\RepositoryInterface;
+use QueryMule\Query\Sql\Accent;
+use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Operator\Operator;
+use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
@@ -20,13 +23,32 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
 class SelectTest extends TestCase
 {
     /**
+     * @var Query
+     */
+    private $query;
+
+    /**
+     * @var Logical
+     */
+    private $logical;
+
+    /**
+     * @var Accent
+     */
+    private $accent;
+
+    /**
      * @var Select
      */
     private $select;
 
     public function setUp()
     {
-        $this->select = new Select();
+        $this->query = new Query();
+        $this->logical = new Logical();
+        $this->accent = new Accent();
+        $this->accent->setSymbol('`');
+        $this->select = new Select($this->query, $this->logical, $this->accent);
     }
 
     public function tearDown()
@@ -111,7 +133,7 @@ class SelectTest extends TestCase
         ])->sql()));
     }
 
-    public function testSelectWhere()
+    public function testSelectFilterWhere()
     {
         $filter = $this->createMock(Filter::class);
         $filter->expects($this->once())->method('where');
@@ -125,7 +147,9 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $query = $this->select->cols(['col_a'])->from($table)->where('col_a', Operator::comparison()->equalTo('some_value'))->build([
+        $this->select->cols(['col_a'])->from($table);
+        $this->select->filter()->where('col_a', Operator::comparison()->equalTo('some_value'));
+        $query = $this->select->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -134,414 +158,6 @@ class SelectTest extends TestCase
 
         $this->assertEquals("SELECT `col_a` FROM some_table_name WHERE `col_a` =?", trim($query->sql()));
         $this->assertEquals(['some_value'], $query->parameters());
-    }
-
-    public function testSelectWhereNot()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->once())->method('whereNot');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE NOT `col_a` =?', ['some_value'])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a'])->from($table)->whereNot('col_a', Operator::comparison()->equalTo('some_value'))->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` FROM some_table_name WHERE NOT `col_a` =?", trim($query->sql()));
-        $this->assertEquals(['some_value'], $query->parameters());
-    }
-
-    public function testSelectWhereNotOrWhereNot()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->once())->method('whereNot');
-        $filter->expects($this->once())->method('orWhereNot');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE NOT `col_a` =? OR NOT `col_a` =?', ['some_value','another_value'])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a'])->from($table)->whereNot('col_a', Operator::comparison()->equalTo('some_value'))->orWhereNot('col_a', Operator::comparison()->equalTo('another_value'))->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` FROM some_table_name WHERE NOT `col_a` =? OR NOT `col_a` =?", trim($query->sql()));
-        $this->assertEquals(['some_value','another_value'], $query->parameters());
-    }
-
-    public function testSelectWhereOrWhere()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->once())->method('where');
-        $filter->expects($this->once())->method('orWhere');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE `col_a` =? OR `col_b` =?', ['some_value', 'another_value'])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->where('col_a', Operator::comparison()->equalTo('some_value'))->orWhere('col_b', Operator::comparison()->equalTo('another_value'))->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE `col_a` =? OR `col_b` =?", trim($query->sql()));
-        $this->assertEquals(['some_value', 'another_value'], $query->parameters());
-    }
-
-    public function testSelectWhereAndWhere()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(2))->method('where');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE `col_a` =? AND `col_b` =?', ['some_value', 'another_value'])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->where('col_a', Operator::comparison()->equalTo('some_value'))->where('col_b', Operator::comparison()->equalTo('another_value'))->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE `col_a` =? AND `col_b` =?", trim($query->sql()));
-        $this->assertEquals(['some_value', 'another_value'], $query->parameters());
-    }
-
-    public function testSelectWhereIn()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(1))->method('whereIn');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE `col_a` IN ( ?,? )', ['some_value', 'another_value'])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->whereIn('col_a',['some_value','another_value'])->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE `col_a` IN ( ?,? )", trim($query->sql()));
-        $this->assertEquals(['some_value', 'another_value'], $query->parameters());
-    }
-
-    public function testSelectWhereInOrWhereIn()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(1))->method('whereIn');
-        $filter->expects($this->exactly(1))->method('orWhereIn');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE `col_a` IN ( ?,? ) OR `col_a` IN ( ?,? )', ['some_value', 'another_value', 'another_value', 'another_value'])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->whereIn('col_a',['some_value','another_value'])->orWhereIn('col_a',['another_value','another_value'])->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE `col_a` IN ( ?,? ) OR `col_a` IN ( ?,? )", trim($query->sql()));
-        $this->assertEquals(['some_value', 'another_value', 'another_value', 'another_value'], $query->parameters());
-    }
-
-    public function testSelectWhereNotIn()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(1))->method('whereNotIn');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE NOT `col_a` IN ( ?,? )', ['some_value', 'another_value'])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->whereNotIn('col_a',['some_value','another_value'])->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE NOT `col_a` IN ( ?,? )", trim($query->sql()));
-        $this->assertEquals(['some_value', 'another_value'], $query->parameters());
-    }
-
-    public function testSelectWhereNotInOrWhereNotIn()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(1))->method('whereNotIn');
-        $filter->expects($this->exactly(1))->method('orWhereNotIn');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE NOT `col_a` IN ( ?,? ) OR NOT `col_a` IN ( ?,? )', ['some_value', 'another_value','another_value', 'another_value'])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->whereNotIn('col_a',['some_value','another_value'])->orWhereNotIn('col_a',['another_value','another_value'])->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE NOT `col_a` IN ( ?,? ) OR NOT `col_a` IN ( ?,? )", trim($query->sql()));
-        $this->assertEquals(['some_value', 'another_value','another_value', 'another_value'], $query->parameters());
-    }
-
-    public function testSelectWhereBetween()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(1))->method('whereBetween');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE `col_a` BETWEEN ? AND ?', ['some_value', 'another_value'])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->whereBetween('col_a','some_value','another_value')->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE `col_a` BETWEEN ? AND ?", trim($query->sql()));
-        $this->assertEquals(['some_value', 'another_value'], $query->parameters());
-    }
-
-    public function testSelectWhereBetweenOrWhereBetween()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(1))->method('whereBetween');
-        $filter->expects($this->exactly(1))->method('orWhereBetween');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE `col_a` BETWEEN ? AND ? OR `col_a` BETWEEN ? AND ?', ['some_value', 'another_value','some_value', 'another_value'])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->whereBetween('col_a','some_value','another_value')->orWhereBetween('col_a','some_value','another_value')->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE `col_a` BETWEEN ? AND ? OR `col_a` BETWEEN ? AND ?", trim($query->sql()));
-        $this->assertEquals(['some_value', 'another_value','some_value', 'another_value'], $query->parameters());
-    }
-
-    public function testSelectWhereNotBetween()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(1))->method('whereNotBetween');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE NOT `col_a` BETWEEN ? AND ?', ['some_value', 'another_value'])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->whereNotBetween('col_a','some_value','another_value')->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE NOT `col_a` BETWEEN ? AND ?", trim($query->sql()));
-        $this->assertEquals(['some_value', 'another_value'], $query->parameters());
-    }
-
-    public function testSelectNotWhereBetweenOrNotWhereBetween()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(1))->method('whereNotBetween');
-        $filter->expects($this->exactly(1))->method('orWhereNotBetween');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE NOT `col_a` BETWEEN ? AND ? OR NOT `col_a` BETWEEN ? AND ?', ['some_value', 'another_value','some_value', 'another_value'])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->whereNotBetween('col_a','some_value','another_value')->orWhereNotBetween('col_a','some_value','another_value')->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE NOT `col_a` BETWEEN ? AND ? OR NOT `col_a` BETWEEN ? AND ?", trim($query->sql()));
-        $this->assertEquals(['some_value', 'another_value','some_value', 'another_value'], $query->parameters());
-    }
-
-    public function testSelectWhereExists()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(1))->method('whereExists');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE EXISTS ( SELECT * FROM some_table_name )', [])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->whereExists(new Sql(null,[]))->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
-        $this->assertEquals([], $query->parameters());
-    }
-
-    public function testSelectNotWhereExists()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(1))->method('whereNotExists');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE NOT EXISTS ( SELECT * FROM some_table_name )', [])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->whereNotExists(new Sql(null,[]))->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE NOT EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
-        $this->assertEquals([], $query->parameters());
-    }
-
-    public function testSelectWhereExistsOrWhereExists()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(1))->method('whereExists');
-        $filter->expects($this->exactly(1))->method('orWhereExists');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE EXISTS ( SELECT * FROM some_table_name ) OR EXISTS ( SELECT * FROM some_table_name )', [])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->whereExists(new Sql(null,[]))->orWhereExists(new Sql(null,[]))->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE EXISTS ( SELECT * FROM some_table_name ) OR EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
-        $this->assertEquals([], $query->parameters());
-    }
-
-    public function testSelectNotWhereExistsOrNotWhereExists()
-    {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(1))->method('whereNotExists');
-        $filter->expects($this->exactly(1))->method('orWhereNotExists');
-        $filter->expects($this->once())->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE NOT EXISTS ( SELECT * FROM some_table_name ) OR NOT EXISTS ( SELECT * FROM some_table_name )', [])
-            )
-        );
-
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-
-        $query = $this->select->cols(['col_a', 'col_b'])->from($table)->whereNotExists(new Sql(null,[]))->orWhereNotExists(new Sql(null,[]))->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM,
-            Sql::WHERE
-        ]);
-
-        $this->assertEquals("SELECT `col_a` ,`col_b` FROM some_table_name WHERE NOT EXISTS ( SELECT * FROM some_table_name ) OR NOT EXISTS ( SELECT * FROM some_table_name )", trim($query->sql()));
-        $this->assertEquals([], $query->parameters());
     }
 
     public function testSelectColsFromGroupBy()
@@ -637,111 +253,103 @@ class SelectTest extends TestCase
         ])->sql()));
     }
 
-    public function testSelectColsFromWhereUnionSelectColsFromWhereWithAlias()
+    public function testSelectColsFromUnionSelectColsFromWithAlias()
     {
         $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(2))->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE `tt`.`col_a` =?', ['another_value']),
-                new Sql('WHERE `t`.`col_a` =?', ['some_value'])
-            )
-        );
+        $filter->expects($this->once())->method('build');
 
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $unionSelect = new Select();
+        $unionSelect = new Select(new Query(), new Logical(), $this->accent);
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->where('col_a', Operator::comparison()->equalTo('some_value'))->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table, 'tt')->where('col_a', Operator::comparison()->equalTo('another_value')), false);
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table, 'tt'), false);
 
         $query = $this->select->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
-            Sql::WHERE,
             Sql::UNION
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t WHERE `t`.`col_a` =? UNION SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM some_table_name AS tt WHERE `tt`.`col_a` =?", trim($query->sql()));
-        $this->assertEquals(['some_value', 'another_value'], $query->parameters());
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t UNION SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM some_table_name AS tt", trim($query->sql()));
+        $this->assertEquals([], $query->parameters());
     }
 
-    public function testSelectColsFromWhereUnionAllSelectColsFromWhere()
+    public function testSelectColsFromUnionAllSelectColsFrom()
     {
         $filter = $this->createMock(Filter::class);
-        $filter->expects($this->exactly(2))->method('build')->will(
-            $this->onConsecutiveCalls(
-                new Sql('WHERE `tt`.`col_a` =?', ['another_value']),
-                new Sql('WHERE `t`.`col_a` =?', ['some_value'])
-            )
-        );
+        $filter->expects($this->once())->method('build');
 
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $unionSelect = new Select();
+        $unionSelect = new Select(new Query(), new Logical(), $this->accent);
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->where('col_a', Operator::comparison()->equalTo('some_value'))->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table, 'tt')->where('col_a', Operator::comparison()->equalTo('another_value')), true);
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table, 'tt'), true);
 
         $query = $this->select->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
-            Sql::WHERE,
             Sql::UNION
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t WHERE `t`.`col_a` =? UNION ALL SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM some_table_name AS tt WHERE `tt`.`col_a` =?", trim($query->sql()));
-        $this->assertEquals(['some_value', 'another_value'], $query->parameters());
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t UNION ALL SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM some_table_name AS tt", trim($query->sql()));
+        $this->assertEquals([], $query->parameters());
     }
 
-//    public function test()
+//    public function testSelectColsLeftJoinOn()
 //    {
 //        $table = $this->createMock(RepositoryInterface::class);
 //        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 //
-//        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->leftJoin(['tt'=>$table], 'col_a','=','col_b');
+//        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')
+//            ->from($table, 't')
+//            ->join(Sql::JOIN_LEFT, $table, 'tt', 'tt.col_a', Operator::comparison()->equalTo(Operator::logical()->exists(new Sql('SELECT * FROM b'))), null);
 //
-//        $query = $this->select->whereNot('col_a',)->build([
+//        $query = $this->select->build([
 //            Sql::SELECT,
 //            Sql::COLS,
 //            Sql::FROM,
+//            Sql::JOIN
 //        ]);
 //
-//         $this->assertEquals("", trim($query->sql()));
-//         $this->assertEquals([], $query->parameters());
+//        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t LEFT JOIN some_table_name AS tt tt.col_a =?", trim($query->sql()));
+//        $this->assertEquals(['tt.col_a'], $query->parameters());
 //    }
 
-//    public function test2()
+//    public function testSelectColsLeftJoinOn()
 //    {
 //        $filter = $this->createMock(Filter::class);
-////        $filter->expects($this->any())->method('build')->will(
-//////            $this->onConsecutiveCalls(
-//////                new Sql('WHERE `tt`.`col_a` =?', ['another_value'])
-//////            )
-////        );
+//        $filter->expects($this->any())->method('build')->will(
+//            $this->onConsecutiveCalls(
+//                new Sql('WHERE `tt`.`col_a` =?', ['another_value'])
+//            )
+//        );
 //
-////        $table = $this->createMock(RepositoryInterface::class);
-////        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-////        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-////
-////        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->join(Sql::JOIN_LEFT, $table, function(On $query){
-////
-////            //$query->on('col_c',Operator::comparison()->equalTo('col_b'));
-////
-////            $query->nestedWhere(function (Filter $filter){
-////                $filter->orWhere('1',Operator::comparison()->equalTo('1'));
-////                $filter->where('2',Operator::comparison()->equalTo('1'));
-////            });
-////
-////            $query->where('col_d',Operator::comparison()->equalTo('abc'));
-////        });
-////
-////        $query = $this->select->build();
-////
-////        $this->assertEquals("", trim($query->sql()));
-////        $this->assertEquals([], $query->parameters());
+//        $table = $this->createMock(RepositoryInterface::class);
+//        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+//        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
+//
+//        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->join(Sql::JOIN_LEFT, $table,  function(On $query){
+//
+//            $query->on('tt.col_c',Operator::comparison()->equalTo('col_b'));
+//
+//            $query->nestedWhere(function (Filter $filter){
+//                $filter->where('tt.col_a',Operator::comparison()->equalTo('1'));
+//                $filter->where('tt.col_b',Operator::comparison()->equalTo('1'));
+//            });
+//
+//            $query->where('tt.col_c',Operator::comparison()->equalTo('abc'));
+//
+//        }, 'tt');
+//
+//        $query = $this->select->build();
+//
+//        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t LEFT JOIN some_table_name AS tt OR ( `1` =? JOIN `2` OR ( `1` =? ) JOIN `col_d` OR ( `1` =? WHERE `tt`.`col_a` =?", trim($query->sql()));
+//        $this->assertEquals(['some_value', 'another_value'], $query->parameters());
 //    }
 }

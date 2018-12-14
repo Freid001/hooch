@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Builder\Sql\Mysql;
 
 
@@ -18,10 +20,11 @@ class On extends Filter implements OnInterface
 
     /**
      * @param $column
-     * @param null|Comparison $comparison
-     * @return $this
+     * @param Comparison|null $comparison
+     * @param Logical|null $logical
+     * @return $this|OnInterface
      */
-    public function on($column, ?Comparison $comparison)
+    public function on($column, ?Comparison $comparison, ?Logical $logical = null)
     {
         $this->on = true;
 
@@ -36,10 +39,11 @@ class On extends Filter implements OnInterface
 
     /**
      * @param $column
-     * @param null|Comparison $comparison
+     * @param Comparison|null $comparison
+     * @param Logical|null $logical
      * @return $this|mixed
      */
-    public function orOn($column, ?Comparison $comparison)
+    public function orOn($column, ?Comparison $comparison, ?Logical $logical = null)
     {
         $this->orWhere($column,$comparison,null);
 

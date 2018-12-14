@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Builder\Sql\Common;
 
 use QueryMule\Query\Sql\Accent;
@@ -15,16 +17,16 @@ trait Common
     /**
      * @return Query
      */
-    abstract public function query(): Query;
+    abstract protected function query(): Query;
 
     /**
      * @return Logical
      */
-    abstract public function logical(): Logical;
+    abstract protected function logical(): Logical;
 
     /**
      * @return Accent
      */
-    abstract public function accent(): Accent;
+    abstract protected function accent(): Accent;
 
 }

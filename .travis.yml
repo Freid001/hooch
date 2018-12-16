@@ -1,7 +1,7 @@
 env:
   global:
-    - CC_TEST_REPORTER_ID=yDTkhbqEL31Zv8bxPSikRkpyv4HnrDj46g6rOZjSPbB9GhTv9kDDXUna7FyWnTD1FK3isiuGj3XQHFu/itIUDm/kzm8JJeIuz7w4H5okcnu/qCnMvG8ybLVNyUR+YU1BzzqTk3XV0HeSE/csiHfqkWi/vbA7J6v/Ka8jDm+cuTyM5tjDkDk789LMpC+9ldfSqkSRUA3tXnaMDD98Tkb9h80JCY+RcifgBRKiuHRHHgRLaL4rxjspTXxH9k349xZE4XEdlZB3BZNpkMIaaYwgY71mw5OsPRv+YnkPepX6eNSG0hYh4qzRGhrIzpWkiFpNuHsUrntW98CvHWGiAJvf5offWpsW/+wiaRMej/4H+iS/N/I+y0nYQY/uH/4xnshcBDvkLSY1Vp0BOmfJdWy5CJDUnQT8pBlWB9CBW2gVi9wvXJfcDtYtehELz3HItppF+Z2hR9yh40FZkegq11lsJUzSpvj7Yb9oFRClIB2KephBZQyV/H5YquSeG7056mOVcaRXZtZQeBXB8wKenofCoHh8Um/0kEsGtQWtR27VTPrxa8KMEHg6EJIu6E+KyAWGhbza4my6R16ECcu2w0MegE8gmoL6xwoHFW7g4q1c7J6GIq1XAYYbAebzITZuP+vW6bM7qkKlWxDxY5OvmBTvC8Cj6mhsIUrw25GUyKLrxRc=
-
+    - CC_TEST_REPORTER_ID=7d77625d46a5bbe4d2683de53d8a2664c94ae51910aa3bcf2174d89061b5fd41
+    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 language: php
 
 php:
@@ -18,9 +18,4 @@ before_script:
 
 script:
   - phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-
-addons:
-  code_climate:
-    repo_token:
-      secure: yDTkhbqEL31Zv8bxPSikRkpyv4HnrDj46g6rOZjSPbB9GhTv9kDDXUna7FyWnTD1FK3isiuGj3XQHFu/itIUDm/kzm8JJeIuz7w4H5okcnu/qCnMvG8ybLVNyUR+YU1BzzqTk3XV0HeSE/csiHfqkWi/vbA7J6v/Ka8jDm+cuTyM5tjDkDk789LMpC+9ldfSqkSRUA3tXnaMDD98Tkb9h80JCY+RcifgBRKiuHRHHgRLaL4rxjspTXxH9k349xZE4XEdlZB3BZNpkMIaaYwgY71mw5OsPRv+YnkPepX6eNSG0hYh4qzRGhrIzpWkiFpNuHsUrntW98CvHWGiAJvf5offWpsW/+wiaRMej/4H+iS/N/I+y0nYQY/uH/4xnshcBDvkLSY1Vp0BOmfJdWy5CJDUnQT8pBlWB9CBW2gVi9wvXJfcDtYtehELz3HItppF+Z2hR9yh40FZkegq11lsJUzSpvj7Yb9oFRClIB2KephBZQyV/H5YquSeG7056mOVcaRXZtZQeBXB8wKenofCoHh8Um/0kEsGtQWtR27VTPrxa8KMEHg6EJIu6E+KyAWGhbza4my6R16ECcu2w0MegE8gmoL6xwoHFW7g4q1c7J6GIq1XAYYbAebzITZuP+vW6bM7qkKlWxDxY5OvmBTvC8Cj6mhsIUrw25GUyKLrxRc=
+    - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi

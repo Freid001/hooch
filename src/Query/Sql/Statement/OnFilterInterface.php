@@ -2,8 +2,7 @@
 
 namespace QueryMule\Query\Sql\Statement;
 
-
-use QueryMule\Query\Sql\Operator\Comparison;
+use QueryMule\Query\Sql\Operator\OperatorInterface;
 
 /**
  * Interface OnInterface
@@ -13,15 +12,15 @@ interface OnFilterInterface
 {
     /**
      * @param $column
-     * @param null|Comparison $comparison
-     * @return $this
+     * @param OperatorInterface $operator
+     * @return $this|OnFilterInterface
      */
-    public function on($column, ?Comparison $comparison);
+    public function on($column, OperatorInterface $operator);
 
     /**
      * @param $column
-     * @param null|Comparison $comparison
-     * @return mixed
+     * @param OperatorInterface $operator
+     * @return $this|OnFilterInterface
      */
-    public function orOn($column, ?Comparison $comparison);
+    public function orOn($column, OperatorInterface $operator);
 }

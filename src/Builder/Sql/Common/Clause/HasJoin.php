@@ -9,6 +9,7 @@ use QueryMule\Builder\Sql\Common\Common;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
+use QueryMule\Query\Sql\Operator\OperatorInterface;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\OnFilterInterface;
 
@@ -21,20 +22,13 @@ trait HasJoin
     use Common;
 
     /**
-     * @return OnFilterInterface
-     */
-    abstract protected function on(): OnFilterInterface;
-
-    /**
      * @param string $type
      * @param RepositoryInterface $table
      * @param string|null $alias
-     * @param string $column
-     * @param Comparison|null $comparison
-     * @param Logical|null $logical
+     * @param $column
      * @return $this
      */
-    public function join(string $type, RepositoryInterface $table, ?string $alias, string $column, ?Comparison $comparison, ?Logical $logical)
+    public function join(string $type, RepositoryInterface $table, ?string $alias, $column = null)
     {
         $sql = new Sql();
         $sql->append($type);
@@ -42,12 +36,10 @@ trait HasJoin
         $sql->appendIf(!empty($alias),Sql:: AS . Sql::SQL_SPACE . $alias);
 
         if ($column instanceof \Closure) {
-            call_user_func($column, $query = $this->on());
+            call_user_func($column, $query = $this->onFilter());
         }else {
-            $sql->append(Sql::ON);
-            $sql->append($column);
-            $sql->appendIf(!is_null($comparison), $comparison);
-            $sql->appendIf(!is_null($logical), $logical);
+            $sql->appendIf(!is_null($column),Sql::ON);
+            $sql->appendIf(!is_null($column),$column);
         }
 
         $this->query()->add(Sql::JOIN, $sql);

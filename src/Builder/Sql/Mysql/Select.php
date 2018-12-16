@@ -55,7 +55,7 @@ class Select implements QueryBuilderInterface, SelectInterface
     private $logical;
 
     /**
-     * @var OnFilterFilter
+     * @var OnFilter
      */
     private $onFilter;
 
@@ -82,7 +82,7 @@ class Select implements QueryBuilderInterface, SelectInterface
         $this->logical = $logical;
         $this->accent = $accent;
 
-        $this->onFilter = new OnFilterFilter($this->query(), $this->logical(), $this->accent());
+        $this->onFilter = new OnFilter($this->query(), $this->logical(), $this->accent());
 
         if (!empty($cols)) {
             $this->cols($cols);
@@ -133,6 +133,14 @@ class Select implements QueryBuilderInterface, SelectInterface
     }
 
     /**
+     * @return OnFilterInterface
+     */
+    public function onFilter(): OnFilterInterface
+    {
+        return $this->onFilter;
+    }
+
+    /**
      * @param bool $ignore
      * @return SelectInterface
      */
@@ -149,20 +157,6 @@ class Select implements QueryBuilderInterface, SelectInterface
     protected function accent(): Accent
     {
         return $this->accent;
-    }
-
-    public function on($column, QueryBuilderInterface $operator)
-    {
-
-        $operator->build();
-    }
-
-    /**
-     * @return OnFilterInterface
-     */
-    protected function onFilter(): OnFilterInterface
-    {
-        return $this->onFilter;
     }
 
     /**

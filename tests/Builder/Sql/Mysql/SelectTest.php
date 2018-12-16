@@ -5,7 +5,7 @@ namespace test\Builder\Sql\Mysql;
 
 use PHPUnit\Framework\TestCase;
 use QueryMule\Builder\Sql\Mysql\Filter;
-use QueryMule\Builder\Sql\Mysql\OnFilterFilter;
+use QueryMule\Builder\Sql\Mysql\OnFilter;
 use QueryMule\Builder\Sql\Mysql\Select;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Accent;
@@ -149,6 +149,7 @@ class SelectTest extends TestCase
 
         $this->select->cols(['col_a'])->from($table);
         $this->select->filter()->where('col_a', Operator::comparison()->equalTo('some_value'));
+
         $query = $this->select->build([
             Sql::SELECT,
             Sql::COLS,
@@ -301,18 +302,12 @@ class SelectTest extends TestCase
         $this->assertEquals([], $query->parameters());
     }
 
-    public function testSelectColsLeftJoinOn()
+    public function testSelectColsJoin()
     {
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
-//        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')
-//            ->from($table, 't')
-//            ->join(Sql::JOIN_LEFT, $table, 'tt')
-//            //->onFilter->on()
-//            //->on('tt.col_a', Operator::comparison()->equalTo(Operator::logical()->exists(new Sql('SELECT * FROM b'))))
-//
-//        , null);
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->join(Sql::JOIN, $table, 'tt');
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -321,9 +316,28 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t LEFT JOIN some_table_name AS tt tt.col_a =?", trim($query->sql()));
-        $this->assertEquals(['tt.col_a'], $query->parameters());
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t JOIN some_table_name AS tt", trim($query->sql()));
+        $this->assertEquals([], $query->parameters());
     }
+
+//    public function testSelectColsJoinOn()
+//    {
+//        $table = $this->createMock(RepositoryInterface::class);
+//        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+//
+//        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->join(Sql::JOIN, $table, 'tt');
+//        $this->select->onFilter()->on('col_a', Operator::comparison()->equalTo('tt.col_Aa'));
+//
+//        $query = $this->select->build([
+//            Sql::SELECT,
+//            Sql::COLS,
+//            Sql::FROM,
+//            Sql::JOIN
+//        ]);
+//
+//        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t JOIN some_table_name AS tt ON `t`.`col_a` =?", trim($query->sql()));
+//        $this->assertEquals(['`tt`.`col_a`'], $query->parameters());
+//    }
 
 //    public function testSelectColsLeftJoinOn()
 //    {

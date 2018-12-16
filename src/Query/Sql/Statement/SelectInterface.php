@@ -48,12 +48,10 @@ interface SelectInterface
      * @param string $type
      * @param RepositoryInterface $table
      * @param string|null $alias
-     * @param string $column
-     * @param Comparison|null $comparison
-     * @param Logical|null $logical
-     * @return SelectInterface
+     * @param $column
+     * @return mixed
      */
-    public function join(string $type, RepositoryInterface $table, ?string $alias, string $column, ?Comparison $comparison, ?Logical $logical);
+    public function join(string $type, RepositoryInterface $table, ?string $alias, $column);
 
     /**
      * @param int $limit

@@ -330,7 +330,7 @@ class FilterTest extends TestCase
         $comparison = new Comparison();
 
         $query = $this->filter->where('col_a', $comparison->equalTo($logical->all(new Sql('select * from some_table',[],false))))->build();
-        $this->assertEquals("WHERE `col_a` <> ALL ( select * from some_table )", trim($query->sql()));
+        $this->assertEquals("WHERE `col_a` = ALL ( select * from some_table )", trim($query->sql()));
         $this->assertEquals([], $query->parameters());
     }
 
@@ -340,7 +340,7 @@ class FilterTest extends TestCase
         $comparison = new Comparison();
 
         $query = $this->filter->where('col_a', $comparison->equalTo($logical->any(new Sql('select * from some_table',[],false))))->build();
-        $this->assertEquals("WHERE `col_a` <> ANY ( select * from some_table )", trim($query->sql()));
+        $this->assertEquals("WHERE `col_a` = ANY ( select * from some_table )", trim($query->sql()));
         $this->assertEquals([], $query->parameters());
     }
 
@@ -350,7 +350,7 @@ class FilterTest extends TestCase
         $comparison = new Comparison();
 
         $query = $this->filter->where('col_a', $comparison->equalTo($logical->some(new Sql('select * from some_table',[],false))))->build();
-        $this->assertEquals("WHERE `col_a` <> SOME ( select * from some_table )", trim($query->sql()));
+        $this->assertEquals("WHERE `col_a` = SOME ( select * from some_table )", trim($query->sql()));
         $this->assertEquals([], $query->parameters());
     }
 
@@ -360,7 +360,7 @@ class FilterTest extends TestCase
         $comparison = new Comparison();
 
         $query = $this->filter->where('col_a', $comparison->equalTo($logical->exists(new Sql('select * from some_table',[],false))))->build();
-        $this->assertEquals("WHERE `col_a` <> EXISTS ( select * from some_table )", trim($query->sql()));
+        $this->assertEquals("WHERE `col_a` = EXISTS ( select * from some_table )", trim($query->sql()));
         $this->assertEquals([], $query->parameters());
     }
 }

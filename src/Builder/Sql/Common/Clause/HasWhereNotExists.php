@@ -24,7 +24,7 @@ trait HasWhereNotExists
     public function whereNotExists(Sql $subQuery)
     {
         if($this instanceof FilterInterface) {
-            $this->whereNot(null, null, $this->logical()->omitTrailingSpace()->exists($subQuery));
+            $this->whereNot(null, $this->logical()->omitTrailingSpace()->exists($subQuery));
         }
 
         return $this;

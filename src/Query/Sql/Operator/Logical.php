@@ -1,7 +1,8 @@
 <?php
 
-namespace QueryMule\Query\Sql\Operator;
+declare(strict_types=1);
 
+namespace QueryMule\Query\Sql\Operator;
 
 use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Sql\Sql;
@@ -10,7 +11,7 @@ use QueryMule\Query\Sql\Sql;
  * Class HasLogicalOperator
  * @package QueryMule\Query\Sql\Operator
  */
-class Logical implements QueryBuilderInterface
+class Logical implements QueryBuilderInterface, OperatorInterface
 {
     /**
      * @var Sql
@@ -37,7 +38,7 @@ class Logical implements QueryBuilderInterface
      */
     public function __construct()
     {
-        $this->sql = new Sql(null);
+        $this->sql = new Sql();
         $this->trailingSpace = true;
     }
 
@@ -76,26 +77,21 @@ class Logical implements QueryBuilderInterface
      */
     public function all(Sql $subQuery): Logical
     {
-        $this->sql = $this->operatorWithSubQuery(Sql::ALL, $subQuery);
-
-
-
         $this->operator = Sql::ALL;
+        $this->sql = $this->operatorWithSubQuery($subQuery);
 
         return $this;
     }
 
     /**
      * @param $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
+     * @param OperatorInterface $operator
      * @return Logical
      */
-    public function and ($column, ?Comparison $comparison, ?Logical $logical): Logical
+    public function and ($column, OperatorInterface $operator): Logical
     {
-        $this->sql = $this->operatorWithColumn(Sql:: AND, $column, $comparison, $logical);
-
         $this->operator = Sql:: AND;
+        $this->sql = $this->operatorWithColumn($column, $operator);
 
         return $this;
     }
@@ -106,9 +102,8 @@ class Logical implements QueryBuilderInterface
      */
     public function any(Sql $subQuery): Logical
     {
-        $this->sql = $this->operatorWithSubQuery(Sql::ANY, $subQuery);
-
         $this->operator = Sql::ANY;
+        $this->sql = $this->operatorWithSubQuery($subQuery);
 
         return $this;
     }
@@ -120,14 +115,14 @@ class Logical implements QueryBuilderInterface
      */
     public function between($from, $to): Logical
     {
-        $sql = new Sql(Sql::BETWEEN, [$from, $to]);
-        $sql->append(Sql::SQL_QUESTION_MARK);
+        $this->operator = Sql::BETWEEN;
+
+        $sql = new Sql($this->operator);
+        $sql->append(Sql::SQL_QUESTION_MARK, [$from]);
         $sql->append(Sql:: AND);
-        $sql->append(Sql::SQL_QUESTION_MARK,[],$this->trailingSpace);
+        $sql->append(Sql::SQL_QUESTION_MARK,[$to],$this->trailingSpace);
 
         $this->sql = $sql;
-
-        $this->operator = Sql::BETWEEN;
 
         return $this;
     }
@@ -147,17 +142,16 @@ class Logical implements QueryBuilderInterface
      */
     public function exists(Sql $subQuery): Logical
     {
-        $this->sql = $this->operatorWithSubQuery(Sql::EXISTS, $subQuery);
-
         $this->operator = Sql::EXISTS;
+        $this->sql = $this->operatorWithSubQuery($subQuery);
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return String|null
      */
-    public function getOperator()
+    public function getOperator(): ?String
     {
         return $this->operator;
     }
@@ -168,16 +162,16 @@ class Logical implements QueryBuilderInterface
      */
     public function in(array $values = []): Logical
     {
-        $sql = new Sql(Sql::IN, $values);
+        $this->operator = Sql::IN;
+
+        $sql = new Sql($this->operator);
         $sql->append(implode(Sql::SQL_SPACE, [
             Sql::SQL_BRACKET_OPEN,
             implode(",", array_fill(0, count($values), Sql::SQL_QUESTION_MARK)),
             Sql::SQL_BRACKET_CLOSE
-        ]), [], $this->trailingSpace);
+        ]), $values, $this->trailingSpace);
 
         $this->sql = $sql;
-
-        $this->operator = Sql::IN;
 
         return $this;
     }
@@ -188,42 +182,38 @@ class Logical implements QueryBuilderInterface
      */
     public function like($value): Logical
     {
-        $sql = new Sql(Sql::SQL_LIKE, [$value]);
-        $sql->append(Sql::SQL_QUESTION_MARK,[],false);
+        $this->operator = Sql::SQL_LIKE;
+
+        $sql = new Sql($this->operator);
+        $sql->append(Sql::SQL_QUESTION_MARK,[$value],false);
 
         $this->sql = $sql;
-
-        $this->operator = Sql::SQL_LIKE;
 
         return $this;
     }
 
     /**
      * @param $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
+     * @param OperatorInterface $operator
      * @return Logical
      */
-    public function not($column, ?Comparison $comparison, ?Logical $logical): Logical
+    public function not($column, OperatorInterface $operator): Logical
     {
-        $this->sql = $this->operatorWithColumn(Sql::NOT, $column, $comparison, $logical);
-
         $this->operator = Sql::NOT;
+        $this->sql = $this->operatorWithColumn($column, $operator);
 
         return $this;
     }
 
     /**
-     * @param string $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
+     * @param $column
+     * @param OperatorInterface $operator
      * @return Logical
      */
-    public function or ($column, ?Comparison $comparison, ?Logical $logical): Logical
+    public function or ($column, OperatorInterface $operator): Logical
     {
-        $this->sql = $this->operatorWithColumn(Sql::OR, $column, $comparison, $logical);
-
         $this->operator = Sql::OR;
+        $this->sql = $this->operatorWithColumn($column, $operator);
 
         return $this;
     }
@@ -234,21 +224,19 @@ class Logical implements QueryBuilderInterface
      */
     public function some(Sql $subQuery): Logical
     {
-        $this->sql = $this->operatorWithSubQuery(Sql::SOME, $subQuery);
-
         $this->operator = Sql::SOME;
+        $this->sql = $this->operatorWithSubQuery($subQuery);
 
         return $this;
     }
 
     /**
-     * @param string $operator
      * @param Sql $subQuery
      * @return Sql
      */
-    private function operatorWithSubQuery(string $operator, Sql $subQuery): Sql
+    private function operatorWithSubQuery(Sql $subQuery): Sql
     {
-        $sql = new Sql($operator, $subQuery->parameters());
+        $sql = new Sql($this->operator, $subQuery->parameters());
         $sql->append(Sql::SQL_BRACKET_OPEN, [], $this->trailingSpace);
         $sql->append($subQuery->sql(), [], $this->trailingSpace);
         $sql->append(Sql::SQL_BRACKET_CLOSE, [], $this->trailingSpace);
@@ -257,19 +245,16 @@ class Logical implements QueryBuilderInterface
     }
 
     /**
-     * @param string $operator
      * @param $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
+     * @param OperatorInterface $operator
      * @return Sql
      */
-    private function operatorWithColumn(string $operator, $column, ?Comparison $comparison, ?Logical $logical): Sql
+    private function operatorWithColumn($column, OperatorInterface $operator): Sql
     {
-        $sql = new Sql($operator);
+        $sql = new Sql($this->operator);
         $sql->appendIf($this->nested, Sql::SQL_BRACKET_OPEN);
         $sql->append($column);
-        $sql->appendIf(!is_null($comparison),$comparison,[],$this->trailingSpace);
-        $sql->appendIf(!is_null($logical),$logical,[],$this->trailingSpace);
+        $sql->appendIf(!is_null($operator),$operator,[],$this->trailingSpace);
 
         if ($this->getNested()) {
             $this->setNested(false);

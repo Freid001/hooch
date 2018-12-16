@@ -16,11 +16,12 @@ use QueryMule\Builder\Sql\Common\Clause\HasUnion;
 use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Accent;
+use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Query\Sql\Statement\OnInterface;
+use QueryMule\Query\Sql\Statement\OnFilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
@@ -54,9 +55,9 @@ class Select implements QueryBuilderInterface, SelectInterface
     private $logical;
 
     /**
-     * @var On
+     * @var OnFilterFilter
      */
-    private $on;
+    private $onFilter;
 
     /**
      * @var Accent
@@ -81,7 +82,7 @@ class Select implements QueryBuilderInterface, SelectInterface
         $this->logical = $logical;
         $this->accent = $accent;
 
-        $this->on = new On($this->query(), $this->logical(), $this->accent());
+        $this->onFilter = new OnFilterFilter($this->query(), $this->logical(), $this->accent());
 
         if (!empty($cols)) {
             $this->cols($cols);
@@ -150,12 +151,18 @@ class Select implements QueryBuilderInterface, SelectInterface
         return $this->accent;
     }
 
-    /**
-     * @return OnInterface
-     */
-    protected function on(): OnInterface
+    public function on($column, QueryBuilderInterface $operator)
     {
-        return $this->on;
+
+        $operator->build();
+    }
+
+    /**
+     * @return OnFilterInterface
+     */
+    protected function onFilter(): OnFilterInterface
+    {
+        return $this->onFilter;
     }
 
     /**

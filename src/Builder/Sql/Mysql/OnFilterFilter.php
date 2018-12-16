@@ -8,13 +8,13 @@ namespace QueryMule\Builder\Sql\Mysql;
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\OnInterface;
+use QueryMule\Query\Sql\Statement\OnFilterInterface;
 
 /**
  * Class Join
  * @package QueryMule\Builder\Sql\Mysql
  */
-class On extends Filter implements OnInterface
+class OnFilterFilter extends Filter implements OnFilterInterface
 {
     private $on = false;
 
@@ -22,7 +22,7 @@ class On extends Filter implements OnInterface
      * @param $column
      * @param Comparison|null $comparison
      * @param Logical|null $logical
-     * @return $this|OnInterface
+     * @return $this|OnFilterInterface
      */
     public function on($column, ?Comparison $comparison, ?Logical $logical = null)
     {

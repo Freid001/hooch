@@ -9,7 +9,7 @@ use QueryMule\Query\Sql\Operator\Comparison;
  * Interface OnInterface
  * @package QueryMule\Query\Sql\Statement
  */
-interface OnInterface
+interface OnFilterInterface
 {
     /**
      * @param $column

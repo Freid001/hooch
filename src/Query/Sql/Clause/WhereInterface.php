@@ -3,9 +3,7 @@
 namespace QueryMule\Query\Sql\Clause;
 
 
-use QueryMule\Query\Sql\Operator\Comparison;
-use QueryMule\Query\Sql\Operator\Logical;
-use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Query\Sql\Operator\OperatorInterface;
 
 /**
  * Interface WhereInterface
@@ -15,9 +13,8 @@ interface WhereInterface
 {
     /**
      * @param $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
-     * @return FilterInterface
+     * @param OperatorInterface $operator
+     * @return mixed
      */
-    public function where($column, ?Comparison $comparison = null, ?Logical $logical = null);
+    public function where($column, OperatorInterface $operator);
 }

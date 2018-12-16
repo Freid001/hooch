@@ -24,7 +24,7 @@ trait HasOrWhereIn
     public function orWhereIn($column, array $values = [])
     {
         if($this instanceof FilterInterface) {
-            $this->orWhere($column, null, $this->logical()->omitTrailingSpace()->in($values));
+            $this->orWhere($column, $this->logical()->omitTrailingSpace()->in($values));
         }
 
         return $this;

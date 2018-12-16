@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Query\Sql;
 
 /**
@@ -19,10 +21,11 @@ class Query
     protected $parameters = [];
 
     /**
-     * @param string $clause
+     * @param $clause
      * @param Sql $sql
+     * @return void
      */
-    public function add($clause, Sql $sql)
+    public function add($clause, Sql $sql): void
     {
         $this->sql[$clause] = !empty($this->sql[$clause]) ? $this->sql[$clause] . $sql->sql() : $sql->sql();
 
@@ -35,7 +38,7 @@ class Query
      * @param array $order
      * @return \QueryMule\Query\Sql\Sql
      */
-    public function build(array $order)
+    public function build(array $order): Sql
     {
         $sql = '';
         $parameters = [];
@@ -58,7 +61,7 @@ class Query
      * @param string $clause
      * @return string|null
      */
-    public function get($clause)
+    public function get($clause): ?String
     {
         return !empty($this->sql[$clause]) ? $this->sql[$clause] : null;
     }
@@ -67,7 +70,7 @@ class Query
      * @param array $clauses
      * @return void
      */
-    public function reset(array $clauses = [])
+    public function reset(array $clauses = []): void
     {
         if(empty($clauses)){
             $this->sql = [];

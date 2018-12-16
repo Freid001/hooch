@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace QueryMule\Query\Sql\Operator;
 
@@ -10,7 +11,7 @@ use QueryMule\Query\Sql\Sql;
  * Class Comparison
  * @package QueryMule\Query\Sql\Operator
  */
-class Comparison implements QueryBuilderInterface
+class Comparison implements QueryBuilderInterface, OperatorInterface
 {
     /**
      * @var Sql
@@ -37,12 +38,20 @@ class Comparison implements QueryBuilderInterface
      */
     public function equalTo($value): Comparison
     {
-        if ($value instanceof Sql) {
-            $this->sql = $this->operatorWithSql(Sql::SQL_EQUAL, $value);
-        } else if ($value instanceof Logical) {
-            $this->sql = $this->operatorWithSql(Sql::SQL_LESS_THAN . Sql::SQL_GREATER_THAN, $value->build(), false);
-        } else {
-            $this->sql = $this->operatorWithValue(Sql::SQL_EQUAL, $value);
+        switch ((gettype($value) == 'object') ? get_class($value) : null){
+            case Sql::class:
+                /** @var Sql $value */
+                $this->sql = $this->operatorWithSql(Sql::SQL_EQUAL, $value);
+                break;
+
+            case Logical::class:
+                /** @var Logical $value */
+                $this->sql = $this->operatorWithSql(Sql::SQL_LESS_THAN . Sql::SQL_GREATER_THAN, $value->build(), false);
+                break;
+
+            default:
+                /** @var String $value */
+                $this->sql = $this->operatorWithValue(Sql::SQL_EQUAL, $value);
         }
 
         $this->operator = Sql::SQL_EQUAL;
@@ -53,7 +62,7 @@ class Comparison implements QueryBuilderInterface
     /**
      * @return string
      */
-    public function getOperator()
+    public function getOperator(): String
     {
         return $this->operator;
     }
@@ -159,7 +168,7 @@ class Comparison implements QueryBuilderInterface
      * @param bool $subQuery
      * @return Sql
      */
-    private function operatorWithSql($operator, Sql $sql, bool $subQuery = true)
+    private function operatorWithSql($operator, Sql $sql, bool $subQuery = true): Sql
     {
         $sqlObj = new Sql($operator);
         $sqlObj->appendIf($subQuery,Sql::SQL_BRACKET_OPEN)
@@ -174,10 +183,10 @@ class Comparison implements QueryBuilderInterface
      * @param $value
      * @return Sql
      */
-    private function operatorWithValue($operator, $value)
+    private function operatorWithValue($operator, $value): Sql
     {
-        $sql = new Sql($operator,[$value],false);
-        $sql->append(Sql::SQL_QUESTION_MARK,[],false);
+        $sql = new Sql($operator,[],false);
+        $sql->append(Sql::SQL_QUESTION_MARK,[$value],false);
 
         return $sql;
     }

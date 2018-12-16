@@ -3,6 +3,7 @@
 namespace QueryMule\Query\Sql\Statement;
 
 use QueryMule\Builder\Exception\SqlException;
+use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Sql;
@@ -14,12 +15,6 @@ use QueryMule\Query\Sql\Operator\Comparison;
  */
 interface SelectInterface
 {
-    /**
-     * @param array $clauses
-     * @return Sql
-     */
-    public function build(array $clauses = []): Sql;
-
     /**
      * @param array $cols
      * @param string|null $alias
@@ -96,9 +91,9 @@ interface SelectInterface
     public function orderBy($column, $order);
 
     /**
-     * @param SelectInterface $select
+     * @param QueryBuilderInterface $select
      * @param bool $all
-     * @return SelectInterface
+     * @return mixed
      */
-    public function union(SelectInterface $select, bool $all = false);
+    public function union(QueryBuilderInterface $select, bool $all = false);
 }

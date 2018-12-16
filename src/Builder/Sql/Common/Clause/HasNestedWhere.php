@@ -11,7 +11,7 @@ use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Query\Sql\Statement\OnInterface;
+use QueryMule\Query\Sql\Statement\OnFilterInterface;
 
 /**
  * Trait NestedWhere
@@ -31,7 +31,7 @@ trait HasNestedWhere
 
         call_user_func($callback, $query = $this);
 
-        if($this instanceof OnInterface){
+        if($this instanceof OnFilterInterface){
             $this->query()->add(Sql::JOIN, new Sql(Sql::SQL_BRACKET_CLOSE));
         }else {
             $this->query()->add(Sql::WHERE, new Sql(Sql::SQL_BRACKET_CLOSE));

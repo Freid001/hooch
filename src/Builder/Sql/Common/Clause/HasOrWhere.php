@@ -6,8 +6,7 @@ namespace QueryMule\Builder\Sql\Common\Clause;
 
 
 use QueryMule\Builder\Sql\Common\Common;
-use QueryMule\Query\Sql\Operator\Comparison;
-use QueryMule\Query\Sql\Operator\Logical;
+use QueryMule\Query\Sql\Operator\OperatorInterface;
 use QueryMule\Query\Sql\Statement\FilterInterface;
 
 /**
@@ -20,14 +19,13 @@ trait HasOrWhere
 
     /**
      * @param $column
-     * @param null|Comparison $comparison
-     * @param null|Logical $logical
+     * @param OperatorInterface $operator
      * @return $this
      */
-    public function orWhere($column, ?Comparison $comparison = null, ?Logical $logical = null)
+    public function orWhere($column, OperatorInterface $operator)
     {
         if($this instanceof FilterInterface) {
-            $this->where(null, null, $this->logical()->omitTrailingSpace()->or($this->accent()->append($column,'.'), $comparison, $logical));
+            $this->where(null, $this->logical()->omitTrailingSpace()->or($this->accent()->append($column,'.'), $operator));
         }
 
         return $this;

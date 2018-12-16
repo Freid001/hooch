@@ -6,6 +6,7 @@ namespace QueryMule\Builder\Sql\Common\Clause;
 
 
 use QueryMule\Builder\Sql\Common\Common;
+use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
@@ -18,11 +19,11 @@ trait HasUnion
     use Common;
 
     /**
-     * @param SelectInterface $select
+     * @param QueryBuilderInterface $select
      * @param bool $all
      * @return $this
      */
-    public function union(SelectInterface $select, bool $all = false)
+    public function union(QueryBuilderInterface $select, bool $all = false)
     {
         $this->query()->add(Sql::UNION, $this->unionClause($select, $all));
 
@@ -30,11 +31,11 @@ trait HasUnion
     }
 
     /**
-     * @param SelectInterface $select
+     * @param QueryBuilderInterface $select
      * @param bool $all
      * @return Sql
      */
-    private function unionClause(SelectInterface $select, bool $all = false): Sql
+    private function unionClause(QueryBuilderInterface $select, bool $all = false): Sql
     {
         $query = $select->build();
 

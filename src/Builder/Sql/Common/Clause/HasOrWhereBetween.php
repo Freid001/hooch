@@ -25,7 +25,7 @@ trait HasOrWhereBetween
     public function orWhereBetween($column, $from, $to)
     {
         if($this instanceof FilterInterface) {
-            $this->orWhere($column, null, $this->logical()->omitTrailingSpace()->between($from, $to));
+            $this->orWhere($column, $this->logical()->omitTrailingSpace()->between($from, $to));
         }
 
         return $this;

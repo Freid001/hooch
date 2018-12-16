@@ -10,7 +10,7 @@ use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\OnInterface;
+use QueryMule\Query\Sql\Statement\OnFilterInterface;
 
 /**
  * Trait HasJoin
@@ -21,9 +21,9 @@ trait HasJoin
     use Common;
 
     /**
-     * @return OnInterface
+     * @return OnFilterInterface
      */
-    abstract protected function on(): OnInterface;
+    abstract protected function on(): OnFilterInterface;
 
     /**
      * @param string $type

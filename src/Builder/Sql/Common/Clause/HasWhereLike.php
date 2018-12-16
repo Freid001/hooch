@@ -24,7 +24,7 @@ trait HasWhereLike
     public function whereLike($column, $value)
     {
         if($this instanceof FilterInterface) {
-            $this->where($column, null, $this->logical()->omitTrailingSpace()->like($value));
+            $this->where($column, $this->logical()->omitTrailingSpace()->like($value));
         }
 
         return $this;

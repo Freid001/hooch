@@ -25,7 +25,7 @@ trait HasWhereBetween
     public function whereBetween($column, $from, $to)
     {
         if($this instanceof FilterInterface) {
-            $this->where($column, null, $this->logical()->omitTrailingSpace()->between($from, $to));
+            $this->where($column, $this->logical()->omitTrailingSpace()->between($from, $to));
         }
 
         return $this;

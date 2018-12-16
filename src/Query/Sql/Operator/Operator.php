@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Query\Sql\Operator;
 
 /**
@@ -10,7 +12,7 @@ class Operator
     /**
      * @return Comparison
      */
-    public static function comparison()
+    public static function comparison(): Comparison
     {
         return new Comparison();
     }
@@ -18,7 +20,7 @@ class Operator
     /**
      * @return Logical
      */
-    public static function logical()
+    public static function logical(): Logical
     {
         return new Logical();
     }

@@ -5,7 +5,7 @@ namespace test\Builder\Sql\Mysql;
 
 use PHPUnit\Framework\TestCase;
 use QueryMule\Builder\Sql\Mysql\Filter;
-use QueryMule\Builder\Sql\Mysql\On;
+use QueryMule\Builder\Sql\Mysql\OnFilterFilter;
 use QueryMule\Builder\Sql\Mysql\Select;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Accent;
@@ -301,25 +301,29 @@ class SelectTest extends TestCase
         $this->assertEquals([], $query->parameters());
     }
 
-//    public function testSelectColsLeftJoinOn()
-//    {
-//        $table = $this->createMock(RepositoryInterface::class);
-//        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-//
+    public function testSelectColsLeftJoinOn()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
 //        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')
 //            ->from($table, 't')
-//            ->join(Sql::JOIN_LEFT, $table, 'tt', 'tt.col_a', Operator::comparison()->equalTo(Operator::logical()->exists(new Sql('SELECT * FROM b'))), null);
+//            ->join(Sql::JOIN_LEFT, $table, 'tt')
+//            //->onFilter->on()
+//            //->on('tt.col_a', Operator::comparison()->equalTo(Operator::logical()->exists(new Sql('SELECT * FROM b'))))
 //
-//        $query = $this->select->build([
-//            Sql::SELECT,
-//            Sql::COLS,
-//            Sql::FROM,
-//            Sql::JOIN
-//        ]);
-//
-//        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t LEFT JOIN some_table_name AS tt tt.col_a =?", trim($query->sql()));
-//        $this->assertEquals(['tt.col_a'], $query->parameters());
-//    }
+//        , null);
+
+        $query = $this->select->build([
+            Sql::SELECT,
+            Sql::COLS,
+            Sql::FROM,
+            Sql::JOIN
+        ]);
+
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t LEFT JOIN some_table_name AS tt tt.col_a =?", trim($query->sql()));
+        $this->assertEquals(['tt.col_a'], $query->parameters());
+    }
 
 //    public function testSelectColsLeftJoinOn()
 //    {

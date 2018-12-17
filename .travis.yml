@@ -18,4 +18,4 @@ before_script:
 
 script:
   - phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
-    - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi

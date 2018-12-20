@@ -8,7 +8,7 @@ namespace QueryMule\Builder\Sql\Common\Clause;
 use QueryMule\Builder\Sql\Common\Common;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Trait HasFrom
@@ -19,21 +19,17 @@ trait HasFrom
     use Common;
 
     /**
-     * @param FilterInterface $filter
-     * @return mixed
-     */
-    abstract protected function setFilter(FilterInterface $filter);
-
-    /**
      * @param RepositoryInterface $table
-     * @param null $alias
+     * @param string|null $alias
      * @return $this
      */
-    public function from(RepositoryInterface $table, $alias = null)
+    public function from(RepositoryInterface $table, ?string $alias = null)
     {
-        $this->query()->add(Sql::FROM, $this->fromClause($table, $alias));
+        if($this instanceof SelectInterface) {
+            $this->setFilter($table->filter());
+        }
 
-        $this->setFilter($table->filter());
+        $this->query()->add(Sql::FROM, $this->fromClause($table, $alias));
 
         return $this;
     }
@@ -48,7 +44,8 @@ trait HasFrom
         $sql = new Sql();
         $sql->append(Sql::FROM);
         $sql->append($table->getName());
-        $sql->appendIf(!empty($alias),Sql:: AS . Sql::SQL_SPACE . $alias);
+        $sql->ifThenAppend(!empty($alias), Sql:: AS);
+        $sql->ifThenAppend(!empty($alias), $alias);
 
         return $sql;
     }

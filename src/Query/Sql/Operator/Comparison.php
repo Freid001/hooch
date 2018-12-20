@@ -113,7 +113,8 @@ class Comparison implements QueryBuilderInterface, OperatorInterface
     private function operator(string $operator, $value): void
     {
         $this->operator = $operator;
-        switch ((gettype($value) == 'object') ? get_class($value) : null){
+        switch ((gettype($value) == 'object') ? get_class($value) : null)
+        {
             case Sql::class:
                 /** @var Sql $value */
                 $this->sql = $this->operatorWithSql($this->operator, $value);
@@ -139,9 +140,9 @@ class Comparison implements QueryBuilderInterface, OperatorInterface
     private function operatorWithSql(string $operator, Sql $sql, bool $subQuery = true): Sql
     {
         $sqlObj = new Sql($operator);
-        $sqlObj->appendIf($subQuery,Sql::SQL_BRACKET_OPEN)
+        $sqlObj->ifThenAppend($subQuery,Sql::SQL_BRACKET_OPEN)
                ->append($sql,[],false)
-               ->appendIf($subQuery,Sql::SQL_BRACKET_CLOSE);
+               ->ifThenAppend($subQuery,Sql::SQL_BRACKET_CLOSE);
 
         return $sqlObj;
     }

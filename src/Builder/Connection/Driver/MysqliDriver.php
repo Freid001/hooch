@@ -8,6 +8,7 @@ use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use QueryMule\Builder\Exception\DriverException;
 use QueryMule\Builder\Sql\Mysql\Filter;
+use QueryMule\Builder\Sql\Mysql\OnFilter;
 use QueryMule\Builder\Sql\Mysql\Select;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
@@ -17,6 +18,7 @@ use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Query\Sql\Statement\OnFilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
@@ -79,6 +81,21 @@ class MysqliDriver implements DriverInterface
 
         return $this->filter;
     }
+
+    /**
+     * @return OnFilterInterface
+     */
+    public function onFilter() : OnFilterInterface
+    {
+        $this->filter = new OnFilter(
+            new Query(),
+            new Logical(),
+            new Accent()
+        );
+
+        return $this->filter;
+    }
+
 
     /**
      * @param array $cols

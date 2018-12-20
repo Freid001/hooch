@@ -18,10 +18,10 @@ trait HasGroupBy
 
     /**
      * @param $column
-     * @param null $alias
+     * @param string|null $alias
      * @return $this
      */
-    public function groupBy($column, $alias = null)
+    public function groupBy($column, ?string $alias = null)
     {
         $sql = $this->groupByClause(
             $this->accent()->append($column),
@@ -43,9 +43,9 @@ trait HasGroupBy
     private function groupByClause($column, $alias = false, $comma = false): Sql
     {
         $sql = new Sql();
-        $sql->appendIf(!$comma,Sql::GROUP);
-        $sql->appendIf($comma,',',[],false);
-        $sql->appendIf(!empty($alias),$alias.'.',[],false);
+        $sql->ifThenAppend(!$comma,Sql::GROUP);
+        $sql->ifThenAppend($comma,',',[],false);
+        $sql->ifThenAppend(!empty($alias),$alias.'.',[],false);
         $sql->append($column);
 
         return $sql;

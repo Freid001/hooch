@@ -58,7 +58,7 @@ trait HasWhere
             return $sql;
         }
 
-        return $sql->append($this->whereJoin())->appendIf(
+        return $sql->append($this->whereJoin())->ifThenAppend(
             $this->logical()->getNested(),
             Sql::SQL_BRACKET_OPEN
         );

@@ -1,8 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Query\Sql;
 
+
+use phpDocumentor\Reflection\Types\Integer;
+use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Query\QueryBuilderInterface;
+use QueryMule\Query\Sql\Operator\Comparison;
+use QueryMule\Query\Sql\Operator\Logical;
 
 /**
  * Class Sql
@@ -34,7 +41,9 @@ class Sql
     const HAVING = 'HAVING';
     const JOIN = 'JOIN';
     const JOIN_LEFT = 'LEFT JOIN';
-    const JOIN_RIGHT = 'LEFT RIGHT';
+    const JOIN_RIGHT = 'RIGHT JOIN';
+    const JOIN_INNER = 'INNER JOIN';
+    const JOIN_FULL_OUTER = 'FULL OUTER JOIN';
     const INSERT = 'INSERT';
     const IN = 'IN';
     const INTO = 'INTO';
@@ -74,72 +83,68 @@ class Sql
 
     /**
      * Sql constructor.
-     * @param null $sql
+     * @param string|null $sql
      * @param array $parameters
      * @param bool $space
      */
-    public function __construct($sql = null, array $parameters = [], $space = true)
+    public function __construct(?string $sql = null, array $parameters = [], bool $space = true)
     {
-        $this->append($sql,$parameters,$space);
+        $this->append($sql, $parameters, $space);
     }
 
     /**
-     * @param $sql
+     * @param $append
      * @param array $parameters
-     * @param bool $space
-     * @return $this
+     * @param bool $trailingSpace
+     * @return Sql
      */
-    public function append($sql, array $parameters = [], $space = true)
+    public function append($append, array $parameters = [], $trailingSpace = true): Sql
     {
-        if ($sql instanceof QueryBuilderInterface) {
-            $this->append(
-                $sql->build()->sql(),
-                $sql->build()->parameters(),
-                $space
-            );
-
-            return $this;
-        }
-
-        if ($sql instanceof Sql) {
-            $this->append(
-                $sql->sql(),
-                $sql->parameters(),
-                $space
-            );
-
-            return $this;
-        }
-
-        if (!empty($sql)) {
-            $this->sql .= $sql;
-
-            if($space){
-                $this->sql .= Sql::SQL_SPACE;
-            }
-        }
-
         if (!empty($parameters)) {
             $this->parameters = array_merge($this->parameters, $parameters);
         }
 
+        if ($append instanceof QueryBuilderInterface) {
+            return $this->appendQueryBuilder($append, $trailingSpace);
+        }
+
+        if ($append instanceof Sql) {
+            return $this->appendSql($append, $trailingSpace);
+        }
+
+        if (is_string($append)) {
+            return $this->appendString($append, $trailingSpace);
+        }
+
+        if (is_integer($append)) {
+            return $this->appendInt($append, $trailingSpace);
+        }
+
         return $this;
     }
 
     /**
-     * @param $condition
-     * @param $sql
-     * @param array $parameters
-     * @param bool $space
-     * @return $this
+     * @param QueryBuilderInterface $queryBuilder
+     * @param bool $trailingSpace
+     * @return Sql
      */
-    public function appendIf($condition, $sql, array $parameters = [], $space = true)
+    public function appendQueryBuilder(QueryBuilderInterface $queryBuilder, bool $trailingSpace = true): Sql
     {
-        if ($condition) {
-            $this->append($sql, $parameters, $space);
-        }
+        $this->append(
+            $queryBuilder->build()->sql(),
+            $queryBuilder->build()->parameters(),
+            $trailingSpace
+        );
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function sql(): ?string
+    {
+        return $this->sql;
     }
 
     /**
@@ -151,10 +156,62 @@ class Sql
     }
 
     /**
-     * @return string
+     * @param Sql $sql
+     * @param bool $trailingSpace
+     * @return Sql
      */
-    public function sql()
+    public function appendSql(Sql $sql, bool $trailingSpace = true): Sql
     {
-        return $this->sql;
+        $this->append(
+            $sql->sql(),
+            $sql->parameters(),
+            $trailingSpace
+        );
+
+        return $this;
+    }
+
+    /**
+     * @param String $string
+     * @param bool $trailingSpace
+     * @return Sql
+     */
+    public function appendString(String $string, bool $trailingSpace = true): Sql
+    {
+        $this->sql .= $string;
+
+        if ($trailingSpace) {
+            $this->sql .= Sql::SQL_SPACE;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Int $int
+     * @param bool $trailingSpace
+     * @return Sql
+     */
+    public function appendInt(Int $int, bool $trailingSpace = true): Sql
+    {
+        $this->appendString((string)$int, $trailingSpace);
+
+        return $this;
+    }
+
+    /**
+     * @param $condition
+     * @param $sql
+     * @param array $parameters
+     * @param bool $space
+     * @return Sql
+     */
+    public function ifThenAppend($condition, $sql, array $parameters = [], $space = true): Sql
+    {
+        if ($condition) {
+            $this->append($sql, $parameters, $space);
+        }
+
+        return $this;
     }
 }

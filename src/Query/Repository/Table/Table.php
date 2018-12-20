@@ -2,6 +2,8 @@
 
 namespace QueryMule\Query\Repository\Table;
 use QueryMule\Query\Connection\Driver\DriverInterface;
+use QueryMule\Query\Sql\Operator\Operator;
+use QueryMule\Query\Sql\Statement\FilterInterface;
 
 /**
  * Class Table
@@ -49,5 +51,13 @@ class Table extends AbstractTable
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return FilterInterface
+     */
+    public function myFilter(): FilterInterface
+    {
+        return $this->filter->where('a',Operator::comparison()->equalTo('b'));
     }
 }

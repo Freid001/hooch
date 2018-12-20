@@ -40,7 +40,7 @@ trait HasUnion
         $query = $select->build();
 
         $sql = new Sql(Sql::UNION,$query->parameters());
-        $sql->appendIf(!empty($all),Sql::ALL);
+        $sql->ifThenAppend(!empty($all),Sql::ALL);
         $sql->append($query->sql());
 
         return $sql;

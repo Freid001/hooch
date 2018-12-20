@@ -4,6 +4,7 @@ namespace QueryMule\Query\Repository;
 
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Query\Sql\Statement\OnFilterInterface;
 
 /**
  * Interface RepositoryInterface
@@ -20,4 +21,9 @@ interface RepositoryInterface
      * @return FilterInterface
      */
     public function filter() : FilterInterface;
+
+    /**
+     * @return OnFilterInterface
+     */
+    public function onFilter() : OnFilterInterface;
 }

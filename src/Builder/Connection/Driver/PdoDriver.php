@@ -7,6 +7,7 @@ namespace QueryMule\Builder\Connection\Driver;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use QueryMule\Builder\Exception\DriverException;
+use QueryMule\Builder\Sql\Mysql\OnFilter;
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Accent;
@@ -15,6 +16,7 @@ use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Query\Sql\Statement\OnFilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
@@ -80,6 +82,33 @@ class PdoDriver implements DriverInterface
         switch($this->driver){
             case self::DRIVER_MYSQL:
                 $this->filter = new \QueryMule\Builder\Sql\Mysql\Filter(new Query(), new Logical(), new Accent());
+                break;
+
+            case self::DRIVER_PGSQL:
+                //$this->filter = new \QueryMule\Builder\Sql\Pgsql\Filter();
+                break;
+
+            case self::DRIVER_SQLITE:
+                //$this->filter = new \QueryMule\Builder\Sql\Sqlite\Filter();
+                break;
+
+            default:
+                throw new DriverException(sprintf("Driver: %u not currently supported!",$this->driver));
+        }
+
+        return $this->filter;
+    }
+
+    /**
+     * @return OnFilterInterface
+     * @throws DriverException
+     */
+    public function onFilter() : OnFilterInterface
+    {
+        $this->filter = null;
+        switch($this->driver){
+            case self::DRIVER_MYSQL:
+                $this->filter = new \QueryMule\Builder\Sql\Mysql\OnFilter(new Query(), new Logical(), new Accent());
                 break;
 
             case self::DRIVER_PGSQL:

@@ -19,10 +19,10 @@ trait HasCols
 
     /**
      * @param array $cols
-     * @param null $alias
+     * @param string|null $alias
      * @return $this
      */
-    public function cols($cols = [Sql::SQL_STAR], $alias = null)
+    public function cols(array $cols = [Sql::SQL_STAR], ?string $alias = null)
     {
         $i = 0;
         foreach ($cols as $key => &$col) {
@@ -45,18 +45,18 @@ trait HasCols
 
     /**
      * @param $column
-     * @param bool $alias
-     * @param bool $as
+     * @param string|null $alias
+     * @param string|null $as
      * @param bool $comma
      * @return Sql
      */
-    private function columnClause($column, $alias = false, $as = false, $comma = false): Sql
+    private function columnClause($column, ?string $alias = null, ?string $as = null, bool $comma = false): Sql
     {
         $sql = new Sql();
-        $sql->appendIf($comma,',',[],false);
-        $sql->appendIf($alias,$alias.'.',[],false);
+        $sql->ifThenAppend($comma,',',[],false);
+        $sql->ifThenAppend(!is_null($alias),$alias.'.',[],false);
         $sql->append($column);
-        $sql->appendIf($as,Sql::AS . Sql::SQL_SPACE . $as);
+        $sql->ifThenAppend(!is_null($as),Sql::AS . Sql::SQL_SPACE . $as);
 
         return $sql;
     }

@@ -252,9 +252,9 @@ class Logical implements QueryBuilderInterface, OperatorInterface
     private function operatorWithColumn($column, OperatorInterface $operator): Sql
     {
         $sql = new Sql($this->operator);
-        $sql->appendIf($this->nested, Sql::SQL_BRACKET_OPEN);
+        $sql->ifThenAppend($this->nested, Sql::SQL_BRACKET_OPEN);
         $sql->append($column);
-        $sql->appendIf(!is_null($operator),$operator,[],$this->trailingSpace);
+        $sql->ifThenAppend(!is_null($operator),$operator,[],$this->trailingSpace);
 
         if ($this->getNested()) {
             $this->setNested(false);

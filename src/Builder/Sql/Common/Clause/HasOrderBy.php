@@ -18,10 +18,10 @@ trait HasOrderBy
 
     /**
      * @param $column
-     * @param $order
+     * @param string|null $order
      * @return $this
      */
-    public function orderBy($column, $order)
+    public function orderBy($column, ?string $order)
     {
         $sql = $this->orderByClause(
             $this->accent()->append($column, '.'),
@@ -43,9 +43,9 @@ trait HasOrderBy
     private function orderByClause($column, $sort = SQL::DESC, $comma = false): Sql
     {
         $sql = new Sql();
-        $sql->appendIf(!$comma,Sql::ORDER);
-        $sql->appendIf(!$comma,Sql::BY);
-        $sql->appendIf($comma,',',[],false);
+        $sql->ifThenAppend(!$comma,Sql::ORDER);
+        $sql->ifThenAppend(!$comma,Sql::BY);
+        $sql->ifThenAppend($comma,',',[],false);
         $sql->append($column);
         $sql->append(strtoupper($sort));
 

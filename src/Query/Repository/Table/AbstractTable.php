@@ -4,9 +4,11 @@ namespace QueryMule\Query\Repository\Table;
 
 use QueryMule\Builder\Sql\Generic\Filter;
 use QueryMule\Query\Connection\Driver\DriverInterface;
+use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Query\Sql\Statement\OnFilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
@@ -19,6 +21,11 @@ abstract class AbstractTable implements RepositoryInterface
      * @var FilterInterface
      */
     protected $filter;
+
+    /**
+     * @var OnFilterInterface
+     */
+    protected $onFilter;
 
     /**
      * @var SelectInterface
@@ -45,6 +52,13 @@ abstract class AbstractTable implements RepositoryInterface
             $this->filter = $this->driver->filter();
         }
 
+        $onFilter = $this->driver->getStatement('onFilter');
+        if($onFilter instanceof OnFilterInterface) {
+            $this->onFilter = $onFilter;
+        }else {
+            $this->onFilter = $this->driver->onFilter();
+        }
+
         $select = $this->driver->getStatement('select');
         if($select instanceof SelectInterface){
             $this->select = $select;
@@ -60,7 +74,7 @@ abstract class AbstractTable implements RepositoryInterface
 
     /**
      * @param array $cols
-     * @return \QueryMule\Query\Sql\Statement\SelectInterface
+     * @return \QueryMule\Query\Sql\Statement\SelectInterface|QueryBuilderInterface
      */
     public function select(array $cols = [Sql::SQL_STAR], $alias = null) : SelectInterface
     {
@@ -73,5 +87,13 @@ abstract class AbstractTable implements RepositoryInterface
     public function filter() : FilterInterface
     {
         return $this->filter;
+    }
+
+    /**
+     * @return OnFilterInterface
+     */
+    public function onFilter() : OnFilterInterface
+    {
+        return $this->onFilter;
     }
 }

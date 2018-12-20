@@ -2,13 +2,11 @@
 
 namespace QueryMule\Query\Sql\Operator;
 
-use QueryMule\Query\QueryBuilderInterface;
-
 /**
  * Interface OperatorInterface
  * @package QueryMule\Query
  */
-interface OperatorInterface  //extends QueryBuilderInterface
+interface OperatorInterface
 {
     /**
      * @return String|null

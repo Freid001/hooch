@@ -4,6 +4,11 @@ declare(strict_types=1);
 namespace test\Query\Sql;
 
 use PHPUnit\Framework\TestCase;
+use QueryMule\Builder\Sql\Mysql\Filter;
+use QueryMule\Query\Sql\Accent;
+use QueryMule\Query\Sql\Operator\Logical;
+use QueryMule\Query\Sql\Operator\Operator;
+use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 
 /**
@@ -16,6 +21,35 @@ class SqlTest extends TestCase
     {
         $sql = new Sql('SELECT * FROM some_table',[],false);
         $this->assertEquals("SELECT * FROM some_table", $sql->sql());
+    }
+
+    public function testAppendQueryBuilder()
+    {
+        $sql = new Sql();
+        $filter = new Filter(new Query(), new Logical(), new Accent());
+        $sql->appendQueryBuilder($filter->where('a', Operator::comparison()->equalTo('b')), false);
+        $this->assertEquals("WHERE a =?", trim($sql->sql()));
+    }
+
+    public function testAppendSql()
+    {
+        $sql = new Sql();
+        $sql->appendSql(new Sql("SELECT * FROM some_table", [], false), false);
+        $this->assertEquals("SELECT * FROM some_table", $sql->sql());
+    }
+
+    public function testAppendString()
+    {
+        $sql = new Sql();
+        $sql->appendString("string", false);
+        $this->assertEquals("string", $sql->sql());
+    }
+
+    public function testAppendInt()
+    {
+        $sql = new Sql();
+        $sql->appendInt(1, false);
+        $this->assertEquals("1", $sql->sql());
     }
 
     public function testParameters()

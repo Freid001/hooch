@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace QueryMule\Builder\Sql\Mysql;
 
 
-use QueryMule\Query\Sql\Operator\Comparison;
-use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Operator\OperatorInterface;
 use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\OnFilterInterface;
 
 /**
@@ -21,16 +20,22 @@ class OnFilter extends Filter implements OnFilterInterface
 
     /**
      * @param $column
-     * @param OperatorInterface $operator
-     * @return $this|OnFilterInterface
+     * @param OperatorInterface|null $operator
+     * @return OnFilterInterface|FilterInterface
      */
-    public function on($column, OperatorInterface $operator)
+    public function on($column, ?OperatorInterface $operator): OnFilterInterface
     {
         $this->on = true;
 
         $sql = new Sql();
-        $sql->append(Sql::ON);
-        $sql->append($column);
+
+        if ($column instanceof \Closure) {
+            call_user_func($column, $query = $this);
+        }else {
+            $sql->ifThenAppend(!is_null($column),Sql::ON);
+            $sql->ifThenAppend(!is_null($column),$column);
+        }
+
         $sql->append($operator);
 
         $this->query()->add(Sql::JOIN, $sql);
@@ -40,10 +45,10 @@ class OnFilter extends Filter implements OnFilterInterface
 
     /**
      * @param $column
-     * @param OperatorInterface $operator
-     * @return $this|OnFilterInterface
+     * @param OperatorInterface|null $operator
+     * @return OnFilterInterface|FilterInterface
      */
-    public function orOn($column, OperatorInterface $operator)
+    public function orOn($column, ?OperatorInterface $operator): OnFilterInterface
     {
 //        $this->orWhere($column,$comparison,null);
 

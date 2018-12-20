@@ -2,12 +2,11 @@
 
 namespace QueryMule\Query\Sql\Statement;
 
-use QueryMule\Builder\Exception\SqlException;
+
 use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
-use QueryMule\Query\Sql\Operator\Logical;
+use QueryMule\Query\Sql\Operator\OperatorInterface;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Operator\Comparison;
 
 /**
  * Interface Select
@@ -20,38 +19,87 @@ interface SelectInterface
      * @param string|null $alias
      * @return SelectInterface
      */
-    public function cols($cols = [Sql::SQL_STAR], $alias = null);
+    public function cols(array $cols = [Sql::SQL_STAR], ?string $alias = null);
+
+    /**
+     * @return FilterInterface|null
+     */
+    public function filter(): ?FilterInterface;
+
+    /**
+     * @param FilterInterface $filter
+     * @return void
+     */
+    public function setFilter(FilterInterface $filter): void;
+
+    /**
+     * @return OnFilterInterface|null
+     */
+    public function onFilter(): ?OnFilterInterface;
+
+    /**
+     * @param OnFilterInterface $onFilter
+     * @return void
+     */
+    public function setOnFilter(OnFilterInterface $onFilter): void;
 
     /**
      * @param RepositoryInterface $table
      * @param string|null $alias
      * @return SelectInterface
      */
-    public function from(RepositoryInterface $table, $alias = null);
-
-//    public function rightJoin() : SelectInterface;
-//
-//    public function crossJoin() : SelectInterface;
-//
-//    public function innerJoin() : SelectInterface;
-//
-//    public function outerJoin() : SelectInterface;
+    public function from(RepositoryInterface $table, ?string $alias = null);
 
     /**
-     * @param string $column
+     * @param $column
      * @param string|null $alias
      * @return SelectInterface
      */
-    public function groupBy($column, $alias = null);
+    public function groupBy($column, ?string $alias = null);
 
     /**
      * @param string $type
      * @param RepositoryInterface $table
      * @param string|null $alias
-     * @param $column
-     * @return mixed
+     * @return SelectInterface
      */
-    public function join(string $type, RepositoryInterface $table, ?string $alias, $column);
+    public function join(string $type, RepositoryInterface $table, ?string $alias = null);
+
+    /**
+     * @param RepositoryInterface $table
+     * @param string|null $alias
+     * @param $column
+     * @param OperatorInterface|null $operator
+     * @return SelectInterface
+     */
+    public function leftJoin(RepositoryInterface $table, ?string $alias, $column, ?OperatorInterface $operator = null);
+
+    /**
+     * @param RepositoryInterface $table
+     * @param string|null $alias
+     * @param $column
+     * @param OperatorInterface|null $operator
+     * @return SelectInterface
+     */
+    public function rightJoin(RepositoryInterface $table, ?string $alias, $column, ?OperatorInterface $operator = null);
+
+    /**
+     * @param RepositoryInterface $table
+     * @param string|null $alias
+     * @param $column
+     * @param OperatorInterface|null $operator
+     * @return SelectInterface
+     */
+    public function innerJoin(RepositoryInterface $table, ?string $alias, $column, ?OperatorInterface $operator = null);
+
+    /**
+     * @param RepositoryInterface $table
+     * @param string|null $alias
+     * @param $column
+     * @param OperatorInterface|null $operator
+     * @return SelectInterface
+     */
+    public function fullOuterJoin(RepositoryInterface $table, ?string $alias, $column, ?OperatorInterface $operator = null);
 
     /**
      * @param int $limit
@@ -66,27 +114,11 @@ interface SelectInterface
     public function offset(int $offset);
 
     /**
-     * @param string $first
-     * @param string $operator
-     * @param string $second
-     * @return SelectInterface
-     */
-    //public function on($first, $operator, $second): SelectInterface;
-
-    /**
-     * @param string $first
-     * @param string|null $operator
-     * @param string|null $second
-     * @return SelectInterface
-     */
-    //public function orOn($first, $operator = null, $second = null): SelectInterface;
-
-    /**
      * @param $column
-     * @param $order
-     * @return SelectInterface
+     * @param string|null $order
+     * @return mixed
      */
-    public function orderBy($column, $order);
+    public function orderBy($column, ?string $order);
 
     /**
      * @param QueryBuilderInterface $select

@@ -7,11 +7,15 @@ namespace QueryMule\Builder\Sql\Mysql;
 
 use QueryMule\Builder\Sql\Common\Clause\HasCols;
 use QueryMule\Builder\Sql\Common\Clause\HasFrom;
+use QueryMule\Builder\Sql\Common\Clause\HasFullOuterJoin;
 use QueryMule\Builder\Sql\Common\Clause\HasGroupBy;
+use QueryMule\Builder\Sql\Common\Clause\HasInnerJoin;
 use QueryMule\Builder\Sql\Common\Clause\HasJoin;
+use QueryMule\Builder\Sql\Common\Clause\HasLeftJoin;
 use QueryMule\Builder\Sql\Common\Clause\HasLimit;
 use QueryMule\Builder\Sql\Common\Clause\HasOffset;
 use QueryMule\Builder\Sql\Common\Clause\HasOrderBy;
+use QueryMule\Builder\Sql\Common\Clause\HasRightJoin;
 use QueryMule\Builder\Sql\Common\Clause\HasUnion;
 use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
@@ -38,6 +42,10 @@ class Select implements QueryBuilderInterface, SelectInterface
     use HasUnion;
     use HasOrderBy;
     use HasJoin;
+    use HasLeftJoin;
+    use HasRightJoin;
+    use HasInnerJoin;
+    use HasFullOuterJoin;
 
     /**
      * @var FilterInterface|QueryBuilderInterface
@@ -55,7 +63,7 @@ class Select implements QueryBuilderInterface, SelectInterface
     private $logical;
 
     /**
-     * @var OnFilter
+     * @var OnFilterInterface|QueryBuilderInterface
      */
     private $onFilter;
 
@@ -81,8 +89,6 @@ class Select implements QueryBuilderInterface, SelectInterface
         $this->query = $query;
         $this->logical = $logical;
         $this->accent = $accent;
-
-        $this->onFilter = new OnFilter($this->query(), $this->logical(), $this->accent());
 
         if (!empty($cols)) {
             $this->cols($cols);
@@ -113,8 +119,12 @@ class Select implements QueryBuilderInterface, SelectInterface
         Sql::UNION     // DONE
     ]): Sql
     {
-        if (in_array(Sql::WHERE, $clauses)) {
+        if (in_array(Sql::WHERE, $clauses) && $this->filter) {
             $this->query->add(Sql::WHERE, $this->filter->build([Sql::WHERE]));
+        }
+
+        if (in_array(Sql::JOIN, $clauses) && $this->onFilter) {
+            $this->query->add(Sql::JOIN, $this->onFilter->build([Sql::JOIN]));
         }
 
         $sql = $this->query->build($clauses);
@@ -125,17 +135,17 @@ class Select implements QueryBuilderInterface, SelectInterface
     }
 
     /**
-     * @return FilterInterface
+     * @return FilterInterface|null
      */
-    public function filter(): FilterInterface
+    public function filter(): ?FilterInterface
     {
         return $this->filter;
     }
 
     /**
-     * @return OnFilterInterface
+     * @return OnFilterInterface|null
      */
-    public function onFilter(): OnFilterInterface
+    public function onFilter(): ?OnFilterInterface
     {
         return $this->onFilter;
     }
@@ -149,6 +159,22 @@ class Select implements QueryBuilderInterface, SelectInterface
         $this->accent->ignore($ignore);
 
         return $this;
+    }
+
+    /**
+     * @param FilterInterface $filter
+     */
+    public function setFilter(FilterInterface $filter): void
+    {
+        $this->filter = $filter;
+    }
+
+    /**
+     * @param OnFilterInterface $onFilter
+     */
+    public function setOnFilter(OnFilterInterface $onFilter): void
+    {
+        $this->onFilter = $onFilter;
     }
 
     /**
@@ -173,13 +199,5 @@ class Select implements QueryBuilderInterface, SelectInterface
     protected function query(): Query
     {
         return $this->query;
-    }
-
-    /**
-     * @param $filter
-     */
-    protected function setFilter($filter): void
-    {
-        $this->filter = $filter;
     }
 }

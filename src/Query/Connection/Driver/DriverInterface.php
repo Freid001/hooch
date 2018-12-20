@@ -8,6 +8,7 @@ use QueryMule\Query\Sql\Operator\Comparison;
 use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Query\Sql\Statement\OnFilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
@@ -24,6 +25,11 @@ interface DriverInterface
      * @return FilterInterface
      */
     public function filter() : FilterInterface;
+
+    /**
+     * @return OnFilterInterface
+     */
+    public function onFilter() : OnFilterInterface;
 
     /**
      * @param array $cols

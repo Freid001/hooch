@@ -38,7 +38,7 @@ class OnFilter extends Filter implements OnFilterInterface
 
         $sql->append($operator);
 
-        $this->query()->add(Sql::JOIN, $sql);
+        $this->query()->append(Sql::JOIN, $sql);
 
         return $this;
     }

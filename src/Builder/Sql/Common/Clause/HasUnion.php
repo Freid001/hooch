@@ -25,7 +25,7 @@ trait HasUnion
      */
     public function union(QueryBuilderInterface $select, bool $all = false)
     {
-        $this->query()->add(Sql::UNION, $this->unionClause($select, $all));
+        $this->query()->append(Sql::UNION, $this->unionClause($select, $all));
 
         return $this;
     }

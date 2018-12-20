@@ -98,7 +98,7 @@ class Select implements QueryBuilderInterface, SelectInterface
             $this->from($table);
         }
 
-        $this->query->add(Sql::SELECT, new Sql(Sql::SELECT));
+        $this->query->append(Sql::SELECT, new Sql(Sql::SELECT));
     }
 
     /**
@@ -120,11 +120,11 @@ class Select implements QueryBuilderInterface, SelectInterface
     ]): Sql
     {
         if (in_array(Sql::WHERE, $clauses) && $this->filter) {
-            $this->query->add(Sql::WHERE, $this->filter->build([Sql::WHERE]));
+            $this->query->append(Sql::WHERE, $this->filter->build([Sql::WHERE]));
         }
 
         if (in_array(Sql::JOIN, $clauses) && $this->onFilter) {
-            $this->query->add(Sql::JOIN, $this->onFilter->build([Sql::JOIN]));
+            $this->query->append(Sql::JOIN, $this->onFilter->build([Sql::JOIN]));
         }
 
         $sql = $this->query->build($clauses);

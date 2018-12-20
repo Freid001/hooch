@@ -52,12 +52,4 @@ class Table extends AbstractTable
     {
         return $this->name;
     }
-
-    /**
-     * @return FilterInterface
-     */
-    public function myFilter(): FilterInterface
-    {
-        return $this->filter->where('a',Operator::comparison()->equalTo('b'));
-    }
 }

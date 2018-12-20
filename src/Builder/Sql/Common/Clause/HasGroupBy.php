@@ -26,10 +26,10 @@ trait HasGroupBy
         $sql = $this->groupByClause(
             $this->accent()->append($column),
             !empty($alias) ? $this->accent()->append($alias) : $alias,
-            !empty($this->query()->get(Sql::GROUP))
+            !empty($this->query()->getSql(Sql::GROUP))
         );
 
-        $this->query()->add(Sql::GROUP, $sql);
+        $this->query()->append(Sql::GROUP, $sql);
 
         return $this;
     }

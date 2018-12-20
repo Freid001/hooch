@@ -36,7 +36,7 @@ trait HasJoin
         $sql->ifThenAppend(!empty($alias), Sql:: AS);
         $sql->ifThenAppend(!empty($alias), $alias);
 
-        $this->query()->add(Sql::JOIN, $sql);
+        $this->query()->append(Sql::JOIN, $sql);
 
         return $this;
     }

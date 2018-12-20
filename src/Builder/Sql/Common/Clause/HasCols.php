@@ -34,10 +34,10 @@ trait HasCols
                 ($col !== Sql::SQL_STAR) ? $this->accent()->append($col) : $col,
                 !empty($alias) ? $this->accent()->append($alias) : $alias,
                 ($key !== $i) ? $key : null,
-                !empty($this->query()->get(Sql::COLS))
+                !empty($this->query()->getSql(Sql::COLS))
             );
 
-            $this->query()->add(Sql::COLS, $sql);
+            $this->query()->append(Sql::COLS, $sql);
         }
 
         return $this;

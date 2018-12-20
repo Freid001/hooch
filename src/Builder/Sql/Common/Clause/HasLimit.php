@@ -25,7 +25,7 @@ trait HasLimit
         $sql = new Sql(Sql::LIMIT);
         $sql->append($limit);
 
-        $this->query()->add(Sql::LIMIT, $sql);
+        $this->query()->append(Sql::LIMIT, $sql);
 
         return $this;
     }

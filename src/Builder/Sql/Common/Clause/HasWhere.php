@@ -38,7 +38,7 @@ trait HasWhere
             $sql->append($operator);
         }
 
-        $this->query()->add($this->whereJoin(), $sql);
+        $this->query()->append($this->whereJoin(), $sql);
 
         return $this;
     }
@@ -50,7 +50,7 @@ trait HasWhere
      */
     private function appendBracket(Sql $sql, OperatorInterface $operator): Sql
     {
-        if (!empty($this->query()->get($this->whereJoin()))){
+        if (!empty($this->query()->getSql($this->whereJoin()))){
             return $sql;
         }
 
@@ -71,7 +71,7 @@ trait HasWhere
      */
     private function appendColumn(Sql $sql, $column): Sql
     {
-        if (empty($this->query()->get($this->whereJoin()))) {
+        if (empty($this->query()->getSql($this->whereJoin()))) {
             return $sql->append($column);
         }
 
@@ -86,7 +86,7 @@ trait HasWhere
      */
     private function appendAnd(Sql $sql, $column, OperatorInterface $operator): Sql
     {
-        if (!empty($this->query()->get($this->whereJoin()))) {
+        if (!empty($this->query()->getSql($this->whereJoin()))) {
             if ($operator->getOperator() !== Sql:: OR) {
                 $this->logical()->and(
                     $column,

@@ -21,49 +21,56 @@ class Query
     protected $parameters = [];
 
     /**
-     * @param $clause
+     * @param string $clause
      * @param Sql $sql
-     * @return void
      */
-    public function add($clause, Sql $sql): void
+    public function append(string $clause, Sql $sql): void
     {
-        $this->sql[$clause] = !empty($this->sql[$clause]) ? $this->sql[$clause] . $sql->sql() : $sql->sql();
-
-        foreach($sql->parameters() as $key => $parameter){
-            $this->parameters[$clause][] = $parameter;
-        }
+        $this->appendSql($clause, $sql->sql());
+        $this->appendParameters($clause, $sql->parameters());
     }
 
     /**
      * @param array $order
-     * @return \QueryMule\Query\Sql\Sql
+     * @return Sql|null
      */
-    public function build(array $order): Sql
+    public function build(array $order = []): Sql
     {
-        $sql = '';
-        $parameters = [];
-        foreach($order as $clause){
-            if(!empty($this->sql[$clause])) {
+        return array_reduce($order, function(Sql $sql, $clause){
+            $sql->append(
+                $this->getSql($clause),
+                $this->getParameters($clause),
+                false
+            );
 
-                $sql .= !empty($sql) ? $this->sql[$clause] : $this->sql[$clause];
-                if(!empty($this->parameters[$clause])) {
-                    foreach ($this->parameters[$clause] as $parameter) {
-                        $parameters[] = $parameter;
-                    }
-                }
-            }
-        }
-
-        return new Sql($sql,$parameters,false);
+            return $sql;
+        }, new Sql(null, [], false));
     }
 
     /**
      * @param string $clause
      * @return string|null
      */
-    public function get($clause): ?String
+    public function getSql($clause): ?String
     {
-        return !empty($this->sql[$clause]) ? $this->sql[$clause] : null;
+        if (!empty($this->sql[$clause])) {
+            return $this->sql[$clause];
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $clause
+     * @return array
+     */
+    public function getParameters($clause): array
+    {
+        if (!empty($this->parameters[$clause])) {
+            return $this->parameters[$clause];
+        }
+
+        return [];
     }
 
     /**
@@ -72,14 +79,41 @@ class Query
      */
     public function reset(array $clauses = []): void
     {
-        if(empty($clauses)){
+        if (empty($clauses)) {
             $this->sql = [];
             $this->parameters = [];
         }
 
-        foreach($clauses as $clause) {
+        foreach ($clauses as $clause) {
             unset($this->sql[$clause]);
             unset($this->parameters[$clause]);
+        }
+    }
+
+    /**
+     * @param string $clause
+     * @param string|null $sql
+     */
+    private function appendSql(string $clause, ?string $sql): void
+    {
+        if (!empty($this->sql[$clause])) {
+            $this->sql[$clause] .= $sql;
+        } else {
+            $this->sql[$clause] = $sql;
+        }
+    }
+
+    /**
+     * @param string $clause
+     * @param array $parameters
+     * @return void
+     */
+    private function appendParameters(string $clause, array $parameters): void
+    {
+        if (!empty($this->parameters[$clause])) {
+            $this->parameters[$clause] = array_merge($this->parameters[$clause], $parameters);
+        } else {
+            $this->parameters[$clause] = $parameters;
         }
     }
 }

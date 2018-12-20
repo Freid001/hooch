@@ -105,19 +105,19 @@ class Sql
         }
 
         if ($append instanceof QueryBuilderInterface) {
-            return $this->appendQueryBuilder($append, $trailingSpace);
+            $this->appendQueryBuilder($append, $trailingSpace);
         }
 
         if ($append instanceof Sql) {
-            return $this->appendSql($append, $trailingSpace);
+            $this->appendSql($append, $trailingSpace);
         }
 
         if (is_string($append)) {
-            return $this->appendString($append, $trailingSpace);
+            $this->appendString($append, $trailingSpace);
         }
 
         if (is_integer($append)) {
-            return $this->appendInt($append, $trailingSpace);
+            $this->appendInt($append, $trailingSpace);
         }
 
         return $this;

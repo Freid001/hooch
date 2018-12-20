@@ -26,7 +26,7 @@ trait HasOffset
         $sql = new Sql(Sql::OFFSET);
         $sql->append($offset);
 
-        $this->query()->add(Sql::OFFSET, $sql);
+        $this->query()->append(Sql::OFFSET, $sql);
 
         return $this;
     }

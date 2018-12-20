@@ -32,9 +32,9 @@ trait HasNestedWhere
         call_user_func($callback, $query = $this);
 
         if($this instanceof OnFilterInterface){
-            $this->query()->add(Sql::JOIN, new Sql(Sql::SQL_BRACKET_CLOSE));
+            $this->query()->append(Sql::JOIN, new Sql(Sql::SQL_BRACKET_CLOSE));
         }else {
-            $this->query()->add(Sql::WHERE, new Sql(Sql::SQL_BRACKET_CLOSE));
+            $this->query()->append(Sql::WHERE, new Sql(Sql::SQL_BRACKET_CLOSE));
         }
 
         return $this;

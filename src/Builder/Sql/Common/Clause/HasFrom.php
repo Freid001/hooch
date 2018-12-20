@@ -29,7 +29,7 @@ trait HasFrom
             $this->setFilter($table->filter());
         }
 
-        $this->query()->add(Sql::FROM, $this->fromClause($table, $alias));
+        $this->query()->append(Sql::FROM, $this->fromClause($table, $alias));
 
         return $this;
     }

@@ -26,10 +26,10 @@ trait HasOrderBy
         $sql = $this->orderByClause(
             $this->accent()->append($column, '.'),
             $order,
-            !empty($this->query()->get(Sql::ORDER))
+            !empty($this->query()->getSql(Sql::ORDER))
         );
 
-        $this->query()->add(Sql::ORDER, $sql);
+        $this->query()->append(Sql::ORDER, $sql);
 
         return $this;
     }

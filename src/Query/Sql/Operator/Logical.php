@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace QueryMule\Query\Sql\Operator;
 
 use QueryMule\Query\QueryBuilderInterface;
+use QueryMule\Query\Sql\Accent;
+use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 
 /**
@@ -40,6 +42,11 @@ class Logical implements QueryBuilderInterface, OperatorInterface
     {
         $this->sql = new Sql();
         $this->trailingSpace = true;
+    }
+
+    public function query(): Query
+    {
+        return new Query(new Sql(), new Logical(), new Accent());
     }
 
     /**
@@ -238,7 +245,7 @@ class Logical implements QueryBuilderInterface, OperatorInterface
     {
         $sql = new Sql($this->operator, $subQuery->parameters());
         $sql->append(Sql::SQL_BRACKET_OPEN, [], $this->trailingSpace);
-        $sql->append($subQuery->sql(), [], $this->trailingSpace);
+        $sql->append($subQuery->string(), [], $this->trailingSpace);
         $sql->append(Sql::SQL_BRACKET_CLOSE, [], $this->trailingSpace);
 
         return $sql;

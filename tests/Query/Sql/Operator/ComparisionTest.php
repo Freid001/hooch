@@ -32,15 +32,15 @@ class ComparisionTest extends TestCase
     {
         $query = $this->comparison->equalTo('some_value')->build();
 
-        $this->assertEquals("=?", trim($query->sql()));
+        $this->assertEquals("=?", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
     public function testEqualToSql()
     {
-        $query = $this->comparison->equalTo(new Sql('SELECT * FROM some_table WHERE col_a = some_value',['some_value']), true)->build();
+        $query = $this->comparison->equalTo(new Sql('SELECT * FROM some_table WHERE col_a = some_value',['some_value']))->build();
 
-        $this->assertEquals("= ( SELECT * FROM some_table WHERE col_a = some_value )", trim($query->sql()));
+        $this->assertEquals("= ( SELECT * FROM some_table WHERE col_a = some_value )", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
@@ -48,7 +48,7 @@ class ComparisionTest extends TestCase
 {
     $query = $this->comparison->greaterThan('some_value')->build();
 
-    $this->assertEquals(">?", trim($query->sql()));
+    $this->assertEquals(">?", trim($query->string()));
     $this->assertEquals(['some_value'], $query->parameters());
 }
 
@@ -56,7 +56,7 @@ class ComparisionTest extends TestCase
     {
         $query = $this->comparison->greaterThan(new Sql('SELECT * FROM some_table WHERE col_a = some_value',['some_value']), true)->build();
 
-        $this->assertEquals("> ( SELECT * FROM some_table WHERE col_a = some_value )", trim($query->sql()));
+        $this->assertEquals("> ( SELECT * FROM some_table WHERE col_a = some_value )", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
@@ -64,15 +64,15 @@ class ComparisionTest extends TestCase
     {
         $query = $this->comparison->greaterThanEqualTo('some_value')->build();
 
-        $this->assertEquals(">=?", trim($query->sql()));
+        $this->assertEquals(">=?", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
     public function testGreaterThanEqualToSql()
     {
-        $query = $this->comparison->greaterThanEqualTo(new Sql('SELECT * FROM some_table WHERE col_a = some_value',['some_value']), true)->build();
+        $query = $this->comparison->greaterThanEqualTo(new Sql('SELECT * FROM some_table WHERE col_a = some_value',['some_value']))->build();
 
-        $this->assertEquals(">= ( SELECT * FROM some_table WHERE col_a = some_value )", trim($query->sql()));
+        $this->assertEquals(">= ( SELECT * FROM some_table WHERE col_a = some_value )", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
@@ -80,15 +80,15 @@ class ComparisionTest extends TestCase
     {
         $query = $this->comparison->lessThan('some_value')->build();
 
-        $this->assertEquals("<?", trim($query->sql()));
+        $this->assertEquals("<?", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
     public function testLessThanSql()
     {
-        $query = $this->comparison->lessThan(new Sql('SELECT * FROM some_table WHERE col_a = some_value',['some_value']), true)->build();
+        $query = $this->comparison->lessThan(new Sql('SELECT * FROM some_table WHERE col_a = some_value',['some_value']))->build();
 
-        $this->assertEquals("< ( SELECT * FROM some_table WHERE col_a = some_value )", trim($query->sql()));
+        $this->assertEquals("< ( SELECT * FROM some_table WHERE col_a = some_value )", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
@@ -96,15 +96,15 @@ class ComparisionTest extends TestCase
     {
         $query = $this->comparison->lessThanEqualTo('some_value')->build();
 
-        $this->assertEquals("<=?", trim($query->sql()));
+        $this->assertEquals("<=?", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
     public function testLessThanEqualToSql()
     {
-        $query = $this->comparison->lessThanEqualTo(new Sql('SELECT * FROM some_table WHERE col_a = some_value',['some_value']), true)->build();
+        $query = $this->comparison->lessThanEqualTo(new Sql('SELECT * FROM some_table WHERE col_a = some_value',['some_value']))->build();
 
-        $this->assertEquals("<= ( SELECT * FROM some_table WHERE col_a = some_value )", trim($query->sql()));
+        $this->assertEquals("<= ( SELECT * FROM some_table WHERE col_a = some_value )", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
@@ -112,15 +112,15 @@ class ComparisionTest extends TestCase
     {
         $query = $this->comparison->notEqualTo('some_value')->build();
 
-        $this->assertEquals("<>?", trim($query->sql()));
+        $this->assertEquals("<>?", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
     public function testNotEqualToSql()
     {
-        $query = $this->comparison->notEqualTo(new Sql('SELECT * FROM some_table WHERE col_a = some_value',['some_value']), true)->build();
+        $query = $this->comparison->notEqualTo(new Sql('SELECT * FROM some_table WHERE col_a = some_value',['some_value']))->build();
 
-        $this->assertEquals("<> ( SELECT * FROM some_table WHERE col_a = some_value )", trim($query->sql()));
+        $this->assertEquals("<> ( SELECT * FROM some_table WHERE col_a = some_value )", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
     }
 }

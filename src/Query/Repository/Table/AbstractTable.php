@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Query\Repository\Table;
 
-use QueryMule\Builder\Sql\Generic\Filter;
+
 use QueryMule\Query\Connection\Driver\DriverInterface;
 use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Repository\RepositoryInterface;
@@ -33,9 +35,19 @@ abstract class AbstractTable implements RepositoryInterface
     protected $select;
 
     /**
+     * @var string
+     */
+    protected $name;
+
+    /**
      * @var DriverInterface
      */
     private $driver;
+
+    /**
+     * @var string|null
+     */
+    private $alias;
 
     /**
      * AbstractTable constructor.
@@ -44,56 +56,57 @@ abstract class AbstractTable implements RepositoryInterface
     public function __construct(DriverInterface $driver)
     {
         $this->driver = $driver;
-
-        $filter = $this->driver->getStatement('filter');
-        if($filter instanceof FilterInterface) {
-            $this->filter = $filter;
-        }else {
-            $this->filter = $this->driver->filter();
-        }
-
-        $onFilter = $this->driver->getStatement('onFilter');
-        if($onFilter instanceof OnFilterInterface) {
-            $this->onFilter = $onFilter;
-        }else {
-            $this->onFilter = $this->driver->onFilter();
-        }
-
-        $select = $this->driver->getStatement('select');
-        if($select instanceof SelectInterface){
-            $this->select = $select;
-        }else {
-            $this->select = $this->driver->select();
-        }
     }
 
     /**
      * @return string
      */
-    abstract public function getName();
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAlias(): ?string
+    {
+        return $this->alias;
+    }
+
+    /**
+     * @param string|null $alias
+     * @return AbstractTable
+     */
+    public function setAlias(?string $alias): AbstractTable
+    {
+        $this->alias = $alias;
+
+        return $this;
+    }
 
     /**
      * @param array $cols
      * @return \QueryMule\Query\Sql\Statement\SelectInterface|QueryBuilderInterface
      */
-    public function select(array $cols = [Sql::SQL_STAR], $alias = null) : SelectInterface
+    public function select(array $cols = [Sql::SQL_STAR]): SelectInterface
     {
-        return $this->select->cols($cols)->from($this,$alias);
+        return $this->driver->select()->cols($cols)->from($this);
     }
 
     /**
      * @return \QueryMule\Query\Sql\Statement\FilterInterface
      */
-    public function filter() : FilterInterface
+    public function filter(): FilterInterface
     {
-        return $this->filter;
+        return $this->driver->filter();
     }
 
     /**
      * @return OnFilterInterface
      */
-    public function onFilter() : OnFilterInterface
+    public function onFilter(): OnFilterInterface
     {
-        return $this->onFilter;
+        return $this->driver->onFilter();
     }
 }

@@ -3,13 +3,17 @@ declare(strict_types=1);
 
 namespace test\Builder\Sql\MySql;
 
+
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use QueryMule\Builder\Connection\Driver\MysqliDriver;
-use QueryMule\Query\Repository\Table\Table;
+use QueryMule\Query\Sql\Accent;
+use QueryMule\Query\Sql\Operator\Logical;
+use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Query\Sql\Statement\OnFilterInterface;
 use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
@@ -18,10 +22,28 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
  */
 class MysqliDriverTest extends TestCase
 {
+    /**
+     * @var Query
+     */
+    private $query;
+
+    public function setUp()
+    {
+        $this->query = new Query(new Sql(), new Logical(), new Accent());
+        $this->query->accent()->setSymbol('`');
+    }
+
+    public function tearDown()
+    {
+        $this->query = null;
+    }
+
     public function testBindParameters()
     {
+        /** @var LoggerInterface $logger */
         $logger = $this->createMock(LoggerInterface::class);
 
+        /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
         $mysqli->expects($this->once())->method('prepare')->will($this->returnCallback(function() {
             $mysqli_result = $this->getMockBuilder('mysqli_result')
@@ -39,7 +61,7 @@ class MysqliDriverTest extends TestCase
             return $mysqli_result;
         }));
 
-        $driver = new MysqliDriver($mysqli,$logger);
+        $driver = new MysqliDriver($mysqli, $this->query, $logger);
 
         $fetch = $driver->fetch(new Sql(null,[
             null,
@@ -47,14 +69,16 @@ class MysqliDriverTest extends TestCase
             (int)1,
             (string)1.5]));
 
-        $this->assertFalse($fetch);
+        $this->assertFalse(!empty($fetch));
     }
 
     public function testExecutionErrorLogged()
     {
+        /** @var LoggerInterface $logger */
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('error');
 
+        /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
         $mysqli->expects($this->once())->method('prepare')->will($this->returnCallback(function() {
             $mysqli_result = $this->getMockBuilder('mysqli_result')
@@ -69,7 +93,7 @@ class MysqliDriverTest extends TestCase
             return $mysqli_result;
         }));
 
-        $driver = new MysqliDriver($mysqli,$logger);
+        $driver = new MysqliDriver($mysqli, $this->query, $logger);
 
         $fetch = $driver->fetch(new Sql(null));
 
@@ -78,9 +102,11 @@ class MysqliDriverTest extends TestCase
 
     public function testFetch()
     {
+        /** @var LoggerInterface $logger */
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('info');
 
+        /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
         $mysqli->expects($this->once())->method('prepare')->will($this->returnCallback(function() {
             $mysqli_result = $this->getMockBuilder('mysqli_result')
@@ -105,7 +131,7 @@ class MysqliDriverTest extends TestCase
             return $mysqli_result;
         }));
 
-        $driver = new MysqliDriver($mysqli,$logger);
+        $driver = new MysqliDriver($mysqli, $this->query, $logger);
 
         $fetch = $driver->fetch(new Sql(null));
 
@@ -114,9 +140,11 @@ class MysqliDriverTest extends TestCase
 
     public function testFetchAll()
     {
+        /** @var LoggerInterface $logger */
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('info');
 
+        /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
         $mysqli->expects($this->once())->method('prepare')->will($this->returnCallback(function() {
             $mysqli_result = $this->getMockBuilder('mysqli_result')
@@ -141,21 +169,24 @@ class MysqliDriverTest extends TestCase
            return $mysqli_result;
         }));
 
-        $driver = new MysqliDriver($mysqli,$logger);
+        $driver = new MysqliDriver($mysqli, $this->query, $logger);
 
         $fetchAll = $driver->fetchAll(new Sql(null));
-
+var_dump($fetchAll);
         $this->assertEquals('some_result',$fetchAll);
     }
 
     public function testCacheSet()
     {
+        /** @var CacheInterface $cache */
         $cache = $this->createMock(CacheInterface::class);
         $cache->expects($this->once())->method('set');
 
+        /** @var LoggerInterface $logger */
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('info');
 
+        /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
         $mysqli->expects($this->once())->method('prepare')->will($this->returnCallback(function() {
             $mysqli_result = $this->getMockBuilder('mysqli_result')
@@ -180,67 +211,70 @@ class MysqliDriverTest extends TestCase
             return $mysqli_result;
         }));
 
-        $driver = new MysqliDriver($mysqli,$logger);
+        $driver = new MysqliDriver($mysqli, $this->query, $logger);
 
         $driver->cache($cache)->fetch(new Sql(null));
     }
 
     public function testCacheGet()
     {
+        /** @var CacheInterface $cache */
         $cache = $this->createMock(CacheInterface::class);
         $cache->expects($this->once())->method('has')->willReturn($this->returnValue(true));
         $cache->expects($this->once())->method('get');
 
+        /** @var LoggerInterface $logger */
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('info');
 
+        /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
 
-        $driver = new MysqliDriver($mysqli,$logger);
+        $driver = new MysqliDriver($mysqli, $this->query, $logger);
 
         $driver->cache($cache)->fetch(new Sql(null));
     }
 
     public function testFilter()
     {
+        /** @var LoggerInterface $logger */
         $logger = $this->createMock(LoggerInterface::class);
 
+        /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
 
-        $driver = new MysqliDriver($mysqli,$logger);
+        $driver = new MysqliDriver($mysqli, $this->query, $logger);
 
         $this->assertTrue($driver->filter() instanceof FilterInterface);
     }
 
     public function testSelect()
     {
+        /** @var LoggerInterface $logger */
         $logger = $this->createMock(LoggerInterface::class);
 
+        /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
 
-        $driver = new MysqliDriver($mysqli,$logger);
+        $driver = new MysqliDriver($mysqli, $this->query, $logger);
 
-        $select = $driver->select([Sql::SQL_STAR], Table::make($driver)->setName('some_table'));
+        $select = $driver->select();
 
         $this->assertTrue($select instanceof SelectInterface);
-        $this->assertEquals("SELECT * FROM some_table ",$select->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM
-        ])->sql());
     }
 
     public function testStatement()
     {
+        /** @var LoggerInterface $logger */
         $logger = $this->createMock(LoggerInterface::class);
 
+        /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
 
-        $driver = new MysqliDriver($mysqli,$logger);
-        $driver->filter();
-        $driver->select();
+        $driver = new MysqliDriver($mysqli, $this->query, $logger);
 
-        $this->assertTrue($driver->getStatement('filter') instanceof FilterInterface);
-        $this->assertTrue($driver->getStatement('select') instanceof SelectInterface);
+        $this->assertTrue($driver->filter() instanceof FilterInterface);
+        $this->assertTrue($driver->onFilter() instanceof OnFilterInterface);
+        $this->assertTrue($driver->select() instanceof SelectInterface);
     }
 }

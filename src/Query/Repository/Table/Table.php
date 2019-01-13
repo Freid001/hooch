@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Query\Repository\Table;
+
+
 use QueryMule\Query\Connection\Driver\DriverInterface;
-use QueryMule\Query\Sql\Operator\Operator;
-use QueryMule\Query\Sql\Statement\FilterInterface;
 
 /**
  * Class Table
@@ -11,11 +13,6 @@ use QueryMule\Query\Sql\Statement\FilterInterface;
  */
 class Table extends AbstractTable
 {
-    /**
-     * @var string
-     */
-    private $name;
-
     /**
      * Table constructor.
      * @param DriverInterface $driver
@@ -43,13 +40,5 @@ class Table extends AbstractTable
         $this->name = $name;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 }

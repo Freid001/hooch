@@ -3,6 +3,7 @@
 namespace QueryMule\Query;
 
 
+use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 
 /**
@@ -16,4 +17,9 @@ interface QueryBuilderInterface
      * @return Sql
      */
     public function build(array $clauses = []): Sql;
+
+    /**
+     * @return Query
+     */
+    public function query(): Query;
 }

@@ -24,10 +24,9 @@ abstract class Select
 
     /**
      * @param array $cols
-     * @param null $alias
      * @return SelectInterface
      */
-    final public function cols($cols = [Sql::SQL_STAR], $alias = null) : SelectInterface
+    final public function cols($cols = [Sql::SQL_STAR]) : SelectInterface
     {
         $i = 0;
         foreach($cols as $key => &$col){

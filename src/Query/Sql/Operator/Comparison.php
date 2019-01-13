@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace QueryMule\Query\Sql\Operator;
 
 use QueryMule\Query\QueryBuilderInterface;
+use QueryMule\Query\Sql\Accent;
+use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 
 /**
@@ -22,6 +24,11 @@ class Comparison implements QueryBuilderInterface, OperatorInterface
      * @var string
      */
     private $operator;
+
+    public function query(): Query
+    {
+        return new Query(new Sql(), new Logical(), new Accent());
+    }
 
     /**
      * @param array $clauses

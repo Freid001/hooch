@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Query\Connection\Handler;
 
 use QueryMule\Query\Connection\Driver\DriverInterface;
@@ -11,7 +13,7 @@ use QueryMule\Query\Connection\Driver\DriverInterface;
 interface DatabaseHandlerInterface
 {
     /**
-     * @return DriverInterface
+     * @return DriverInterface [description]
      */
     public function driver() : DriverInterface;
 }

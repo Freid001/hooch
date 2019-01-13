@@ -5,23 +5,20 @@ declare(strict_types=1);
 namespace QueryMule\Builder\Sql\Mysql;
 
 
-use QueryMule\Builder\Sql\Common\Clause\HasCols;
-use QueryMule\Builder\Sql\Common\Clause\HasFrom;
-use QueryMule\Builder\Sql\Common\Clause\HasFullOuterJoin;
-use QueryMule\Builder\Sql\Common\Clause\HasGroupBy;
-use QueryMule\Builder\Sql\Common\Clause\HasInnerJoin;
-use QueryMule\Builder\Sql\Common\Clause\HasJoin;
-use QueryMule\Builder\Sql\Common\Clause\HasLeftJoin;
-use QueryMule\Builder\Sql\Common\Clause\HasLimit;
-use QueryMule\Builder\Sql\Common\Clause\HasOffset;
-use QueryMule\Builder\Sql\Common\Clause\HasOrderBy;
-use QueryMule\Builder\Sql\Common\Clause\HasRightJoin;
-use QueryMule\Builder\Sql\Common\Clause\HasUnion;
+use QueryMule\Query\Common\HasQuery;
+use QueryMule\Query\Common\Sql\HasCols;
+use QueryMule\Query\Common\Sql\HasFrom;
+use QueryMule\Query\Common\Sql\HasFullOuterJoin;
+use QueryMule\Query\Common\Sql\HasGroupBy;
+use QueryMule\Query\Common\Sql\HasInnerJoin;
+use QueryMule\Query\Common\Sql\HasJoin;
+use QueryMule\Query\Common\Sql\HasLeftJoin;
+use QueryMule\Query\Common\Sql\HasLimit;
+use QueryMule\Query\Common\Sql\HasOffset;
+use QueryMule\Query\Common\Sql\HasOrderBy;
+use QueryMule\Query\Common\Sql\HasRightJoin;
+use QueryMule\Query\Common\Sql\HasUnion;
 use QueryMule\Query\QueryBuilderInterface;
-use QueryMule\Query\Repository\RepositoryInterface;
-use QueryMule\Query\Sql\Accent;
-use QueryMule\Query\Sql\Operator\Comparison;
-use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
 use QueryMule\Query\Sql\Statement\FilterInterface;
@@ -32,8 +29,9 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
  * Class Select
  * @package QueryMule\Builder\Sql\Sqlite
  */
-class Select implements QueryBuilderInterface, SelectInterface
+class Select implements SelectInterface
 {
+    use HasQuery;
     use HasCols;
     use HasFrom;
     use HasGroupBy;
@@ -53,51 +51,17 @@ class Select implements QueryBuilderInterface, SelectInterface
     private $filter;
 
     /**
-     * @var Query
-     */
-    private $query;
-
-    /**
-     * @var Logical
-     */
-    private $logical;
-
-    /**
      * @var OnFilterInterface|QueryBuilderInterface
      */
     private $onFilter;
 
     /**
-     * @var Accent
-     */
-    private $accent;
-
-    /**
      * Select constructor.
      * @param Query $query
-     * @param Logical $logical
-     * @param Accent $accent
-     * @param RepositoryInterface|null $table
-     * @param array $cols
      */
-    public function __construct(Query $query,
-                                Logical $logical,
-                                Accent $accent,
-                                RepositoryInterface $table = null,
-                                array $cols = [])
+    public function __construct(Query $query)
     {
         $this->query = $query;
-        $this->logical = $logical;
-        $this->accent = $accent;
-
-        if (!empty($cols)) {
-            $this->cols($cols);
-        }
-
-        if (!empty($table)) {
-            $this->from($table);
-        }
-
         $this->query->append(Sql::SELECT, new Sql(Sql::SELECT));
     }
 
@@ -156,7 +120,7 @@ class Select implements QueryBuilderInterface, SelectInterface
      */
     public function ignoreAccent($ignore = true): SelectInterface
     {
-        $this->accent->ignore($ignore);
+        $this->query->accent()->ignore($ignore);
 
         return $this;
     }
@@ -175,29 +139,5 @@ class Select implements QueryBuilderInterface, SelectInterface
     public function setOnFilter(OnFilterInterface $onFilter): void
     {
         $this->onFilter = $onFilter;
-    }
-
-    /**
-     * @return Accent
-     */
-    protected function accent(): Accent
-    {
-        return $this->accent;
-    }
-
-    /**
-     * @return Logical
-     */
-    protected function logical(): Logical
-    {
-        return $this->logical;
-    }
-
-    /**
-     * @return Query
-     */
-    protected function query(): Query
-    {
-        return $this->query;
     }
 }

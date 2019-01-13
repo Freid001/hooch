@@ -13,8 +13,6 @@ use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Operator\Operator;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class SelectTest
@@ -28,27 +26,19 @@ class SelectTest extends TestCase
     private $query;
 
     /**
-     * @var Logical
-     */
-    private $logical;
-
-    /**
-     * @var Accent
-     */
-    private $accent;
-
-    /**
      * @var Select
      */
     private $select;
 
     public function setUp()
     {
-        $this->query = new Query();
-        $this->logical = new Logical();
-        $this->accent = new Accent();
-        $this->accent->setSymbol('`');
-        $this->select = new Select($this->query, $this->logical, $this->accent);
+        $this->query = new Query(
+            new Sql(),
+            new Logical(),
+            new Accent()
+        );
+        $this->query->accent()->setSymbol('`');
+        $this->select = new Select($this->query);
     }
 
     public function tearDown()
@@ -60,7 +50,7 @@ class SelectTest extends TestCase
     {
         $this->assertEquals("SELECT", trim($this->select->build([
             Sql::SELECT
-        ])->sql()));
+        ])->string()));
     }
 
     public function testIgnoreAlias()
@@ -68,7 +58,7 @@ class SelectTest extends TestCase
         $this->assertEquals("SELECT col_a ,col_b ,col_c", trim($this->select->ignoreAccent()->cols(['col_a', 'col_b', 'col_c'])->build([
             Sql::SELECT,
             Sql::COLS
-        ])->sql()));
+        ])->string()));
     }
 
     public function testSelectCols()
@@ -77,7 +67,7 @@ class SelectTest extends TestCase
         $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS
-        ])->sql()));
+        ])->string()));
     }
 
     public function testSelectColsWithAlias()
@@ -86,7 +76,7 @@ class SelectTest extends TestCase
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS
-        ])->sql()));
+        ])->string()));
     }
 
     public function testSelectAllCols()
@@ -95,7 +85,7 @@ class SelectTest extends TestCase
         $this->assertEquals("SELECT *", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS
-        ])->sql()));
+        ])->string()));
     }
 
     public function testSelectColsAs()
@@ -104,7 +94,7 @@ class SelectTest extends TestCase
         $this->assertEquals("SELECT `col_a` AS a ,`col_b` AS b ,`col_c` AS c", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS
-        ])->sql()));
+        ])->string()));
     }
 
     public function testSelectColsFrom()
@@ -117,20 +107,21 @@ class SelectTest extends TestCase
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM
-        ])->sql()));
+        ])->string()));
     }
 
     public function testSelectColsFromWithAlias()
     {
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't');
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table);
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM
-        ])->sql()));
+        ])->string()));
     }
 
     public function testSelectFilterWhere()
@@ -157,7 +148,7 @@ class SelectTest extends TestCase
             Sql::WHERE
         ]);
 
-        $this->assertEquals("SELECT `col_a` FROM some_table_name WHERE `col_a` =?", trim($query->sql()));
+        $this->assertEquals("SELECT `col_a` FROM some_table_name WHERE `col_a` =?", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
@@ -172,21 +163,22 @@ class SelectTest extends TestCase
             Sql::COLS,
             Sql::FROM,
             Sql::GROUP
-        ])->sql()));
+        ])->string()));
     }
 
     public function testSelectColsFromGroupByWithAlias()
     {
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->groupBy('col_a', 't')->groupBy('col_b', 't');
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->groupBy('col_a', 't')->groupBy('col_b', 't');
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t GROUP BY `t`.`col_a` ,`t`.`col_b`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
             Sql::GROUP
-        ])->sql()));
+        ])->string()));
     }
 
     public function testSelectColsFromOrderBy()
@@ -200,21 +192,22 @@ class SelectTest extends TestCase
             Sql::COLS,
             Sql::FROM,
             Sql::ORDER
-        ])->sql()));
+        ])->string()));
     }
 
     public function testSelectColsFromOrderByWithAlias()
     {
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->orderBy('t.col_a',Sql::DESC)->orderBy('t.col_b',Sql::ASC);
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->orderBy('t.col_a',Sql::DESC)->orderBy('t.col_b',Sql::ASC);
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t ORDER BY `t`.`col_a` DESC ,`t`.`col_b` ASC", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
             Sql::ORDER
-        ])->sql()));
+        ])->string()));
     }
 
 //    public function testSelectColsFromGroupByHaving()
@@ -236,7 +229,7 @@ class SelectTest extends TestCase
             Sql::COLS,
             Sql::FROM,
             Sql::LIMIT
-        ])->sql()));
+        ])->string()));
     }
 
     public function testSelectColsFromLimitOffset()
@@ -251,7 +244,7 @@ class SelectTest extends TestCase
             Sql::FROM,
             Sql::LIMIT,
             Sql::OFFSET
-        ])->sql()));
+        ])->string()));
     }
 
     public function testSelectColsFromUnionSelectColsFromWithAlias()
@@ -261,11 +254,17 @@ class SelectTest extends TestCase
 
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $unionSelect = new Select(new Query(), new Logical(), $this->accent);
+        $table2 = $this->createMock(RepositoryInterface::class);
+        $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
+        $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
+        $table2->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table, 'tt'), false);
+        $unionSelect = new Select(new Query(new Sql(), new Logical(), $this->query->accent()));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table2), false);
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -274,7 +273,7 @@ class SelectTest extends TestCase
             Sql::UNION
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t UNION SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM some_table_name AS tt", trim($query->sql()));
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t UNION SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM another_table_name AS tt", trim($query->string()));
         $this->assertEquals([], $query->parameters());
     }
 
@@ -285,11 +284,17 @@ class SelectTest extends TestCase
 
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $unionSelect = new Select(new Query(), new Logical(), $this->accent);
+        $table2 = $this->createMock(RepositoryInterface::class);
+        $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
+        $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
+        $table2->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table, 'tt'), true);
+        $unionSelect = new Select(new Query(new Sql(), new Logical(), $this->query->accent()));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table2), true);
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -298,7 +303,7 @@ class SelectTest extends TestCase
             Sql::UNION
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t UNION ALL SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM some_table_name AS tt", trim($query->sql()));
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t UNION ALL SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM another_table_name AS tt", trim($query->string()));
         $this->assertEquals([], $query->parameters());
     }
 
@@ -308,9 +313,15 @@ class SelectTest extends TestCase
 
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
         $table->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->join(Sql::JOIN, $table, 'tt');
+        $table2 = $this->createMock(RepositoryInterface::class);
+        $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
+        $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
+        $table2->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->join(Sql::JOIN, $table2);
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -319,7 +330,7 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t JOIN some_table_name AS tt", trim($query->sql()));
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t JOIN another_table_name AS tt", trim($query->string()));
         $this->assertEquals([], $query->parameters());
     }
 
@@ -329,15 +340,21 @@ class SelectTest extends TestCase
         $onFilter->expects($this->once())->method('on');
         $onFilter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
-                new Sql('ON `t`.`col_a` =?', ['`tt`.`col_a`'])
+                new Sql('ON t.col_a =?', ['tt.col_a'])
             )
         );
 
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
         $table->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->join(Sql::JOIN, $table, 'tt');
+        $table2 = $this->createMock(RepositoryInterface::class);
+        $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
+        $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
+        $table2->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->join(Sql::JOIN, $table2);
         $this->select->onFilter()->on('`tt`.`col_a`', Operator::comparison()->equalTo('`tt`.`col_a`'));
 
         $query = $this->select->build([
@@ -347,8 +364,8 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t JOIN some_table_name AS tt ON `t`.`col_a` =?", trim($query->sql()));
-        $this->assertEquals(['`tt`.`col_a`'], $query->parameters());
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t JOIN another_table_name AS tt ON t.col_a =?", trim($query->string()));
+        $this->assertEquals(['tt.col_a'], $query->parameters());
     }
 
     public function testSelectColsLeftJoin()
@@ -357,15 +374,21 @@ class SelectTest extends TestCase
         $onFilter->expects($this->once())->method('on');
         $onFilter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
-                new Sql('ON `t`.`col_a` =?', ['`tt`.`col_a`'])
+                new Sql('ON t.col_a =?', ['tt.col_a'])
             )
         );
 
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
         $table->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->leftJoin($table, 'tt', '`tt`.`col_a`', Operator::comparison()->equalTo('`tt`.`col_a`'));
+        $table2 = $this->createMock(RepositoryInterface::class);
+        $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
+        $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
+        $table2->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->leftJoin($table2, 'tt.col_a', Operator::comparison()->equalTo('tt.col_a'));
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -374,8 +397,8 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t LEFT JOIN some_table_name AS tt ON `t`.`col_a` =?", trim($query->sql()));
-        $this->assertEquals(['`tt`.`col_a`'], $query->parameters());
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t LEFT JOIN another_table_name AS tt ON t.col_a =?", trim($query->string()));
+        $this->assertEquals(['tt.col_a'], $query->parameters());
     }
 
     public function testSelectColsRightJoin()
@@ -384,15 +407,21 @@ class SelectTest extends TestCase
         $onFilter->expects($this->once())->method('on');
         $onFilter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
-                new Sql('ON `t`.`col_a` =?', ['`tt`.`col_a`'])
+                new Sql('ON t.col_a =?', ['tt.col_a'])
             )
         );
 
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
         $table->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->rightJoin($table, 'tt', '`tt`.`col_a`', Operator::comparison()->equalTo('`tt`.`col_a`'));
+        $table2 = $this->createMock(RepositoryInterface::class);
+        $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
+        $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
+        $table2->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->rightJoin($table2, 'tt.col_a', Operator::comparison()->equalTo('tt.col_a'));
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -401,8 +430,8 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t RIGHT JOIN some_table_name AS tt ON `t`.`col_a` =?", trim($query->sql()));
-        $this->assertEquals(['`tt`.`col_a`'], $query->parameters());
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t RIGHT JOIN another_table_name AS tt ON t.col_a =?", trim($query->string()));
+        $this->assertEquals(['tt.col_a'], $query->parameters());
     }
 
     public function testSelectColsInnerJoin()
@@ -411,15 +440,21 @@ class SelectTest extends TestCase
         $onFilter->expects($this->once())->method('on');
         $onFilter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
-                new Sql('ON `t`.`col_a` =?', ['`tt`.`col_a`'])
+                new Sql('ON t.col_a =?', ['tt.col_a'])
             )
         );
 
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
         $table->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->innerJoin($table, 'tt', '`tt`.`col_a`', Operator::comparison()->equalTo('`tt`.`col_a`'));
+        $table2 = $this->createMock(RepositoryInterface::class);
+        $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
+        $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
+        $table2->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->innerJoin($table2, 'tt.col_a', Operator::comparison()->equalTo('tt.col_a'));
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -428,8 +463,8 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t INNER JOIN some_table_name AS tt ON `t`.`col_a` =?", trim($query->sql()));
-        $this->assertEquals(['`tt`.`col_a`'], $query->parameters());
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t INNER JOIN another_table_name AS tt ON t.col_a =?", trim($query->string()));
+        $this->assertEquals(['tt.col_a'], $query->parameters());
     }
 
     public function testSelectColsFullOuterJoin()
@@ -438,15 +473,22 @@ class SelectTest extends TestCase
         $onFilter->expects($this->once())->method('on');
         $onFilter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
-                new Sql('ON `t`.`col_a` =?', ['`tt`.`col_a`'])
+                new Sql('ON t.col_a =?', ['tt.col_a'])
             )
         );
 
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
         $table->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->fullOuterJoin($table, 'tt', '`tt`.`col_a`', Operator::comparison()->equalTo('`tt`.`col_a`'));
+        $table2 = $this->createMock(RepositoryInterface::class);
+        $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
+        $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
+        $table2->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')
+            ->from($table)->fullOuterJoin($table2, 'tt.col_a', Operator::comparison()->equalTo('tt.col_a'));
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -455,8 +497,8 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t FULL OUTER JOIN some_table_name AS tt ON `t`.`col_a` =?", trim($query->sql()));
-        $this->assertEquals(['`tt`.`col_a`'], $query->parameters());
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t FULL OUTER JOIN another_table_name AS tt ON t.col_a =?", trim($query->string()));
+        $this->assertEquals(['tt.col_a'], $query->parameters());
     }
 
 

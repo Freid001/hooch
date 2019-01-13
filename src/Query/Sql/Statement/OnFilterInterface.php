@@ -1,6 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Query\Sql\Statement;
+
 
 use QueryMule\Query\Sql\Operator\OperatorInterface;
 

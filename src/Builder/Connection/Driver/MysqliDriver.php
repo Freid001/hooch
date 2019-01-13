@@ -5,21 +5,17 @@ declare(strict_types=1);
 namespace QueryMule\Builder\Connection\Driver;
 
 use Psr\Log\LoggerInterface;
-use Psr\SimpleCache\CacheInterface;
-use QueryMule\Builder\Exception\DriverException;
-use QueryMule\Builder\Sql\Mysql\Filter;
-use QueryMule\Builder\Sql\Mysql\OnFilter;
-use QueryMule\Builder\Sql\Mysql\Select;
+use QueryMule\Builder\Common\Statement\HasOnFilter;
+use QueryMule\Builder\Common\Statement\HasSelect;
+use QueryMule\Query\Common\Driver\HasCache;
+use QueryMule\Query\Common\Driver\HasDriver;
+use QueryMule\Query\Common\Driver\HasFetch;
+use QueryMule\Query\Common\Driver\HasFetchAll;
+use QueryMule\Query\Common\HasQuery;
+use QueryMule\Query\Common\Statement\HasFilter;
 use QueryMule\Query\Connection\Driver\DriverInterface;
-use QueryMule\Query\Repository\RepositoryInterface;
-use QueryMule\Query\Sql\Accent;
-use QueryMule\Query\Sql\Operator\Comparison;
-use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Query\Sql\Statement\OnFilterInterface;
-use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class MysqliDriver
@@ -27,30 +23,19 @@ use QueryMule\Query\Sql\Statement\SelectInterface;
  */
 class MysqliDriver implements DriverInterface
 {
+    use HasDriver;
+    use HasQuery;
+    use HasCache;
+    use HasFetch;
+    use HasFetchAll;
+    use HasFilter;
+    use HasOnFilter;
+    use HasSelect;
+
     /**
      * @var \mysqli
      */
     private $mysqli;
-
-    /**
-     * @var CacheInterface
-     */
-    private $cache;
-
-    /**
-     * @var null|integer
-     */
-    private $ttl;
-
-    /**
-     * @var FilterInterface|null
-     */
-    private $filter;
-
-    /**
-     * @var SelectInterface|null
-     */
-    private $select;
 
     /**
      * @var LoggerInterface
@@ -60,121 +45,15 @@ class MysqliDriver implements DriverInterface
     /**
      * MysqliDriver constructor.
      * @param \mysqli $mysqli
+     * @param Query $query
      * @param LoggerInterface $logger
      */
-    public function __construct(\mysqli $mysqli, LoggerInterface $logger)
+    public function __construct(\mysqli $mysqli, Query $query, LoggerInterface $logger)
     {
         $this->mysqli = $mysqli;
+        $this->driver = self::DRIVER_MYSQL;
+        $this->query = $query;
         $this->logger = $logger;
-    }
-
-    /**
-     * @return FilterInterface
-     */
-    public function filter() : FilterInterface
-    {
-        $this->filter = new Filter(
-            new Query(),
-            new Logical(),
-            new Accent()
-        );
-
-        return $this->filter;
-    }
-
-    /**
-     * @return OnFilterInterface
-     */
-    public function onFilter() : OnFilterInterface
-    {
-        $this->filter = new OnFilter(
-            new Query(),
-            new Logical(),
-            new Accent()
-        );
-
-        return $this->filter;
-    }
-
-
-    /**
-     * @param array $cols
-     * @param RepositoryInterface|null $repository
-     * @return SelectInterface
-     */
-    public function select(array $cols = [],RepositoryInterface $repository = null): SelectInterface
-    {
-        $this->select = new Select(
-            new Query(),
-            new Logical(),
-            new Accent(),
-            $repository,
-            $cols
-        );
-
-        return $this->select ;
-    }
-
-    /**
-     * @param string $type
-     * @return null|FilterInterface|SelectInterface
-     */
-    public function getStatement($type)
-    {
-        $statement = null;
-        switch ($type){
-            case 'filter':
-                $statement = $this->filter;
-                break;
-
-            case 'select':
-                $statement = $this->select;
-                break;
-        }
-
-        return $statement;
-    }
-
-    /**
-     * @return void
-     */
-    public function reset()
-    {
-        $this->filter = null;
-        $this->select = null;
-    }
-
-    /**
-     * @param CacheInterface $cache
-     * @param integer $ttl
-     * @return DriverInterface
-     */
-    public function cache(CacheInterface $cache, $ttl = null) : DriverInterface
-    {
-        $this->cache = $cache;
-        $this->ttl = $ttl;
-
-        return $this;
-    }
-
-    /**
-     * @param Sql $sql
-     * @return array|mixed|null
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     */
-    public function fetch(Sql $sql)
-    {
-        return $this->execute($sql,'fetch');
-    }
-
-    /**
-     * @param Sql $sql
-     * @return array|mixed|null
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     */
-    public function fetchAll(Sql $sql)
-    {
-        return $this->execute($sql,'fetch_all');
     }
 
     /**
@@ -183,14 +62,14 @@ class MysqliDriver implements DriverInterface
      * @return array|mixed|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    private function execute(Sql $sql, string $method)
+    public function execute(Sql $sql, string $method)
     {
         $cache = false;
         $key = md5(serialize($sql));
         $time = microtime(true);
 
-        if(empty($this->cache) || empty($this->cache->has($key))) {
-            $query = $this->mysqli->prepare($sql->sql());
+        if (empty($this->cache) || empty($this->cache->has($key))) {
+            $query = $this->mysqli->prepare($sql->string());
 
             $parameters = [0 => ''];
             foreach ($sql->parameters() as $parameter) {
@@ -219,7 +98,7 @@ class MysqliDriver implements DriverInterface
 
             if (!$query->execute()) {
                 $this->logger->error("Mysqli error code: " . $this->mysqli->connect_errno, [
-                    'query' => $sql->sql(),
+                    'query' => $sql->string(),
                     'message' => $this->mysqli->error
                 ]);
 
@@ -227,31 +106,31 @@ class MysqliDriver implements DriverInterface
             }
 
             $result = [];
-            switch ($method){
-                case 'fetch':
+            switch ($method) {
+                case DriverInterface::FETCH:
                     $result = $query->get_result()->fetch_assoc();
                     break;
-                case 'fetch_all':
+                case DriverInterface::FETCH_ALL:
                     $result = $query->get_result()->fetch_all(MYSQLI_ASSOC);
                     break;
             }
 
-            if(!empty($this->cache)) {
+            if (!empty($this->cache)) {
                 $this->cache->set($key, json_encode($result), $this->ttl);
             }
-        }else {
+        } else {
             $cache = true;
             $result = json_decode((string)$this->cache->get($key));
         }
 
-        $this->reset();
+        $this->select = null;
 
-        $this->logger->info("Successfully executed query",[
-            'query'             => $sql->sql(),
-            'parameters'        => $sql->parameters(),
-            'driver'            => self::DRIVER_MYSQL,
-            'execution_time'    => round(microtime(true) - $time,4) . "s",
-            'from_cache'        => $cache
+        $this->logger->info("Successfully executed query", [
+            'query' => $sql->string(),
+            'parameters' => $sql->parameters(),
+            'driver' => self::DRIVER_MYSQL,
+            'execution_time' => round(microtime(true) - $time, 4) . "s",
+            'from_cache' => $cache
         ]);
 
         return $result;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueryMule\Query\Sql\Statement;
 
 
@@ -12,14 +14,14 @@ use QueryMule\Query\Sql\Sql;
  * Interface Select
  * @package QueryMule\Query\Sql\Statement
  */
-interface SelectInterface
+interface SelectInterface extends QueryBuilderInterface
 {
     /**
      * @param array $cols
      * @param string|null $alias
-     * @return SelectInterface
+     * @return SelectInterface|QueryBuilderInterface
      */
-    public function cols(array $cols = [Sql::SQL_STAR], ?string $alias = null);
+    public function cols(array $cols = [Sql::SQL_STAR], ?string $alias = null): SelectInterface;
 
     /**
      * @return FilterInterface|null
@@ -45,85 +47,79 @@ interface SelectInterface
 
     /**
      * @param RepositoryInterface $table
-     * @param string|null $alias
      * @return SelectInterface
      */
-    public function from(RepositoryInterface $table, ?string $alias = null);
+    public function from(RepositoryInterface $table): SelectInterface;
 
     /**
      * @param $column
      * @param string|null $alias
      * @return SelectInterface
      */
-    public function groupBy($column, ?string $alias = null);
+    public function groupBy($column, ?string $alias = null): SelectInterface;
 
     /**
      * @param string $type
      * @param RepositoryInterface $table
-     * @param string|null $alias
      * @return SelectInterface
      */
-    public function join(string $type, RepositoryInterface $table, ?string $alias = null);
+    public function join(string $type, RepositoryInterface $table): SelectInterface;
 
     /**
      * @param RepositoryInterface $table
-     * @param string|null $alias
      * @param $column
      * @param OperatorInterface|null $operator
      * @return SelectInterface
      */
-    public function leftJoin(RepositoryInterface $table, ?string $alias, $column, ?OperatorInterface $operator = null);
+    public function leftJoin(RepositoryInterface $table, $column, ?OperatorInterface $operator = null): SelectInterface;
 
     /**
      * @param RepositoryInterface $table
-     * @param string|null $alias
      * @param $column
      * @param OperatorInterface|null $operator
      * @return SelectInterface
      */
-    public function rightJoin(RepositoryInterface $table, ?string $alias, $column, ?OperatorInterface $operator = null);
+    public function rightJoin(RepositoryInterface $table, $column, ?OperatorInterface $operator = null): SelectInterface;
 
     /**
      * @param RepositoryInterface $table
-     * @param string|null $alias
      * @param $column
      * @param OperatorInterface|null $operator
      * @return SelectInterface
      */
-    public function innerJoin(RepositoryInterface $table, ?string $alias, $column, ?OperatorInterface $operator = null);
+    public function innerJoin(RepositoryInterface $table, $column, ?OperatorInterface $operator = null): SelectInterface;
 
     /**
      * @param RepositoryInterface $table
-     * @param string|null $alias
      * @param $column
      * @param OperatorInterface|null $operator
      * @return SelectInterface
      */
-    public function fullOuterJoin(RepositoryInterface $table, ?string $alias, $column, ?OperatorInterface $operator = null);
+    public function fullOuterJoin(RepositoryInterface $table, $column, ?OperatorInterface $operator = null): SelectInterface;
 
     /**
      * @param int $limit
      * @return SelectInterface
      */
-    public function limit(int $limit);
+    public function limit(int $limit): SelectInterface;
 
     /**
      * @param int $offset
      * @return SelectInterface
      */
-    public function offset(int $offset);
+    public function offset(int $offset): SelectInterface;
 
     /**
      * @param $column
      * @param string|null $order
      * @return mixed
      */
-    public function orderBy($column, ?string $order);
+    public function orderBy($column, ?string $order): SelectInterface;
 
     /**
      * @param QueryBuilderInterface $select
      * @param bool $all
      * @return mixed
      */
-    public function union(QueryBuilderInterface $select, bool $all = false);
+    public function union(QueryBuilderInterface $select, bool $all = false): SelectInterface;
 }

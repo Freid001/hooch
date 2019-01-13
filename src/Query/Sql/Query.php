@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace QueryMule\Query\Sql;
 
+use QueryMule\Query\Sql\Operator\Logical;
+
 /**
  * Class Query
  * @package QueryMule\Query\Sql
@@ -13,7 +15,7 @@ class Query
     /**
      * @var array
      */
-    protected $sql = [];
+    protected $query = [];
 
     /**
      * @var array
@@ -21,13 +23,67 @@ class Query
     protected $parameters = [];
 
     /**
+     * @var Sql
+     */
+    private $sql;
+
+    /**
+     * @var Logical
+     */
+    private $logical;
+
+    /**
+     * @var Accent
+     */
+    private $accent;
+
+    /**
+     * Query constructor.
+     * @param Sql $sql
+     * @param Logical $logical
+     * @param Accent $accent
+     */
+    public function __construct(Sql $sql, Logical $logical, Accent $accent)
+    {
+        $this->sql = $sql;
+        $this->logical = $logical;
+        $this->accent = $accent;
+    }
+
+    /**
+     * @return Sql
+     */
+    public function sql(): Sql
+    {
+        return $this->sql;
+    }
+
+    /**
+     * @return Logical
+     */
+    public function logical(): Logical
+    {
+        return $this->logical;
+    }
+
+    /**
+     * @return Accent
+     */
+    public function accent(): Accent
+    {
+        return $this->accent;
+    }
+
+    /**
      * @param string $clause
      * @param Sql $sql
      */
     public function append(string $clause, Sql $sql): void
     {
-        $this->appendSql($clause, $sql->sql());
+        $this->appendSql($clause, $sql->string());
         $this->appendParameters($clause, $sql->parameters());
+
+        $sql->reset();
     }
 
     /**
@@ -37,40 +93,25 @@ class Query
     public function build(array $order = []): Sql
     {
         return array_reduce($order, function(Sql $sql, $clause){
-            $sql->append(
-                $this->getSql($clause),
-                $this->getParameters($clause),
-                false
-            );
+            if($this->hasClause($clause)){
+                $sql->append(
+                    $this->query[$clause],
+                    $this->parameters[$clause],
+                    false
+                );
+            }
 
             return $sql;
         }, new Sql(null, [], false));
     }
 
     /**
-     * @param string $clause
-     * @return string|null
-     */
-    public function getSql($clause): ?String
-    {
-        if (!empty($this->sql[$clause])) {
-            return $this->sql[$clause];
-        }
-
-        return null;
-    }
-
-    /**
      * @param $clause
-     * @return array
+     * @return bool
      */
-    public function getParameters($clause): array
+    public function hasClause($clause): bool
     {
-        if (!empty($this->parameters[$clause])) {
-            return $this->parameters[$clause];
-        }
-
-        return [];
+        return !empty($this->query[$clause]);
     }
 
     /**
@@ -80,12 +121,12 @@ class Query
     public function reset(array $clauses = []): void
     {
         if (empty($clauses)) {
-            $this->sql = [];
+            $this->query = [];
             $this->parameters = [];
         }
 
         foreach ($clauses as $clause) {
-            unset($this->sql[$clause]);
+            unset($this->query[$clause]);
             unset($this->parameters[$clause]);
         }
     }
@@ -96,10 +137,10 @@ class Query
      */
     private function appendSql(string $clause, ?string $sql): void
     {
-        if (!empty($this->sql[$clause])) {
-            $this->sql[$clause] .= $sql;
+        if (!empty($this->query[$clause])) {
+            $this->query[$clause] .= $sql;
         } else {
-            $this->sql[$clause] = $sql;
+            $this->query[$clause] = $sql;
         }
     }
 

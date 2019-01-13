@@ -5,11 +5,7 @@ declare(strict_types=1);
 namespace QueryMule\Query\Sql;
 
 
-use phpDocumentor\Reflection\Types\Integer;
-use QueryMule\Builder\Exception\SqlException;
 use QueryMule\Query\QueryBuilderInterface;
-use QueryMule\Query\Sql\Operator\Comparison;
-use QueryMule\Query\Sql\Operator\Logical;
 
 /**
  * Class Sql
@@ -74,7 +70,7 @@ class Sql
     /**
      * @var string
      */
-    private $sql;
+    private $string;
 
     /**
      * @var array
@@ -83,13 +79,13 @@ class Sql
 
     /**
      * Sql constructor.
-     * @param string|null $sql
+     * @param string|null $string
      * @param array $parameters
      * @param bool $space
      */
-    public function __construct(?string $sql = null, array $parameters = [], bool $space = true)
+    public function __construct(?string $string = null, array $parameters = [], bool $space = true)
     {
-        $this->append($sql, $parameters, $space);
+        $this->append($string, $parameters, $space);
     }
 
     /**
@@ -100,10 +96,6 @@ class Sql
      */
     public function append($append, array $parameters = [], $trailingSpace = true): Sql
     {
-        if (!empty($parameters)) {
-            $this->parameters = array_merge($this->parameters, $parameters);
-        }
-
         if ($append instanceof QueryBuilderInterface) {
             $this->appendQueryBuilder($append, $trailingSpace);
         }
@@ -120,6 +112,10 @@ class Sql
             $this->appendInt($append, $trailingSpace);
         }
 
+        if (!empty($parameters)) {
+            $this->parameters = array_merge($this->parameters, $parameters);
+        }
+
         return $this;
     }
 
@@ -131,7 +127,7 @@ class Sql
     public function appendQueryBuilder(QueryBuilderInterface $queryBuilder, bool $trailingSpace = true): Sql
     {
         $this->append(
-            $queryBuilder->build()->sql(),
+            $queryBuilder->build()->string(),
             $queryBuilder->build()->parameters(),
             $trailingSpace
         );
@@ -142,9 +138,9 @@ class Sql
     /**
      * @return string|null
      */
-    public function sql(): ?string
+    public function string(): ?string
     {
-        return $this->sql;
+        return $this->string;
     }
 
     /**
@@ -156,6 +152,15 @@ class Sql
     }
 
     /**
+     * @return void
+     */
+    public function reset()
+    {
+        $this->string = '';
+        $this->parameters = [];
+    }
+
+    /**
      * @param Sql $sql
      * @param bool $trailingSpace
      * @return Sql
@@ -163,7 +168,7 @@ class Sql
     public function appendSql(Sql $sql, bool $trailingSpace = true): Sql
     {
         $this->append(
-            $sql->sql(),
+            $sql->string(),
             $sql->parameters(),
             $trailingSpace
         );
@@ -178,10 +183,10 @@ class Sql
      */
     public function appendString(String $string, bool $trailingSpace = true): Sql
     {
-        $this->sql .= $string;
+        $this->string .= $string;
 
         if ($trailingSpace) {
-            $this->sql .= Sql::SQL_SPACE;
+            $this->string .= Sql::SQL_SPACE;
         }
 
         return $this;

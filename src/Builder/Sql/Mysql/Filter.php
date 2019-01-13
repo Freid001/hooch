@@ -4,28 +4,29 @@ declare(strict_types=1);
 
 namespace QueryMule\Builder\Sql\Mysql;
 
-use QueryMule\Builder\Sql\Common\Clause\HasOrWhereBetween;
-use QueryMule\Builder\Sql\Common\Clause\HasOrWhereExists;
-use QueryMule\Builder\Sql\Common\Clause\HasOrWhereNotIn;
-use QueryMule\Builder\Sql\Common\Clause\HasOrWhereNotLike;
-use QueryMule\Builder\Sql\Common\Clause\HasOrWhereIn;
-use QueryMule\Builder\Sql\Common\Clause\HasOrWhereLike;
-use QueryMule\Builder\Sql\Common\Clause\HasOrWhereNot;
-use QueryMule\Builder\Sql\Common\Clause\HasOrWhereNotBetween;
-use QueryMule\Builder\Sql\Common\Clause\HasOrWhereNotExists;
-use QueryMule\Builder\Sql\Common\Clause\HasWhere;
-use QueryMule\Builder\Sql\Common\Clause\HasWhereBetween;
-use QueryMule\Builder\Sql\Common\Clause\HasWhereExists;
-use QueryMule\Builder\Sql\Common\Clause\HasWhereIn;
-use QueryMule\Builder\Sql\Common\Clause\HasWhereLike;
-use QueryMule\Builder\Sql\Common\Clause\HasWhereNot;
-use QueryMule\Builder\Sql\Common\Clause\HasWhereNotAny;
-use QueryMule\Builder\Sql\Common\Clause\HasWhereNotBetween;
-use QueryMule\Builder\Sql\Common\Clause\HasWhereNotExists;
-use QueryMule\Builder\Sql\Common\Clause\HasWhereNotIn;
-use QueryMule\Builder\Sql\Common\Clause\HasWhereNotLike;
-use QueryMule\Builder\Sql\Common\Clause\HasNestedWhere;
-use QueryMule\Builder\Sql\Common\Clause\HasOrWhere;
+
+use QueryMule\Query\Common\HasQuery;
+use QueryMule\Query\Common\Sql\HasNestedWhere;
+use QueryMule\Query\Common\Sql\HasOrWhere;
+use QueryMule\Query\Common\Sql\HasOrWhereBetween;
+use QueryMule\Query\Common\Sql\HasOrWhereExists;
+use QueryMule\Query\Common\Sql\HasOrWhereIn;
+use QueryMule\Query\Common\Sql\HasOrWhereLike;
+use QueryMule\Query\Common\Sql\HasOrWhereNot;
+use QueryMule\Query\Common\Sql\HasOrWhereNotBetween;
+use QueryMule\Query\Common\Sql\HasOrWhereNotExists;
+use QueryMule\Query\Common\Sql\HasOrWhereNotIn;
+use QueryMule\Query\Common\Sql\HasOrWhereNotLike;
+use QueryMule\Query\Common\Sql\HasWhere;
+use QueryMule\Query\Common\Sql\HasWhereBetween;
+use QueryMule\Query\Common\Sql\HasWhereExists;
+use QueryMule\Query\Common\Sql\HasWhereIn;
+use QueryMule\Query\Common\Sql\HasWhereLike;
+use QueryMule\Query\Common\Sql\HasWhereNot;
+use QueryMule\Query\Common\Sql\HasWhereNotBetween;
+use QueryMule\Query\Common\Sql\HasWhereNotExists;
+use QueryMule\Query\Common\Sql\HasWhereNotIn;
+use QueryMule\Query\Common\Sql\HasWhereNotLike;
 use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Operator\Logical;
@@ -37,8 +38,9 @@ use QueryMule\Query\Sql\Statement\FilterInterface;
  * Class Filter
  * @package QueryMule\Builder\Sql\Mysql
  */
-class Filter implements QueryBuilderInterface, FilterInterface
+class Filter implements FilterInterface
 {
+    use HasQuery;
     use HasNestedWhere;
     use HasOrWhere;
     use HasOrWhereBetween;
@@ -62,11 +64,6 @@ class Filter implements QueryBuilderInterface, FilterInterface
     use HasWhereNotLike;
 
     /**
-     * @var Query
-     */
-    private $query;
-
-    /**
      * @var Logical
      */
     private $logical;
@@ -79,14 +76,10 @@ class Filter implements QueryBuilderInterface, FilterInterface
     /**
      * Filter constructor.
      * @param Query $query
-     * @param Logical $logical
-     * @param Accent $accent
      */
-    public function __construct(Query $query, Logical $logical, Accent $accent)
+    public function __construct(Query $query)
     {
         $this->query = $query;
-        $this->logical = $logical;
-        $this->accent = $accent;
     }
 
     /**
@@ -102,29 +95,5 @@ class Filter implements QueryBuilderInterface, FilterInterface
         $this->query->reset($clauses);
 
         return $sql;
-    }
-
-    /**
-     * @return Accent
-     */
-    protected function accent(): Accent
-    {
-        return $this->accent;
-    }
-
-    /**
-     * @return Logical
-     */
-    protected function logical(): Logical
-    {
-        return $this->logical;
-    }
-
-    /**
-     * @return Query
-     */
-    protected function query(): Query
-    {
-        return $this->query;
     }
 }

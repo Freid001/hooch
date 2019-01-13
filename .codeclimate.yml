@@ -1,7 +1,8 @@
-engines:
-  duplication:
-    enabled: true
+version: "2"         
+checks:
+  similar-code:
     config:
-      languages:
-        php:
-          mass_threshold: 20
+      threshold: 40
+  identical-code:
+    config:
+      threshold: 100

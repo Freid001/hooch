@@ -26,7 +26,7 @@ class FilterTest extends TestCase
     private $query;
 
     /**
-     * @var Filter
+     * @var FilterInterface
      */
     private $filter;
 

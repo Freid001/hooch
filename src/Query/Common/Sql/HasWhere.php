@@ -28,7 +28,7 @@ trait HasWhere
         if($this instanceof FilterInterface) {
             $column = $this->query()->accent()->append($column, '.');
 
-            $sql = new Sql();
+            $sql = $this->query()->sql();
             $sql = $this->appendBracket($sql, $operator);
             $sql = $this->appendColumn($sql, $column);
             $sql = $this->appendAnd($sql, $column, $operator);
@@ -54,18 +54,22 @@ trait HasWhere
      */
     private function appendBracket(Sql $sql, OperatorInterface $operator): Sql
     {
-        if ($this->query()->hasClause($this->whereJoin())){
-            return $sql;
+        if($this instanceof FilterInterface) {
+            if ($this->query()->hasClause($this->whereJoin())) {
+                return $sql;
+            }
+
+            if (in_array($operator->getOperator(), [Sql:: AND, Sql:: OR])) {
+                return $sql;
+            }
+
+            return $sql->append($this->whereJoin())->ifThenAppend(
+                $this->query()->logical()->getNested(),
+                Sql::SQL_BRACKET_OPEN
+            );
         }
 
-        if(in_array($operator->getOperator(), [Sql:: AND, Sql:: OR])){
-            return $sql;
-        }
-
-        return $sql->append($this->whereJoin())->ifThenAppend(
-            $this->query()->logical()->getNested(),
-            Sql::SQL_BRACKET_OPEN
-        );
+        return $sql;
     }
 
     /**
@@ -75,7 +79,8 @@ trait HasWhere
      */
     private function appendColumn(Sql $sql, $column): Sql
     {
-        if (!$this->query()->hasClause($this->whereJoin())) {
+        if($this instanceof FilterInterface &&
+            !$this->query()->hasClause($this->whereJoin())) {
             return $sql->append($column);
         }
 
@@ -90,7 +95,8 @@ trait HasWhere
      */
     private function appendAnd(Sql $sql, $column, OperatorInterface $operator): Sql
     {
-        if ($this->query()->hasClause($this->whereJoin())) {
+        if ($this instanceof FilterInterface &&
+                $this->query()->hasClause($this->whereJoin())) {
             if ($operator->getOperator() !== Sql:: OR) {
                 $this->query()->logical()->and(
                     $column,

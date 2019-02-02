@@ -13,6 +13,9 @@ use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Operator\Operator;
 use QueryMule\Query\Sql\Query;
 use QueryMule\Query\Sql\Sql;
+use QueryMule\Query\Sql\Statement\FilterInterface;
+use QueryMule\Query\Sql\Statement\OnFilterInterface;
+use QueryMule\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class SelectTest
@@ -26,7 +29,7 @@ class SelectTest extends TestCase
     private $query;
 
     /**
-     * @var Select
+     * @var SelectInterface
      */
     private $select;
 
@@ -186,7 +189,7 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->orderBy('col_a',Sql::DESC)->orderBy('col_b',Sql::ASC);
+        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->orderBy('col_a', Sql::DESC)->orderBy('col_b', Sql::ASC);
         $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM some_table_name ORDER BY `col_a` DESC ,`col_b` ASC", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
@@ -201,7 +204,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->orderBy('t.col_a',Sql::DESC)->orderBy('t.col_b',Sql::ASC);
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->orderBy('t.col_a', Sql::DESC)->orderBy('t.col_b', Sql::ASC);
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t ORDER BY `t`.`col_a` DESC ,`t`.`col_b` ASC", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
@@ -210,13 +213,44 @@ class SelectTest extends TestCase
         ])->string()));
     }
 
-//    public function testSelectColsFromGroupByHaving()
-//    {
-//    }
-//
-//    public function testSelectColsFromGroupByHavingWithAlias()
-//    {
-//    }
+    public function testSelectColsFromHaving()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
+
+        $this->select->cols(['t.col_a'])->from($table);
+        $this->select->having('t.col_a',Operator::comparison()->equalTo('some_value'));
+
+        $query = $this->select->build([
+            Sql::SELECT,
+            Sql::COLS,
+            Sql::FROM,
+            Sql::HAVING
+        ]);
+
+        $this->assertEquals("SELECT `t.col_a` FROM some_table_name AS t HAVING `t`.`col_a` =?", trim($query->string()));
+        $this->assertEquals(['some_value'], $query->parameters());
+    }
+
+    public function testSelectColsFromHavingWithAlias()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
+        $this->select->cols(['col_a'])->from($table);
+        $this->select->having('col_a',Operator::comparison()->equalTo('some_value'));
+
+        $query = $this->select->build([
+            Sql::SELECT,
+            Sql::COLS,
+            Sql::FROM,
+            Sql::HAVING
+        ]);
+
+        $this->assertEquals("SELECT `col_a` FROM some_table_name HAVING `col_a` =?", trim($query->string()));
+        $this->assertEquals(['some_value'], $query->parameters());
+    }
 
     public function testSelectColsFromLimit()
     {
@@ -255,7 +289,6 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
         $table2 = $this->createMock(RepositoryInterface::class);
         $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
@@ -285,7 +318,6 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
-        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
         $table2 = $this->createMock(RepositoryInterface::class);
         $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
@@ -314,7 +346,6 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
-        $table->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
 
         $table2 = $this->createMock(RepositoryInterface::class);
         $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
@@ -347,8 +378,6 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
-        $table->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
-
         $table2 = $this->createMock(RepositoryInterface::class);
         $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
         $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
@@ -381,7 +410,6 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
-        $table->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
 
         $table2 = $this->createMock(RepositoryInterface::class);
         $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
@@ -414,7 +442,6 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
-        $table->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
 
         $table2 = $this->createMock(RepositoryInterface::class);
         $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
@@ -447,7 +474,6 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
-        $table->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
 
         $table2 = $this->createMock(RepositoryInterface::class);
         $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
@@ -480,7 +506,6 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
-        $table->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
 
         $table2 = $this->createMock(RepositoryInterface::class);
         $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
@@ -501,37 +526,30 @@ class SelectTest extends TestCase
         $this->assertEquals(['tt.col_a'], $query->parameters());
     }
 
+    public function testSelectColsLeftJoinClosure()
+    {
+        $onFilter = $this->createMock(OnFilter::class);
+        $onFilter->expects($this->once())->method('on');
+        $onFilter->expects($this->once())->method('build')->will(
+            $this->onConsecutiveCalls(
+                new Sql('ON t.col_a =? AND t.col_b =?', ['tt.col_a', 'tt.col_b'])
+            )
+        );
 
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
 
-//    public function testSelectColsLeftJoinOn()
-//    {
-//        $filter = $this->createMock(Filter::class);
-//        $filter->expects($this->any())->method('build')->will(
-//            $this->onConsecutiveCalls(
-//                new Sql('WHERE `tt`.`col_a` =?', ['another_value'])
-//            )
-//        );
-//
-//        $table = $this->createMock(RepositoryInterface::class);
-//        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-//        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
-//
-//        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table, 't')->join(Sql::JOIN_LEFT, $table,  function(On $query){
-//
-//            $query->on('tt.col_c',Operator::comparison()->equalTo('col_b'));
-//
-//            $query->nestedWhere(function (Filter $filter){
-//                $filter->where('tt.col_a',Operator::comparison()->equalTo('1'));
-//                $filter->where('tt.col_b',Operator::comparison()->equalTo('1'));
-//            });
-//
-//            $query->where('tt.col_c',Operator::comparison()->equalTo('abc'));
-//
-//        }, 'tt');
-//
-//        $query = $this->select->build();
-//
-//        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t LEFT JOIN some_table_name AS tt OR ( `1` =? JOIN `2` OR ( `1` =? ) JOIN `col_d` OR ( `1` =? WHERE `tt`.`col_a` =?", trim($query->sql()));
-//        $this->assertEquals(['some_value', 'another_value'], $query->parameters());
-//    }
+        $table2 = $this->createMock(RepositoryInterface::class);
+        $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
+        $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
+        $table2->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
+
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->leftJoin($table2,  function(OnFilterInterface $onFilter) {});
+
+        $query = $this->select->build();
+
+        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t LEFT JOIN another_table_name AS tt ON t.col_a =? AND t.col_b =?", trim($query->string()));
+        $this->assertEquals(['tt.col_a', 'tt.col_b'], $query->parameters());
+    }
 }

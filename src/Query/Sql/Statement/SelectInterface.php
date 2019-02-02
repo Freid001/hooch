@@ -112,14 +112,21 @@ interface SelectInterface extends QueryBuilderInterface
     /**
      * @param $column
      * @param string|null $order
-     * @return mixed
+     * @return SelectInterface
      */
     public function orderBy($column, ?string $order): SelectInterface;
 
     /**
      * @param QueryBuilderInterface $select
      * @param bool $all
-     * @return mixed
+     * @return SelectInterface
      */
     public function union(QueryBuilderInterface $select, bool $all = false): SelectInterface;
+
+    /**
+     * @param $column
+     * @param OperatorInterface $operator
+     * @return SelectInterface
+     */
+    public function having($column, OperatorInterface $operator): SelectInterface;
 }

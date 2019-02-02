@@ -27,7 +27,6 @@ use QueryMule\Query\Common\Sql\HasWhereNotBetween;
 use QueryMule\Query\Common\Sql\HasWhereNotExists;
 use QueryMule\Query\Common\Sql\HasWhereNotIn;
 use QueryMule\Query\Common\Sql\HasWhereNotLike;
-use QueryMule\Query\QueryBuilderInterface;
 use QueryMule\Query\Sql\Accent;
 use QueryMule\Query\Sql\Operator\Logical;
 use QueryMule\Query\Sql\Query;

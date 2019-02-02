@@ -11,7 +11,7 @@ use QueryMule\Query\Sql\Operator\OperatorInterface;
  * Interface OnFilterInterface
  * @package QueryMule\Query\Sql\Statement
  */
-interface OnFilterInterface
+interface OnFilterInterface extends FilterInterface
 {
     /**
      * @param $column

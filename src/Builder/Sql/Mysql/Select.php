@@ -10,6 +10,7 @@ use QueryMule\Query\Common\Sql\HasCols;
 use QueryMule\Query\Common\Sql\HasFrom;
 use QueryMule\Query\Common\Sql\HasFullOuterJoin;
 use QueryMule\Query\Common\Sql\HasGroupBy;
+use QueryMule\Query\Common\Sql\HasHaving;
 use QueryMule\Query\Common\Sql\HasInnerJoin;
 use QueryMule\Query\Common\Sql\HasJoin;
 use QueryMule\Query\Common\Sql\HasLeftJoin;
@@ -44,6 +45,7 @@ class Select implements SelectInterface
     use HasRightJoin;
     use HasInnerJoin;
     use HasFullOuterJoin;
+    use HasHaving;
 
     /**
      * @var FilterInterface|QueryBuilderInterface
@@ -70,17 +72,17 @@ class Select implements SelectInterface
      * @return Sql
      */
     public function build(array $clauses = [
-        Sql::SELECT,   // DONE
-        Sql::COLS,     // DONE
-        Sql::FROM,     // DONE
-        Sql::JOIN,     // DONE
-        Sql::WHERE,    // DONE
-        Sql::GROUP,    // DONE
-        Sql::ORDER,    // DONE
-        Sql::HAVING,   // <<<
-        Sql::LIMIT,    // DONE
-        Sql::OFFSET,   // DONE
-        Sql::UNION     // DONE
+        Sql::SELECT,
+        Sql::COLS,
+        Sql::FROM,
+        Sql::JOIN,
+        Sql::WHERE,
+        Sql::GROUP,
+        Sql::ORDER,
+        Sql::HAVING,
+        Sql::LIMIT,
+        Sql::OFFSET,
+        Sql::UNION
     ]): Sql
     {
         if (in_array(Sql::WHERE, $clauses) && $this->filter) {

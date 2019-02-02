@@ -46,19 +46,19 @@ class MysqliDriverTest extends TestCase
         /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
         $mysqli->expects($this->once())->method('prepare')->will($this->returnCallback(function() {
-            $mysqli_result = $this->getMockBuilder('mysqli_result')
+            $mysqli_stmt = $this->getMockBuilder('mysqli_stmt')
                 ->setMethods(['execute','bind_param'])
                 ->disableOriginalConstructor()
                 ->getMock();
 
-            $mysqli_result->expects($this->once())
+            $mysqli_stmt->expects($this->once())
                 ->method('bind_param')->withConsecutive(['bdis']);
 
-            $mysqli_result->expects($this->once())
+            $mysqli_stmt->expects($this->once())
                 ->method('execute')
                 ->will($this->returnValue(false));
 
-            return $mysqli_result;
+            return $mysqli_stmt;
         }));
 
         $driver = new MysqliDriver($mysqli, $this->query, $logger);
@@ -81,16 +81,16 @@ class MysqliDriverTest extends TestCase
         /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
         $mysqli->expects($this->once())->method('prepare')->will($this->returnCallback(function() {
-            $mysqli_result = $this->getMockBuilder('mysqli_result')
+            $mysqli_stmt = $this->getMockBuilder('mysqli_stmt')
                 ->setMethods(['execute','get_result','fetch_all','bind_param'])
                 ->disableOriginalConstructor()
                 ->getMock();
 
-            $mysqli_result->expects($this->once())
+            $mysqli_stmt->expects($this->once())
                 ->method('execute')
                 ->will($this->returnValue(false));
 
-            return $mysqli_result;
+            return $mysqli_stmt;
         }));
 
         $driver = new MysqliDriver($mysqli, $this->query, $logger);
@@ -109,26 +109,26 @@ class MysqliDriverTest extends TestCase
         /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
         $mysqli->expects($this->once())->method('prepare')->will($this->returnCallback(function() {
-            $mysqli_result = $this->getMockBuilder('mysqli_result')
+            $mysqli_stmt = $this->getMockBuilder('mysqli_stmt')
                 ->setMethods(['execute','get_result','fetch_assoc','bind_param'])
                 ->disableOriginalConstructor()
                 ->getMock();
 
-            $mysqli_result->expects($this->once())
+            $mysqli_stmt->expects($this->once())
                 ->method('execute')
                 ->will($this->returnValue(true));
 
-            $mysqli_result->expects($this->once())
+            $mysqli_stmt->expects($this->once())
                 ->method('get_result')
-                ->will($this->returnValue($mysqli_result));
+                ->will($this->returnValue($mysqli_stmt));
 
-            $mysqli_result->expects($this->once())
+            $mysqli_stmt->expects($this->once())
                 ->method('fetch_assoc')
                 ->will($this->returnCallback(function() {
                     return 'some_result';
                 }));
 
-            return $mysqli_result;
+            return $mysqli_stmt;
         }));
 
         $driver = new MysqliDriver($mysqli, $this->query, $logger);
@@ -147,32 +147,32 @@ class MysqliDriverTest extends TestCase
         /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
         $mysqli->expects($this->once())->method('prepare')->will($this->returnCallback(function() {
-            $mysqli_result = $this->getMockBuilder('mysqli_result')
+            $mysqli_stmt = $this->getMockBuilder('mysqli_stmt')
                 ->setMethods(['execute','get_result','fetch_all','bind_param'])
                 ->disableOriginalConstructor()
                 ->getMock();
 
-            $mysqli_result->expects($this->once())
+            $mysqli_stmt->expects($this->once())
                 ->method('execute')
                 ->will($this->returnValue(true));
 
-            $mysqli_result->expects($this->once())
+            $mysqli_stmt->expects($this->once())
                 ->method('get_result')
-                ->will($this->returnValue($mysqli_result));
+                ->will($this->returnValue($mysqli_stmt));
 
-            $mysqli_result->expects($this->once())
+            $mysqli_stmt->expects($this->once())
                ->method('fetch_all')
                ->will($this->returnCallback(function() {
                    return 'some_result';
                }));
 
-           return $mysqli_result;
+           return $mysqli_stmt;
         }));
 
         $driver = new MysqliDriver($mysqli, $this->query, $logger);
 
         $fetchAll = $driver->fetchAll(new Sql(null));
-var_dump($fetchAll);
+
         $this->assertEquals('some_result',$fetchAll);
     }
 
@@ -189,26 +189,26 @@ var_dump($fetchAll);
         /** @var \mysqli $mysqli */
         $mysqli = $this->getMockBuilder('mysqli')->getMock();
         $mysqli->expects($this->once())->method('prepare')->will($this->returnCallback(function() {
-            $mysqli_result = $this->getMockBuilder('mysqli_result')
+            $mysqli_stmt = $this->getMockBuilder('mysqli_stmt')
                 ->setMethods(['execute','get_result','fetch_assoc','bind_param'])
                 ->disableOriginalConstructor()
                 ->getMock();
 
-            $mysqli_result->expects($this->once())
+            $mysqli_stmt->expects($this->once())
                 ->method('execute')
                 ->will($this->returnValue(true));
 
-            $mysqli_result->expects($this->once())
+            $mysqli_stmt->expects($this->once())
                 ->method('get_result')
-                ->will($this->returnValue($mysqli_result));
+                ->will($this->returnValue($mysqli_stmt));
 
-            $mysqli_result->expects($this->once())
+            $mysqli_stmt->expects($this->once())
                 ->method('fetch_assoc')
                 ->will($this->returnCallback(function() {
                     return 'some_result';
                 }));
 
-            return $mysqli_result;
+            return $mysqli_stmt;
         }));
 
         $driver = new MysqliDriver($mysqli, $this->query, $logger);

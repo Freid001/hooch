@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace QueryMule\Builder\Sql\Mysql;
 
 
-use QueryMule\Query\Sql\Operator\OperatorInterface;
+use QueryMule\Query\Common\Sql\HasOn;
+use QueryMule\Query\Common\Sql\HasOrOn;
 use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
 use QueryMule\Query\Sql\Statement\OnFilterInterface;
 
 /**
@@ -16,42 +16,19 @@ use QueryMule\Query\Sql\Statement\OnFilterInterface;
  */
 class OnFilter extends Filter implements OnFilterInterface
 {
-    private $on = false;
+    use HasOn;
+    use HasOrOn;
 
     /**
-     * @param $column
-     * @param OperatorInterface|null $operator
-     * @return OnFilterInterface|FilterInterface
+     * @param array $clauses
+     * @return Sql
      */
-    public function on($column, ?OperatorInterface $operator): OnFilterInterface
+    public function build(array $clauses = [
+        Sql::JOIN
+    ]): Sql
     {
-        $this->on = true;
+        $sql = parent::build($clauses);
 
-        $sql = new Sql();
-
-        if ($column instanceof \Closure) {
-            call_user_func($column, $query = $this);
-        }else {
-            $sql->ifThenAppend(!is_null($column),Sql::ON);
-            $sql->ifThenAppend(!is_null($column),$column);
-        }
-
-        $sql->append($operator);
-
-        $this->query()->append(Sql::JOIN, $sql);
-
-        return $this;
-    }
-
-    /**
-     * @param $column
-     * @param OperatorInterface|null $operator
-     * @return OnFilterInterface|FilterInterface
-     */
-    public function orOn($column, ?OperatorInterface $operator): OnFilterInterface
-    {
-//        $this->orWhere($column,$comparison,null);
-
-        return $this;
+        return $sql;
     }
 }

@@ -39,13 +39,14 @@ trait HasCols
 
             $values = array_values($cols);
 
-            $sql = array_reduce($values, function (Sql $sql, $col) use ($alias) {
+            $query = $this->query();
+            $sql = array_reduce($values, function (Sql $sql, $col) use ($query, $alias) {
                 if ($this->columnIndex !== 0) {
                     $sql->append(',', [], false);
                 }
 
-                $sql->ifThenAppend(!is_null($alias), $this->query()->accent()->append($alias) . '.', [], false)
-                    ->append($col !== Sql::SQL_STAR ? $this->query()->accent()->append($col) : $col)
+                $sql->ifThenAppend(!is_null($alias), $query->accent()->append($alias) . '.', [], false)
+                    ->append($col !== Sql::SQL_STAR ? $query->accent()->append($col) : $col)
                     ->ifThenAppend(isset($this->columnKeys[$this->columnIndex]) && is_string($this->columnKeys[$this->columnIndex]), Sql::AS)
                     ->ifThenAppend(isset($this->columnKeys[$this->columnIndex]) && is_string($this->columnKeys[$this->columnIndex]), $this->columnKeys[$this->columnIndex]);
 

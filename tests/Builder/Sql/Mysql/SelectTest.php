@@ -526,7 +526,7 @@ class SelectTest extends TestCase
         $this->assertEquals(['tt.col_a'], $query->parameters());
     }
 
-    public function testSelectColsLeftJoinClosure()
+    public function testSelectColsAdvancedLeftJoin()
     {
         $onFilter = $this->createMock(OnFilter::class);
         $onFilter->expects($this->once())->method('on');
@@ -545,11 +545,16 @@ class SelectTest extends TestCase
         $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
         $table2->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
 
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->leftJoin($table2,  function(OnFilterInterface $onFilter) {});
+        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->leftJoin($table2,  function(OnFilterInterface $onFilter) {
+            $onFilter->on('col_a', Operator::comparison()->equalTo('tt.col_a'));
+            $onFilter->on('col_b', Operator::comparison()->equalTo('tt.col_b'));
+        });
 
         $query = $this->select->build();
 
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM some_table_name AS t LEFT JOIN another_table_name AS tt ON t.col_a =? AND t.col_b =?", trim($query->string()));
         $this->assertEquals(['tt.col_a', 'tt.col_b'], $query->parameters());
     }
+
+    //todo: join sub-query
 }

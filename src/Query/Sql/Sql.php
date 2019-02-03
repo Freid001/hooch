@@ -25,6 +25,7 @@ class Sql
     const DELETE = 'DELETE';
     const DESC = 'DESC';
     const DISTINCT = 'DISTINCT';
+    const DUPLICATE  = 'DUPLICATE';
     const EXISTS = 'EXISTS';
     const FETCH = 'fetch';
     const FETCH_ALL = 'fetchAll';
@@ -40,6 +41,7 @@ class Sql
     const JOIN_RIGHT = 'RIGHT JOIN';
     const JOIN_INNER = 'INNER JOIN';
     const JOIN_FULL_OUTER = 'FULL OUTER JOIN';
+    const KEY = 'KEY';
     const INSERT = 'INSERT';
     const IN = 'IN';
     const INTO = 'INTO';

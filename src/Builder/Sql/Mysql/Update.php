@@ -12,5 +12,8 @@ namespace QueryMule\Builder\Sql\Mysql;
  */
 class Update
 {
-
+//->update();
+//->filter()->where()->update();
+//->increment();
+//->decrement();
 }

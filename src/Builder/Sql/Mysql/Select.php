@@ -64,7 +64,7 @@ class Select implements SelectInterface
     public function __construct(Query $query)
     {
         $this->query = $query;
-        $this->query->append(Sql::SELECT, new Sql(Sql::SELECT));
+        $this->query->append(Sql::SELECT, $this->query->sql()->append(Sql::SELECT));
     }
 
     /**

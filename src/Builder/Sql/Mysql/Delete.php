@@ -12,5 +12,7 @@ namespace QueryMule\Builder\Sql\Mysql;
  */
 class Delete
 {
-
+//->delete();
+//->filter()->where()->delete();
+//->truncate();
 }

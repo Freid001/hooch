@@ -1,8 +1,8 @@
 # QueryMule
 
 [![Build Status](https://travis-ci.org/redstraw/query-mule.svg?branch=master)](https://travis-ci.org/redstraw/query-mule)
-[![Maintainability](https://api.codeclimate.com/v1/badges/407b96ee7766eb73ba22/maintainability)](https://codeclimate.com/github/redstraw/query-mule/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/407b96ee7766eb73ba22/test_coverage)](https://codeclimate.com/github/redstraw/query-mule/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/ff17f130edd42afc69cb/maintainability)](https://codeclimate.com/github/redstraw/query-mule/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/ff17f130edd42afc69cb/test_coverage)](https://codeclimate.com/github/redstraw/query-mule/test_coverage)
 [![Latest Stable Version](https://poser.pugx.org/redstraw/query-mule/v/stable)](https://packagist.org/packages/redstraw/query-mule)
 [![Total Downloads](https://poser.pugx.org/redstraw/query-mule/downloads)](https://packagist.org/packages/redstraw/query-mule)
 [![Latest Unstable Version](https://poser.pugx.org/redstraw/query-mule/v/unstable)](https://packagist.org/packages/redstraw/query-mule)

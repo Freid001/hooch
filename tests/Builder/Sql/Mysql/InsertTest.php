@@ -72,6 +72,4 @@ class InsertTest extends TestCase
         $this->assertEquals("INSERT INTO `some_table_name` ( `key` ) VALUES ( ? ) ON DUPLICATE KEY UPDATE `another_key` =?", trim($query->string()));
         $this->assertEquals(['value','another_value'], $query->parameters());
     }
-
-
 }

@@ -33,8 +33,8 @@ Database abstraction layer (DBAL) and fluent query builder for PHP. Developers c
 
 ### via Composer
 ```bash
-composer require blue-strawberry/query-mule
+composer require redstraw/query-mule
 ```
 
 ## Documentation
-https://blue-strawberry.github.io/query-mule/
+TBD

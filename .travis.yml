@@ -1,6 +1,6 @@
 env:
   global:
-    - CC_TEST_REPORTER_ID=7d77625d46a5bbe4d2683de53d8a2664c94ae51910aa3bcf2174d89061b5fd41
+    - CC_TEST_REPORTER_ID=0691823be4025300bf46c75bf8590a006a93cf324a1c75d4d39b32438484287e
     - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 language: php
 

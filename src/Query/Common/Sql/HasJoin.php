@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Common\Sql;
+namespace Redstraw\Hooch\Query\Common\Sql;
 
 
-use QueryMule\Query\Exception\SqlException;
-use QueryMule\Query\Repository\RepositoryInterface;
-use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\SelectInterface;
+use Redstraw\Hooch\Query\Exception\SqlException;
+use Redstraw\Hooch\Query\Repository\RepositoryInterface;
+use Redstraw\Hooch\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 
 /**
  * Trait HasJoin
- * @package QueryMule\Query\Common\Sql
+ * @package Redstraw\Hooch\Query\Common\Sql
  */
 trait HasJoin
 {

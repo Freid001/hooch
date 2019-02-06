@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Builder\Common\Statement;
+namespace Redstraw\Hooch\Builder\Common\Statement;
 
-use QueryMule\Query\Connection\Driver\DriverInterface;
-use QueryMule\Query\Exception\DriverException;
-use QueryMule\Query\Sql\Statement\SelectInterface;
+use Redstraw\Hooch\Query\Connection\Driver\DriverInterface;
+use Redstraw\Hooch\Query\Exception\DriverException;
+use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 
 /**
  * Trait HasSelect
- * @package QueryMule\Builder\Common\Statement
+ * @package Redstraw\Hooch\Builder\Common\Statement
  */
 trait HasSelect
 {
@@ -28,15 +28,15 @@ trait HasSelect
         if($this instanceof DriverInterface){
             switch($this->driver()){
                 case DriverInterface::DRIVER_MYSQL:
-                    $this->select = new \QueryMule\Builder\Sql\MySql\Select($this->query());
+                    $this->select = new \Redstraw\Hooch\Builder\Sql\MySql\Select($this->query());
                     break;
 
                 case DriverInterface::DRIVER_PGSQL:
-                    //$this->select = new \QueryMule\Builder\Sql\Pgsql\Select($cols, $repository);
+                    //$this->select = new \Redstraw\Hooch\Builder\Sql\Pgsql\Select($cols, $repository);
                     break;
 
                 case DriverInterface::DRIVER_SQLITE:
-                    //$this->select = new \QueryMule\Builder\Sql\Sqlite\Select($cols, $repository);
+                    //$this->select = new \Redstraw\Hooch\Builder\Sql\Sqlite\Select($cols, $repository);
                     break;
 
                 default:

@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Repository\Table;
+namespace Redstraw\Hooch\Query\Repository\Table;
 
 
-use QueryMule\Query\Connection\Driver\DriverInterface;
-use QueryMule\Query\QueryBuilderInterface;
-use QueryMule\Query\Repository\RepositoryInterface;
-use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Query\Sql\Statement\OnFilterInterface;
-use QueryMule\Query\Sql\Statement\SelectInterface;
+use Redstraw\Hooch\Query\Connection\Driver\DriverInterface;
+use Redstraw\Hooch\Query\QueryBuilderInterface;
+use Redstraw\Hooch\Query\Repository\RepositoryInterface;
+use Redstraw\Hooch\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
+use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
+use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class AbstractTable
- * @package QueryMule\Query\Repository\Table
+ * @package Redstraw\Hooch\Query\Repository\Table
  */
 abstract class AbstractTable implements RepositoryInterface
 {
@@ -87,7 +87,7 @@ abstract class AbstractTable implements RepositoryInterface
 
     /**
      * @param array $cols
-     * @return \QueryMule\Query\Sql\Statement\SelectInterface|QueryBuilderInterface
+     * @return \Redstraw\Hooch\Query\Sql\Statement\SelectInterface|QueryBuilderInterface
      */
     public function select(array $cols = [Sql::SQL_STAR]): SelectInterface
     {
@@ -95,7 +95,7 @@ abstract class AbstractTable implements RepositoryInterface
     }
 
     /**
-     * @return \QueryMule\Query\Sql\Statement\FilterInterface
+     * @return \Redstraw\Hooch\Query\Sql\Statement\FilterInterface
      */
     public function filter(): FilterInterface
     {

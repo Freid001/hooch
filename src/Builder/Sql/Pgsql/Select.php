@@ -1,14 +1,14 @@
 <?php
 
-namespace QueryMule\Builder\Sql\Pgsql;
+namespace Redstraw\Hooch\Builder\Sql\Pgsql;
 
-use QueryMule\Query\Repository\RepositoryInterface;
-use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\SelectInterface;
+use Redstraw\Hooch\Query\Repository\RepositoryInterface;
+use Redstraw\Hooch\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class Select
- * @package QueryMule\Builder\Sql\Pgsql
+ * @package Redstraw\Hooch\Builder\Sql\Pgsql
  */
 abstract class Select
 {

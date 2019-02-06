@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Common;
+namespace Redstraw\Hooch\Query\Common;
 
 
-use QueryMule\Query\Sql\Query;
+use Redstraw\Hooch\Query\Sql\Query;
 
 /**
  * Trait HasQuery
- * @package QueryMule\Query\Common
+ * @package Redstraw\Hooch\Query\Common
  */
 trait HasQuery
 {

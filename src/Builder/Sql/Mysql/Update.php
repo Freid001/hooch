@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Builder\Sql\Mysql;
+namespace Redstraw\Hooch\Builder\Sql\Mysql;
 
 
 
 /**
  * Class Update
- * @package QueryMule\Builder\Sql\Mysql
+ * @package Redstraw\Hooch\Builder\Sql\Mysql
  */
 class Update
 {

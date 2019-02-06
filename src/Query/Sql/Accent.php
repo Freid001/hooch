@@ -1,10 +1,10 @@
 <?php
 
-namespace QueryMule\Query\Sql;
+namespace Redstraw\Hooch\Query\Sql;
 
 /**
  * Class Accent
- * @package QueryMule\Query\Sql
+ * @package Redstraw\Hooch\Query\Sql
  */
 class Accent
 {

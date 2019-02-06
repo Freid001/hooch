@@ -1,10 +1,10 @@
 <?php
 
-namespace QueryMule\Query\Exception;
+namespace Redstraw\Hooch\Query\Exception;
 
 /**
  * Class DatabaseException
- * @package QueryMule\Builder\Exception
+ * @package Redstraw\Hooch\Builder\Exception
  */
 class DatabaseException extends \Exception
 {}

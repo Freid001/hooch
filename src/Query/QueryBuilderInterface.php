@@ -1,14 +1,14 @@
 <?php
 
-namespace QueryMule\Query;
+namespace Redstraw\Hooch\Query;
 
 
-use QueryMule\Query\Sql\Query;
-use QueryMule\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Query;
+use Redstraw\Hooch\Query\Sql\Sql;
 
 /**
  * Interface FilterInterface
- * @package QueryMule\Query\Sql\Statement
+ * @package Redstraw\Hooch\Query\Sql\Statement
  */
 interface QueryBuilderInterface
 {

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Repository;
+namespace Redstraw\Hooch\Query\Repository;
 
 
-use QueryMule\Query\QueryBuilderInterface;
-use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Query\Sql\Statement\OnFilterInterface;
-use QueryMule\Query\Sql\Statement\SelectInterface;
+use Redstraw\Hooch\Query\QueryBuilderInterface;
+use Redstraw\Hooch\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
+use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
+use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 
 /**
  * Interface RepositoryInterface
- * @package QueryMule\Query\Repository
+ * @package Redstraw\Hooch\Query\Repository
  */
 interface RepositoryInterface
 {
@@ -29,7 +29,7 @@ interface RepositoryInterface
 
     /**
      * @param array $cols
-     * @return \QueryMule\Query\Sql\Statement\SelectInterface|QueryBuilderInterface
+     * @return \Redstraw\Hooch\Query\Sql\Statement\SelectInterface|QueryBuilderInterface
      */
     public function select(array $cols = [Sql::SQL_STAR]) : SelectInterface;
 

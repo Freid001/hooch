@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Sql\Operator;
+namespace Redstraw\Hooch\Query\Sql\Operator;
 
 /**
  * Operator

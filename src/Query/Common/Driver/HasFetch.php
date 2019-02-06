@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Common\Driver;
+namespace Redstraw\Hooch\Query\Common\Driver;
 
 
-use QueryMule\Query\Connection\Driver\DriverInterface;
-use QueryMule\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Connection\Driver\DriverInterface;
+use Redstraw\Hooch\Query\Sql\Sql;
 
 /**
  * Trait HasFetch
- * @package QueryMule\Query\Common\Statement
+ * @package Redstraw\Hooch\Query\Common\Statement
  */
 trait HasFetch
 {

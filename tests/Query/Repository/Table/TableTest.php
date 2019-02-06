@@ -4,14 +4,14 @@
 //namespace test\Query\Repository\Table;
 //
 //use PHPUnit\Framework\TestCase;
-//use QueryMule\Builder\Sql\Sqlite\Filter;
-//use QueryMule\Builder\Sql\Sqlite\Select;
-//use QueryMule\Query\Connection\Driver\DriverInterface;
-//use QueryMule\Query\Repository\RepositoryInterface;
-//use QueryMule\Query\Repository\Table\Table;
-//use QueryMule\Query\Sql\Sql;
-//use QueryMule\Query\Sql\Statement\SelectInterface;
-//use QueryMule\Sql\Operator\Comparison;
+//use Redstraw\Hooch\Builder\Sql\Sqlite\Filter;
+//use Redstraw\Hooch\Builder\Sql\Sqlite\Select;
+//use Redstraw\Hooch\Query\Connection\Driver\DriverInterface;
+//use Redstraw\Hooch\Query\Repository\RepositoryInterface;
+//use Redstraw\Hooch\Query\Repository\Table\Table;
+//use Redstraw\Hooch\Query\Sql\Sql;
+//use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
+//use Redstraw\Hooch\Sql\Operator\Comparison;
 //
 ///**
 // * Class TableTest

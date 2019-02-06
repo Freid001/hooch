@@ -4,18 +4,18 @@ declare(strict_types=1);
 namespace test\Builder\Sql\Mysql;
 
 use PHPUnit\Framework\TestCase;
-use QueryMule\Builder\Sql\Mysql\Filter;
-use QueryMule\Builder\Sql\Mysql\OnFilter;
-use QueryMule\Builder\Sql\Mysql\Select;
-use QueryMule\Query\Repository\RepositoryInterface;
-use QueryMule\Query\Sql\Accent;
-use QueryMule\Query\Sql\Operator\Logical;
-use QueryMule\Query\Sql\Operator\Operator;
-use QueryMule\Query\Sql\Query;
-use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Query\Sql\Statement\OnFilterInterface;
-use QueryMule\Query\Sql\Statement\SelectInterface;
+use Redstraw\Hooch\Builder\Sql\Mysql\Filter;
+use Redstraw\Hooch\Builder\Sql\Mysql\OnFilter;
+use Redstraw\Hooch\Builder\Sql\Mysql\Select;
+use Redstraw\Hooch\Query\Repository\RepositoryInterface;
+use Redstraw\Hooch\Query\Sql\Accent;
+use Redstraw\Hooch\Query\Sql\Operator\Logical;
+use Redstraw\Hooch\Query\Sql\Operator\Operator;
+use Redstraw\Hooch\Query\Sql\Query;
+use Redstraw\Hooch\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
+use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
+use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class SelectTest

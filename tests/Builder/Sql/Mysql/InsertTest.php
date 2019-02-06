@@ -4,19 +4,19 @@ declare(strict_types=1);
 namespace test\Builder\Sql\MySql;
 
 use PHPUnit\Framework\TestCase;
-use QueryMule\Builder\Sql\MySql\Filter;
-use QueryMule\Builder\Sql\Mysql\Insert;
-use QueryMule\Builder\Sql\Mysql\OnFilter;
-use QueryMule\Query\Repository\RepositoryInterface;
-use QueryMule\Query\Sql\Accent;
-use QueryMule\Query\Sql\Operator\Comparison;
-use QueryMule\Query\Sql\Operator\Logical;
-use QueryMule\Query\Sql\Operator\Operator;
-use QueryMule\Query\Sql\Query;
-use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Query\Sql\Statement\InsertInterface;
-use QueryMule\Query\Sql\Statement\OnFilterInterface;
+use Redstraw\Hooch\Builder\Sql\MySql\Filter;
+use Redstraw\Hooch\Builder\Sql\Mysql\Insert;
+use Redstraw\Hooch\Builder\Sql\Mysql\OnFilter;
+use Redstraw\Hooch\Query\Repository\RepositoryInterface;
+use Redstraw\Hooch\Query\Sql\Accent;
+use Redstraw\Hooch\Query\Sql\Operator\Comparison;
+use Redstraw\Hooch\Query\Sql\Operator\Logical;
+use Redstraw\Hooch\Query\Sql\Operator\Operator;
+use Redstraw\Hooch\Query\Sql\Query;
+use Redstraw\Hooch\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
+use Redstraw\Hooch\Query\Sql\Statement\InsertInterface;
+use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
 
 /**
  * Class InsertTest

@@ -1,10 +1,10 @@
 <?php
 
-namespace QueryMule\Query\Exception;
+namespace Redstraw\Hooch\Query\Exception;
 
 /**
  * Class DriverException
- * @package QueryMule\Query\Exception
+ * @package Redstraw\Hooch\Query\Exception
  */
 class DriverException extends \Exception
 {}

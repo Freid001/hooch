@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Common\Statement;
+namespace Redstraw\Hooch\Query\Common\Statement;
 
 
-use QueryMule\Query\Connection\Driver\DriverInterface;
-use QueryMule\Query\Exception\DriverException;
-use QueryMule\Query\Sql\Statement\FilterInterface;
+use Redstraw\Hooch\Query\Connection\Driver\DriverInterface;
+use Redstraw\Hooch\Query\Exception\DriverException;
+use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 
 /**
  * Trait HasFilter
- * @package QueryMule\Query\Common\Statement
+ * @package Redstraw\Hooch\Query\Common\Statement
  */
 trait HasFilter
 {
@@ -24,14 +24,14 @@ trait HasFilter
         if($this instanceof DriverInterface){
             switch($this->driver()){
                 case DriverInterface::DRIVER_MYSQL:
-                    return new \QueryMule\Builder\Sql\Mysql\Filter($this->query());
+                    return new \Redstraw\Hooch\Builder\Sql\Mysql\Filter($this->query());
 
                 case DriverInterface::DRIVER_PGSQL:
-                    //$this->filter = new \QueryMule\Builder\Sql\Pgsql\Filter();
+                    //$this->filter = new \Redstraw\Hooch\Builder\Sql\Pgsql\Filter();
                     break;
 
                 case DriverInterface::DRIVER_SQLITE:
-                    //$this->filter = new \QueryMule\Builder\Sql\Sqlite\Filter();
+                    //$this->filter = new \Redstraw\Hooch\Builder\Sql\Sqlite\Filter();
                     break;
 
                 default:

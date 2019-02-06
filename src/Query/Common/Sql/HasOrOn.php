@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Common\Sql;
+namespace Redstraw\Hooch\Query\Common\Sql;
 
 
-use QueryMule\Query\Exception\SqlException;
-use QueryMule\Query\Sql\Operator\OperatorInterface;
-use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\OnFilterInterface;
+use Redstraw\Hooch\Query\Exception\SqlException;
+use Redstraw\Hooch\Query\Sql\Operator\OperatorInterface;
+use Redstraw\Hooch\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
 
 /**
  * Trait HasOrOn
- * @package QueryMule\Query\Common\Sql
+ * @package Redstraw\Hooch\Query\Common\Sql
  */
 trait HasOrOn
 {

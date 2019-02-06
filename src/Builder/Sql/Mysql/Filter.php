@@ -2,40 +2,40 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Builder\Sql\Mysql;
+namespace Redstraw\Hooch\Builder\Sql\Mysql;
 
 
-use QueryMule\Query\Common\HasQuery;
-use QueryMule\Query\Common\Sql\HasNestedWhere;
-use QueryMule\Query\Common\Sql\HasOrWhere;
-use QueryMule\Query\Common\Sql\HasOrWhereBetween;
-use QueryMule\Query\Common\Sql\HasOrWhereExists;
-use QueryMule\Query\Common\Sql\HasOrWhereIn;
-use QueryMule\Query\Common\Sql\HasOrWhereLike;
-use QueryMule\Query\Common\Sql\HasOrWhereNot;
-use QueryMule\Query\Common\Sql\HasOrWhereNotBetween;
-use QueryMule\Query\Common\Sql\HasOrWhereNotExists;
-use QueryMule\Query\Common\Sql\HasOrWhereNotIn;
-use QueryMule\Query\Common\Sql\HasOrWhereNotLike;
-use QueryMule\Query\Common\Sql\HasWhere;
-use QueryMule\Query\Common\Sql\HasWhereBetween;
-use QueryMule\Query\Common\Sql\HasWhereExists;
-use QueryMule\Query\Common\Sql\HasWhereIn;
-use QueryMule\Query\Common\Sql\HasWhereLike;
-use QueryMule\Query\Common\Sql\HasWhereNot;
-use QueryMule\Query\Common\Sql\HasWhereNotBetween;
-use QueryMule\Query\Common\Sql\HasWhereNotExists;
-use QueryMule\Query\Common\Sql\HasWhereNotIn;
-use QueryMule\Query\Common\Sql\HasWhereNotLike;
-use QueryMule\Query\Sql\Accent;
-use QueryMule\Query\Sql\Operator\Logical;
-use QueryMule\Query\Sql\Query;
-use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
+use Redstraw\Hooch\Query\Common\HasQuery;
+use Redstraw\Hooch\Query\Common\Sql\HasNestedWhere;
+use Redstraw\Hooch\Query\Common\Sql\HasOrWhere;
+use Redstraw\Hooch\Query\Common\Sql\HasOrWhereBetween;
+use Redstraw\Hooch\Query\Common\Sql\HasOrWhereExists;
+use Redstraw\Hooch\Query\Common\Sql\HasOrWhereIn;
+use Redstraw\Hooch\Query\Common\Sql\HasOrWhereLike;
+use Redstraw\Hooch\Query\Common\Sql\HasOrWhereNot;
+use Redstraw\Hooch\Query\Common\Sql\HasOrWhereNotBetween;
+use Redstraw\Hooch\Query\Common\Sql\HasOrWhereNotExists;
+use Redstraw\Hooch\Query\Common\Sql\HasOrWhereNotIn;
+use Redstraw\Hooch\Query\Common\Sql\HasOrWhereNotLike;
+use Redstraw\Hooch\Query\Common\Sql\HasWhere;
+use Redstraw\Hooch\Query\Common\Sql\HasWhereBetween;
+use Redstraw\Hooch\Query\Common\Sql\HasWhereExists;
+use Redstraw\Hooch\Query\Common\Sql\HasWhereIn;
+use Redstraw\Hooch\Query\Common\Sql\HasWhereLike;
+use Redstraw\Hooch\Query\Common\Sql\HasWhereNot;
+use Redstraw\Hooch\Query\Common\Sql\HasWhereNotBetween;
+use Redstraw\Hooch\Query\Common\Sql\HasWhereNotExists;
+use Redstraw\Hooch\Query\Common\Sql\HasWhereNotIn;
+use Redstraw\Hooch\Query\Common\Sql\HasWhereNotLike;
+use Redstraw\Hooch\Query\Sql\Accent;
+use Redstraw\Hooch\Query\Sql\Operator\Logical;
+use Redstraw\Hooch\Query\Sql\Query;
+use Redstraw\Hooch\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 
 /**
  * Class Filter
- * @package QueryMule\Builder\Sql\Mysql
+ * @package Redstraw\Hooch\Builder\Sql\Mysql
  */
 class Filter implements FilterInterface
 {

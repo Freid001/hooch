@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Sql;
+namespace Redstraw\Hooch\Query\Sql;
 
 
-use QueryMule\Query\QueryBuilderInterface;
+use Redstraw\Hooch\Query\QueryBuilderInterface;
 
 /**
  * Class Sql
- * @package QueryMule\Query\Sql
+ * @package Redstraw\Hooch\Query\Sql
  */
 class Sql
 {

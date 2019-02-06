@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Builder\Sql\Mysql;
+namespace Redstraw\Hooch\Builder\Sql\Mysql;
 
 
-use QueryMule\Query\Common\Sql\HasOn;
-use QueryMule\Query\Common\Sql\HasOrOn;
-use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\OnFilterInterface;
+use Redstraw\Hooch\Query\Common\Sql\HasOn;
+use Redstraw\Hooch\Query\Common\Sql\HasOrOn;
+use Redstraw\Hooch\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
 
 /**
  * Class Join
- * @package QueryMule\Builder\Sql\Mysql
+ * @package Redstraw\Hooch\Builder\Sql\Mysql
  */
 class OnFilter extends Filter implements OnFilterInterface
 {

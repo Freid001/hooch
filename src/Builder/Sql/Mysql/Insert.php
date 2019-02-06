@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Builder\Sql\Mysql;
+namespace Redstraw\Hooch\Builder\Sql\Mysql;
 
 
-use QueryMule\Query\Common\HasQuery;
-use QueryMule\Query\Common\Sql\HasInsert;
-use QueryMule\Query\Common\Sql\HasInto;
-use QueryMule\Query\Common\Sql\HasOnDuplicateKeyUpdate;
-use QueryMule\Query\Repository\RepositoryInterface;
-use QueryMule\Query\Sql\Query;
-use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\InsertInterface;
+use Redstraw\Hooch\Query\Common\HasQuery;
+use Redstraw\Hooch\Query\Common\Sql\HasInsert;
+use Redstraw\Hooch\Query\Common\Sql\HasInto;
+use Redstraw\Hooch\Query\Common\Sql\HasOnDuplicateKeyUpdate;
+use Redstraw\Hooch\Query\Repository\RepositoryInterface;
+use Redstraw\Hooch\Query\Sql\Query;
+use Redstraw\Hooch\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Statement\InsertInterface;
 
 /**
  * Class Insert
- * @package QueryMule\Builder\Sql\Mysql
+ * @package Redstraw\Hooch\Builder\Sql\Mysql
  */
 class Insert implements InsertInterface
 {

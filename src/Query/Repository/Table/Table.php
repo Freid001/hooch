@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Repository\Table;
+namespace Redstraw\Hooch\Query\Repository\Table;
 
 
-use QueryMule\Query\Connection\Driver\DriverInterface;
+use Redstraw\Hooch\Query\Connection\Driver\DriverInterface;
 
 /**
  * Class Table
- * @package QueryMule\Query\Repository\Table
+ * @package Redstraw\Hooch\Query\Repository\Table
  */
 class Table extends AbstractTable
 {

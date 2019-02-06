@@ -1,10 +1,10 @@
 <?php
 
-namespace QueryMule\Query\Sql\Operator;
+namespace Redstraw\Hooch\Query\Sql\Operator;
 
 /**
  * Interface OperatorInterface
- * @package QueryMule\Query
+ * @package Redstraw\Hooch\Query
  */
 interface OperatorInterface
 {

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Sql\Operator;
+namespace Redstraw\Hooch\Query\Sql\Operator;
 
-use QueryMule\Query\QueryBuilderInterface;
-use QueryMule\Query\Sql\Accent;
-use QueryMule\Query\Sql\Query;
-use QueryMule\Query\Sql\Sql;
+use Redstraw\Hooch\Query\QueryBuilderInterface;
+use Redstraw\Hooch\Query\Sql\Accent;
+use Redstraw\Hooch\Query\Sql\Query;
+use Redstraw\Hooch\Query\Sql\Sql;
 
 /**
  * Class Comparison
- * @package QueryMule\Query\Sql\Operator
+ * @package Redstraw\Hooch\Query\Sql\Operator
  */
 class Comparison implements QueryBuilderInterface, OperatorInterface
 {

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Sql\Statement;
+namespace Redstraw\Hooch\Query\Sql\Statement;
 
 
-use QueryMule\Query\Sql\Operator\OperatorInterface;
+use Redstraw\Hooch\Query\Sql\Operator\OperatorInterface;
 
 /**
  * Interface OnFilterInterface
- * @package QueryMule\Query\Sql\Statement
+ * @package Redstraw\Hooch\Query\Sql\Statement
  */
 interface OnFilterInterface extends FilterInterface
 {

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Sql;
+namespace Redstraw\Hooch\Query\Sql;
 
-use QueryMule\Query\Sql\Operator\Logical;
+use Redstraw\Hooch\Query\Sql\Operator\Logical;
 
 /**
  * Class Query
- * @package QueryMule\Query\Sql
+ * @package Redstraw\Hooch\Query\Sql
  */
 class Query
 {

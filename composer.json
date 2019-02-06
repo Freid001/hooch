@@ -1,7 +1,7 @@
 {
-    "name": "redstraw\/query-mule",
+    "name": "hooch",
     "type": "library",
-    "description": "Database abstraction layer (DBAL) and fluent query builder for PHP. Developers can use this package on its own or in conjunction with a framework.",
+    "description": "Database abstraction layer (dbal) and fluent query builder for PHP.",
     "keywords": [
         "query builder",
         "database abstraction layer",
@@ -19,7 +19,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "QueryMule\\": "src\/"
+            "Redstraw\\Hooch\\": "src\/"
         },
         "classmap": [
             "src/"

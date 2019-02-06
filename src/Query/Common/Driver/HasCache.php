@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Query\Common\Driver;
+namespace Redstraw\Hooch\Query\Common\Driver;
 
 
 use Psr\SimpleCache\CacheInterface;
-use QueryMule\Query\Connection\Driver\DriverInterface;
+use Redstraw\Hooch\Query\Connection\Driver\DriverInterface;
 
 /**
  * Trait HasCache
- * @package QueryMule\Query\Common\Driver
+ * @package Redstraw\Hooch\Query\Common\Driver
  */
 trait HasCache
 {

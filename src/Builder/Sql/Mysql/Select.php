@@ -2,33 +2,33 @@
 
 declare(strict_types=1);
 
-namespace QueryMule\Builder\Sql\Mysql;
+namespace Redstraw\Hooch\Builder\Sql\Mysql;
 
 
-use QueryMule\Query\Common\HasQuery;
-use QueryMule\Query\Common\Sql\HasCols;
-use QueryMule\Query\Common\Sql\HasFrom;
-use QueryMule\Query\Common\Sql\HasFullOuterJoin;
-use QueryMule\Query\Common\Sql\HasGroupBy;
-use QueryMule\Query\Common\Sql\HasHaving;
-use QueryMule\Query\Common\Sql\HasInnerJoin;
-use QueryMule\Query\Common\Sql\HasJoin;
-use QueryMule\Query\Common\Sql\HasLeftJoin;
-use QueryMule\Query\Common\Sql\HasLimit;
-use QueryMule\Query\Common\Sql\HasOffset;
-use QueryMule\Query\Common\Sql\HasOrderBy;
-use QueryMule\Query\Common\Sql\HasRightJoin;
-use QueryMule\Query\Common\Sql\HasUnion;
-use QueryMule\Query\QueryBuilderInterface;
-use QueryMule\Query\Sql\Query;
-use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Query\Sql\Statement\OnFilterInterface;
-use QueryMule\Query\Sql\Statement\SelectInterface;
+use Redstraw\Hooch\Query\Common\HasQuery;
+use Redstraw\Hooch\Query\Common\Sql\HasCols;
+use Redstraw\Hooch\Query\Common\Sql\HasFrom;
+use Redstraw\Hooch\Query\Common\Sql\HasFullOuterJoin;
+use Redstraw\Hooch\Query\Common\Sql\HasGroupBy;
+use Redstraw\Hooch\Query\Common\Sql\HasHaving;
+use Redstraw\Hooch\Query\Common\Sql\HasInnerJoin;
+use Redstraw\Hooch\Query\Common\Sql\HasJoin;
+use Redstraw\Hooch\Query\Common\Sql\HasLeftJoin;
+use Redstraw\Hooch\Query\Common\Sql\HasLimit;
+use Redstraw\Hooch\Query\Common\Sql\HasOffset;
+use Redstraw\Hooch\Query\Common\Sql\HasOrderBy;
+use Redstraw\Hooch\Query\Common\Sql\HasRightJoin;
+use Redstraw\Hooch\Query\Common\Sql\HasUnion;
+use Redstraw\Hooch\Query\QueryBuilderInterface;
+use Redstraw\Hooch\Query\Sql\Query;
+use Redstraw\Hooch\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
+use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
+use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class Select
- * @package QueryMule\Builder\Sql\Sqlite
+ * @package Redstraw\Hooch\Builder\Sql\Sqlite
  */
 class Select implements SelectInterface
 {

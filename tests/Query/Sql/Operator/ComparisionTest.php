@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace test\Builder\Sql\Mysql;
 
 use PHPUnit\Framework\TestCase;
-use QueryMule\Query\Sql\Operator\Comparison;
-use QueryMule\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Operator\Comparison;
+use Redstraw\Hooch\Query\Sql\Sql;
 
 /**
  * Class SelectTest

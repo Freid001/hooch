@@ -1,20 +1,20 @@
 <?php
 
-namespace QueryMule\Query\Connection\Driver;
+namespace Redstraw\Hooch\Query\Connection\Driver;
 
 use Psr\SimpleCache\CacheInterface;
-use QueryMule\Builder\Sql\Mysql\OnFilter;
-use QueryMule\Query\Repository\RepositoryInterface;
-use QueryMule\Query\Sql\Operator\Comparison;
-use QueryMule\Query\Sql\Operator\Logical;
-use QueryMule\Query\Sql\Sql;
-use QueryMule\Query\Sql\Statement\FilterInterface;
-use QueryMule\Query\Sql\Statement\OnFilterInterface;
-use QueryMule\Query\Sql\Statement\SelectInterface;
+use Redstraw\Hooch\Builder\Sql\Mysql\OnFilter;
+use Redstraw\Hooch\Query\Repository\RepositoryInterface;
+use Redstraw\Hooch\Query\Sql\Operator\Comparison;
+use Redstraw\Hooch\Query\Sql\Operator\Logical;
+use Redstraw\Hooch\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
+use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
+use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 
 /**
  * Class AdapterInterface
- * @package QueryMule\Query\Connection\Driver
+ * @package Redstraw\Hooch\Query\Connection\Driver
  */
 interface DriverInterface
 {

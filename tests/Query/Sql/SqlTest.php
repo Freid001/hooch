@@ -5,12 +5,12 @@ namespace test\Query\Sql;
 
 
 use PHPUnit\Framework\TestCase;
-use QueryMule\Builder\Sql\Mysql\Filter;
-use QueryMule\Query\Sql\Accent;
-use QueryMule\Query\Sql\Operator\Logical;
-use QueryMule\Query\Sql\Operator\Operator;
-use QueryMule\Query\Sql\Query;
-use QueryMule\Query\Sql\Sql;
+use Redstraw\Hooch\Builder\Sql\Mysql\Filter;
+use Redstraw\Hooch\Query\Sql\Accent;
+use Redstraw\Hooch\Query\Sql\Operator\Logical;
+use Redstraw\Hooch\Query\Sql\Operator\Operator;
+use Redstraw\Hooch\Query\Sql\Query;
+use Redstraw\Hooch\Query\Sql\Sql;
 
 /**
  * Class SqlTest

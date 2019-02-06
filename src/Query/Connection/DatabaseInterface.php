@@ -1,12 +1,12 @@
 <?php
 
-namespace QueryMule\Query\Connection;
+namespace Redstraw\Hooch\Query\Connection;
 
-use QueryMule\Query\Connection\Handler\DatabaseHandlerInterface;
+use Redstraw\Hooch\Query\Connection\Handler\DatabaseHandlerInterface;
 
 /**
  * Interface DatabaseInterface
- * @package QueryMule\Query\Connection
+ * @package Redstraw\Hooch\Query\Connection
  */
 interface DatabaseInterface
 {

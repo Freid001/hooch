@@ -1,5 +1,5 @@
 {
-    "name": "hooch",
+    "name": "redstraw\/hooch",
     "type": "library",
     "description": "Database abstraction layer (dbal) and fluent query builder for PHP.",
     "keywords": [

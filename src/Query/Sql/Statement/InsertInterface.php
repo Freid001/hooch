@@ -16,15 +16,16 @@ interface InsertInterface extends QueryBuilderInterface
 {
     /**
      * @param RepositoryInterface $table
+     * @param array $cols
      * @return InsertInterface
      */
-    public function into(RepositoryInterface $table): InsertInterface;
+    public function into(RepositoryInterface $table, array $cols): InsertInterface;
 
     /**
      * @param array $values
      * @return InsertInterface
      */
-    public function insert(array $values): InsertInterface;
+    public function values(array $values): InsertInterface;
 
     /**
      * @param array $values

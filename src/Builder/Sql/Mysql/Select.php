@@ -97,23 +97,32 @@ class Select implements SelectInterface
 
         $this->query->reset($clauses);
 
+        $this->columnIndex = 0;
+        $this->columnKeys = [];
+
         return $sql;
     }
 
     /**
-     * @return FilterInterface|null
+     * @param \Closure $callback
+     * @return SelectInterface
      */
-    public function filter(): ?FilterInterface
+    public function filter(\Closure $callback): SelectInterface
     {
-        return $this->filter;
+        $callback->call($this->filter, $this->table);
+
+        return $this;
     }
 
     /**
-     * @return OnFilterInterface|null
+     * @param \Closure $callback
+     * @return SelectInterface
      */
-    public function onFilter(): ?OnFilterInterface
+    public function onFilter(\Closure $callback): SelectInterface
     {
-        return $this->onFilter;
+        $callback->call($this->onFilter, $this->table);
+
+        return $this;
     }
 
     /**

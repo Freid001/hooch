@@ -14,7 +14,7 @@ use Redstraw\Hooch\Query\Sql\Sql;
  * Interface Select
  * @package Redstraw\Hooch\Query\Sql\Statement
  */
-interface SelectInterface extends QueryBuilderInterface
+interface SelectInterface extends QueryBuilderInterface, JoinInterface
 {
     /**
      * @param array $cols
@@ -24,9 +24,10 @@ interface SelectInterface extends QueryBuilderInterface
     public function cols(array $cols = [Sql::SQL_STAR], ?string $alias = null): SelectInterface;
 
     /**
-     * @return FilterInterface|null
+     * @param \Closure $callback
+     * @return SelectInterface
      */
-    public function filter(): ?FilterInterface;
+    public function filter(\Closure $callback): SelectInterface;
 
     /**
      * @param FilterInterface $filter
@@ -35,9 +36,10 @@ interface SelectInterface extends QueryBuilderInterface
     public function setFilter(FilterInterface $filter): void;
 
     /**
-     * @return OnFilterInterface|null
+     * @param \Closure $callback
+     * @return SelectInterface
      */
-    public function onFilter(): ?OnFilterInterface;
+    public function onFilter(\Closure $callback): SelectInterface;
 
     /**
      * @param OnFilterInterface $onFilter
@@ -52,50 +54,11 @@ interface SelectInterface extends QueryBuilderInterface
     public function from(RepositoryInterface $table): SelectInterface;
 
     /**
-     * @param $column
+     * @param string $column
      * @param string|null $alias
      * @return SelectInterface
      */
-    public function groupBy($column, ?string $alias = null): SelectInterface;
-
-    /**
-     * @param string $type
-     * @param RepositoryInterface $table
-     * @return SelectInterface
-     */
-    public function join(string $type, RepositoryInterface $table): SelectInterface;
-
-    /**
-     * @param RepositoryInterface $table
-     * @param $column
-     * @param OperatorInterface|null $operator
-     * @return SelectInterface
-     */
-    public function leftJoin(RepositoryInterface $table, $column, ?OperatorInterface $operator = null): SelectInterface;
-
-    /**
-     * @param RepositoryInterface $table
-     * @param $column
-     * @param OperatorInterface|null $operator
-     * @return SelectInterface
-     */
-    public function rightJoin(RepositoryInterface $table, $column, ?OperatorInterface $operator = null): SelectInterface;
-
-    /**
-     * @param RepositoryInterface $table
-     * @param $column
-     * @param OperatorInterface|null $operator
-     * @return SelectInterface
-     */
-    public function innerJoin(RepositoryInterface $table, $column, ?OperatorInterface $operator = null): SelectInterface;
-
-    /**
-     * @param RepositoryInterface $table
-     * @param $column
-     * @param OperatorInterface|null $operator
-     * @return SelectInterface
-     */
-    public function fullOuterJoin(RepositoryInterface $table, $column, ?OperatorInterface $operator = null): SelectInterface;
+    public function groupBy(string $column, ?string $alias = null): SelectInterface;
 
     /**
      * @param int $limit
@@ -110,11 +73,11 @@ interface SelectInterface extends QueryBuilderInterface
     public function offset(int $offset): SelectInterface;
 
     /**
-     * @param $column
+     * @param string $column
      * @param string|null $order
      * @return SelectInterface
      */
-    public function orderBy($column, ?string $order): SelectInterface;
+    public function orderBy(string $column, ?string $order): SelectInterface;
 
     /**
      * @param QueryBuilderInterface $select
@@ -124,9 +87,9 @@ interface SelectInterface extends QueryBuilderInterface
     public function union(QueryBuilderInterface $select, bool $all = false): SelectInterface;
 
     /**
-     * @param $column
+     * @param string $column
      * @param OperatorInterface $operator
      * @return SelectInterface
      */
-    public function having($column, OperatorInterface $operator): SelectInterface;
+    public function having(string $column, OperatorInterface $operator): SelectInterface;
 }

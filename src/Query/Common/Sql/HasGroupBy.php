@@ -16,12 +16,12 @@ use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 trait HasGroupBy
 {
     /**
-     * @param $column
+     * @param string $column
      * @param string|null $alias
      * @return SelectInterface
      * @throws SqlException
      */
-    public function groupBy($column, ?string $alias = null): SelectInterface
+    public function groupBy(string $column, ?string $alias = null): SelectInterface
     {
         if($this instanceof SelectInterface) {
             $sql = $this->query()->sql();

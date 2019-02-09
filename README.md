@@ -22,8 +22,8 @@ Database abstraction layer (dbal) and fluent query builder for PHP. Developers c
     * MySQLi
 * Supported databases: 
     * MySQL
-    * PostgreSQL
-    * SQLite
+    * PostgreSQL (TBD)
+    * SQLite (TBD)
 
 ### Requirements
 * PHP >= 7.1

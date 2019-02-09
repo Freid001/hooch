@@ -6,10 +6,9 @@ namespace Redstraw\Hooch\Builder\Sql\Mysql;
 
 
 use Redstraw\Hooch\Query\Common\HasQuery;
-use Redstraw\Hooch\Query\Common\Sql\HasInsert;
+use Redstraw\Hooch\Query\Common\Sql\HasValues;
 use Redstraw\Hooch\Query\Common\Sql\HasInto;
 use Redstraw\Hooch\Query\Common\Sql\HasOnDuplicateKeyUpdate;
-use Redstraw\Hooch\Query\Repository\RepositoryInterface;
 use Redstraw\Hooch\Query\Sql\Query;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\InsertInterface;
@@ -22,13 +21,8 @@ class Insert implements InsertInterface
 {
     use HasQuery;
     use HasInto;
-    use HasInsert;
+    use HasValues;
     use HasOnDuplicateKeyUpdate;
-
-    /**
-     * @var Query
-     */
-    private $query;
 
     /**
      * Insert constructor.
@@ -45,7 +39,10 @@ class Insert implements InsertInterface
      * @return Sql
      */
     public function build(array $clauses = [
-        Sql::INSERT
+        Sql::INSERT,
+        Sql::INTO,
+        Sql::VALUES,
+        Sql::UPDATE
     ]): Sql
     {
         $sql = $this->query->build($clauses);
@@ -53,5 +50,16 @@ class Insert implements InsertInterface
         $this->query->reset($clauses);
 
         return $sql;
+    }
+
+    /**
+     * @param bool $ignore
+     * @return InsertInterface
+     */
+    public function ignoreAccent($ignore = true): InsertInterface
+    {
+        $this->query->accent()->ignore($ignore);
+
+        return $this;
     }
 }

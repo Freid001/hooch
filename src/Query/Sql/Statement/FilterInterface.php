@@ -45,7 +45,7 @@ interface FilterInterface extends QueryBuilderInterface
     /**
      * @param $column
      * @param OperatorInterface $operator
-     * @return mixed
+     * @return FilterInterface
      */
     public function orWhere($column, OperatorInterface $operator): FilterInterface;
 
@@ -80,7 +80,7 @@ interface FilterInterface extends QueryBuilderInterface
     /**
      * @param $column
      * @param OperatorInterface $operator
-     * @return mixed
+     * @return FilterInterface
      */
     public function orWhereNot($column, OperatorInterface $operator): FilterInterface;
 
@@ -115,7 +115,7 @@ interface FilterInterface extends QueryBuilderInterface
     /**
      * @param $column
      * @param OperatorInterface $operator
-     * @return mixed
+     * @return FilterInterface
      */
     public function where($column, OperatorInterface $operator): FilterInterface;
 
@@ -150,7 +150,7 @@ interface FilterInterface extends QueryBuilderInterface
     /**
      * @param $column
      * @param OperatorInterface $operator
-     * @return mixed
+     * @return FilterInterface
      */
     public function whereNot($column, OperatorInterface $operator): FilterInterface;
 

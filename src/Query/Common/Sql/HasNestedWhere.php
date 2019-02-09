@@ -25,8 +25,7 @@ trait HasNestedWhere
     {
         if($this instanceof FilterInterface){
             $this->query()->logical()->setNested(true);
-
-            call_user_func($callback, $query = $this);
+            $callback->call($this);
 
             if($this instanceof OnFilterInterface){
                 $this->query()->append(Sql::JOIN, $this->query()->sql()->append(Sql::SQL_BRACKET_CLOSE));

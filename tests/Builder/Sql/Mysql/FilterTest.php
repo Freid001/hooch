@@ -61,11 +61,17 @@ class FilterTest extends TestCase
 
     public function testWhereAndNestedWhere()
     {
-        $query = $this->filter->where('col_a', Operator::comparison()->equalTo('some_value_a'))->nestedWhere(function (FilterInterface $query) {
-            $query->where('col_b', Operator::comparison()->equalTo('some_value_b'));
-            $query->where('col_c', Operator::comparison()->equalTo('some_value_c'));
-            $query->nestedWhere(function (FilterInterface $query) {
-                $query->where('col_d', Operator::comparison()->equalTo('some_value_d'));
+        $query = $this->filter->where('col_a', Operator::comparison()->equalTo('some_value_a'))->nestedWhere(function () {
+            /** @var FilterInterface $this */
+            $this->where('col_b', Operator::comparison()->equalTo('some_value_b'));
+
+            /** @var FilterInterface $this */
+            $this->where('col_c', Operator::comparison()->equalTo('some_value_c'));
+
+            /** @var FilterInterface $this */
+            $this->nestedWhere(function () {
+                /** @var FilterInterface $this */
+                $this->where('col_d', Operator::comparison()->equalTo('some_value_d'));
             });
         })->where('col_e', Operator::comparison()->equalTo('some_value_e'))->build();
 
@@ -75,10 +81,14 @@ class FilterTest extends TestCase
 
     public function testNestedWhereOrNestedWhere()
     {
-        $query = $this->filter->nestedWhere(function (FilterInterface $query) {
-            $query->where('col_a', Operator::comparison()->equalTo('some_value_a'));
-            $query->nestedWhere(function (FilterInterface $query) {
-                $query->orwhere('col_b', Operator::comparison()->equalTo('some_value_b'));
+        $query = $this->filter->nestedWhere(function () {
+            /** @var FilterInterface $this */
+            $this->where('col_a', Operator::comparison()->equalTo('some_value_a'));
+
+            /** @var FilterInterface $this */
+            $this->nestedWhere(function () {
+                /** @var FilterInterface $this */
+                $this->orwhere('col_b', Operator::comparison()->equalTo('some_value_b'));
             });
         })->build();
 

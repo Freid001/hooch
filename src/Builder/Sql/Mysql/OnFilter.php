@@ -29,6 +29,8 @@ class OnFilter extends Filter implements OnFilterInterface
     {
         $sql = parent::build($clauses);
 
+        $this->on = true;
+
         return $sql;
     }
 }

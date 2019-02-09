@@ -29,11 +29,11 @@ trait HasOrOn
         if ($this instanceof OnFilterInterface) {
             $sql = $this->query()->sql();
 
-            if ($column instanceof \Closure) {
-                $this->on($column, $operator);
+            if (is_callable($column)) {
+                $this->on($this->query()->accent()->append($column,'.'), $operator);
             }else {
                 $sql->ifThenAppend(!is_null($column),Sql::OR);
-                $sql->ifThenAppend(!is_null($column),$column);
+                $sql->ifThenAppend(!is_null($column),$this->query()->accent()->append($column,'.'));
             }
 
             $sql->append($operator);

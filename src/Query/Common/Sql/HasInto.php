@@ -18,17 +18,28 @@ trait HasInto
 {
     /**
      * @param RepositoryInterface $table
+     * @param array $cols
      * @return InsertInterface
      * @throws SqlException
      */
-    public function into(RepositoryInterface $table): InsertInterface
+    public function into(RepositoryInterface $table, array $cols): InsertInterface
     {
         if($this instanceof InsertInterface) {
             $sql = $this->query()->sql();
             $sql->append(Sql::INTO);
             $sql->append($this->query()->accent()->append($table->getName()));
+            $sql->append(Sql::SQL_BRACKET_OPEN);
 
-            $this->query()->append(Sql::INSERT, $sql);
+            $query = $this->query();
+            $sql->append(implode(",",
+                array_map(function ($column) use ($query) {
+                    return $query->accent()->append($column);
+                }, $cols)
+            ));
+
+            $sql->append(Sql::SQL_BRACKET_CLOSE);
+
+            $this->query()->append(Sql::INTO, $sql);
 
             return $this;
         }else {

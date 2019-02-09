@@ -19,12 +19,12 @@ use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 trait HasHaving
 {
     /**
-     * @param $column
+     * @param string $column
      * @param OperatorInterface $operator
      * @return SelectInterface
      * @throws SqlException
      */
-    public function having($column, OperatorInterface $operator): SelectInterface
+    public function having(string $column, OperatorInterface $operator): SelectInterface
     {
         if($this instanceof SelectInterface) {
             $column = $this->query()->accent()->append($column, '.');

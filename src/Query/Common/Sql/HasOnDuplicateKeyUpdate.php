@@ -36,7 +36,7 @@ trait HasOnDuplicateKeyUpdate
                 }, array_keys($values))
             ), array_values($values));
 
-            $this->query()->append(Sql::INSERT, $sql);
+            $this->query()->append(Sql::UPDATE, $sql);
 
             return $this;
         }else {

@@ -16,12 +16,12 @@ use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 trait HasOrderBy
 {
     /**
-     * @param $column
+     * @param string $column
      * @param string|null $order
      * @return SelectInterface
      * @throws SqlException
      */
-    public function orderBy($column, ?string $order = SQL::DESC): SelectInterface
+    public function orderBy(string $column, ?string $order = SQL::DESC): SelectInterface
     {
         if($this instanceof SelectInterface){
             $sql = $this->query()->sql();

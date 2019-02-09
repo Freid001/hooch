@@ -17,6 +17,11 @@ use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 trait HasFrom
 {
     /**
+     * @var RepositoryInterface
+     */
+    private $table;
+
+    /**
      * @param RepositoryInterface $table
      * @return SelectInterface
      * @throws SqlException
@@ -29,11 +34,13 @@ trait HasFrom
             $sql = $this->query()->sql();
 
             $sql->append(Sql::FROM)
-                ->append($table->getName())
+                ->append($this->query()->accent()->append($table->getName()))
                 ->ifThenAppend(!empty($table->getAlias()), Sql:: AS)
-                ->ifThenAppend(!empty($table->getAlias()), $table->getAlias());
+                ->ifThenAppend(!empty($table->getAlias()), $this->query()->accent()->append($table->getAlias()));
 
             $this->query()->append(Sql::FROM, $sql);
+
+            $this->table = $table;
 
             return $this;
         }else {

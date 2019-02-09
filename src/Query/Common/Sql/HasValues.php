@@ -10,36 +10,27 @@ use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\InsertInterface;
 
 /**
- * Trait HasInsert
+ * Trait HasValues
  * @package Redstraw\Hooch\Query\Common\Sql
  */
-trait HasInsert
+trait HasValues
 {
     /**
      * @param array $values
      * @return InsertInterface
      * @throws SqlException
      */
-    public function insert(array $values): InsertInterface
+    public function values(array $values): InsertInterface
     {
         if($this instanceof InsertInterface) {
             $sql = $this->query()->sql();
-            $sql->append(Sql::SQL_BRACKET_OPEN);
-            
-            $query = $this->query();
-            $sql->append(implode(",",
-                array_map(function ($column) use ($query){
-                    return $query->accent()->append($column);
-                }, array_keys($values))
-            ));
-
-            $sql->append(Sql::SQL_BRACKET_CLOSE);
-            $sql->append(Sql::VALUES);
+            $sql->ifThenAppend(empty($this->query()->hasClause(Sql::VALUES)),Sql::VALUES);
+            $sql->ifThenAppend(!empty($this->query()->hasClause(Sql::VALUES)),",");
             $sql->append(Sql::SQL_BRACKET_OPEN);
             $sql->append(implode(",", array_fill(0, count($values), Sql::SQL_QUESTION_MARK)), array_values($values));
             $sql->append(Sql::SQL_BRACKET_CLOSE);
 
-            $this->query()->append(Sql::INSERT, $sql);
+            $this->query()->append(Sql::VALUES, $sql);
 
             return $this;
         }else {

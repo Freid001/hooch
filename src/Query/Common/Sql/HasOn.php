@@ -30,11 +30,11 @@ trait HasOn
             $sql = $this->query()->sql();
 
             if ($column instanceof \Closure) {
-                call_user_func($column, $filter = $this);
+                $column->call($this);
             } else {
                 $sql->ifThenAppend(!$this->on, Sql::ON);
                 $sql->ifThenAppend($this->on, Sql::AND);
-                $sql->ifThenAppend(!is_null($column), $column);
+                $sql->ifThenAppend(!is_null($column), $this->query()->accent()->append($column,'.'));
 
                 $this->on = true;
             }

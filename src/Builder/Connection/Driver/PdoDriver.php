@@ -109,22 +109,25 @@ class PdoDriver implements DriverInterface
      * @param string $method
      * @param string $cacheKey
      * @return array|mixed
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     private function getResult(\PDOStatement $stmt, string $method, string $cacheKey)
     {
         $result = [];
-        switch ($method){
-            case DriverInterface::FETCH:
-                $result = $stmt->fetch();
-                break;
-            case DriverInterface::FETCH_ALL:
-                $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-                break;
-        }
+        try {
+            switch ($method) {
+                case DriverInterface::FETCH:
+                    $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+                    break;
+                case DriverInterface::FETCH_ALL:
+                    $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+                    break;
+            }
 
-        if(!empty($this->cache)) {
-            $this->cache->set($cacheKey, json_encode($result), $this->ttl);
+            if (!empty($this->cache)) {
+                $this->cache->set($cacheKey, json_encode($result), $this->ttl);
+            }
+        }catch (\Psr\SimpleCache\InvalidArgumentException $e){
+            $this->logger->error($e->getMessage());
         }
 
         return $result;

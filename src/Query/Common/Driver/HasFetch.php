@@ -17,7 +17,6 @@ trait HasFetch
     /**
      * @param Sql $sql
      * @return mixed|null
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function fetch(Sql $sql)
     {

@@ -8,41 +8,40 @@ namespace Redstraw\Hooch\Query\Common\Sql;
 use Redstraw\Hooch\Query\Exception\SqlException;
 use Redstraw\Hooch\Query\Repository\RepositoryInterface;
 use Redstraw\Hooch\Query\Sql\Sql;
-use Redstraw\Hooch\Query\Sql\Statement\JoinInterface;
+use Redstraw\Hooch\Query\Sql\Statement\UpdateInterface;
 
 /**
- * Trait HasJoin
+ * Trait HasTable
  * @package Redstraw\Hooch\Query\Common\Sql
  */
-trait HasJoin
+trait HasTable
 {
-    private $joinTables = [];
+    /**
+     * @var RepositoryInterface
+     */
+    private $table;
 
     /**
-     * @param string $type
      * @param RepositoryInterface $table
-     * @return JoinInterface
+     * @return UpdateInterface
      * @throws SqlException
      */
-    public function join(string $type, RepositoryInterface $table): JoinInterface
+    public function table(RepositoryInterface $table): UpdateInterface
     {
-        if($this instanceof JoinInterface) {
-            $this->setOnFilter($table->onFilter());
-
+        if($this instanceof UpdateInterface) {
             $sql = $this->query()->sql();
-
-            $sql->append($type)
-                ->append($this->query()->accent()->append($table->getName()))
+            $sql->append($this->query()->accent()->append($table->getName()))
                 ->ifThenAppend(!empty($table->getAlias()), Sql:: AS)
                 ->ifThenAppend(!empty($table->getAlias()), $this->query()->accent()->append($table->getAlias()));
 
-            $this->query()->append(Sql::JOIN, $sql);
+            $this->query()->append(Sql::UPDATE, $sql);
 
-            $this->joinTables[] = $table;
+            $this->table = $table;
+            $this->setFilter($table->filter());
 
             return $this;
         }else {
-            throw new SqlException(sprintf("Must invoke JoinInterface in: %s.", get_class($this)));
+            throw new SqlException(sprintf("Must invoke FilterInterface in: %s.", get_class($this)));
         }
     }
 }

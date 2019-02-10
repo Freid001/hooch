@@ -11,7 +11,8 @@ use Redstraw\Hooch\Query\Common\Sql\HasInnerJoin;
 use Redstraw\Hooch\Query\Common\Sql\HasJoin;
 use Redstraw\Hooch\Query\Common\Sql\HasLeftJoin;
 use Redstraw\Hooch\Query\Common\Sql\HasRightJoin;
-use Redstraw\Hooch\Query\Repository\RepositoryInterface;
+use Redstraw\Hooch\Query\Common\Sql\HasSet;
+use Redstraw\Hooch\Query\Common\Sql\HasTable;
 use Redstraw\Hooch\Query\Sql\Query;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
@@ -25,6 +26,8 @@ use Redstraw\Hooch\Query\Sql\Statement\UpdateInterface;
 class Update implements UpdateInterface
 {
     use HasQuery;
+    use HasSet;
+    use HasTable;
     use HasJoin;
     use HasLeftJoin;
     use HasRightJoin;
@@ -77,72 +80,28 @@ class Update implements UpdateInterface
         return $sql;
     }
 
-    private $table;
-
     /**
-     * @param RepositoryInterface $table
+     * @param string $column
+     * @param int $amount
      * @return UpdateInterface
+     * @throws \Redstraw\Hooch\Query\Exception\SqlException
      */
-    public function table(RepositoryInterface $table): UpdateInterface
+    public function increment(string $column, int $amount): UpdateInterface
     {
-        $sql = $this->query->sql();
-        $sql->append($this->query()->accent()->append($table->getName()))
-            ->ifThenAppend(!empty($table->getAlias()), Sql:: AS)
-            ->ifThenAppend(!empty($table->getAlias()), $this->query()->accent()->append($table->getAlias()));
-
-        $this->query->append(Sql::UPDATE, $sql);
-
-        $this->table = $table;
-        $this->setFilter($table->filter());
-        $this->setOnFilter($table->onFilter());
+        $this->set([$column=>$column."+".$amount]);
 
         return $this;
     }
 
     /**
-     * @param array $values
+     * @param string $column
+     * @param int $amount
      * @return UpdateInterface
+     * @throws \Redstraw\Hooch\Query\Exception\SqlException
      */
-    public function set(array $values): UpdateInterface
+    public function decrement(string $column, int $amount): UpdateInterface
     {
-        $sql = $this->query()->sql();
-        $sql->ifThenAppend(empty($this->query()->hasClause(Sql::SET)),Sql::SET);
-        $sql->ifThenAppend(!empty($this->query()->hasClause(Sql::SET)),",",[],false);
-
-        $query = $this->query();
-        $sql->append(implode(",",
-            array_map(function ($column) use ($query) {
-                return $query->accent()->append($column) . Sql::SQL_SPACE . Sql::SQL_EQUAL . Sql::SQL_QUESTION_MARK;
-            }, array_keys($values))
-        ), array_values($values), false);
-
-        $this->query()->append(Sql::SET, $query->sql());
-
-        return $this;
-    }
-
-    /**
-     * @param array $cols
-     * @return UpdateInterface
-     */
-    public function increment(array $cols): UpdateInterface
-    {
-        $sql = $this->query()->sql();
-        $sql->ifThenAppend(empty($this->query()->hasClause(Sql::SET)),Sql::SET);
-        $sql->ifThenAppend(!empty($this->query()->hasClause(Sql::SET)),",",[],false);
-
-        return $this;
-    }
-
-    /**
-     * @param array $cols
-     * @return UpdateInterface
-     */
-    public function decrement(array $cols): UpdateInterface
-    {
-        $sql = $this->query()->sql();
-        $sql->ifThenAppend(empty($this->query()->hasClause(Sql::SET)),Sql::SET);
-        $sql->ifThenAppend(!empty($this->query()->hasClause(Sql::SET)),",",[],false);
+        $this->set([$column=>$column."-".$amount]);
 
         return $this;
     }
@@ -153,7 +112,9 @@ class Update implements UpdateInterface
      */
     public function filter(\Closure $callback): UpdateInterface
     {
-        $callback->call($this->filter, $this->table);
+        if(!empty($this->filter)){
+            $callback->call($this->filter, $this->table, ...$this->joinTables);
+        }
 
         return $this;
     }
@@ -164,7 +125,9 @@ class Update implements UpdateInterface
      */
     public function onFilter(\Closure $callback): UpdateInterface
     {
-        $callback->call($this->onFilter, $this->table);
+        if(!empty($this->onFilter)){
+            $callback->call($this->onFilter, $this->table);
+        }
 
         return $this;
     }

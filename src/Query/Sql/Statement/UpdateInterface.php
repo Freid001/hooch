@@ -27,6 +27,20 @@ interface UpdateInterface extends QueryBuilderInterface, JoinInterface
     public function set(array $cols): UpdateInterface;
 
     /**
+     * @param string $column
+     * @param int $amount
+     * @return UpdateInterface
+     */
+    public function increment(string $column, int $amount): UpdateInterface;
+
+    /**
+     * @param string $column
+     * @param int $amount
+     * @return UpdateInterface
+     */
+    public function decrement(string $column, int $amount): UpdateInterface;
+
+    /**
      * @param \Closure $callback
      * @return UpdateInterface
      */

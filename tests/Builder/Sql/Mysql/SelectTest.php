@@ -159,6 +159,55 @@ class SelectTest extends TestCase
         $this->assertEquals(['some_value'], $query->parameters());
     }
 
+    public function testSelectFilterByCustom()
+    {
+        $filter = $this->createMock(Filter::class);
+        $filter->expects($this->exactly(2))->method('where');
+        $filter->expects($this->once())->method('build')->will(
+            $this->onConsecutiveCalls(
+                new Sql('WHERE `col_a` =? AND `col_b` =?', ['some_value','another_value'])
+            )
+        );
+
+        $table = $this->getMockBuilder(RepositoryInterface::class)->setMethods([
+            'getName',
+            'getAlias',
+            'select',
+            'filter',
+            'onFilter',
+            'customFilterBy'
+        ])->getMock();
+
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
+
+        $query = $this->select->cols(['col_a'])->from($table);
+
+        $table->expects($this->any())->method('customFilterBy')->will(
+            $this->returnValue(
+                $this->select->filter(function(){
+                    /** @var FilterInterface $this */
+                    $this->where('col_b', Operator::comparison()->equalTo('another_value'));
+                })
+            )
+        );
+
+        $query = $query->filter(function(RepositoryInterface $table){
+            /** @var FilterInterface $this */
+            $this->where('col_a', Operator::comparison()->equalTo('some_value'));
+
+            $table->customFilterBy();
+        })->build([
+            Sql::SELECT,
+            Sql::COLS,
+            Sql::FROM,
+            Sql::WHERE
+        ]);
+
+        $this->assertEquals("SELECT `col_a` FROM `some_table_name` WHERE `col_a` =? AND `col_b` =?", trim($query->string()));
+        $this->assertEquals(['some_value','another_value'], $query->parameters());
+    }
+
     public function testSelectColsFromGroupBy()
     {
         $table = $this->createMock(RepositoryInterface::class);
@@ -312,9 +361,6 @@ class SelectTest extends TestCase
 
     public function testSelectColsFromUnionAllSelectColsFrom()
     {
-        $filter = $this->createMock(Filter::class);
-        $filter->expects($this->once())->method('build');
-
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
@@ -322,7 +368,6 @@ class SelectTest extends TestCase
         $table2 = $this->createMock(RepositoryInterface::class);
         $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
         $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
-        $table2->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
         $unionSelect = new Select(new Query(new Sql(), new Logical(), $this->query->accent()));
 
@@ -341,8 +386,6 @@ class SelectTest extends TestCase
 
     public function testSelectColsJoin()
     {
-        $onFilter = $this->createMock(OnFilter::class);
-
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
         $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
@@ -350,7 +393,6 @@ class SelectTest extends TestCase
         $table2 = $this->createMock(RepositoryInterface::class);
         $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
         $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
-        $table2->expects($this->any())->method('onFilter')->will($this->returnValue($onFilter));
 
         $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->join(Sql::JOIN, $table2);
 
@@ -364,6 +406,74 @@ class SelectTest extends TestCase
         $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM `some_table_name` AS `t` JOIN `another_table_name` AS `tt`", trim($query->string()));
         $this->assertEquals([], $query->parameters());
     }
+
+//    public function testSelectColsJoinFilterByCustom()
+//    {
+//        $filter = $this->createMock(Filter::class);
+//        $filter->expects($this->any())->method('where');
+//        $filter->expects($this->once())->method('build')->will(
+//            $this->onConsecutiveCalls(
+//                new Sql('WHERE `col_a` =?', ['some_value'])
+//            )
+//        );
+//
+//        $table = $this->getMockBuilder(RepositoryInterface::class)->setMethods([
+//            'getName',
+//            'getAlias',
+//            'select',
+//            'filter',
+//            'onFilter',
+//            'customFilterBy'
+//        ])->getMock();
+//        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+//        $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
+//        $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
+//
+//        $table2 = $this->getMockBuilder(RepositoryInterface::class)->setMethods([
+//            'getName',
+//            'getAlias',
+//            'select',
+//            'filter',
+//            'onFilter',
+//            'customFilterBy2'
+//        ])->getMock();
+//        $table2->expects($this->any())->method('getName')->will($this->returnValue('another_table_name'));
+//        $table2->expects($this->any())->method('getAlias')->will($this->returnValue('tt'));
+//
+//        $query = $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->join(Sql::JOIN, $table2);
+//
+//        $table->expects($this->once())->method('customFilterBy')->will(
+//            $this->returnValue(
+//                $this->select->filter(function(){
+//                    /** @var FilterInterface $this */
+//                    $this->where('col_a', Operator::comparison()->equalTo('value'));
+//                })
+//            )
+//        );
+//
+//        $table2->expects($this->once())->method('customFilterBy2')->will(
+//            $this->returnValue(
+//                $this->select->filter(function(){
+//                    /** @var FilterInterface $this */
+//                    $this->where('col_b', Operator::comparison()->equalTo('another_value'));
+//                })
+//            )
+//        );
+//
+//        $query = $query->filter(function(RepositoryInterface $table, RepositoryInterface $table2){
+//            $table->customFilterBy();
+//            $table2->customFilterBy2();
+//        })->build([
+//            Sql::SELECT,
+//            Sql::COLS,
+//            Sql::FROM,
+//            Sql::JOIN,
+//            Sql::WHERE
+//        ]);
+//
+//        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM `some_table_name` AS `t` JOIN `another_table_name` AS `tt` WHERE `col_a` =? AND `col_b` =?", trim($query->string()));
+//        $this->assertEquals(['some_value','another_value'], $query->parameters());
+//    }
 
     public function testSelectColsJoinOn()
     {

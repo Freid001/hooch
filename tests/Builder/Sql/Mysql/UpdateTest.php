@@ -55,12 +55,35 @@ class UpdateTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
-        $query = $this->update->table($table)->set(["key"=>"value", "another_key"=>"another_value"])
+        $query = $this->update->table($table)
+            ->set(["key"=>"value", "another_key"=>"another_value"])
             ->set(["yet_another_key"=>"yet_another_value"])
             ->build();
 
         $this->assertEquals("UPDATE `some_table_name` SET `key` =?,`another_key` =?,`yet_another_key` =?", trim($query->string()));
         $this->assertEquals(['value','another_value','yet_another_value'], $query->parameters());
+    }
+
+    public function testUpdateIncrement()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
+        $query = $this->update->table($table)->increment("col_a",1)->build();
+
+        $this->assertEquals("UPDATE `some_table_name` SET `col_a` =?", trim($query->string()));
+        $this->assertEquals(['col_a+1'], $query->parameters());
+    }
+
+    public function testUpdateDecrement()
+    {
+        $table = $this->createMock(RepositoryInterface::class);
+        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
+
+        $query = $this->update->table($table)->decrement("col_a",1)->build();
+
+        $this->assertEquals("UPDATE `some_table_name` SET `col_a` =?", trim($query->string()));
+        $this->assertEquals(['col_a-1'], $query->parameters());
     }
 
     public function testUpdateJoin()

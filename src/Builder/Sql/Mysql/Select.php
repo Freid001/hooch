@@ -19,7 +19,9 @@ use Redstraw\Hooch\Query\Common\Sql\HasOffset;
 use Redstraw\Hooch\Query\Common\Sql\HasOrderBy;
 use Redstraw\Hooch\Query\Common\Sql\HasRightJoin;
 use Redstraw\Hooch\Query\Common\Sql\HasUnion;
+use Redstraw\Hooch\Query\Exception\SqlException;
 use Redstraw\Hooch\Query\QueryBuilderInterface;
+use Redstraw\Hooch\Query\Repository\RepositoryInterface;
 use Redstraw\Hooch\Query\Sql\Query;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
@@ -109,7 +111,9 @@ class Select implements SelectInterface
      */
     public function filter(\Closure $callback): SelectInterface
     {
-        $callback->call($this->filter, $this->table);
+        if(!empty($this->filter)){
+            $callback->call($this->filter, $this->table, ...$this->joinTables);
+        }
 
         return $this;
     }
@@ -120,7 +124,9 @@ class Select implements SelectInterface
      */
     public function onFilter(\Closure $callback): SelectInterface
     {
-        $callback->call($this->onFilter, $this->table);
+        if(!empty($this->onFilter)){
+            $callback->call($this->onFilter, $this->table);
+        }
 
         return $this;
     }

@@ -28,7 +28,7 @@ trait HasInnerJoin
     public function innerJoin(RepositoryInterface $table, $column, ?OperatorInterface $operator = null): JoinInterface
     {
         if($this instanceof JoinInterface) {
-            $this->join(Sql::JOIN_INNER, $table)->onFilter(function($table) use($column, $operator) {
+            $this->join(Sql::JOIN_INNER, $table)->onFilter(function() use($column, $operator) {
                 /** @var OnFilterInterface $this */
                 $this->on($column, $operator);
             });

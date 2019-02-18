@@ -8,8 +8,6 @@ namespace Redstraw\Hooch\Query\Common\Sql;
 use Redstraw\Hooch\Query\Exception\SqlException;
 use Redstraw\Hooch\Query\Sql\Operator\OperatorInterface;
 use Redstraw\Hooch\Query\Sql\Sql;
-use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
-use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
 use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 
 /**
@@ -29,12 +27,12 @@ trait HasHaving
         if($this instanceof SelectInterface) {
             $column = $this->query()->accent()->append($column, '.');
 
-            $sql = $this->query()->sql();
-            $sql->append(Sql::HAVING);
-            $sql->append($column);
-            $sql->append($operator);
+            $this->query()->sql()
+                ->append(Sql::HAVING)
+                ->append($column)
+                ->append($operator->build());
 
-            $this->query()->append(Sql::HAVING, $sql);
+            $this->query()->toClause(Sql::HAVING);
 
             return $this;
         }else {

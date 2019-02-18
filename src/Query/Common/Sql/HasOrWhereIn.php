@@ -15,15 +15,22 @@ use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 trait HasOrWhereIn
 {
     /**
-     * @param $column
+     * @param string|null $column
      * @param array $values
      * @return FilterInterface
      * @throws SqlException
      */
-    public function orWhereIn($column, array $values = []): FilterInterface
+    public function orWhereIn(?string $column, array $values = []): FilterInterface
     {
         if($this instanceof FilterInterface) {
-            $this->orWhere($column, $this->query()->logical()->omitTrailingSpace()->in($values));
+            $this->orWhere(
+                $column,
+                $this->operator()
+                    ->logical()
+                    ->param()
+                    ->omitTrailingSpace()
+                    ->in($values)
+            );
 
             return $this;
         }else {

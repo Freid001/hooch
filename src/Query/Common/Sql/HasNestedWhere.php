@@ -24,13 +24,15 @@ trait HasNestedWhere
     public function nestedWhere(\Closure $callback): FilterInterface
     {
         if($this instanceof FilterInterface){
-            $this->query()->logical()->setNested(true);
+            $this->operator()->logical()->column()->setNested(true);
             $callback->call($this);
 
             if($this instanceof OnFilterInterface){
-                $this->query()->append(Sql::JOIN, $this->query()->sql()->append(Sql::SQL_BRACKET_CLOSE));
+                $this->query()->sql()->append(Sql::SQL_BRACKET_CLOSE);
+                $this->query()->toClause(Sql::JOIN);
             }else {
-                $this->query()->append(Sql::WHERE, $this->query()->sql()->append(Sql::SQL_BRACKET_CLOSE));
+                $this->query()->sql()->append(Sql::SQL_BRACKET_CLOSE);
+                $this->query()->toClause(Sql::WHERE);
             }
 
             return $this;

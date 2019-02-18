@@ -6,7 +6,6 @@ namespace Redstraw\Hooch\Query\Common\Sql;
 
 
 use Redstraw\Hooch\Query\Exception\SqlException;
-use Redstraw\Hooch\Query\QueryBuilderInterface;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 
@@ -17,21 +16,20 @@ use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 trait HasUnion
 {
     /**
-     * @param QueryBuilderInterface $select
+     * @param Sql $unionSql
      * @param bool $all
      * @return SelectInterface
      * @throws SqlException
      */
-    public function union(QueryBuilderInterface $select, bool $all = false): SelectInterface
+    public function union(Sql $unionSql, bool $all = false): SelectInterface
     {
         if($this instanceof SelectInterface){
-            $sql = $this->query()->sql();
-
-            $sql->append(Sql::UNION)
+            $this->query()->sql()
+                ->append(Sql::UNION)
                 ->ifThenAppend(!empty($all), Sql::ALL)
-                ->append($select->build());
+                ->append($unionSql);
 
-            $this->query()->append(Sql::UNION, $sql);
+            $this->query()->toClause(Sql::UNION);
 
             return $this;
         }else {

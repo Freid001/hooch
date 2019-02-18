@@ -22,12 +22,12 @@ interface FilterInterface extends QueryBuilderInterface
     public function nestedWhere(\Closure $callback): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param $from
      * @param $to
      * @return FilterInterface
      */
-    public function orWhereBetween($column, $from, $to): FilterInterface;
+    public function orWhereBetween(?string $column, $from, $to): FilterInterface;
 
     /**
      * @param Sql $subQuery
@@ -36,33 +36,33 @@ interface FilterInterface extends QueryBuilderInterface
     public function orWhereExists(Sql $subQuery): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param array $values
      * @return FilterInterface
      */
-    public function orWhereIn($column, array $values = []): FilterInterface;
+    public function orWhereIn(?string $column, array $values = []): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param OperatorInterface $operator
      * @return FilterInterface
      */
-    public function orWhere($column, OperatorInterface $operator): FilterInterface;
+    public function orWhere(?string $column, OperatorInterface $operator): FilterInterface;
 
     /**
      * @param $column
      * @param $value
      * @return FilterInterface
      */
-    public function orWhereLike($column, $value): FilterInterface;
+    public function orWhereLike(?string $column, $value): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param $from
      * @param $to
      * @return FilterInterface
      */
-    public function orWhereNotBetween($column, $from, $to): FilterInterface;
+    public function orWhereNotBetween(?string $column, $from, $to): FilterInterface;
 
     /**
      * @param Sql $subQuery
@@ -71,33 +71,33 @@ interface FilterInterface extends QueryBuilderInterface
     public function orWhereNotExists(Sql $subQuery): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param array $values
      * @return FilterInterface
      */
-    public function orWhereNotIn($column, array $values = []): FilterInterface;
+    public function orWhereNotIn(?string $column, array $values = []): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param OperatorInterface $operator
      * @return FilterInterface
      */
-    public function orWhereNot($column, OperatorInterface $operator): FilterInterface;
+    public function orWhereNot(?string $column, OperatorInterface $operator): FilterInterface;
 
     /**
      * @param $column
      * @param $value
      * @return FilterInterface
      */
-    public function orWhereNotLike($column, $value): FilterInterface;
+    public function orWhereNotLike(?string $column, $value): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param $from
      * @param $to
      * @return FilterInterface
      */
-    public function whereBetween($column, $from, $to): FilterInterface;
+    public function whereBetween(?string $column, $from, $to): FilterInterface;
 
     /**
      * @param Sql $subQuery
@@ -106,58 +106,58 @@ interface FilterInterface extends QueryBuilderInterface
     public function whereExists(Sql $subQuery): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param array $values
      * @return FilterInterface
      */
-    public function whereIn($column, array $values = []): FilterInterface;
+    public function whereIn(?string $column, array $values = []): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param OperatorInterface $operator
      * @return FilterInterface
      */
-    public function where($column, OperatorInterface $operator): FilterInterface;
+    public function where(?string $column, OperatorInterface $operator): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param $value
      * @return FilterInterface
      */
-    public function whereLike($column, $value): FilterInterface;
+    public function whereLike(?string $column, $value): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param $from
      * @param $to
      * @return FilterInterface
      */
-    public function whereNotBetween($column, $from, $to): FilterInterface;
+    public function whereNotBetween(?string $column, $from, $to): FilterInterface;
 
     /**
      * @param Sql $subQuery
-     * @return SelectInterface|FilterInterface|QueryBuilderInterface
+     * @return FilterInterface
      */
     public function whereNotExists(Sql $subQuery): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param array $values
      * @return FilterInterface
      */
-    public function whereNotIn($column, array $values = []): FilterInterface;
+    public function whereNotIn(?string $column, array $values = []): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param OperatorInterface $operator
      * @return FilterInterface
      */
-    public function whereNot($column, OperatorInterface $operator): FilterInterface;
+    public function whereNot(?string $column, OperatorInterface $operator): FilterInterface;
 
     /**
-     * @param $column
+     * @param string|null $column
      * @param $value
      * @return FilterInterface
      */
-    public function whereNotLike($column, $value): FilterInterface;
+    public function whereNotLike(?string $column, $value): FilterInterface;
 }

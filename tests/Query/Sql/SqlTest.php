@@ -1,15 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace test\Query\Sql;
 
 
 use PHPUnit\Framework\TestCase;
-use Redstraw\Hooch\Builder\Sql\Mysql\Filter;
-use Redstraw\Hooch\Query\Sql\Accent;
-use Redstraw\Hooch\Query\Sql\Operator\Logical;
-use Redstraw\Hooch\Query\Sql\Operator\Operator;
-use Redstraw\Hooch\Query\Sql\Query;
 use Redstraw\Hooch\Query\Sql\Sql;
 
 /**
@@ -22,14 +18,6 @@ class SqlTest extends TestCase
     {
         $sql = new Sql('SELECT * FROM some_table',[],false);
         $this->assertEquals("SELECT * FROM some_table", $sql->string());
-    }
-
-    public function testAppendQueryBuilder()
-    {
-        $sql = new Sql();
-        $filter = new Filter(new Query(new Sql(), new Logical(), new Accent()));
-        $sql->appendQueryBuilder($filter->where('a', Operator::comparison()->equalTo('b')), false);
-        $this->assertEquals("WHERE a =?", trim($sql->string()));
     }
 
     public function testAppendSql()

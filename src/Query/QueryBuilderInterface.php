@@ -3,6 +3,7 @@
 namespace Redstraw\Hooch\Query;
 
 
+use Redstraw\Hooch\Query\Common\Operator\Operator;
 use Redstraw\Hooch\Query\Sql\Query;
 use Redstraw\Hooch\Query\Sql\Sql;
 
@@ -22,4 +23,9 @@ interface QueryBuilderInterface
      * @return Query
      */
     public function query(): Query;
+
+    /**
+     * @return Operator
+     */
+    public function operator(): Operator;
 }

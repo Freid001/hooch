@@ -23,18 +23,18 @@ trait HasSet
     public function set(array $values): UpdateInterface
     {
         if($this instanceof UpdateInterface) {
-            $sql = $this->query()->sql();
-            $sql->ifThenAppend(empty($this->query()->hasClause(Sql::SET)),Sql::SET);
-            $sql->ifThenAppend(!empty($this->query()->hasClause(Sql::SET)),",",[],false);
+            $this->query()->sql()
+                ->ifThenAppend(empty($this->query()->hasClause(Sql::SET)),Sql::SET)
+                ->ifThenAppend(!empty($this->query()->hasClause(Sql::SET)),",",[],false);
 
             $query = $this->query();
-            $sql->append(implode(",",
+            $this->query()->sql()->append(implode(",",
                 array_map(function ($column) use ($query) {
                     return $query->accent()->append($column) . Sql::SQL_SPACE . Sql::SQL_EQUAL . Sql::SQL_QUESTION_MARK;
                 }, array_keys($values))
             ), array_values($values), false);
 
-            $this->query()->append(Sql::SET, $query->sql());
+            $this->query()->toClause(Sql::SET);
 
             return $this;
         }else {

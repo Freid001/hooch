@@ -23,20 +23,20 @@ trait HasOnDuplicateKeyUpdate
     public function onDuplicateKeyUpdate(array $values): InsertInterface
     {
         if($this instanceof InsertInterface) {
-            $sql = $this->query()->sql();
-            $sql->append(Sql::ON);
-            $sql->append(Sql::DUPLICATE);
-            $sql->append(Sql::KEY);
-            $sql->append(Sql::UPDATE);
+            $this->query()->sql()
+                ->append(Sql::ON)
+                ->append(Sql::DUPLICATE)
+                ->append(Sql::KEY)
+                ->append(Sql::UPDATE);
 
             $query = $this->query();
-            $sql->append(implode(",",
-                array_map(function ($column) use ($query, $sql) {
+            $this->query()->sql()->append(implode(",",
+                array_map(function ($column) use ($query) {
                     return $query->accent()->append($column) . Sql::SQL_SPACE . Sql::SQL_EQUAL . Sql::SQL_QUESTION_MARK;
                 }, array_keys($values))
             ), array_values($values));
 
-            $this->query()->append(Sql::UPDATE, $sql);
+            $this->query()->toClause(Sql::UPDATE);
 
             return $this;
         }else {

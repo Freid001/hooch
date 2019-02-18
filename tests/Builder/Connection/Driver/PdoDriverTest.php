@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace test\Builder\Sql\MySql;
@@ -8,10 +9,12 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Redstraw\Hooch\Builder\Connection\Driver\PdoDriver;
+use Redstraw\Hooch\Query\Common\Operator\Comparison;
+use Redstraw\Hooch\Query\Common\Operator\Logical;
+use Redstraw\Hooch\Query\Common\Operator\Operator;
 use Redstraw\Hooch\Query\Exception\DriverException;
 use Redstraw\Hooch\Query\Repository\Table\Table;
 use Redstraw\Hooch\Query\Sql\Accent;
-use Redstraw\Hooch\Query\Sql\Operator\Logical;
 use Redstraw\Hooch\Query\Sql\Query;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
@@ -29,15 +32,34 @@ class PdoDriverTest extends TestCase
      */
     private $query;
 
+    /**
+     * @var Operator
+     */
+    private $operator;
+
     public function setUp()
     {
-        $this->query = new Query(new Sql(), new Logical(), new Accent());
+        $this->query = new Query(new Sql(), new Accent());
         $this->query->accent()->setSymbol('`');
+
+        $this->operator = new Operator(
+            new Comparison(
+                new \Redstraw\Hooch\Query\Common\Operator\Comparison\Param(new Sql()),
+                new \Redstraw\Hooch\Query\Common\Operator\Comparison\SubQuery(new Sql()),
+                new \Redstraw\Hooch\Query\Common\Operator\Comparison\Column(new Sql(), $this->query->accent())
+            ),
+            new Logical(
+                new \Redstraw\Hooch\Query\Common\Operator\Logical\Param(new Sql()),
+                new \Redstraw\Hooch\Query\Common\Operator\Logical\SubQuery(new Sql()),
+                new \Redstraw\Hooch\Query\Common\Operator\Logical\Column(new Sql(), $this->query->accent())
+            )
+        );
     }
 
     public function tearDown()
     {
         $this->query = null;
+        $this->operator = null;
     }
 
     public function testExecutionErrorLogged()

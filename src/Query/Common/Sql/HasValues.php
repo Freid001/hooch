@@ -23,14 +23,14 @@ trait HasValues
     public function values(array $values): InsertInterface
     {
         if($this instanceof InsertInterface) {
-            $sql = $this->query()->sql();
-            $sql->ifThenAppend(empty($this->query()->hasClause(Sql::VALUES)),Sql::VALUES);
-            $sql->ifThenAppend(!empty($this->query()->hasClause(Sql::VALUES)),",");
-            $sql->append(Sql::SQL_BRACKET_OPEN);
-            $sql->append(implode(",", array_fill(0, count($values), Sql::SQL_QUESTION_MARK)), array_values($values));
-            $sql->append(Sql::SQL_BRACKET_CLOSE);
+            $this->query()->sql()
+                ->ifThenAppend(empty($this->query()->hasClause(Sql::VALUES)),Sql::VALUES)
+                ->ifThenAppend(!empty($this->query()->hasClause(Sql::VALUES)),",")
+                ->append(Sql::SQL_BRACKET_OPEN)
+                ->append(implode(",", array_fill(0, count($values), Sql::SQL_QUESTION_MARK)), array_values($values))
+                ->append(Sql::SQL_BRACKET_CLOSE);
 
-            $this->query()->append(Sql::VALUES, $sql);
+            $this->query()->toClause(Sql::VALUES);
 
             return $this;
         }else {

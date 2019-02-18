@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Redstraw\Hooch\Query\Sql;
 
-use Redstraw\Hooch\Query\Sql\Operator\Logical;
-
 /**
  * Class Query
  * @package Redstraw\Hooch\Query\Sql
@@ -28,11 +26,6 @@ class Query
     private $sql;
 
     /**
-     * @var Logical
-     */
-    private $logical;
-
-    /**
      * @var Accent
      */
     private $accent;
@@ -40,13 +33,11 @@ class Query
     /**
      * Query constructor.
      * @param Sql $sql
-     * @param Logical $logical
      * @param Accent $accent
      */
-    public function __construct(Sql $sql, Logical $logical, Accent $accent)
+    public function __construct(Sql $sql, Accent $accent)
     {
         $this->sql = $sql;
-        $this->logical = $logical;
         $this->accent = $accent;
     }
 
@@ -59,14 +50,6 @@ class Query
     }
 
     /**
-     * @return Logical
-     */
-    public function logical(): Logical
-    {
-        return $this->logical;
-    }
-
-    /**
      * @return Accent
      */
     public function accent(): Accent
@@ -76,14 +59,13 @@ class Query
 
     /**
      * @param string $clause
-     * @param Sql $sql
      */
-    public function append(string $clause, Sql $sql): void
+    public function toClause(string $clause): void
     {
-        $this->appendSql($clause, $sql->string());
-        $this->appendParameters($clause, $sql->parameters());
+        $this->appendString($clause, $this->sql->string());
+        $this->appendParameters($clause, $this->sql->parameters());
 
-        $sql->reset();
+        $this->sql->reset();
     }
 
     /**
@@ -135,7 +117,7 @@ class Query
      * @param string $clause
      * @param string|null $sql
      */
-    private function appendSql(string $clause, ?string $sql): void
+    private function appendString(string $clause, ?string $sql): void
     {
         if (!empty($this->query[$clause])) {
             $this->query[$clause] .= $sql;

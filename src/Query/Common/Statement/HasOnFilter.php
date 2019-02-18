@@ -24,7 +24,7 @@ trait HasOnFilter
         if($this instanceof DriverInterface){
             switch($this->driver()){
                 case DriverInterface::DRIVER_MYSQL:
-                    return new \Redstraw\Hooch\Builder\Sql\Mysql\OnFilter($this->query());
+                    return new \Redstraw\Hooch\Builder\Sql\Mysql\OnFilter($this->query(), $this->operator());
 
                 case DriverInterface::DRIVER_PGSQL:
                     //$this->filter = new \Redstraw\Hooch\Builder\Sql\Pgsql\Filter();

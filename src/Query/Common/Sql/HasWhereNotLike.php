@@ -20,10 +20,17 @@ trait HasWhereNotLike
      * @return FilterInterface
      * @throws SqlException
      */
-    public function whereNotLike($column, $value): FilterInterface
+    public function whereNotLike(?string $column, $value): FilterInterface
     {
         if($this instanceof FilterInterface) {
-            $this->whereNot($column, $this->query()->logical()->omitTrailingSpace()->like($value));
+            $this->whereNot(
+                $column,
+                $this->operator()
+                    ->logical()
+                    ->param()
+                    ->omitTrailingSpace()
+                    ->like($value)
+            );
 
             return $this;
         }else {

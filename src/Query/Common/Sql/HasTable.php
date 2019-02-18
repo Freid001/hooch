@@ -29,12 +29,12 @@ trait HasTable
     public function table(RepositoryInterface $table): UpdateInterface
     {
         if($this instanceof UpdateInterface) {
-            $sql = $this->query()->sql();
-            $sql->append($this->query()->accent()->append($table->getName()))
+            $this->query()->sql()
+                ->append($this->query()->accent()->append($table->getName()))
                 ->ifThenAppend(!empty($table->getAlias()), Sql:: AS)
                 ->ifThenAppend(!empty($table->getAlias()), $this->query()->accent()->append($table->getAlias()));
 
-            $this->query()->append(Sql::UPDATE, $sql);
+            $this->query()->toClause(Sql::UPDATE);
 
             $this->table = $table;
             $this->setFilter($table->filter());

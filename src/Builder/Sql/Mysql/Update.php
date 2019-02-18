@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Redstraw\Hooch\Builder\Sql\Mysql;
 
 
+use Redstraw\Hooch\Query\Common\HasOperator;
 use Redstraw\Hooch\Query\Common\HasQuery;
+use Redstraw\Hooch\Query\Common\Operator\Operator;
 use Redstraw\Hooch\Query\Common\Sql\HasFullOuterJoin;
 use Redstraw\Hooch\Query\Common\Sql\HasInnerJoin;
 use Redstraw\Hooch\Query\Common\Sql\HasJoin;
@@ -26,6 +28,7 @@ use Redstraw\Hooch\Query\Sql\Statement\UpdateInterface;
 class Update implements UpdateInterface
 {
     use HasQuery;
+    use HasOperator;
     use HasSet;
     use HasTable;
     use HasJoin;
@@ -45,13 +48,17 @@ class Update implements UpdateInterface
     private $onFilter;
 
     /**
-     * Insert constructor.
+     * Update constructor.
      * @param Query $query
+     * @param Operator $operator
      */
-    public function __construct(Query $query)
+    public function __construct(Query $query, Operator $operator)
     {
         $this->query = $query;
-        $this->query->append(Sql::UPDATE, $this->query->sql()->append(Sql::UPDATE));
+        $this->query->sql()->append(Sql::UPDATE);
+        $this->query->toClause(Sql::UPDATE);
+
+        $this->operator = $operator;
     }
 
     /**
@@ -66,11 +73,13 @@ class Update implements UpdateInterface
     ]): Sql
     {
         if (in_array(Sql::WHERE, $clauses) && $this->filter) {
-            $this->query->append(Sql::WHERE, $this->filter->build([Sql::WHERE]));
+            $this->query->sql()->append($this->filter->build([Sql::WHERE]));
+            $this->query->toClause(Sql::WHERE);
         }
 
         if (in_array(Sql::JOIN, $clauses) && $this->onFilter) {
-            $this->query->append(Sql::JOIN, $this->onFilter->build([Sql::JOIN]));
+            $this->query->sql()->append($this->filter->build([Sql::JOIN]));
+            $this->query->toClause(Sql::JOIN);
         }
 
         $sql = $this->query->build($clauses);

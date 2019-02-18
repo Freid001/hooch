@@ -23,23 +23,26 @@ trait HasWhere
      * @return FilterInterface
      * @throws SqlException
      */
-    public function where($column, OperatorInterface $operator): FilterInterface
+    public function where(?string $column, OperatorInterface $operator): FilterInterface
     {
         if($this instanceof FilterInterface) {
-            $column = $this->query()->accent()->append($column, '.');
+            $this->query()->sql()
+                ->ifThenAppend($this->noClause(), $this->whereJoin())
+                ->ifThenAppend($this->isNested($operator), Sql::SQL_BRACKET_OPEN)
+                ->ifThenAppend($this->noClause(), $this->query()->accent()->append($column, '.'));
 
-            $sql = $this->query()->sql();
-            $sql = $this->appendBracket($sql, $operator);
-            $sql = $this->appendColumn($sql, $column);
-            $sql = $this->appendAnd($sql, $column, $operator);
-
-            $sql->append($this->query()->logical()->omitTrailingSpace());
-
-            if (empty($this->query()->logical()->getOperator())) {
-                $sql->append($operator);
+            if($this->isAnd($operator)) {
+                $this->query()->sql()
+                    ->append($this->operator()->logical()->column()->omitTrailingSpace()->and(
+                        $column,
+                        $operator
+                    )->build());
+            }else {
+                $this->query()->sql()
+                    ->append($operator->build());
             }
 
-            $this->query()->append($this->whereJoin(), $sql);
+            $this->query()->toClause($this->whereJoin());
 
             return $this;
         }else {
@@ -48,64 +51,54 @@ trait HasWhere
     }
 
     /**
-     * @param Sql $sql
      * @param OperatorInterface $operator
-     * @return Sql
+     * @return bool
      */
-    private function appendBracket(Sql $sql, OperatorInterface $operator): Sql
+    private function isNested(OperatorInterface $operator): bool
     {
         if($this instanceof FilterInterface) {
             if ($this->query()->hasClause($this->whereJoin())) {
-                return $sql;
+                return false;
             }
 
             if (in_array($operator->getOperator(), [Sql:: AND, Sql:: OR])) {
-                return $sql;
+                return false;
             }
 
-            return $sql->append($this->whereJoin())->ifThenAppend(
-                $this->query()->logical()->getNested(),
-                Sql::SQL_BRACKET_OPEN
-            );
+            return $this->operator()->logical()->column()->getNested();
         }
 
-        return $sql;
+        return false;
     }
 
     /**
-     * @param Sql $sql
-     * @param $column
-     * @return Sql
-     */
-    private function appendColumn(Sql $sql, $column): Sql
-    {
-        if($this instanceof FilterInterface &&
-            !$this->query()->hasClause($this->whereJoin())) {
-            return $sql->append($column);
-        }
-
-        return $sql;
-    }
-
-    /**
-     * @param Sql $sql
-     * @param $column
      * @param OperatorInterface $operator
-     * @return Sql
+     * @return bool
      */
-    private function appendAnd(Sql $sql, $column, OperatorInterface $operator): Sql
+    private function isAnd(OperatorInterface $operator): bool
     {
         if ($this instanceof FilterInterface &&
                 $this->query()->hasClause($this->whereJoin())) {
+
             if ($operator->getOperator() !== Sql:: OR) {
-                $this->query()->logical()->and(
-                    $column,
-                    $operator
-                );
+                return true;
             }
         }
 
-        return $sql;
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    private function noClause(): bool
+    {
+        if ($this instanceof FilterInterface &&
+            !$this->query()->hasClause($this->whereJoin())) {
+                return true;
+        }
+
+        return false;
     }
 
     /**

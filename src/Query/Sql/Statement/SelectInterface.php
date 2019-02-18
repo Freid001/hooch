@@ -80,11 +80,11 @@ interface SelectInterface extends QueryBuilderInterface, JoinInterface
     public function orderBy(string $column, ?string $order): SelectInterface;
 
     /**
-     * @param QueryBuilderInterface $select
+     * @param Sql $unionSql
      * @param bool $all
      * @return SelectInterface
      */
-    public function union(QueryBuilderInterface $select, bool $all = false): SelectInterface;
+    public function union(Sql $unionSql, bool $all = false): SelectInterface;
 
     /**
      * @param string $column

@@ -2,6 +2,9 @@
 
 namespace Redstraw\Hooch\Query\Sql\Operator;
 
+
+use Redstraw\Hooch\Query\Sql\Sql;
+
 /**
  * Interface OperatorInterface
  * @package Redstraw\Hooch\Query
@@ -9,7 +12,12 @@ namespace Redstraw\Hooch\Query\Sql\Operator;
 interface OperatorInterface
 {
     /**
-     * @return String|null
+     * @return Sql
      */
-    public function getOperator(): ?String;
+    public function build(): Sql;
+
+    /**
+     * @return string
+     */
+    public function getOperator(): string;
 }

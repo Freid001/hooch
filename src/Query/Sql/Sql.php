@@ -154,12 +154,14 @@ class Sql
     }
 
     /**
-     * @return void
+     * @return $this
      */
-    public function reset()
+    public function reset(): Sql
     {
         $this->string = '';
         $this->parameters = [];
+
+        return $this;
     }
 
     /**
@@ -183,7 +185,7 @@ class Sql
      * @param bool $trailingSpace
      * @return Sql
      */
-    public function appendString(String $string, bool $trailingSpace = true): Sql
+    public function appendString(string $string, bool $trailingSpace = true): Sql
     {
         $this->string .= $string;
 
@@ -199,7 +201,7 @@ class Sql
      * @param bool $trailingSpace
      * @return Sql
      */
-    public function appendInt(Int $int, bool $trailingSpace = true): Sql
+    public function appendInt(int $int, bool $trailingSpace = true): Sql
     {
         $this->appendString((string)$int, $trailingSpace);
 

@@ -15,15 +15,22 @@ use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 trait HasOrWhereNotLike
 {
     /**
-     * @param $column
+     * @param string|null $column
      * @param $values
      * @return FilterInterface
      * @throws SqlException
      */
-    public function orWhereNotLike($column, $values): FilterInterface
+    public function orWhereNotLike(?string $column, $values): FilterInterface
     {
         if ($this instanceof FilterInterface) {
-            $this->orWhereNot($column, $this->query()->logical()->omitTrailingSpace()->like($values));
+            $this->orWhereNot(
+                $column,
+                $this->operator()
+                    ->logical()
+                    ->param()
+                    ->omitTrailingSpace()
+                    ->like($values)
+            );
 
             return $this;
         }else {

@@ -12,8 +12,11 @@ use Redstraw\Hooch\Query\Common\Driver\HasDriver;
 use Redstraw\Hooch\Query\Common\Driver\HasFetch;
 use Redstraw\Hooch\Query\Common\Driver\HasFetchAll;
 use Redstraw\Hooch\Query\Common\HasQuery;
+use Redstraw\Hooch\Query\Common\Operator\Comparison;
+use Redstraw\Hooch\Query\Common\Operator\Logical;
 use Redstraw\Hooch\Query\Common\Statement\HasFilter;
 use Redstraw\Hooch\Query\Connection\Driver\DriverInterface;
+use Redstraw\Hooch\Query\Common\Operator\Operator;
 use Redstraw\Hooch\Query\Sql\Query;
 use Redstraw\Hooch\Query\Sql\Sql;
 
@@ -31,6 +34,11 @@ class PdoDriver implements DriverInterface
     use HasFilter;
     use HasOnFilter;
     use HasSelect;
+
+    /**
+     * @var array
+     */
+    private static $instances = [];
 
     /**
      * @var \PDO
@@ -59,6 +67,29 @@ class PdoDriver implements DriverInterface
         $this->driver = $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
         $this->query = $query;
         $this->logger = $logger;
+    }
+
+    /**
+     * @return Operator
+     */
+    public function operator(): Operator
+    {
+        if(!isset(self::$instances[Operator::class])){
+            self::$instances[Operator::class] = new Operator(
+                new Comparison(
+                    new \Redstraw\Hooch\Query\Common\Operator\Comparison\Param(new Sql()),
+                    new \Redstraw\Hooch\Query\Common\Operator\Comparison\SubQuery(new Sql()),
+                    new \Redstraw\Hooch\Query\Common\Operator\Comparison\Column(new Sql(), $this->query->accent())
+                ),
+                new Logical(
+                    new \Redstraw\Hooch\Query\Common\Operator\Logical\Param(new Sql()),
+                    new \Redstraw\Hooch\Query\Common\Operator\Logical\SubQuery(new Sql()),
+                    new \Redstraw\Hooch\Query\Common\Operator\Logical\Column(new Sql(), $this->query->accent())
+                )
+            );
+        }
+
+        return self::$instances[Operator::class];
     }
 
     /**

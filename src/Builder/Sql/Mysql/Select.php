@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Redstraw\Hooch\Builder\Sql\Mysql;
 
 
+use Redstraw\Hooch\Query\Common\HasOperator;
 use Redstraw\Hooch\Query\Common\HasQuery;
+use Redstraw\Hooch\Query\Common\Operator\Operator;
 use Redstraw\Hooch\Query\Common\Sql\HasCols;
 use Redstraw\Hooch\Query\Common\Sql\HasFrom;
 use Redstraw\Hooch\Query\Common\Sql\HasFullOuterJoin;
@@ -19,9 +21,7 @@ use Redstraw\Hooch\Query\Common\Sql\HasOffset;
 use Redstraw\Hooch\Query\Common\Sql\HasOrderBy;
 use Redstraw\Hooch\Query\Common\Sql\HasRightJoin;
 use Redstraw\Hooch\Query\Common\Sql\HasUnion;
-use Redstraw\Hooch\Query\Exception\SqlException;
 use Redstraw\Hooch\Query\QueryBuilderInterface;
-use Redstraw\Hooch\Query\Repository\RepositoryInterface;
 use Redstraw\Hooch\Query\Sql\Query;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
@@ -35,6 +35,7 @@ use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 class Select implements SelectInterface
 {
     use HasQuery;
+    use HasOperator;
     use HasCols;
     use HasFrom;
     use HasGroupBy;
@@ -62,11 +63,14 @@ class Select implements SelectInterface
     /**
      * Select constructor.
      * @param Query $query
+     * @param Operator $operator
      */
-    public function __construct(Query $query)
+    public function __construct(Query $query, Operator $operator)
     {
         $this->query = $query;
-        $this->query->append(Sql::SELECT, $this->query->sql()->append(Sql::SELECT));
+        $this->operator = $operator;
+        $this->query->sql()->append(Sql::SELECT);
+        $this->query->toClause(Sql::SELECT);
     }
 
     /**
@@ -88,11 +92,13 @@ class Select implements SelectInterface
     ]): Sql
     {
         if (in_array(Sql::WHERE, $clauses) && $this->filter) {
-            $this->query->append(Sql::WHERE, $this->filter->build([Sql::WHERE]));
+            $this->query->sql()->append($this->filter->build([Sql::WHERE]));
+            $this->query->toClause(Sql::WHERE);
         }
 
         if (in_array(Sql::JOIN, $clauses) && $this->onFilter) {
-            $this->query->append(Sql::JOIN, $this->onFilter->build([Sql::JOIN]));
+            $this->query->sql()->append($this->onFilter->build([Sql::JOIN]));
+            $this->query->toClause(Sql::JOIN);
         }
 
         $sql = $this->query->build($clauses);

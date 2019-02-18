@@ -26,22 +26,21 @@ trait HasJoin
      */
     public function join(string $type, RepositoryInterface $table): JoinInterface
     {
-        if($this instanceof JoinInterface) {
+        if ($this instanceof JoinInterface) {
             $this->setOnFilter($table->onFilter());
 
-            $sql = $this->query()->sql();
-
-            $sql->append($type)
+            $this->query()->sql()
+                ->append($type)
                 ->append($this->query()->accent()->append($table->getName()))
                 ->ifThenAppend(!empty($table->getAlias()), Sql:: AS)
                 ->ifThenAppend(!empty($table->getAlias()), $this->query()->accent()->append($table->getAlias()));
 
-            $this->query()->append(Sql::JOIN, $sql);
+            $this->query()->toClause(Sql::JOIN);
 
             $this->joinTables[] = $table;
 
             return $this;
-        }else {
+        } else {
             throw new SqlException(sprintf("Must invoke JoinInterface in: %s.", get_class($this)));
         }
     }

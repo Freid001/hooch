@@ -31,14 +31,13 @@ trait HasFrom
         if ($this instanceof SelectInterface) {
             $this->setFilter($table->filter());
 
-            $sql = $this->query()->sql();
-
-            $sql->append(Sql::FROM)
+            $this->query()->sql()
+                ->append(Sql::FROM)
                 ->append($this->query()->accent()->append($table->getName()))
                 ->ifThenAppend(!empty($table->getAlias()), Sql:: AS)
                 ->ifThenAppend(!empty($table->getAlias()), $this->query()->accent()->append($table->getAlias()));
 
-            $this->query()->append(Sql::FROM, $sql);
+            $this->query()->toClause(Sql::FROM);
 
             $this->table = $table;
 

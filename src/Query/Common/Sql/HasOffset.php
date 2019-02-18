@@ -23,12 +23,11 @@ trait HasOffset
     public function offset(int $offset): SelectInterface
     {
         if($this instanceof SelectInterface){
-            $sql = $this->query()->sql();
-
-            $sql->append(Sql::OFFSET)
+            $this->query()->sql()
+                ->append(Sql::OFFSET)
                 ->append($offset);
 
-            $this->query()->append(Sql::OFFSET, $sql);
+            $this->query()->toClause(Sql::OFFSET);
 
             return $this;
         }else {

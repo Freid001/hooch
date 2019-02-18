@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Redstraw\Hooch\Builder\Sql\Mysql;
 
 
+use Redstraw\Hooch\Query\Common\HasOperator;
 use Redstraw\Hooch\Query\Common\HasQuery;
+use Redstraw\Hooch\Query\Common\Operator\Operator;
 use Redstraw\Hooch\Query\Common\Sql\HasNestedWhere;
 use Redstraw\Hooch\Query\Common\Sql\HasOrWhere;
 use Redstraw\Hooch\Query\Common\Sql\HasOrWhereBetween;
@@ -28,7 +30,6 @@ use Redstraw\Hooch\Query\Common\Sql\HasWhereNotExists;
 use Redstraw\Hooch\Query\Common\Sql\HasWhereNotIn;
 use Redstraw\Hooch\Query\Common\Sql\HasWhereNotLike;
 use Redstraw\Hooch\Query\Sql\Accent;
-use Redstraw\Hooch\Query\Sql\Operator\Logical;
 use Redstraw\Hooch\Query\Sql\Query;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
@@ -40,6 +41,7 @@ use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 class Filter implements FilterInterface
 {
     use HasQuery;
+    use HasOperator;
     use HasNestedWhere;
     use HasOrWhere;
     use HasOrWhereBetween;
@@ -63,11 +65,6 @@ class Filter implements FilterInterface
     use HasWhereNotLike;
 
     /**
-     * @var Logical
-     */
-    private $logical;
-
-    /**
      * @var Accent
      */
     private $accent;
@@ -75,10 +72,12 @@ class Filter implements FilterInterface
     /**
      * Filter constructor.
      * @param Query $query
+     * @param Operator $operator
      */
-    public function __construct(Query $query)
+    public function __construct(Query $query, Operator $operator)
     {
         $this->query = $query;
+        $this->operator = $operator;
     }
 
     /**

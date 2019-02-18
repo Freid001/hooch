@@ -25,21 +25,20 @@ trait HasInto
     public function into(RepositoryInterface $table, array $cols): InsertInterface
     {
         if($this instanceof InsertInterface) {
-            $sql = $this->query()->sql();
-            $sql->append(Sql::INTO);
-            $sql->append($this->query()->accent()->append($table->getName()));
-            $sql->append(Sql::SQL_BRACKET_OPEN);
+            $this->query()->sql()
+                ->append(Sql::INTO)
+                ->append($this->query()->accent()->append($table->getName()))
+                ->append(Sql::SQL_BRACKET_OPEN);
 
             $query = $this->query();
-            $sql->append(implode(",",
+            $this->query()->sql()->append(implode(",",
                 array_map(function ($column) use ($query) {
                     return $query->accent()->append($column);
                 }, $cols)
             ));
 
-            $sql->append(Sql::SQL_BRACKET_CLOSE);
-
-            $this->query()->append(Sql::INTO, $sql);
+            $this->query()->sql()->append(Sql::SQL_BRACKET_CLOSE);
+            $this->query()->toClause(Sql::INTO);
 
             return $this;
         }else {

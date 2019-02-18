@@ -16,15 +16,22 @@ use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 trait HasOrWhere
 {
     /**
-     * @param $column
+     * @param string|null $column
      * @param OperatorInterface $operator
      * @return FilterInterface
      * @throws SqlException
      */
-    public function orWhere($column, OperatorInterface $operator): FilterInterface
+    public function orWhere(?string $column, OperatorInterface $operator): FilterInterface
     {
         if($this instanceof FilterInterface) {
-            $this->where(null, $this->query()->logical()->omitTrailingSpace()->or($this->query()->accent()->append($column,'.'), $operator));
+            $this->where(
+                null,
+                $this->operator()
+                    ->logical()
+                    ->column()
+                    ->omitTrailingSpace()
+                    ->or($column, $operator)
+            );
 
             return $this;
         }else {

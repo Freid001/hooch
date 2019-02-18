@@ -3,10 +3,7 @@
 namespace Redstraw\Hooch\Query\Connection\Driver;
 
 use Psr\SimpleCache\CacheInterface;
-use Redstraw\Hooch\Builder\Sql\Mysql\OnFilter;
-use Redstraw\Hooch\Query\Repository\RepositoryInterface;
-use Redstraw\Hooch\Query\Sql\Operator\Comparison;
-use Redstraw\Hooch\Query\Sql\Operator\Logical;
+use Redstraw\Hooch\Query\Common\Operator\Operator;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
@@ -62,6 +59,11 @@ interface DriverInterface
      * @return string|null
      */
     public function driver(): ?string;
+
+    /**
+     * @return Operator
+     */
+    public function operator(): Operator;
 
     /**
      * @param Sql $sql

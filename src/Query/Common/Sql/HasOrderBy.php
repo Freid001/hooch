@@ -24,15 +24,14 @@ trait HasOrderBy
     public function orderBy(string $column, ?string $order = SQL::DESC): SelectInterface
     {
         if($this instanceof SelectInterface){
-            $sql = $this->query()->sql();
-
-            $sql->ifThenAppend(!$this->query()->hasClause(Sql::ORDER),Sql::ORDER)
+            $this->query()->sql()
+                ->ifThenAppend(!$this->query()->hasClause(Sql::ORDER),Sql::ORDER)
                 ->ifThenAppend(!$this->query()->hasClause(Sql::ORDER),Sql::BY)
                 ->ifThenAppend($this->query()->hasClause(Sql::ORDER), ',' , [], false)
                 ->append($this->query()->accent()->append($column, '.'))
                 ->append(strtoupper($order));
 
-            $this->query()->append(Sql::ORDER, $sql);
+            $this->query()->toClause(Sql::ORDER);
 
             return $this;
         }else {

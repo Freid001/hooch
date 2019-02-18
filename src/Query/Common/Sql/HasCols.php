@@ -39,7 +39,7 @@ trait HasCols
             $values = array_values($cols);
 
             $query = $this->query();
-            $sql = array_reduce($values, function (Sql $sql, $col) use ($query, $alias) {
+            array_reduce($values, function (Sql $sql, $col) use ($query, $alias) {
                 if ($this->columnIndex !== 0) {
                     $sql->append(',', [], false);
                 }
@@ -54,7 +54,7 @@ trait HasCols
                 return $sql;
             }, $this->query()->sql());
 
-            $this->query()->append(Sql::COLS, $sql);
+            $this->query()->toClause(Sql::COLS);
 
             return $this;
         }else {

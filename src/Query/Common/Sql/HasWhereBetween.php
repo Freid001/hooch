@@ -15,16 +15,23 @@ use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 trait HasWhereBetween
 {
     /**
-     * @param $column
+     * @param string|null $column
      * @param $from
      * @param $to
      * @return FilterInterface
      * @throws SqlException
      */
-    public function whereBetween($column, $from, $to): FilterInterface
+    public function whereBetween(?string $column, $from, $to): FilterInterface
     {
         if($this instanceof FilterInterface) {
-            $this->where($column, $this->query()->logical()->omitTrailingSpace()->between($from, $to));
+            $this->where(
+                $column,
+                $this->operator()
+                    ->logical()
+                    ->param()
+                    ->omitTrailingSpace()
+                    ->between($from, $to)
+            );
 
             return $this;
         }else {

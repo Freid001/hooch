@@ -15,15 +15,22 @@ use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 trait HasWhereLike
 {
     /**
-     * @param $column
+     * @param string|null $column
      * @param $value
      * @return FilterInterface
      * @throws SqlException
      */
-    public function whereLike($column, $value): FilterInterface
+    public function whereLike(?string $column, $value): FilterInterface
     {
         if($this instanceof FilterInterface) {
-            $this->where($column, $this->query()->logical()->omitTrailingSpace()->like($value));
+            $this->where(
+                $column,
+                $this->operator()
+                    ->logical()
+                    ->param()
+                    ->omitTrailingSpace()
+                    ->like($value)
+            );
 
             return $this;
         }else {

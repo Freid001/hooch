@@ -15,15 +15,22 @@ use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 trait HasWhereNotIn
 {
     /**
-     * @param $column
+     * @param string|null $column
      * @param array $values
      * @return FilterInterface
      * @throws SqlException
      */
-    public function whereNotIn($column, array $values = []): FilterInterface
+    public function whereNotIn(?string $column, array $values = []): FilterInterface
     {
         if($this instanceof FilterInterface) {
-            $this->whereNot($column, $this->query()->logical()->omitTrailingSpace()->in($values));
+            $this->whereNot(
+                $column,
+                $this->operator()
+                    ->logical()
+                    ->param()
+                    ->omitTrailingSpace()
+                    ->in($values)
+            );
 
             return $this;
         }else {

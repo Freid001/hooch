@@ -32,13 +32,12 @@ trait HasOrOn
             if (is_callable($column)) {
                 $this->on($this->query()->accent()->append($column,'.'), $operator);
             }else {
-                $sql->ifThenAppend(!is_null($column),Sql::OR);
-                $sql->ifThenAppend(!is_null($column),$this->query()->accent()->append($column,'.'));
+                $sql->ifThenAppend(!is_null($column),Sql::OR)
+                    ->ifThenAppend(!is_null($column),$this->query()->accent()->append($column,'.'))
+                    ->append($operator->build());
             }
 
-            $sql->append($operator);
-
-            $this->query()->append(Sql::JOIN, $sql);
+            $this->query()->toClause(Sql::JOIN);
 
             return $this;
         }else {

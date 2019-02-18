@@ -32,14 +32,15 @@ trait HasOn
             if ($column instanceof \Closure) {
                 $column->call($this);
             } else {
-                $sql->ifThenAppend(!$this->on, Sql::ON);
-                $sql->ifThenAppend($this->on, Sql::AND);
-                $sql->ifThenAppend(!is_null($column), $this->query()->accent()->append($column,'.'));
+                $sql->ifThenAppend(!$this->on, Sql::ON)
+                    ->ifThenAppend($this->on, Sql::AND)
+                    ->ifThenAppend(!is_null($column), $this->query()->accent()->append($column,'.'))
+                    ->append($operator->build());
 
                 $this->on = true;
             }
 
-            $this->query()->append(Sql::JOIN, $sql->append($operator));
+            $this->query()->toClause(Sql::JOIN);
 
             return $this;
         }else {

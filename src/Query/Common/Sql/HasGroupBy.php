@@ -24,14 +24,13 @@ trait HasGroupBy
     public function groupBy(string $column, ?string $alias = null): SelectInterface
     {
         if($this instanceof SelectInterface) {
-            $sql = $this->query()->sql();
-
-            $sql->ifThenAppend(empty($this->query()->hasClause(Sql::GROUP)), Sql::GROUP)
+            $this->query()->sql()
+                ->ifThenAppend(empty($this->query()->hasClause(Sql::GROUP)), Sql::GROUP)
                 ->ifThenAppend(!empty($this->query()->hasClause(Sql::GROUP)), ',', [], false)
                 ->ifThenAppend(!is_null($alias), $this->query()->accent()->append($alias) . '.', [], false)
                 ->append($this->query()->accent()->append($column));
 
-            $this->query()->append(Sql::GROUP, $sql);
+            $this->query()->toClause(Sql::GROUP);
 
             return $this;
         }else {

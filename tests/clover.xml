@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1550528364">
-  <project timestamp="1550528364">
+<coverage generated="1550528469">
+  <project timestamp="1550528469">
     <package name="Redstraw\Hooch\Builder\Connection\Driver">
       <file name="/mnt/c/Users/firei/www/hooch/src/Builder/Connection/Driver/MysqliDriver.php">
         <class name="Redstraw\Hooch\Builder\Connection\Driver\MysqliDriver" namespace="Redstraw\Hooch\Builder\Connection\Driver" fullPackage="Redstraw" package="Redstraw">
@@ -79,7 +79,7 @@
       </file>
       <file name="/mnt/c/Users/firei/www/hooch/src/Builder/Connection/Driver/PdoDriver.php">
         <class name="Redstraw\Hooch\Builder\Connection\Driver\PdoDriver" namespace="Redstraw\Hooch\Builder\Connection\Driver" fullPackage="Redstraw" package="Redstraw">
-          <metrics complexity="12" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="47" coveredstatements="47" elements="51" coveredelements="51"/>
+          <metrics complexity="13" methods="4" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="49" coveredstatements="47" elements="53" coveredelements="50"/>
         </class>
         <line num="64" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="10"/>
         <line num="66" type="stmt" count="10"/>
@@ -121,8 +121,8 @@
         <line num="131" type="stmt" count="4"/>
         <line num="132" type="stmt" count="4"/>
         <line num="135" type="stmt" count="4"/>
-        <line num="145" type="method" name="getResult" visibility="private" complexity="4" crap="4" count="3"/>
-        <line num="147" type="stmt" count="3"/>
+        <line num="144" type="method" name="getResult" visibility="private" complexity="5" crap="5.12" count="3"/>
+        <line num="146" type="stmt" count="3"/>
         <line num="149" type="stmt" count="3"/>
         <line num="150" type="stmt" count="2"/>
         <line num="151" type="stmt" count="2"/>
@@ -130,9 +130,11 @@
         <line num="153" type="stmt" count="1"/>
         <line num="154" type="stmt" count="1"/>
         <line num="157" type="stmt" count="3"/>
-        <line num="158" type="stmt" count="1"/>
-        <line num="161" type="stmt" count="3"/>
-        <metrics loc="163" ncloc="125" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="47" coveredstatements="47" elements="51" coveredelements="51"/>
+        <line num="158" type="stmt" count="3"/>
+        <line num="160" type="stmt" count="0"/>
+        <line num="161" type="stmt" count="0"/>
+        <line num="164" type="stmt" count="3"/>
+        <metrics loc="166" ncloc="129" classes="1" methods="4" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="49" coveredstatements="47" elements="53" coveredelements="50"/>
       </file>
     </package>
     <package name="Redstraw\Hooch\Builder\Connection\Handler">
@@ -317,21 +319,21 @@
         <class name="HasFetch" namespace="Redstraw\Hooch\Query\Common\Driver" fullPackage="Redstraw" package="Redstraw">
           <metrics complexity="2" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="2" elements="4" coveredelements="2"/>
         </class>
-        <line num="22" type="method" name="fetch" visibility="public" complexity="2" crap="2.15" count="9"/>
+        <line num="21" type="method" name="fetch" visibility="public" complexity="2" crap="2.15" count="9"/>
+        <line num="23" type="stmt" count="9"/>
         <line num="24" type="stmt" count="9"/>
-        <line num="25" type="stmt" count="9"/>
-        <line num="28" type="stmt" count="0"/>
-        <metrics loc="30" ncloc="21" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="2" elements="4" coveredelements="2"/>
+        <line num="27" type="stmt" count="0"/>
+        <metrics loc="29" ncloc="21" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="2" elements="4" coveredelements="2"/>
       </file>
       <file name="/mnt/c/Users/firei/www/hooch/src/Query/Common/Driver/HasFetchAll.php">
         <class name="HasFetchAll" namespace="Redstraw\Hooch\Query\Common\Driver" fullPackage="Redstraw" package="Redstraw">
           <metrics complexity="2" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="2" elements="4" coveredelements="2"/>
         </class>
-        <line num="22" type="method" name="fetchAll" visibility="public" complexity="2" crap="2.15" count="2"/>
+        <line num="21" type="method" name="fetchAll" visibility="public" complexity="2" crap="2.15" count="2"/>
+        <line num="23" type="stmt" count="2"/>
         <line num="24" type="stmt" count="2"/>
-        <line num="25" type="stmt" count="2"/>
-        <line num="28" type="stmt" count="0"/>
-        <metrics loc="29" ncloc="20" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="2" elements="4" coveredelements="2"/>
+        <line num="27" type="stmt" count="0"/>
+        <metrics loc="29" ncloc="21" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="2" elements="4" coveredelements="2"/>
       </file>
     </package>
     <package name="Redstraw\Hooch\Query\Common">
@@ -1552,14 +1554,14 @@
         <line num="40" type="stmt" count="0"/>
         <line num="43" type="stmt" count="1"/>
         <line num="47" type="stmt" count="4"/>
-        <metrics loc="48" ncloc="33" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="9" elements="12" coveredelements="9"/>
+        <metrics loc="49" ncloc="34" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="9" elements="12" coveredelements="9"/>
       </file>
     </package>
     <file name="/mnt/c/Users/firei/www/hooch/src/Query/Connection/DatabaseInterface.php">
       <metrics loc="18" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
     <file name="/mnt/c/Users/firei/www/hooch/src/Query/Connection/Driver/DriverInterface.php">
-      <metrics loc="75" ncloc="37" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      <metrics loc="74" ncloc="37" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
     <file name="/mnt/c/Users/firei/www/hooch/src/Query/Connection/Handler/DatabaseHandlerInterface.php">
       <metrics loc="19" ncloc="12" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
@@ -1773,6 +1775,6 @@
     <file name="/mnt/c/Users/firei/www/hooch/src/Query/Sql/Statement/UpdateInterface.php">
       <metrics loc="65" ncloc="27" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <metrics files="89" loc="5543" ncloc="3729" classes="72" methods="192" coveredmethods="114" conditionals="0" coveredconditionals="0" statements="1055" coveredstatements="815" elements="1247" coveredelements="929"/>
+    <metrics files="89" loc="5545" ncloc="3735" classes="72" methods="192" coveredmethods="113" conditionals="0" coveredconditionals="0" statements="1057" coveredstatements="815" elements="1249" coveredelements="928"/>
   </project>
 </coverage>

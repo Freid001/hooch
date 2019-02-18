@@ -69,7 +69,6 @@ interface DriverInterface
      * @param Sql $sql
      * @param string $method
      * @return array|mixed|null
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function execute(Sql $sql, string $method);
 }

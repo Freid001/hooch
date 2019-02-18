@@ -17,7 +17,6 @@ trait HasFetchAll
     /**
      * @param Sql $sql
      * @return array|mixed|null
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function fetchAll(Sql $sql)
     {

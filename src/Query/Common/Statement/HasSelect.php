@@ -28,7 +28,7 @@ trait HasSelect
         if($this instanceof DriverInterface){
             switch($this->driver()){
                 case DriverInterface::DRIVER_MYSQL:
-                    $this->select = new \Redstraw\Hooch\Builder\Sql\MySql\Select($this->query(), $this->operator());
+                    $this->select = new \Redstraw\Hooch\Builder\Sql\Mysql\Select($this->query(), $this->operator());
                     break;
 
                 case DriverInterface::DRIVER_PGSQL:

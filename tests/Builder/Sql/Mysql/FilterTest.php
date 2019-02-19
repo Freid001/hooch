@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace test\Builder\Sql\MySql;
+namespace test\Builder\Sql\Mysql;
 
 use PHPUnit\Framework\TestCase;
-use Redstraw\Hooch\Builder\Sql\MySql\Filter;
+use Redstraw\Hooch\Builder\Sql\Mysql\Filter;
 use Redstraw\Hooch\Query\Common\Operator\Comparison;
 use Redstraw\Hooch\Query\Common\Operator\Logical;
 use Redstraw\Hooch\Query\Common\Operator\Operator;

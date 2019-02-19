@@ -1,7 +1,7 @@
 <?php
 //declare(strict_types=1);
 //
-//namespace test\Builder\Sql\MySql;
+//namespace test\Builder\Sql\Mysql;
 //
 //use PHPUnit\Framework\TestCase;
 //use Redstraw\Hooch\Builder\Sql\Mysql\Insert;
@@ -14,7 +14,7 @@
 //
 ///**
 // * Class InsertTest
-// * @package test\Builder\Sql\MySql
+// * @package test\Builder\Sql\Mysql
 // */
 //class InsertTest extends TestCase
 //{

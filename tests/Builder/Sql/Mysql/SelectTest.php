@@ -80,7 +80,7 @@ class SelectTest extends TestCase
         $table = $this->createMock(RepositoryInterface::class);
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
-        $this->assertEquals("SELECT col_a ,col_b ,col_c FROM some_table_name", trim($this->select->ignoreAccent()->cols(['col_a', 'col_b', 'col_c'])->from($table)->build([
+        $this->assertEquals("SELECT col_a,col_b,col_c FROM some_table_name", trim($this->select->ignoreAccent()->cols(['col_a', 'col_b', 'col_c'])->from($table)->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM
@@ -90,7 +90,7 @@ class SelectTest extends TestCase
     public function testSelectCols()
     {
         $this->select->cols(['col_a'])->cols(['col_b'])->cols(['col_c']);
-        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c`", trim($this->select->build([
+        $this->assertEquals("SELECT `col_a`,`col_b`,`col_c`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS
         ])->string()));
@@ -99,7 +99,7 @@ class SelectTest extends TestCase
     public function testSelectColsWithAlias()
     {
         $this->select->cols(['col_a', 'col_b', 'col_c'], 't');
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c`", trim($this->select->build([
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS
         ])->string()));
@@ -108,7 +108,7 @@ class SelectTest extends TestCase
     public function testSelectAllCols()
     {
         $this->select->cols([Sql::SQL_STAR]);
-        $this->assertEquals("SELECT *", trim($this->select->build([
+        $this->assertEquals("SELECT `*`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS
         ])->string()));
@@ -117,7 +117,7 @@ class SelectTest extends TestCase
     public function testSelectColsAs()
     {
         $this->select->cols(['a' => 'col_a', 'b' => 'col_b', 'c' => 'col_c']);
-        $this->assertEquals("SELECT `col_a` AS a ,`col_b` AS b ,`col_c` AS c", trim($this->select->build([
+        $this->assertEquals("SELECT `col_a` AS a,`col_b` AS b,`col_c` AS c", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS
         ])->string()));
@@ -130,7 +130,7 @@ class SelectTest extends TestCase
 
         /** @var RepositoryInterface $table */
         $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table);
-        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM `some_table_name`", trim($this->select->build([
+        $this->assertEquals("SELECT `col_a`,`col_b`,`col_c` FROM `some_table_name`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM
@@ -145,7 +145,7 @@ class SelectTest extends TestCase
 
         /** @var RepositoryInterface $table */
         $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table);
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM `some_table_name` AS `t`", trim($this->select->build([
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM
@@ -184,7 +184,7 @@ class SelectTest extends TestCase
 
         /** @var RepositoryInterface $table */
         $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->groupBy('col_a')->groupBy('col_b');
-        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM `some_table_name` GROUP BY `col_a` ,`col_b`", trim($this->select->build([
+        $this->assertEquals("SELECT `col_a`,`col_b`,`col_c` FROM `some_table_name` GROUP BY `col_a` ,`col_b`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -199,7 +199,7 @@ class SelectTest extends TestCase
 
         /** @var RepositoryInterface $table */
         $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->orderBy('col_a', Sql::DESC)->orderBy('col_b', Sql::ASC);
-        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM `some_table_name` ORDER BY `col_a` DESC ,`col_b` ASC", trim($this->select->build([
+        $this->assertEquals("SELECT `col_a`,`col_b`,`col_c` FROM `some_table_name` ORDER BY `col_a` DESC ,`col_b` ASC", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -254,7 +254,7 @@ class SelectTest extends TestCase
 
         /** @var RepositoryInterface $table */
         $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->limit(10);
-        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM `some_table_name` LIMIT 10", trim($this->select->build([
+        $this->assertEquals("SELECT `col_a`,`col_b`,`col_c` FROM `some_table_name` LIMIT 10", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -269,7 +269,7 @@ class SelectTest extends TestCase
 
         /** @var RepositoryInterface $table */
         $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->limit(10)->offset(3);
-        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c` FROM `some_table_name` LIMIT 10 OFFSET 3", trim($this->select->build([
+        $this->assertEquals("SELECT `col_a`,`col_b`,`col_c` FROM `some_table_name` LIMIT 10 OFFSET 3", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -300,7 +300,7 @@ class SelectTest extends TestCase
             Sql::UNION
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM `some_table_name` AS `t` UNION SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM `another_table_name` AS `tt`", trim($query->string()));
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` UNION SELECT `tt`.`col_a`,`tt`.`col_b`,`tt`.`col_c` FROM `another_table_name` AS `tt`", trim($query->string()));
         $this->assertEquals([], $query->parameters());
     }
 
@@ -326,7 +326,7 @@ class SelectTest extends TestCase
             Sql::UNION
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM `some_table_name` AS `t` UNION ALL SELECT `tt`.`col_a` ,`tt`.`col_b` ,`tt`.`col_c` FROM `another_table_name` AS `tt`", trim($query->string()));
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` UNION ALL SELECT `tt`.`col_a`,`tt`.`col_b`,`tt`.`col_c` FROM `another_table_name` AS `tt`", trim($query->string()));
         $this->assertEquals([], $query->parameters());
     }
 
@@ -353,7 +353,7 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM `some_table_name` AS `t` JOIN `another_table_name` AS `tt`", trim($query->string()));
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` JOIN `another_table_name` AS `tt`", trim($query->string()));
         $this->assertEquals([], $query->parameters());
     }
 
@@ -394,7 +394,7 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM `some_table_name` AS `t` JOIN `another_table_name` AS `tt` ON t.col_a = `tt`.`col_a`", trim($query->string()));
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` JOIN `another_table_name` AS `tt` ON t.col_a = `tt`.`col_a`", trim($query->string()));
         $this->assertEquals([], $query->parameters());
     }
 
@@ -430,7 +430,7 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM `some_table_name` AS `t` LEFT JOIN `another_table_name` AS `tt` ON t.col_a =?", trim($query->string()));
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` LEFT JOIN `another_table_name` AS `tt` ON t.col_a =?", trim($query->string()));
         $this->assertEquals(['tt.col_a'], $query->parameters());
     }
 
@@ -466,7 +466,7 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM `some_table_name` AS `t` RIGHT JOIN `another_table_name` AS `tt` ON t.col_a =?", trim($query->string()));
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` RIGHT JOIN `another_table_name` AS `tt` ON t.col_a =?", trim($query->string()));
         $this->assertEquals(['tt.col_a'], $query->parameters());
     }
 
@@ -502,7 +502,7 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM `some_table_name` AS `t` INNER JOIN `another_table_name` AS `tt` ON t.col_a =?", trim($query->string()));
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` INNER JOIN `another_table_name` AS `tt` ON t.col_a =?", trim($query->string()));
         $this->assertEquals(['tt.col_a'], $query->parameters());
     }
 
@@ -539,7 +539,7 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM `some_table_name` AS `t` FULL OUTER JOIN `another_table_name` AS `tt` ON t.col_a =?", trim($query->string()));
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` FULL OUTER JOIN `another_table_name` AS `tt` ON t.col_a =?", trim($query->string()));
         $this->assertEquals(['tt.col_a'], $query->parameters());
     }
 
@@ -570,7 +570,7 @@ class SelectTest extends TestCase
 
         $query = $this->select->build();
 
-        $this->assertEquals("SELECT `t`.`col_a` ,`t`.`col_b` ,`t`.`col_c` FROM `some_table_name` AS `t` LEFT JOIN `another_table_name` AS `tt` ON t.col_a =? AND t.col_b =?", trim($query->string()));
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` LEFT JOIN `another_table_name` AS `tt` ON t.col_a =? AND t.col_b =?", trim($query->string()));
         $this->assertEquals(['tt.col_a', 'tt.col_b'], $query->parameters());
     }
 }

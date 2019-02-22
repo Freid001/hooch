@@ -26,35 +26,54 @@ trait HasCols
     private $columnKeys = [];
 
     /**
-     * @param array $cols
+     * @param array $columns
      * @param string|null $alias
      * @return SelectInterface
      * @throws SqlException
      */
-    public function cols(array $cols = [Sql::SQL_STAR], ?string $alias = null): SelectInterface
+    public function cols(array $columns = [Sql::SQL_STAR], ?string $alias = null): SelectInterface
     {
         if($this instanceof SelectInterface) {
-            $this->columnKeys = array_merge($this->columnKeys, array_keys($cols));
-
-            $values = array_values($cols);
 
             $query = $this->query();
-            array_reduce($values, function (Sql $sql, $col) use ($query, $alias) {
-                if ($this->columnIndex !== 0) {
-                    $sql->append(',', [], false);
+
+            $keys = array_keys($columns);
+            $columnsWithAs = array_reduce($keys, function($transformed,$key) use ($query, $columns)
+            {
+                $column = $query->accent()->append($columns[$key]);
+                if(is_string($key)){
+                    array_push($transformed, $column . Sql::SQL_SPACE . Sql::AS . Sql::SQL_SPACE . $key);
+                }else {
+                    array_push($transformed, $column);
                 }
 
-                $sql->ifThenAppend(!is_null($alias), $query->accent()->append($alias) . '.', [], false)
-                    ->append($col !== Sql::SQL_STAR ? $query->accent()->append($col) : $col)
-                    ->ifThenAppend(isset($this->columnKeys[$this->columnIndex]) && is_string($this->columnKeys[$this->columnIndex]), Sql::AS)
-                    ->ifThenAppend(isset($this->columnKeys[$this->columnIndex]) && is_string($this->columnKeys[$this->columnIndex]), $this->columnKeys[$this->columnIndex]);
+                return $transformed;
+            },[]);
 
-                $this->columnIndex++;
+            $columnsWithAlias = array_reduce($columnsWithAs, function($transformed,$column) use ($query, $alias)
+            {
+                $columnString = '';
+                if($alias){
+                    $columnString .= $query->accent()->append($alias);
+                    $columnString .= '.';
+                }
 
-                return $sql;
-            }, $this->query()->sql());
+                $columnString .= $column;
 
-            $this->query()->toClause(Sql::COLS);
+                array_push($transformed, $columnString);
+
+                return $transformed;
+            },[]);
+
+//            if($query->hasClause(Sql::COLS)){
+//
+//            }
+
+            $query->sql()
+                ->ifThenAppend($query->hasClause(Sql::COLS),",",[],false)
+                ->append(implode(",", $columnsWithAlias));
+
+            $query->toClause(Sql::COLS);
 
             return $this;
         }else {

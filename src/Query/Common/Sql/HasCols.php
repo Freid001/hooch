@@ -65,15 +65,11 @@ trait HasCols
                 return $transformed;
             },[]);
 
-//            if($query->hasClause(Sql::COLS)){
-//
-//            }
-
             $query->sql()
                 ->ifThenAppend($query->hasClause(Sql::COLS),",",[],false)
                 ->append(implode(",", $columnsWithAlias));
 
-            $query->toClause(Sql::COLS);
+            $query->toClause(Sql::COLS, false);
 
             return $this;
         }else {

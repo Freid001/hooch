@@ -59,10 +59,11 @@ class Query
 
     /**
      * @param string $clause
+     * @param bool $hasSpace
      */
-    public function toClause(string $clause): void
+    public function toClause(string $clause, $hasSpace = true): void
     {
-        $this->appendString($clause, $this->sql->string());
+        $this->appendString($clause, $this->sql->string(), !$hasSpace);
         $this->appendParameters($clause, $this->sql->parameters());
 
         $this->sql->reset();
@@ -116,11 +117,16 @@ class Query
     /**
      * @param string $clause
      * @param string|null $sql
+     * @param bool $trim
      */
-    private function appendString(string $clause, ?string $sql): void
+    private function appendString(string $clause, ?string $sql, bool $trim): void
     {
         if (!empty($this->query[$clause])) {
-            $this->query[$clause] .= $sql;
+            if($trim){
+                $this->query[$clause] = trim($this->query[$clause]) . $sql;
+            }else {
+                $this->query[$clause] .= $sql;
+            }
         } else {
             $this->query[$clause] = $sql;
         }

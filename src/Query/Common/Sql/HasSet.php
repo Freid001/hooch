@@ -34,7 +34,7 @@ trait HasSet
                 }, array_keys($values))
             ), array_values($values), false);
 
-            $this->query()->toClause(Sql::SET);
+            $this->query()->appendSqlToClause(Sql::SET);
 
             return $this;
         }else {

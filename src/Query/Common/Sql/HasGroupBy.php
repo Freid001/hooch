@@ -30,7 +30,7 @@ trait HasGroupBy
                 ->ifThenAppend(!is_null($alias), $this->query()->accent()->append($alias) . '.', [], false)
                 ->append($this->query()->accent()->append($column));
 
-            $this->query()->toClause(Sql::GROUP);
+            $this->query()->appendSqlToClause(Sql::GROUP);
 
             return $this;
         }else {

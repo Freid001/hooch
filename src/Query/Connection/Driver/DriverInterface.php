@@ -2,12 +2,14 @@
 
 namespace Redstraw\Hooch\Query\Connection\Driver;
 
+use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Redstraw\Hooch\Query\Common\Operator\Operator;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
 use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
+use Redstraw\Hooch\Query\Sql\Statement\UpdateInterface;
 
 /**
  * Class AdapterInterface
@@ -37,6 +39,11 @@ interface DriverInterface
     public function select() : ?SelectInterface;
 
     /**
+     * @return UpdateInterface|null
+     */
+    public function update() : ?UpdateInterface;
+
+    /**
      * @param CacheInterface $cache
      * @param int|null $ttl
      * @return DriverInterface|null
@@ -56,9 +63,14 @@ interface DriverInterface
     public function fetchAll(Sql $sql);
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function driver(): ?string;
+    public function driverName(): string;
+
+    /**
+     * @return LoggerInterface
+     */
+    public function logger(): LoggerInterface;
 
     /**
      * @return Operator

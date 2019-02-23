@@ -29,10 +29,10 @@ trait HasNestedWhere
 
             if($this instanceof OnFilterInterface){
                 $this->query()->sql()->append(Sql::SQL_BRACKET_CLOSE);
-                $this->query()->toClause(Sql::JOIN);
+                $this->query()->appendSqlToClause(Sql::JOIN);
             }else {
                 $this->query()->sql()->append(Sql::SQL_BRACKET_CLOSE);
-                $this->query()->toClause(Sql::WHERE);
+                $this->query()->appendSqlToClause(Sql::WHERE);
             }
 
             return $this;

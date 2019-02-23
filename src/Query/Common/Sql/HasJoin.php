@@ -35,7 +35,7 @@ trait HasJoin
                 ->ifThenAppend(!empty($table->getAlias()), Sql:: AS)
                 ->ifThenAppend(!empty($table->getAlias()), $this->query()->accent()->append($table->getAlias()));
 
-            $this->query()->toClause(Sql::JOIN);
+            $this->query()->appendSqlToClause(Sql::JOIN);
 
             $this->joinTables[] = $table;
 

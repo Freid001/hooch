@@ -17,13 +17,13 @@ trait HasDriver
     /**
      * @var string
      */
-    private $driver;
+    private $driverName = "";
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function driver(): ?string
+    public function driverName(): string
     {
-        return $this->driver;
+        return $this->driverName;
     }
 }

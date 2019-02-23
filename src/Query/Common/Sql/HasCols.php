@@ -69,7 +69,7 @@ trait HasCols
                 ->ifThenAppend($query->hasClause(Sql::COLS),",",[],false)
                 ->append(implode(",", $columnsWithAlias));
 
-            $query->toClause(Sql::COLS, false);
+            $query->appendSqlToClause(Sql::COLS, false);
 
             return $this;
         }else {

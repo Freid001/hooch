@@ -70,7 +70,7 @@ class Select implements SelectInterface
         $this->query = $query;
         $this->operator = $operator;
         $this->query->sql()->append(Sql::SELECT);
-        $this->query->toClause(Sql::SELECT);
+        $this->query->appendSqlToClause(Sql::SELECT);
     }
 
     /**
@@ -93,12 +93,12 @@ class Select implements SelectInterface
     {
         if (in_array(Sql::WHERE, $clauses) && $this->filter) {
             $this->query->sql()->append($this->filter->build([Sql::WHERE]));
-            $this->query->toClause(Sql::WHERE);
+            $this->query->appendSqlToClause(Sql::WHERE);
         }
 
         if (in_array(Sql::JOIN, $clauses) && $this->onFilter) {
             $this->query->sql()->append($this->onFilter->build([Sql::JOIN]));
-            $this->query->toClause(Sql::JOIN);
+            $this->query->appendSqlToClause(Sql::JOIN);
         }
 
         $sql = $this->query->build($clauses);

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Redstraw\Hooch\Builder\Connection\Driver;
 
 use Psr\Log\LoggerInterface;
-use Redstraw\Hooch\Builder\Common\Statement\HasOnFilter;
-use Redstraw\Hooch\Builder\Common\Statement\HasSelect;
+use Redstraw\Hooch\Query\Common\Statement\HasOnFilter;
+use Redstraw\Hooch\Query\Common\Statement\HasSelect;
+use Redstraw\Hooch\Query\Common\Statement\HasUpdate;
 use Redstraw\Hooch\Query\Common\Driver\HasCache;
 use Redstraw\Hooch\Query\Common\Driver\HasDriver;
 use Redstraw\Hooch\Query\Common\Driver\HasFetch;
@@ -34,6 +35,7 @@ class PdoDriver implements DriverInterface
     use HasFilter;
     use HasOnFilter;
     use HasSelect;
+    use HasUpdate;
 
     /**
      * @var array
@@ -64,7 +66,7 @@ class PdoDriver implements DriverInterface
     public function __construct(\PDO $pdo, Query $query, LoggerInterface $logger)
     {
         $this->pdo = $pdo;
-        $this->driver = $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        $this->driverName = (string)$this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
         $this->query = $query;
         $this->logger = $logger;
     }
@@ -90,6 +92,14 @@ class PdoDriver implements DriverInterface
         }
 
         return self::$instances[Operator::class];
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function logger(): LoggerInterface
+    {
+        return $this->logger;
     }
 
     /**
@@ -127,7 +137,7 @@ class PdoDriver implements DriverInterface
         $this->logger->info("Successfully executed query",[
             'query'             => $sql->string(),
             'parameters'        => $sql->parameters(),
-            'driver'            => $this->driver,
+            'driver'            => $this->driverName(),
             'execution_time'    => round(microtime(true) - $time,4) . "s",
             'from_cache'        => $fromCache
         ]);

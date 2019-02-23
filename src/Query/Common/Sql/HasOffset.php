@@ -27,7 +27,7 @@ trait HasOffset
                 ->append(Sql::OFFSET)
                 ->append($offset);
 
-            $this->query()->toClause(Sql::OFFSET);
+            $this->query()->appendSqlToClause(Sql::OFFSET);
 
             return $this;
         }else {

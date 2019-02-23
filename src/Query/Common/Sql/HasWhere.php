@@ -42,7 +42,7 @@ trait HasWhere
                     ->append($operator->build());
             }
 
-            $this->query()->toClause($this->whereJoin());
+            $this->query()->appendSqlToClause($this->whereJoin());
 
             return $this;
         }else {

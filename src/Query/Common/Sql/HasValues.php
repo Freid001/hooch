@@ -30,7 +30,7 @@ trait HasValues
                 ->append(implode(",", array_fill(0, count($values), Sql::SQL_QUESTION_MARK)), array_values($values))
                 ->append(Sql::SQL_BRACKET_CLOSE);
 
-            $this->query()->toClause(Sql::VALUES);
+            $this->query()->appendSqlToClause(Sql::VALUES);
 
             return $this;
         }else {

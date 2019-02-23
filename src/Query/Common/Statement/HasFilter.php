@@ -6,7 +6,6 @@ namespace Redstraw\Hooch\Query\Common\Statement;
 
 
 use Redstraw\Hooch\Query\Connection\Driver\DriverInterface;
-use Redstraw\Hooch\Query\Exception\DriverException;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 
 /**
@@ -16,26 +15,23 @@ use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 trait HasFilter
 {
     /**
-     * @return DriverInterface|null
-     * @throws DriverException
+     * @return FilterInterface|null
      */
     public function filter(): ?FilterInterface
     {
         if($this instanceof DriverInterface){
-            switch($this->driver()){
+            switch($this->driverName()){
                 case DriverInterface::DRIVER_MYSQL:
                     return new \Redstraw\Hooch\Builder\Sql\Mysql\Filter($this->query(), $this->operator());
 
                 case DriverInterface::DRIVER_PGSQL:
-                    //$this->filter = new \Redstraw\Hooch\Builder\Sql\Pgsql\Filter();
                     break;
 
                 case DriverInterface::DRIVER_SQLITE:
-                    //$this->filter = new \Redstraw\Hooch\Builder\Sql\Sqlite\Filter();
                     break;
 
                 default:
-                    throw new DriverException(sprintf("Driver: %u not currently supported!", $this->driver()));
+                    $this->logger()->error(sprintf("Driver: %u not supported.", $this->driverName()));
             }
         }
 

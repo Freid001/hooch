@@ -61,7 +61,7 @@ class Query
      * @param string $clause
      * @param bool $hasSpace
      */
-    public function toClause(string $clause, $hasSpace = true): void
+    public function appendSqlToClause(string $clause, $hasSpace = true): void
     {
         $this->appendString($clause, $this->sql->string(), !$hasSpace);
         $this->appendParameters($clause, $this->sql->parameters());

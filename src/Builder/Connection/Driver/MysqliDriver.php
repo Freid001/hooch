@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Redstraw\Hooch\Builder\Connection\Driver;
 
 use Psr\Log\LoggerInterface;
-use Redstraw\Hooch\Builder\Common\Statement\HasOnFilter;
-use Redstraw\Hooch\Builder\Common\Statement\HasSelect;
+use Redstraw\Hooch\Query\Common\Statement\HasOnFilter;
+use Redstraw\Hooch\Query\Common\Statement\HasSelect;
+use Redstraw\Hooch\Query\Common\Statement\HasUpdate;
 use Redstraw\Hooch\Query\Common\Driver\HasCache;
 use Redstraw\Hooch\Query\Common\Driver\HasDriver;
 use Redstraw\Hooch\Query\Common\Driver\HasFetch;
@@ -34,6 +35,7 @@ class MysqliDriver implements DriverInterface
     use HasFilter;
     use HasOnFilter;
     use HasSelect;
+    use HasUpdate;
 
     /**
      * @var array
@@ -59,7 +61,7 @@ class MysqliDriver implements DriverInterface
     public function __construct(\mysqli $mysqli, Query $query, LoggerInterface $logger)
     {
         $this->mysqli = $mysqli;
-        $this->driver = self::DRIVER_MYSQL;
+        $this->driverName = self::DRIVER_MYSQL;
         $this->query = $query;
         $this->logger = $logger;
     }
@@ -86,6 +88,15 @@ class MysqliDriver implements DriverInterface
 
         return self::$instances[Operator::class];
     }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function logger(): LoggerInterface
+    {
+        return $this->logger;
+    }
+
     /**
      * @param Sql $sql
      * @param string $method
@@ -121,7 +132,7 @@ class MysqliDriver implements DriverInterface
         $this->logger->info("Successfully executed query", [
             'query'             => $sql->string(),
             'parameters'        => $sql->parameters(),
-            'driver'            => self::DRIVER_MYSQL,
+            'driver'            => $this->driverName(),
             'execution_time'    => round(microtime(true) - $time, 4) . "s",
             'from_cache'        => $fromCache
         ]);

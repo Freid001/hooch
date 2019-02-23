@@ -37,7 +37,7 @@ trait HasOrOn
                     ->append($operator->build());
             }
 
-            $this->query()->toClause(Sql::JOIN);
+            $this->query()->appendSqlToClause(Sql::JOIN);
 
             return $this;
         }else {

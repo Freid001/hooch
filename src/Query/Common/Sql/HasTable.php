@@ -34,7 +34,7 @@ trait HasTable
                 ->ifThenAppend(!empty($table->getAlias()), Sql:: AS)
                 ->ifThenAppend(!empty($table->getAlias()), $this->query()->accent()->append($table->getAlias()));
 
-            $this->query()->toClause(Sql::UPDATE);
+            $this->query()->appendSqlToClause(Sql::UPDATE);
 
             $this->table = $table;
             $this->setFilter($table->filter());

@@ -27,7 +27,7 @@ trait HasLimit
                 ->append(Sql::LIMIT)
                 ->append($limit);
 
-            $this->query()->toClause(Sql::LIMIT);
+            $this->query()->appendSqlToClause(Sql::LIMIT);
 
             return $this;
         }else {

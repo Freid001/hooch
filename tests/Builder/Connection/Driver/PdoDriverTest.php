@@ -206,8 +206,6 @@ class PdoDriverTest extends TestCase
 
     public function testFilterError()
     {
-        $this->expectException(DriverException::class);
-
         /** @var LoggerInterface $logger */
         $logger = $this->createMock(LoggerInterface::class);
 
@@ -216,7 +214,8 @@ class PdoDriverTest extends TestCase
         $pdo->expects($this->once())->method('getAttribute')->willReturn(null);
 
         $driver = new PdoDriver($pdo, $this->query, $logger);
-        $driver->filter();
+
+        $this->assertNull($driver->filter());
     }
 
     public function testSelectMysql()
@@ -237,8 +236,6 @@ class PdoDriverTest extends TestCase
 
     public function testSelectError()
     {
-        $this->expectException(DriverException::class);
-
         /** @var LoggerInterface $logger */
         $logger = $this->createMock(LoggerInterface::class);
 
@@ -246,7 +243,7 @@ class PdoDriverTest extends TestCase
         $pdo = $this->getMockBuilder('PDO')->disableOriginalConstructor()->getMock();
 
         $driver = new PdoDriver($pdo, $this->query, $logger);
-        $driver->select([Sql::SQL_STAR], Table::make($driver)->setName('some_table'));
+        $this->assertNull($driver->select());
     }
 
     public function testStatementMysql()

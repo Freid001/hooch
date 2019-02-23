@@ -56,7 +56,7 @@ class Update implements UpdateInterface
     {
         $this->query = $query;
         $this->query->sql()->append(Sql::UPDATE);
-        $this->query->toClause(Sql::UPDATE);
+        $this->query->appendSqlToClause(Sql::UPDATE);
 
         $this->operator = $operator;
     }
@@ -74,12 +74,12 @@ class Update implements UpdateInterface
     {
         if (in_array(Sql::WHERE, $clauses) && $this->filter) {
             $this->query->sql()->append($this->filter->build([Sql::WHERE]));
-            $this->query->toClause(Sql::WHERE);
+            $this->query->appendSqlToClause(Sql::WHERE);
         }
 
         if (in_array(Sql::JOIN, $clauses) && $this->onFilter) {
             $this->query->sql()->append($this->filter->build([Sql::JOIN]));
-            $this->query->toClause(Sql::JOIN);
+            $this->query->appendSqlToClause(Sql::JOIN);
         }
 
         $sql = $this->query->build($clauses);

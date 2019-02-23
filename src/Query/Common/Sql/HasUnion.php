@@ -29,7 +29,7 @@ trait HasUnion
                 ->ifThenAppend(!empty($all), Sql::ALL)
                 ->append($unionSql);
 
-            $this->query()->toClause(Sql::UNION);
+            $this->query()->appendSqlToClause(Sql::UNION);
 
             return $this;
         }else {

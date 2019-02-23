@@ -32,7 +32,7 @@ trait HasHaving
                 ->append($column)
                 ->append($operator->build());
 
-            $this->query()->toClause(Sql::HAVING);
+            $this->query()->appendSqlToClause(Sql::HAVING);
 
             return $this;
         }else {

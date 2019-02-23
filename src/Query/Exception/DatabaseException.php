@@ -4,7 +4,7 @@ namespace Redstraw\Hooch\Query\Exception;
 
 /**
  * Class DatabaseException
- * @package Redstraw\Hooch\Builder\Exception
+ * @package Redstraw\Hooch\Query\Exception
  */
 class DatabaseException extends \Exception
 {}

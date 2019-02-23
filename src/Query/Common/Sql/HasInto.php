@@ -38,7 +38,7 @@ trait HasInto
             ));
 
             $this->query()->sql()->append(Sql::SQL_BRACKET_CLOSE);
-            $this->query()->toClause(Sql::INTO);
+            $this->query()->appendSqlToClause(Sql::INTO);
 
             return $this;
         }else {

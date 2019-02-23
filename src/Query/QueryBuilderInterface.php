@@ -8,8 +8,8 @@ use Redstraw\Hooch\Query\Sql\Query;
 use Redstraw\Hooch\Query\Sql\Sql;
 
 /**
- * Interface FilterInterface
- * @package Redstraw\Hooch\Query\Sql\Statement
+ * Interface QueryBuilderInterface
+ * @package Redstraw\Hooch\Query
  */
 interface QueryBuilderInterface
 {

@@ -40,7 +40,7 @@ trait HasOn
                 $this->on = true;
             }
 
-            $this->query()->toClause(Sql::JOIN);
+            $this->query()->appendSqlToClause(Sql::JOIN);
 
             return $this;
         }else {

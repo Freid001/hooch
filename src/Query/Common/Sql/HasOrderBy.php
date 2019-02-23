@@ -31,7 +31,7 @@ trait HasOrderBy
                 ->append($this->query()->accent()->append($column, '.'))
                 ->append(strtoupper($order));
 
-            $this->query()->toClause(Sql::ORDER);
+            $this->query()->appendSqlToClause(Sql::ORDER);
 
             return $this;
         }else {

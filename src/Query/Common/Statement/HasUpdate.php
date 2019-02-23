@@ -6,23 +6,29 @@ namespace Redstraw\Hooch\Query\Common\Statement;
 
 
 use Redstraw\Hooch\Query\Connection\Driver\DriverInterface;
-use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
+use Redstraw\Hooch\Query\Sql\Statement\UpdateInterface;
 
 /**
- * Trait HasOnFilter
+ * Trait HasUpdate
  * @package Redstraw\Hooch\Query\Common\Statement
  */
-trait HasOnFilter
+trait HasUpdate
 {
     /**
-     * @return OnFilterInterface|null
+     * @var UpdateInterface|null
      */
-    public function onFilter(): ?OnFilterInterface
+    private $update = null;
+
+    /**
+     * @return UpdateInterface|null
+     */
+    public function update(): ?UpdateInterface
     {
         if($this instanceof DriverInterface){
             switch($this->driverName()){
                 case DriverInterface::DRIVER_MYSQL:
-                    return new \Redstraw\Hooch\Builder\Sql\Mysql\OnFilter($this->query(), $this->operator());
+                    $this->update = new \Redstraw\Hooch\Builder\Sql\Mysql\Update($this->query(), $this->operator());
+                    break;
 
                 case DriverInterface::DRIVER_PGSQL:
                     break;
@@ -32,9 +38,10 @@ trait HasOnFilter
 
                 default:
                     $this->logger()->error(sprintf("Driver: %u not supported.", $this->driverName()));
+                    $this->update = null;
             }
         }
 
-        return null;
+        return $this->update;
     }
 }

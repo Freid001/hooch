@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Sql;
 
 
 use Redstraw\Hooch\Query\Exception\SqlException;
+use Redstraw\Hooch\Query\Sql\Field\FieldInterface;
 use Redstraw\Hooch\Query\Sql\Operator\OperatorInterface;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
@@ -19,22 +20,23 @@ trait HasOn
     private $on = false;
 
     /**
-     * @param $column
+     * @param $field
      * @param OperatorInterface|null $operator
      * @return OnFilterInterface
      * @throws SqlException
      */
-    public function on($column, ?OperatorInterface $operator): OnFilterInterface
+    public function on($field, ?OperatorInterface $operator): OnFilterInterface
     {
         if ($this instanceof OnFilterInterface) {
-            $sql = $this->query()->sql();
+            if ($field instanceof \Closure) {
+                $field->call($this);
+            } else if ($field instanceof FieldInterface) {
+                $field->setAccent($this->query()->accent());
 
-            if ($column instanceof \Closure) {
-                $column->call($this);
-            } else {
-                $sql->ifThenAppend(!$this->on, Sql::ON)
-                    ->ifThenAppend($this->on, Sql::AND)
-                    ->ifThenAppend(!is_null($column), $this->query()->accent()->append($column,'.'))
+                $this->query()->sql()
+                    ->ifThenAppend(!$this->on, Sql::ON)
+                    ->ifThenAppend($this->on, Sql:: AND)
+                    ->append($field->sql()->string())
                     ->append($operator->build());
 
                 $this->on = true;
@@ -43,7 +45,7 @@ trait HasOn
             $this->query()->appendSqlToClause(Sql::JOIN);
 
             return $this;
-        }else {
+        } else {
             throw new SqlException(sprintf("Must invoke OnFilterInterface in: %s.", get_class($this)));
         }
     }

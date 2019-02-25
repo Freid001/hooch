@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Operator\Comparison;
 
 
 use Redstraw\Hooch\Query\Sql\Accent;
+use Redstraw\Hooch\Query\Sql\Field\FieldInterface;
 use Redstraw\Hooch\Query\Sql\Operator\OperatorInterface;
 use Redstraw\Hooch\Query\Sql\Sql;
 
@@ -13,7 +14,7 @@ use Redstraw\Hooch\Query\Sql\Sql;
  * Class ComparisonColumn
  * @package Redstraw\Hooch\Query\Sql\Operator
  */
-class Column implements OperatorInterface
+class Field implements OperatorInterface
 {
     /**
      * @var
@@ -31,7 +32,7 @@ class Column implements OperatorInterface
     private $operator = '';
 
     /**
-     * Column constructor.
+     * Field constructor.
      * @param Sql $sql
      * @param Accent $accent
      */
@@ -58,87 +59,97 @@ class Column implements OperatorInterface
     }
 
     /**
-     * @param string|null $column
-     * @return Column
+     * @param FieldInterface $field
+     * @return Field
      */
-    public function equalTo(?string $column): Column
+    public function equalTo(FieldInterface $field): Field
     {
+        $field->setAccent($this->accent);
+
         $this->operator = Sql::SQL_EQUAL;
         $this->sql
             ->reset()
             ->append($this->operator)
-            ->append($this->accent->append($column,'.'), [], false);
+            ->append($field->sql()->string(), [], false);
 
         return $this;
     }
 
     /**
-     * @param string|null $column
-     * @return Column
+     * @param FieldInterface $field
+     * @return Field
      */
-    public function greaterThan(?string $column): Column
+    public function greaterThan(FieldInterface $field): Field
     {
         $this->operator = Sql::SQL_GREATER_THAN;
         $this->sql
             ->reset()
             ->append($this->operator)
-            ->append($this->accent->append($column,'.'), [], false);
+            ->append($field->sql()->string(), [], false);
 
         return $this;
     }
 
     /**
-     * @param string|null $column
-     * @return Column
+     * @param FieldInterface $field
+     * @return Field
      */
-    public function greaterThanEqualTo(?string $column): Column
+    public function greaterThanEqualTo(FieldInterface $field): Field
     {
+        $field->setAccent($this->accent);
+
         $this->operator = Sql::SQL_LESS_THAN . Sql::SQL_EQUAL;
         $this->sql
             ->append($this->operator)
-            ->append($this->accent->append($column,'.'), [], false);
+            ->append($field->sql()->string(), [], false);
 
         return $this;
     }
 
     /**
-     * @param string|null $column
-     * @return Column
+     * @param FieldInterface $field
+     * @return Field
      */
-    public function lessThan(?string $column): Column
+    public function lessThan(FieldInterface $field): Field
     {
+        $field->setAccent($this->accent);
+
         $this->operator = Sql::SQL_LESS_THAN;
         $this->sql
             ->append($this->operator)
-            ->append($this->accent->append($column,'.'), [], false);
+            ->append($field->sql()->string(), [], false);
 
         return $this;
     }
 
     /**
-     * @param string|null $column
-     * @return Column
+     * @param FieldInterface $field
+     * @return Field
      */
-    public function lessThanEqualTo(?string $column): Column
+    public function lessThanEqualTo(FieldInterface $field): Field
     {
+        $field->setAccent($this->accent);
+
         $this->operator = Sql::SQL_LESS_THAN . Sql::SQL_EQUAL;
         $this->sql
             ->append($this->operator)
-            ->append($this->accent->append($column,'.'), [], false);
+            ->append($field->sql()->string(), [], false);
 
         return $this;
     }
 
     /**
-     * @param string|null $column
-     * @return Column
+     * @param FieldInterface $field
+     * @return Field
      */
-    public function notEqualTo(?string $column): Column
+    public function notEqualTo(FieldInterface $field): Field
     {
+        $field->setAccent($this->accent);
+
         $this->operator = Sql::SQL_LESS_THAN . Sql::SQL_GREATER_THAN;
         $this->sql
             ->append($this->operator)
-            ->append($this->accent->append($column,'.'), [], false);
+            ->append($field->sql()->string(), [], false);
 
         return $this;
     }

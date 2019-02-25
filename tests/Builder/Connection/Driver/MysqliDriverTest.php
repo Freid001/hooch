@@ -44,12 +44,12 @@ class MysqliDriverTest extends TestCase
             new Comparison(
                 new \Redstraw\Hooch\Query\Common\Operator\Comparison\Param(new Sql()),
                 new \Redstraw\Hooch\Query\Common\Operator\Comparison\SubQuery(new Sql()),
-                new \Redstraw\Hooch\Query\Common\Operator\Comparison\Column(new Sql(), $this->query->accent())
+                new \Redstraw\Hooch\Query\Common\Operator\Comparison\Field(new Sql(), $this->query->accent())
             ),
             new Logical(
                 new \Redstraw\Hooch\Query\Common\Operator\Logical\Param(new Sql()),
                 new \Redstraw\Hooch\Query\Common\Operator\Logical\SubQuery(new Sql()),
-                new \Redstraw\Hooch\Query\Common\Operator\Logical\Column(new Sql(), $this->query->accent())
+                new \Redstraw\Hooch\Query\Common\Operator\Logical\Field(new Sql(), $this->query->accent())
             )
         );
     }

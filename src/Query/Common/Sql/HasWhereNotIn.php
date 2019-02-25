@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Sql;
 
 
 use Redstraw\Hooch\Query\Exception\SqlException;
+use Redstraw\Hooch\Query\Sql\Field\FieldInterface;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 
 /**
@@ -15,16 +16,16 @@ use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 trait HasWhereNotIn
 {
     /**
-     * @param string|null $column
+     * @param FieldInterface $field
      * @param array $values
      * @return FilterInterface
      * @throws SqlException
      */
-    public function whereNotIn(?string $column, array $values = []): FilterInterface
+    public function whereNotIn(FieldInterface $field, array $values = []): FilterInterface
     {
         if($this instanceof FilterInterface) {
             $this->whereNot(
-                $column,
+                $field,
                 $this->operator()
                     ->logical()
                     ->param()

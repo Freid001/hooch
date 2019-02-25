@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Sql;
 
 
 use Redstraw\Hooch\Query\Exception\SqlException;
+use Redstraw\Hooch\Query\Sql\Field\FieldInterface;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 
 /**
@@ -15,17 +16,17 @@ use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 trait HasOrWhereNotBetween
 {
     /**
-     * @param string|null $column
+     * @param FieldInterface $field
      * @param $from
      * @param $to
      * @return FilterInterface
      * @throws SqlException
      */
-    public function orWhereNotBetween(?string $column, $from, $to): FilterInterface
+    public function orWhereNotBetween(FieldInterface $field, $from, $to): FilterInterface
     {
         if($this instanceof FilterInterface) {
             $this->orWhereNot(
-                $column,
+                $field,
                 $this->operator()
                     ->logical()
                     ->param()

@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Sql;
 
 
 use Redstraw\Hooch\Query\Exception\SqlException;
+use Redstraw\Hooch\Query\Sql\Field\FieldInterface;
 use Redstraw\Hooch\Query\Sql\Operator\OperatorInterface;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 
@@ -16,21 +17,21 @@ use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 trait HasOrWhereNot
 {
     /**
-     * @param string|null $column
+     * @param FieldInterface|null $field
      * @param OperatorInterface $operator
      * @return FilterInterface
      * @throws SqlException
      */
-    public function orWhereNot(?string $column, OperatorInterface $operator): FilterInterface
+    public function orWhereNot(?FieldInterface $field, OperatorInterface $operator): FilterInterface
     {
         if($this instanceof FilterInterface) {
             $this->orWhere(
                 null,
                 $this->operator()
                     ->logical()
-                    ->column()
+                    ->field()
                     ->omitTrailingSpace()
-                    ->not($column, $operator)
+                    ->not($field, $operator)
             );
 
             return $this;

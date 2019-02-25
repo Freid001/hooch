@@ -6,14 +6,15 @@ namespace Redstraw\Hooch\Query\Common\Operator\Logical;
 
 
 use Redstraw\Hooch\Query\Sql\Accent;
+use Redstraw\Hooch\Query\Sql\Field\FieldInterface;
 use Redstraw\Hooch\Query\Sql\Operator\OperatorInterface;
 use Redstraw\Hooch\Query\Sql\Sql;
 
 /**
- * Class Column
+ * Class Field
  * @package Redstraw\Hooch\Query\Sql\Operator
  */
-class Column implements OperatorInterface
+class Field implements OperatorInterface
 {
     /**
      * @var
@@ -41,7 +42,7 @@ class Column implements OperatorInterface
     private $trailingSpace = true;
 
     /**
-     * Column constructor.
+     * Field constructor.
      * @param Sql $sql
      * @param Accent $accent
      */
@@ -103,11 +104,11 @@ class Column implements OperatorInterface
     }
 
     /**
-     * @param string|null $column
+     * @param FieldInterface|null $field
      * @param OperatorInterface $operator
-     * @return Column
+     * @return Field
      */
-    public function and (?string $column, OperatorInterface $operator): Column
+    public function and (?FieldInterface $field, OperatorInterface $operator): Field
     {
         $operatorString = $operator->build()->string();
         $operatorParameters = $operator->build()->parameters();
@@ -116,19 +117,25 @@ class Column implements OperatorInterface
         $this->sql
             ->reset()
             ->append($this->operator)
-            ->ifThenAppend($this->nested, Sql::SQL_BRACKET_OPEN)
-            ->ifThenAppend(!empty($column), $this->accent->append($column,'.'))
-            ->ifThenAppend(!empty($operatorString), $operatorString, $operatorParameters, $this->trailingSpace);
+            ->ifThenAppend($this->nested, Sql::SQL_BRACKET_OPEN);
+
+        if(!empty($field)) {
+            $field->setAccent($this->accent);
+
+            $this->sql->append($field->sql()->string());
+        }
+
+        $this->sql->ifThenAppend(!empty($operatorString), $operatorString, $operatorParameters, $this->trailingSpace);
 
         return $this;
     }
 
     /**
-     * @param string|null $column
+     * @param FieldInterface|null $field
      * @param OperatorInterface $operator
-     * @return Column
+     * @return Field
      */
-    public function not(?string $column, OperatorInterface $operator): Column
+    public function not(?FieldInterface $field, OperatorInterface $operator): Field
     {
         $operatorString = $operator->build()->string();
         $operatorParameters = $operator->build()->parameters();
@@ -137,19 +144,26 @@ class Column implements OperatorInterface
         $this->sql
             ->reset()
             ->append($this->operator)
-            ->ifThenAppend($this->nested, Sql::SQL_BRACKET_OPEN)
-            ->ifThenAppend(!empty($column),$this->accent->append($column,'.'))
-            ->ifThenAppend(!empty($operatorString), $operatorString, $operatorParameters, $this->trailingSpace);
+            ->ifThenAppend($this->nested, Sql::SQL_BRACKET_OPEN);
+
+        if(!empty($field)) {
+            $field->setAccent($this->accent);
+
+            $this->sql->append($field->sql()->string());
+        }
+
+        $this->sql->ifThenAppend(!empty($operatorString), $operatorString, $operatorParameters, $this->trailingSpace);
+
 
         return $this;
     }
 
     /**
-     * @param string|null $column
+     * @param FieldInterface|null $field
      * @param OperatorInterface $operator
-     * @return Column
+     * @return Field
      */
-    public function or (?string $column, OperatorInterface $operator): Column
+    public function or (?FieldInterface $field, OperatorInterface $operator): Field
     {
         $operatorString = $operator->build()->string();
         $operatorParameters = $operator->build()->parameters();
@@ -158,9 +172,16 @@ class Column implements OperatorInterface
         $this->sql
             ->reset()
             ->append($this->operator)
-            ->ifThenAppend($this->nested, Sql::SQL_BRACKET_OPEN)
-            ->ifThenAppend(!empty($column), $this->accent->append($column,'.'))
-            ->ifThenAppend(!empty($operatorString), $operatorString, $operatorParameters, $this->trailingSpace);
+            ->ifThenAppend($this->nested, Sql::SQL_BRACKET_OPEN);
+
+        if(!empty($field)) {
+            $field->setAccent($this->accent);
+
+            $this->sql->append($field->sql()->string());
+        }
+
+        $this->sql->ifThenAppend(!empty($operatorString), $operatorString, $operatorParameters, $this->trailingSpace);
+
 
         return $this;
     }

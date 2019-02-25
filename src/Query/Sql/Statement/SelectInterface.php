@@ -7,6 +7,7 @@ namespace Redstraw\Hooch\Query\Sql\Statement;
 
 use Redstraw\Hooch\Query\QueryBuilderInterface;
 use Redstraw\Hooch\Query\Repository\RepositoryInterface;
+use Redstraw\Hooch\Query\Sql\Field\FieldInterface;
 use Redstraw\Hooch\Query\Sql\Operator\OperatorInterface;
 use Redstraw\Hooch\Query\Sql\Sql;
 
@@ -18,10 +19,9 @@ interface SelectInterface extends QueryBuilderInterface, JoinInterface
 {
     /**
      * @param array $cols
-     * @param string|null $alias
-     * @return SelectInterface|QueryBuilderInterface
+     * @return SelectInterface
      */
-    public function cols(array $cols = [Sql::SQL_STAR], ?string $alias = null): SelectInterface;
+    public function cols(array $cols = []): SelectInterface;
 
     /**
      * @param \Closure $callback
@@ -54,11 +54,10 @@ interface SelectInterface extends QueryBuilderInterface, JoinInterface
     public function from(RepositoryInterface $table): SelectInterface;
 
     /**
-     * @param string $column
-     * @param string|null $alias
+     * @param FieldInterface $column
      * @return SelectInterface
      */
-    public function groupBy(string $column, ?string $alias = null): SelectInterface;
+    public function groupBy(FieldInterface $column): SelectInterface;
 
     /**
      * @param int $limit

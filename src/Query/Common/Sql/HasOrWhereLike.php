@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Sql;
 
 
 use Redstraw\Hooch\Query\Exception\SqlException;
+use Redstraw\Hooch\Query\Sql\Field\FieldInterface;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 
 /**
@@ -15,16 +16,16 @@ use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 trait HasOrWhereLike
 {
     /**
-     * @param string|null $column
+     * @param FieldInterface $field
      * @param $value
      * @return FilterInterface
      * @throws SqlException
      */
-    public function orWhereLike(?string $column, $value): FilterInterface
+    public function orWhereLike(FieldInterface $field, $value): FilterInterface
     {
         if($this instanceof FilterInterface) {
             $this->orWhere(
-                $column,
+                $field,
                 $this->operator()
                     ->logical()
                     ->param()

@@ -10,6 +10,7 @@ use Redstraw\Hooch\Query\Common\Operator\Comparison;
 use Redstraw\Hooch\Query\Common\Operator\Logical;
 use Redstraw\Hooch\Query\Common\Operator\Operator;
 use Redstraw\Hooch\Query\Sql\Accent;
+use Redstraw\Hooch\Query\Sql\Field;
 use Redstraw\Hooch\Query\Sql\Query;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
@@ -47,12 +48,12 @@ class OnFilterTest extends TestCase
             new Comparison(
                 new \Redstraw\Hooch\Query\Common\Operator\Comparison\Param(new Sql()),
                 new \Redstraw\Hooch\Query\Common\Operator\Comparison\SubQuery(new Sql()),
-                new \Redstraw\Hooch\Query\Common\Operator\Comparison\Column(new Sql(), $this->query->accent())
+                new \Redstraw\Hooch\Query\Common\Operator\Comparison\Field(new Sql(), $this->query->accent())
             ),
             new Logical(
                 new \Redstraw\Hooch\Query\Common\Operator\Logical\Param(new Sql()),
                 new \Redstraw\Hooch\Query\Common\Operator\Logical\SubQuery(new Sql()),
-                new \Redstraw\Hooch\Query\Common\Operator\Logical\Column(new Sql(), $this->query->accent())
+                new \Redstraw\Hooch\Query\Common\Operator\Logical\Field(new Sql(), $this->query->accent())
             )
         );
         $this->onFilter = new OnFilter($this->query, $this->operator);
@@ -67,7 +68,7 @@ class OnFilterTest extends TestCase
 
     public function testOn()
     {
-        $query = $this->onFilter->on('col_a', $this->operator->comparison()->column()->equalTo('col_b'))->build();
+        $query = $this->onFilter->on(Field::column('col_a'), $this->operator->comparison()->field()->equalTo(Field::column('col_b')))->build();
 
         $this->assertEquals("ON `col_a` = `col_b`", trim($query->string()));
         $this->assertEquals([], $query->parameters());
@@ -75,7 +76,7 @@ class OnFilterTest extends TestCase
 
     public function testOnWithAlias()
     {
-        $query = $this->onFilter->on('t.col_a', $this->operator->comparison()->column()->equalTo('col_b'))->build();
+        $query = $this->onFilter->on(Field::column('t.col_a'), $this->operator->comparison()->field()->equalTo(Field::column('col_b')))->build();
 
         $this->assertEquals("ON `t`.`col_a` = `col_b`", trim($query->string()));
         $this->assertEquals([], $query->parameters());
@@ -83,8 +84,8 @@ class OnFilterTest extends TestCase
 
     public function testOnAndOn()
     {
-        $query = $this->onFilter->on('col_a', $this->operator->comparison()->column()->equalTo('col_b'))
-            ->on('col_c', $this->operator->comparison()->column()->equalTo('col_d'))
+        $query = $this->onFilter->on(Field::column('col_a'), $this->operator->comparison()->field()->equalTo(Field::column('col_b')))
+            ->on(Field::column('col_c'), $this->operator->comparison()->field()->equalTo(Field::column('col_d')))
             ->build();
 
         $this->assertEquals("ON `col_a` = `col_b` AND `col_c` = `col_d`", trim($query->string()));
@@ -93,8 +94,8 @@ class OnFilterTest extends TestCase
 
     public function testOnOrOn()
     {
-        $query = $this->onFilter->on('col_a', $this->operator->comparison()->column()->equalTo('col_b'))
-            ->orOn('col_c', $this->operator->comparison()->column()->equalTo('col_d'))
+        $query = $this->onFilter->on(Field::column('col_a'), $this->operator->comparison()->field()->equalTo(Field::column('col_b')))
+            ->orOn(Field::column('col_c'), $this->operator->comparison()->field()->equalTo(Field::column('col_d')))
             ->build();
 
         $this->assertEquals("ON `col_a` = `col_b` OR `col_c` = `col_d`", trim($query->string()));
@@ -103,8 +104,8 @@ class OnFilterTest extends TestCase
 
     public function testOnAndWhere()
     {
-        $query = $this->onFilter->on('col_a', $this->operator->comparison()->param()->equalTo('some_value'))
-            ->where('col_b',$this->operator->comparison()->param()->equalTo('another_value'))->build();
+        $query = $this->onFilter->on(Field::column('col_a'), $this->operator->comparison()->param()->equalTo('some_value'))
+            ->where(Field::column('col_b'),$this->operator->comparison()->param()->equalTo('another_value'))->build();
 
         $this->assertEquals("ON `col_a` =? AND `col_b` =?", trim($query->string()));
         $this->assertEquals(['some_value','another_value'], $query->parameters());
@@ -112,8 +113,8 @@ class OnFilterTest extends TestCase
 
     public function testOnOrWhere()
     {
-        $query = $this->onFilter->on('col_a', $this->operator->comparison()->param()->equalTo('some_value'))
-            ->orWhere('col_b',$this->operator->comparison()->param()->equalTo('another_value'))->build();
+        $query = $this->onFilter->on(Field::column('col_a'), $this->operator->comparison()->param()->equalTo('some_value'))
+            ->orWhere(Field::column('col_b'),$this->operator->comparison()->param()->equalTo('another_value'))->build();
 
         $this->assertEquals("ON `col_a` =? OR `col_b` =?", trim($query->string()));
         $this->assertEquals(['some_value','another_value'], $query->parameters());
@@ -122,10 +123,10 @@ class OnFilterTest extends TestCase
     public function testOnAndNestedWhere()
     {
         $operator = $this->operator;
-        $query = $this->onFilter->on('col_a', $this->operator->comparison()->param()->equalTo('some_value'))
+        $query = $this->onFilter->on(Field::column('col_a'), $this->operator->comparison()->param()->equalTo('some_value'))
             ->nestedWhere(function() use ($operator){
                 /** @var FilterInterface $this */
-                $this->where('tt.col_b', $operator->comparison()->param()->equalTo('another_value'));
+                $this->where(Field::column('tt.col_b'), $operator->comparison()->param()->equalTo('another_value'));
             })->build();
 
         $this->assertEquals("ON `col_a` =? AND ( `tt`.`col_b` =? )", trim($query->string()));

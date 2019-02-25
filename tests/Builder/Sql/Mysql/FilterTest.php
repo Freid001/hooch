@@ -10,6 +10,7 @@ use Redstraw\Hooch\Query\Common\Operator\Logical;
 use Redstraw\Hooch\Query\Common\Operator\Operator;
 use Redstraw\Hooch\Query\Repository\RepositoryInterface;
 use Redstraw\Hooch\Query\Sql\Accent;
+use Redstraw\Hooch\Query\Sql\Field;
 use Redstraw\Hooch\Query\Sql\Query;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
@@ -46,12 +47,12 @@ class FilterTest extends TestCase
             new Comparison(
                 new \Redstraw\Hooch\Query\Common\Operator\Comparison\Param(new Sql()),
                 new \Redstraw\Hooch\Query\Common\Operator\Comparison\SubQuery(new Sql()),
-                new \Redstraw\Hooch\Query\Common\Operator\Comparison\Column(new Sql(), $this->query->accent())
+                new \Redstraw\Hooch\Query\Common\Operator\Comparison\Field(new Sql(), $this->query->accent())
             ),
             new Logical(
                 new \Redstraw\Hooch\Query\Common\Operator\Logical\Param(new Sql()),
                 new \Redstraw\Hooch\Query\Common\Operator\Logical\SubQuery(new Sql()),
-                new \Redstraw\Hooch\Query\Common\Operator\Logical\Column(new Sql(), $this->query->accent())
+                new \Redstraw\Hooch\Query\Common\Operator\Logical\Field(new Sql(), $this->query->accent())
             )
         );
         $this->filter = new Filter($this->query, $this->operator);
@@ -66,7 +67,7 @@ class FilterTest extends TestCase
 
     public function testWhere()
     {
-        $query = $this->filter->where('col_a', $this->operator->comparison()->param()->equalTo('some_value'))->build();
+        $query = $this->filter->where(Field::column('col_a'), $this->operator->comparison()->param()->equalTo('some_value'))->build();
 
         $this->assertEquals("WHERE `col_a` =?", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
@@ -74,7 +75,7 @@ class FilterTest extends TestCase
 
     public function testWhereWithAlias()
     {
-        $query = $this->filter->where('t.col_a', $this->operator->comparison()->param()->equalTo('some_value'))->build();
+        $query = $this->filter->where(Field::column('t.col_a'), $this->operator->comparison()->param()->equalTo('some_value'))->build();
 
         $this->assertEquals("WHERE `t`.`col_a` =?", trim($query->string()));
         $this->assertEquals(['some_value'], $query->parameters());
@@ -83,19 +84,19 @@ class FilterTest extends TestCase
     public function testWhereAndNestedWhereAndNestedWhere()
     {
         $operator = $this->operator;
-        $query = $this->filter->where('col_a', $this->operator->comparison()->param()->equalTo('some_value_a'))->nestedWhere(function () use ($operator) {
+        $query = $this->filter->where(Field::column('col_a'), $this->operator->comparison()->param()->equalTo('some_value_a'))->nestedWhere(function () use ($operator) {
             /** @var FilterInterface $this */
-            $this->where('col_b', $operator->comparison()->param()->equalTo('some_value_b'));
+            $this->where(Field::column('col_b'), $operator->comparison()->param()->equalTo('some_value_b'));
 
             /** @var FilterInterface $this */
-            $this->where('col_c', $operator->comparison()->param()->equalTo('some_value_c'));
+            $this->where(Field::column('col_c'), $operator->comparison()->param()->equalTo('some_value_c'));
 
             /** @var FilterInterface $this */
             $this->nestedWhere(function () use ($operator) {
                 /** @var FilterInterface $this */
-                $this->where('col_d', $operator->comparison()->param()->equalTo('some_value_d'));
+                $this->where(Field::column('col_d'), $operator->comparison()->param()->equalTo('some_value_d'));
             });
-        })->where('col_e', $this->operator->comparison()->param()->equalTo('some_value_e'))->build();
+        })->where(Field::column('col_e'), $this->operator->comparison()->param()->equalTo('some_value_e'))->build();
 
         $this->assertEquals("WHERE `col_a` =? AND ( `col_b` =? AND `col_c` =? AND ( `col_d` =? ) ) AND `col_e` =?", trim($query->string()));
         $this->assertEquals(['some_value_a', 'some_value_b', 'some_value_c', 'some_value_d', 'some_value_e'], $query->parameters());
@@ -106,12 +107,12 @@ class FilterTest extends TestCase
         $operator = $this->operator;
         $query = $this->filter->nestedWhere(function () use ($operator) {
             /** @var FilterInterface $this */
-            $this->where('col_a', $operator->comparison()->param()->equalTo('some_value_a'));
+            $this->where(Field::column('col_a'), $operator->comparison()->param()->equalTo('some_value_a'));
 
             /** @var FilterInterface $this */
             $this->nestedWhere(function () use ($operator) {
                 /** @var FilterInterface $this */
-                $this->orwhere('col_b', $operator->comparison()->param()->equalTo('some_value_b'));
+                $this->orwhere(Field::column('col_b'), $operator->comparison()->param()->equalTo('some_value_b'));
             });
         })->build();
 
@@ -121,7 +122,7 @@ class FilterTest extends TestCase
 
     public function testWhereAndWhere()
     {
-        $query = $this->filter->where('col_a', $this->operator->comparison()->param()->equalTo('some_value_a'))->where('col_b', $this->operator->comparison()->param()->equalTo('some_value_b'))->build();
+        $query = $this->filter->where(Field::column('col_a'), $this->operator->comparison()->param()->equalTo('some_value_a'))->where(Field::column('col_b'), $this->operator->comparison()->param()->equalTo('some_value_b'))->build();
 
         $this->assertEquals("WHERE `col_a` =? AND `col_b` =?", trim($query->string()));
         $this->assertEquals(['some_value_a', 'some_value_b'], $query->parameters());
@@ -129,7 +130,7 @@ class FilterTest extends TestCase
 
     public function testWhereOrWhere()
     {
-        $query = $this->filter->where('col_a', $this->operator->comparison()->param()->equalTo('some_value_a'))->orWhere('col_b', $this->operator->comparison()->param()->equalTo('some_value_b'))->build();
+        $query = $this->filter->where(Field::column('col_a'), $this->operator->comparison()->param()->equalTo('some_value_a'))->orWhere(Field::column('col_b'), $this->operator->comparison()->param()->equalTo('some_value_b'))->build();
 
         $this->assertEquals("WHERE `col_a` =? OR `col_b` =?", trim($query->string()));
         $this->assertEquals(['some_value_a', 'some_value_b'], $query->parameters());
@@ -137,7 +138,7 @@ class FilterTest extends TestCase
 
     public function testWhereIn()
     {
-        $query = $this->filter->whereIn('col_a', ['some_value_a', 'some_value_b'])->build();
+        $query = $this->filter->whereIn(Field::column('col_a'), ['some_value_a', 'some_value_b'])->build();
 
         $this->assertEquals("WHERE `col_a` IN ( ?,? )", trim($query->string()));
         $this->assertEquals(['some_value_a', 'some_value_b'], $query->parameters());
@@ -145,7 +146,7 @@ class FilterTest extends TestCase
 
     public function testWhereInOrIn()
     {
-        $query = $this->filter->whereIn('col_a', ['some_value_a', 'some_value_b'])->orWhereIn('col_a', ['some_value_c', 'some_value_d'])->build();
+        $query = $this->filter->whereIn(Field::column('col_a'), ['some_value_a', 'some_value_b'])->orWhereIn(Field::column('col_a'), ['some_value_c', 'some_value_d'])->build();
 
         $this->assertEquals("WHERE `col_a` IN ( ?,? ) OR `col_a` IN ( ?,? )", trim($query->string()));
         $this->assertEquals(['some_value_a', 'some_value_b', 'some_value_c', 'some_value_d'], $query->parameters());
@@ -153,7 +154,7 @@ class FilterTest extends TestCase
 
     public function testWhereNotIn()
     {
-        $query = $this->filter->whereNotIn('col_a', ['some_value_a', 'some_value_b'])->build();
+        $query = $this->filter->whereNotIn(Field::column('col_a'), ['some_value_a', 'some_value_b'])->build();
 
         $this->assertEquals("WHERE NOT `col_a` IN ( ?,? )", trim($query->string()));
         $this->assertEquals(['some_value_a', 'some_value_b'], $query->parameters());
@@ -161,7 +162,7 @@ class FilterTest extends TestCase
 
     public function testWhereNotInAndIn()
     {
-        $query = $this->filter->whereNotIn('col_a', ['some_value_a', 'some_value_b'])->whereNotIn('col_b', ['some_value_c', 'some_value_d'])->build();
+        $query = $this->filter->whereNotIn(Field::column('col_a'), ['some_value_a', 'some_value_b'])->whereNotIn(Field::column('col_b'), ['some_value_c', 'some_value_d'])->build();
 
         $this->assertEquals("WHERE NOT `col_a` IN ( ?,? ) AND NOT `col_b` IN ( ?,? )", trim($query->string()));
         $this->assertEquals(['some_value_a', 'some_value_b', 'some_value_c', 'some_value_d'], $query->parameters());
@@ -169,7 +170,7 @@ class FilterTest extends TestCase
 
     public function testWhereNotInOrIn()
     {
-        $query = $this->filter->whereNotIn('col_a', ['some_value_a', 'some_value_b'])->orWhereNotIn('col_a', ['some_value_c', 'some_value_d'])->build();
+        $query = $this->filter->whereNotIn(Field::column('col_a'), ['some_value_a', 'some_value_b'])->orWhereNotIn(Field::column('col_a'), ['some_value_c', 'some_value_d'])->build();
 
         $this->assertEquals("WHERE NOT `col_a` IN ( ?,? ) OR NOT `col_a` IN ( ?,? )", trim($query->string()));
         $this->assertEquals(['some_value_a', 'some_value_b', 'some_value_c', 'some_value_d'], $query->parameters());
@@ -177,7 +178,7 @@ class FilterTest extends TestCase
 
     public function testWhereNot()
     {
-        $query = $this->filter->whereNot('col_a', $this->operator->comparison()->param()->equalTo('some_value_a'))->build();
+        $query = $this->filter->whereNot(Field::column('col_a'), $this->operator->comparison()->param()->equalTo('some_value_a'))->build();
 
         $this->assertEquals("WHERE NOT `col_a` =?", trim($query->string()));
         $this->assertEquals(['some_value_a'], $query->parameters());
@@ -185,7 +186,7 @@ class FilterTest extends TestCase
 
     public function testWhereNotAndNot()
     {
-        $query = $this->filter->whereNot('col_a', $this->operator->comparison()->param()->equalTo('some_value_a'))->whereNot('col_b', $this->operator->comparison()->param()->equalTo('some_value_b'))->build();
+        $query = $this->filter->whereNot(Field::column('col_a'), $this->operator->comparison()->param()->equalTo('some_value_a'))->whereNot(Field::column('col_b'), $this->operator->comparison()->param()->equalTo('some_value_b'))->build();
 
         $this->assertEquals("WHERE NOT `col_a` =? AND NOT `col_b` =?", trim($query->string()));
         $this->assertEquals(['some_value_a', 'some_value_b'], $query->parameters());
@@ -193,7 +194,7 @@ class FilterTest extends TestCase
 
     public function testWhereBetween()
     {
-        $query = $this->filter->whereBetween('col_a', 1, 2)->build();
+        $query = $this->filter->whereBetween(Field::column('col_a'), 1, 2)->build();
 
         $this->assertEquals("WHERE `col_a` BETWEEN ? AND ?", trim($query->string()));
         $this->assertEquals([1, 2], $query->parameters());
@@ -201,7 +202,7 @@ class FilterTest extends TestCase
 
     public function testWhereBetweenOrBetween()
     {
-        $query = $this->filter->whereBetween('col_a', 1, 2)->orWhereBetween('col_b', 3, 4)->build();
+        $query = $this->filter->whereBetween(Field::column('col_a'), 1, 2)->orWhereBetween(Field::column('col_b'), 3, 4)->build();
 
         $this->assertEquals("WHERE `col_a` BETWEEN ? AND ? OR `col_b` BETWEEN ? AND ?", trim($query->string()));
         $this->assertEquals([1, 2, 3, 4], $query->parameters());
@@ -209,7 +210,7 @@ class FilterTest extends TestCase
 
     public function testWhereBetweenAndBetween()
     {
-        $query = $this->filter->whereBetween('col_a', 1, 2)->whereBetween('col_b', 3, 4)->build();
+        $query = $this->filter->whereBetween(Field::column('col_a'), 1, 2)->whereBetween(Field::column('col_b'), 3, 4)->build();
 
         $this->assertEquals("WHERE `col_a` BETWEEN ? AND ? AND `col_b` BETWEEN ? AND ?", trim($query->string()));
         $this->assertEquals([1, 2, 3, 4], $query->parameters());
@@ -217,7 +218,7 @@ class FilterTest extends TestCase
 
     public function testWhereNotBetween()
     {
-        $query = $this->filter->whereNotBetween('col_a', 1, 2)->build();
+        $query = $this->filter->whereNotBetween(Field::column('col_a'), 1, 2)->build();
 
         $this->assertEquals("WHERE NOT `col_a` BETWEEN ? AND ?", trim($query->string()));
         $this->assertEquals([1, 2], $query->parameters());
@@ -225,7 +226,7 @@ class FilterTest extends TestCase
 
     public function testWhereNotBetweenOrNotBetween()
     {
-        $query = $this->filter->whereNotBetween('col_a', 1, 2)->orWhereNotBetween('col_b', 3, 4)->build();
+        $query = $this->filter->whereNotBetween(Field::column('col_a'), 1, 2)->orWhereNotBetween(Field::column('col_b'), 3, 4)->build();
 
         $this->assertEquals("WHERE NOT `col_a` BETWEEN ? AND ? OR NOT `col_b` BETWEEN ? AND ?", trim($query->string()));
         $this->assertEquals([1, 2, 3, 4], $query->parameters());
@@ -233,7 +234,7 @@ class FilterTest extends TestCase
 
     public function testWhereNotBetweenAndNotBetween()
     {
-        $query = $this->filter->whereNotBetween('col_a', 1, 2)->whereNotBetween('col_b', 3, 4)->build();
+        $query = $this->filter->whereNotBetween(Field::column('col_a'), 1, 2)->whereNotBetween(Field::column('col_b'), 3, 4)->build();
 
         $this->assertEquals("WHERE NOT `col_a` BETWEEN ? AND ? AND NOT `col_b` BETWEEN ? AND ?", trim($query->string()));
         $this->assertEquals([1, 2, 3, 4], $query->parameters());
@@ -301,7 +302,7 @@ class FilterTest extends TestCase
 
     public function testWhereLike()
     {
-        $query = $this->filter->whereLike('col_a', '%some_value%')->build();
+        $query = $this->filter->whereLike(Field::column('col_a'), '%some_value%')->build();
 
         $this->assertEquals("WHERE `col_a` LIKE ?", trim($query->string()));
         $this->assertEquals(['%some_value%'], $query->parameters());
@@ -309,7 +310,7 @@ class FilterTest extends TestCase
 
     public function testWhereLikeOrLike()
     {
-        $query = $this->filter->whereLike('col_a', '%some_value%')->orWhereLike('col_b','%some_value%')->build();
+        $query = $this->filter->whereLike(Field::column('col_a'), '%some_value%')->orWhereLike(Field::column('col_b'),'%some_value%')->build();
 
         $this->assertEquals("WHERE `col_a` LIKE ? OR `col_b` LIKE ?", trim($query->string()));
         $this->assertEquals(['%some_value%','%some_value%'], $query->parameters());
@@ -317,28 +318,28 @@ class FilterTest extends TestCase
 
     public function testWhereLikeAndLike()
     {
-        $query = $this->filter->whereLike('col_a', '%some_value%')->whereLike('col_b', '%some_value%')->build();
+        $query = $this->filter->whereLike(Field::column('col_a'), '%some_value%')->whereLike(Field::column('col_b'), '%some_value%')->build();
         $this->assertEquals("WHERE `col_a` LIKE ? AND `col_b` LIKE ?", trim($query->string()));
         $this->assertEquals(['%some_value%','%some_value%'], $query->parameters());
     }
 
     public function testWhereNotLike()
     {
-        $query = $this->filter->whereNotLike('col_a', '%some_value%')->build();
+        $query = $this->filter->whereNotLike(Field::column('col_a'), '%some_value%')->build();
         $this->assertEquals("WHERE NOT `col_a` LIKE ?", trim($query->string()));
         $this->assertEquals(['%some_value%'], $query->parameters());
     }
 
     public function testWhereNotLikeOrNotLike()
     {
-        $query = $this->filter->whereNotLike('col_a', '%some_value%')->orWhereNotLike('col_b','%some_value%')->build();
+        $query = $this->filter->whereNotLike(Field::column('col_a'), '%some_value%')->orWhereNotLike(Field::column('col_b'),'%some_value%')->build();
         $this->assertEquals("WHERE NOT `col_a` LIKE ? OR NOT `col_b` LIKE ?", trim($query->string()));
         $this->assertEquals(['%some_value%','%some_value%'], $query->parameters());
     }
 
     public function testWhereNotLikeAndNotLike()
     {
-        $query = $this->filter->whereNotLike('col_a', '%some_value%')->whereNotLike('col_b', '%some_value%')->build();
+        $query = $this->filter->whereNotLike(Field::column('col_a'), '%some_value%')->whereNotLike(Field::column('col_b'), '%some_value%')->build();
         $this->assertEquals("WHERE NOT `col_a` LIKE ? AND NOT `col_b` LIKE ?", trim($query->string()));
         $this->assertEquals(['%some_value%','%some_value%'], $query->parameters());
     }
@@ -346,7 +347,7 @@ class FilterTest extends TestCase
     public function testWhereColEqualsAll()
     {
         $all = $this->operator->logical()->sql()->all(new Sql('select * from some_table',[],false))->build();
-        $query = $this->filter->where('col_a', $this->operator->comparison()->sql()->equalTo($all, false))->build();
+        $query = $this->filter->where(Field::column('col_a'), $this->operator->comparison()->sql()->equalTo($all, false))->build();
         $this->assertEquals("WHERE `col_a` = ALL ( select * from some_table )", trim($query->string()));
         $this->assertEquals([], $query->parameters());
     }
@@ -354,7 +355,7 @@ class FilterTest extends TestCase
     public function testWhereColEqualsAny()
     {
         $any = $this->operator->logical()->sql()->any(new Sql('select * from some_table',[],false))->build();
-        $query = $this->filter->where('col_a', $this->operator->comparison()->sql()->equalTo($any,false))->build();
+        $query = $this->filter->where(Field::column('col_a'), $this->operator->comparison()->sql()->equalTo($any,false))->build();
         $this->assertEquals("WHERE `col_a` = ANY ( select * from some_table )", trim($query->string()));
         $this->assertEquals([], $query->parameters());
     }
@@ -362,7 +363,7 @@ class FilterTest extends TestCase
     public function testWhereColEqualsSome()
     {
         $some = $this->operator->logical()->sql()->some(new Sql('select * from some_table',[],false))->build();
-        $query = $this->filter->where('col_a', $this->operator->comparison()->sql()->equalTo($some, false))->build();
+        $query = $this->filter->where(Field::column('col_a'), $this->operator->comparison()->sql()->equalTo($some, false))->build();
         $this->assertEquals("WHERE `col_a` = SOME ( select * from some_table )", trim($query->string()));
         $this->assertEquals([], $query->parameters());
     }
@@ -370,7 +371,7 @@ class FilterTest extends TestCase
     public function testWhereColEqualsExists()
     {
         $exists = $this->operator->logical()->sql()->exists(new Sql('select * from some_table',[],false))->build();
-        $query = $this->filter->where('col_a', $this->operator->comparison()->sql()->equalTo($exists, false))->build();
+        $query = $this->filter->where(Field::column('col_a'), $this->operator->comparison()->sql()->equalTo($exists, false))->build();
         $this->assertEquals("WHERE `col_a` = EXISTS ( select * from some_table )", trim($query->string()));
         $this->assertEquals([], $query->parameters());
     }

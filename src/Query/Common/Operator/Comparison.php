@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Redstraw\Hooch\Query\Common\Operator;
 
 
-use Redstraw\Hooch\Query\Common\Operator\Comparison\Column;
+use Redstraw\Hooch\Query\Common\Operator\Comparison\Field;
 use Redstraw\Hooch\Query\Common\Operator\Comparison\Param;
 use Redstraw\Hooch\Query\Common\Operator\Comparison\SubQuery;
 
@@ -25,21 +25,21 @@ class Comparison
     private $subQuery;
 
     /**
-     * @var Column
+     * @var Field
      */
-    private $column;
+    private $field;
 
     /**
      * Comparison constructor.
      * @param Param $param
      * @param SubQuery $subQuery
-     * @param Column $column
+     * @param Field $field
      */
-    public function __construct(Param $param, SubQuery $subQuery, Column $column)
+    public function __construct(Param $param, SubQuery $subQuery, Field $field)
     {
         $this->param = $param;
         $this->subQuery = $subQuery;
-        $this->column = $column;
+        $this->field = $field;
     }
 
     /**
@@ -59,10 +59,10 @@ class Comparison
     }
 
     /**
-     * @return Column
+     * @return Field
      */
-    public function column(): Column
+    public function field(): Field
     {
-        return $this->column;
+        return $this->field;
     }
 }

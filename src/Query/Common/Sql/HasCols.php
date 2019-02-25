@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Sql;
 
 
 use Redstraw\Hooch\Query\Exception\SqlException;
+use Redstraw\Hooch\Query\Sql\Field;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 
@@ -16,58 +17,39 @@ use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 trait HasCols
 {
     /**
-     * @var int
-     */
-    private $columnIndex = 0;
-
-    /**
-     * @var array
-     */
-    private $columnKeys = [];
-
-    /**
      * @param array $columns
-     * @param string|null $alias
      * @return SelectInterface
      * @throws SqlException
      */
-    public function cols(array $columns = [Sql::SQL_STAR], ?string $alias = null): SelectInterface
+    public function cols(array $columns = []): SelectInterface
     {
-        if($this instanceof SelectInterface) {
+        if(empty($columns)){
+            $columns = [Field::column(Sql::SQL_STAR)];
+        }
 
+        if($this instanceof SelectInterface) {
             $query = $this->query();
 
-            $keys = array_keys($columns);
-            $columnsWithAs = array_reduce($keys, function($transformed,$key) use ($query, $columns)
+            $columnArray = array_reduce(array_keys($columns), function($transformed, $key) use ($query, $columns)
             {
-                $column = $query->accent()->append($columns[$key]);
-                if(is_string($key)){
-                    array_push($transformed, $column . Sql::SQL_SPACE . Sql::AS . Sql::SQL_SPACE . $key);
-                }else {
-                    array_push($transformed, $column);
+                $column = $columns[$key];
+                if($column instanceof Field\FieldInterface)
+                {
+                    $column->setAccent($query->accent());
+
+                    if(is_string($key)){
+                        array_push($transformed, $column->sql()->string() . Sql::SQL_SPACE . Sql::AS . Sql::SQL_SPACE . $query->accent()->append($key));
+                    }else {
+                        array_push($transformed, $column->sql()->string());
+                    }
                 }
-
-                return $transformed;
-            },[]);
-
-            $columnsWithAlias = array_reduce($columnsWithAs, function($transformed,$column) use ($query, $alias)
-            {
-                $columnString = '';
-                if($alias){
-                    $columnString .= $query->accent()->append($alias);
-                    $columnString .= '.';
-                }
-
-                $columnString .= $column;
-
-                array_push($transformed, $columnString);
 
                 return $transformed;
             },[]);
 
             $query->sql()
                 ->ifThenAppend($query->hasClause(Sql::COLS),",",[],false)
-                ->append(implode(",", $columnsWithAlias));
+                ->ifThenAppend(!empty($columnArray),implode(",", $columnArray));
 
             $query->appendSqlToClause(Sql::COLS, false);
 

@@ -105,9 +105,6 @@ class Select implements SelectInterface
 
         $this->query->reset($clauses);
 
-        $this->columnIndex = 0;
-        $this->columnKeys = [];
-
         return $sql;
     }
 
@@ -133,17 +130,6 @@ class Select implements SelectInterface
         if(!empty($this->onFilter)){
             $callback->call($this->onFilter, $this->table);
         }
-
-        return $this;
-    }
-
-    /**
-     * @param bool $ignore
-     * @return SelectInterface
-     */
-    public function ignoreAccent($ignore = true): SelectInterface
-    {
-        $this->query->accent()->ignore($ignore);
 
         return $this;
     }

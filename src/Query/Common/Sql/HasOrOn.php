@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Sql;
 
 
 use Redstraw\Hooch\Query\Exception\SqlException;
+use Redstraw\Hooch\Query\Sql\Field\FieldInterface;
 use Redstraw\Hooch\Query\Sql\Operator\OperatorInterface;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
@@ -19,21 +20,22 @@ trait HasOrOn
     private $on = false;
 
     /**
-     * @param $column
+     * @param $field
      * @param OperatorInterface|null $operator
      * @return OnFilterInterface
      * @throws SqlException
      */
-    public function orOn($column, ?OperatorInterface $operator): OnFilterInterface
+    public function orOn($field, ?OperatorInterface $operator): OnFilterInterface
     {
         if ($this instanceof OnFilterInterface) {
-            $sql = $this->query()->sql();
+            if ($field instanceof \Closure) {
+                $field->call($this);
+            } else if ($field instanceof FieldInterface) {
+                $field->setAccent($this->query()->accent());
 
-            if (is_callable($column)) {
-                $this->on($this->query()->accent()->append($column,'.'), $operator);
-            }else {
-                $sql->ifThenAppend(!is_null($column),Sql::OR)
-                    ->ifThenAppend(!is_null($column),$this->query()->accent()->append($column,'.'))
+                $this->query()->sql()
+                    ->append(Sql::OR)
+                    ->append($field->sql()->string())
                     ->append($operator->build());
             }
 

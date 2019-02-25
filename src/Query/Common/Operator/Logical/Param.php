@@ -36,7 +36,7 @@ class Param implements OperatorInterface
     private $trailingSpace = true;
 
     /**
-     * Column constructor.
+     * Field constructor.
      * @param Sql $sql
      */
     public function __construct(Sql $sql)

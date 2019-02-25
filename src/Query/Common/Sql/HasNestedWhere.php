@@ -24,7 +24,7 @@ trait HasNestedWhere
     public function nestedWhere(\Closure $callback): FilterInterface
     {
         if($this instanceof FilterInterface){
-            $this->operator()->logical()->column()->setNested(true);
+            $this->operator()->logical()->field()->setNested(true);
             $callback->call($this);
 
             if($this instanceof OnFilterInterface){

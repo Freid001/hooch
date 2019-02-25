@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Sql;
 
 
 use Redstraw\Hooch\Query\Exception\SqlException;
+use Redstraw\Hooch\Query\Sql\Field\FieldInterface;
 use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 
 /**
@@ -15,16 +16,16 @@ use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
 trait HasWhereNotLike
 {
     /**
-     * @param $column
+     * @param FieldInterface $field
      * @param $value
      * @return FilterInterface
      * @throws SqlException
      */
-    public function whereNotLike(?string $column, $value): FilterInterface
+    public function whereNotLike(FieldInterface $field, $value): FilterInterface
     {
         if($this instanceof FilterInterface) {
             $this->whereNot(
-                $column,
+                $field,
                 $this->operator()
                     ->logical()
                     ->param()

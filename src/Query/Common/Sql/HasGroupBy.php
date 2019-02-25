@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Sql;
 
 
 use Redstraw\Hooch\Query\Exception\SqlException;
+use Redstraw\Hooch\Query\Sql\Field\FieldInterface;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 
@@ -16,19 +17,19 @@ use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
 trait HasGroupBy
 {
     /**
-     * @param string $column
-     * @param string|null $alias
+     * @param FieldInterface $column
      * @return SelectInterface
      * @throws SqlException
      */
-    public function groupBy(string $column, ?string $alias = null): SelectInterface
+    public function groupBy(FieldInterface $column): SelectInterface
     {
         if($this instanceof SelectInterface) {
+            $column->setAccent($this->query()->accent());
+
             $this->query()->sql()
                 ->ifThenAppend(empty($this->query()->hasClause(Sql::GROUP)), Sql::GROUP)
                 ->ifThenAppend(!empty($this->query()->hasClause(Sql::GROUP)), ',', [], false)
-                ->ifThenAppend(!is_null($alias), $this->query()->accent()->append($alias) . '.', [], false)
-                ->append($this->query()->accent()->append($column));
+                ->append($column->sql()->string());
 
             $this->query()->appendSqlToClause(Sql::GROUP);
 

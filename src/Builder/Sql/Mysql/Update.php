@@ -142,17 +142,6 @@ class Update implements UpdateInterface
     }
 
     /**
-     * @param bool $ignore
-     * @return UpdateInterface
-     */
-    public function ignoreAccent($ignore = true): UpdateInterface
-    {
-        $this->query->accent()->ignore($ignore);
-
-        return $this;
-    }
-
-    /**
      * @param FilterInterface $filter
      */
     public function setFilter(FilterInterface $filter): void

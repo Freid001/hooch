@@ -13,6 +13,7 @@ use Redstraw\Hooch\Query\Common\Operator\Logical;
 use Redstraw\Hooch\Query\Common\Operator\Operator;
 use Redstraw\Hooch\Query\Repository\RepositoryInterface;
 use Redstraw\Hooch\Query\Sql\Accent;
+use Redstraw\Hooch\Query\Sql\Field;
 use Redstraw\Hooch\Query\Sql\Query;
 use Redstraw\Hooch\Query\Sql\Sql;
 use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
@@ -50,12 +51,12 @@ class SelectTest extends TestCase
             new Comparison(
                 new \Redstraw\Hooch\Query\Common\Operator\Comparison\Param(new Sql()),
                 new \Redstraw\Hooch\Query\Common\Operator\Comparison\SubQuery(new Sql()),
-                new \Redstraw\Hooch\Query\Common\Operator\Comparison\Column(new Sql(), $this->query->accent())
+                new \Redstraw\Hooch\Query\Common\Operator\Comparison\Field(new Sql(), $this->query->accent())
             ),
             new Logical(
                 new \Redstraw\Hooch\Query\Common\Operator\Logical\Param(new Sql()),
                 new \Redstraw\Hooch\Query\Common\Operator\Logical\SubQuery(new Sql()),
-                new \Redstraw\Hooch\Query\Common\Operator\Logical\Column(new Sql(), $this->query->accent())
+                new \Redstraw\Hooch\Query\Common\Operator\Logical\Field(new Sql(), $this->query->accent())
             )
         );
         $this->select = new Select($this->query, $this->operator);
@@ -75,21 +76,9 @@ class SelectTest extends TestCase
         ])->string()));
     }
 
-    public function testIgnoreAlias()
-    {
-        $table = $this->createMock(RepositoryInterface::class);
-        $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
-
-        $this->assertEquals("SELECT col_a,col_b,col_c FROM some_table_name", trim($this->select->ignoreAccent()->cols(['col_a', 'col_b', 'col_c'])->from($table)->build([
-            Sql::SELECT,
-            Sql::COLS,
-            Sql::FROM
-        ])->string()));
-    }
-
     public function testSelectCols()
     {
-        $this->select->cols(['col_a'])->cols(['col_b'])->cols(['col_c']);
+        $this->select->cols([Field::column('col_a')])->cols([Field::column('col_b')])->cols([Field::column('col_c')]);
         $this->assertEquals("SELECT `col_a`,`col_b`,`col_c`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS
@@ -98,7 +87,7 @@ class SelectTest extends TestCase
 
     public function testSelectColsWithAlias()
     {
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't');
+        $this->select->cols([Field::column('t.col_a'),Field::column('t.col_b'),Field::column('t.col_c')]);
         $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS
@@ -107,7 +96,7 @@ class SelectTest extends TestCase
 
     public function testSelectAllCols()
     {
-        $this->select->cols([Sql::SQL_STAR]);
+        $this->select->cols();
         $this->assertEquals("SELECT `*`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS
@@ -116,8 +105,8 @@ class SelectTest extends TestCase
 
     public function testSelectColsAs()
     {
-        $this->select->cols(['a' => 'col_a', 'b' => 'col_b', 'c' => 'col_c']);
-        $this->assertEquals("SELECT `col_a` AS a,`col_b` AS b,`col_c` AS c", trim($this->select->build([
+        $this->select->cols(['a' => Field::column('col_a'), 'b' => Field::column('col_b'), 'c' => Field::column('col_c')]);
+        $this->assertEquals("SELECT `col_a` AS `a`,`col_b` AS `b`,`col_c` AS `c`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS
         ])->string()));
@@ -129,7 +118,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
         /** @var RepositoryInterface $table */
-        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table);
+        $this->select->cols([Field::column('col_a'), Field::column('col_b'), Field::column('col_c')])->from($table);
         $this->assertEquals("SELECT `col_a`,`col_b`,`col_c` FROM `some_table_name`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
@@ -144,7 +133,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getAlias')->will($this->returnValue('t'));
 
         /** @var RepositoryInterface $table */
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table);
+        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table);
         $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
@@ -166,7 +155,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
         /** @var RepositoryInterface $table */
-        $query = $this->select->cols(['col_a'])->from($table)->filter(function(){})->build([
+        $query = $this->select->cols([Field::column('col_a')])->from($table)->filter(function(){})->build([
             Sql::SELECT,
             Sql::COLS,
             Sql::FROM,
@@ -183,7 +172,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
         /** @var RepositoryInterface $table */
-        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->groupBy('col_a')->groupBy('col_b');
+        $this->select->cols([Field::column('col_a'), Field::column('col_b'), Field::column('col_c')])->from($table)->groupBy(Field::column('col_a'))->groupBy(Field::column('col_b'));
         $this->assertEquals("SELECT `col_a`,`col_b`,`col_c` FROM `some_table_name` GROUP BY `col_a` ,`col_b`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
@@ -198,7 +187,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
         /** @var RepositoryInterface $table */
-        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->orderBy('col_a', Sql::DESC)->orderBy('col_b', Sql::ASC);
+        $this->select->cols([Field::column('col_a'), Field::column('col_b'), Field::column('col_c')])->from($table)->orderBy('col_a', Sql::DESC)->orderBy('col_b', Sql::ASC);
         $this->assertEquals("SELECT `col_a`,`col_b`,`col_c` FROM `some_table_name` ORDER BY `col_a` DESC ,`col_b` ASC", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
@@ -213,7 +202,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
         /** @var RepositoryInterface $table */
-        $this->select->cols(['col_a'])->from($table);
+        $this->select->cols([Field::column('col_a')])->from($table);
         $this->select->having('col_a',$this->operator->comparison()->param()->equalTo('some_value'));
 
         $query = $this->select->build([
@@ -233,7 +222,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
         /** @var RepositoryInterface $table */
-        $this->select->cols(['col_a'])->from($table);
+        $this->select->cols([Field::column('col_a')])->from($table);
         $this->select->having('col_a',$this->operator->comparison()->param()->equalTo('some_value'));
 
         $query = $this->select->build([
@@ -253,7 +242,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
         /** @var RepositoryInterface $table */
-        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->limit(10);
+        $this->select->cols([Field::column('col_a'), Field::column('col_b'), Field::column('col_c')])->from($table)->limit(10);
         $this->assertEquals("SELECT `col_a`,`col_b`,`col_c` FROM `some_table_name` LIMIT 10", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
@@ -268,7 +257,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
         /** @var RepositoryInterface $table */
-        $this->select->cols(['col_a', 'col_b', 'col_c'])->from($table)->limit(10)->offset(3);
+        $this->select->cols([Field::column('col_a'), Field::column('col_b'), Field::column('col_c')])->from($table)->limit(10)->offset(3);
         $this->assertEquals("SELECT `col_a`,`col_b`,`col_c` FROM `some_table_name` LIMIT 10 OFFSET 3", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
@@ -291,7 +280,7 @@ class SelectTest extends TestCase
         $unionSelect = new Select(new Query(new Sql(), $this->query->accent()), $this->operator);
 
         /** @var RepositoryInterface $table */
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table2)->build(), false);
+        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->union($unionSelect->cols([Field::column('tt.col_a'), Field::column('tt.col_b'), Field::column('tt.col_c')])->from($table2)->build(), false);
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -317,7 +306,7 @@ class SelectTest extends TestCase
         $unionSelect = new Select(new Query(new Sql(), $this->query->accent()), $this->operator);
 
         /** @var RepositoryInterface $table */
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->union($unionSelect->cols(['col_a', 'col_b', 'col_c'], 'tt')->from($table2)->build(), true);
+        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->union($unionSelect->cols([Field::column('tt.col_a'), Field::column('tt.col_b'), Field::column('tt.col_c')])->from($table2)->build(), true);
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -344,7 +333,7 @@ class SelectTest extends TestCase
          * @var RepositoryInterface $table
          * @var RepositoryInterface $table2
          */
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->join(Sql::JOIN, $table2);
+        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->join(Sql::JOIN, $table2);
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -382,9 +371,9 @@ class SelectTest extends TestCase
          * @var RepositoryInterface $table
          * @var RepositoryInterface $table2
          */
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->join(Sql::JOIN, $table2)->onFilter(function() use ($operator){
+        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->join(Sql::JOIN, $table2)->onFilter(function() use ($operator){
             /** @var OnFilterInterface $this */
-            $this->on('`tt`.`col_a`', $operator->comparison()->column()->equalTo('tt.col_a'));
+            $this->on('`tt`.`col_a`', $operator->comparison()->field()->equalTo(Field::column('tt.col_a')));
         });
 
         $query = $this->select->build([
@@ -421,7 +410,7 @@ class SelectTest extends TestCase
          * @var RepositoryInterface $table
          * @var RepositoryInterface $table2
          */
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->leftJoin($table2, 'tt.col_a', $this->operator->comparison()->param()->equalTo('tt.col_a'));
+        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->leftJoin($table2, 'tt.col_a', $this->operator->comparison()->param()->equalTo('tt.col_a'));
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -457,7 +446,7 @@ class SelectTest extends TestCase
          * @var RepositoryInterface $table
          * @var RepositoryInterface $table2
          */
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->rightJoin($table2, 'tt.col_a', $this->operator->comparison()->param()->equalTo('tt.col_a'));
+        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->rightJoin($table2, 'tt.col_a', $this->operator->comparison()->param()->equalTo('tt.col_a'));
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -493,7 +482,7 @@ class SelectTest extends TestCase
          * @var RepositoryInterface $table
          * @var RepositoryInterface $table2
          */
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->innerJoin($table2, 'tt.col_a', $this->operator->comparison()->param()->equalTo('tt.col_a'));
+        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->innerJoin($table2, 'tt.col_a', $this->operator->comparison()->param()->equalTo('tt.col_a'));
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -529,7 +518,7 @@ class SelectTest extends TestCase
          * @var RepositoryInterface $table
          * @var RepositoryInterface $table2
          */
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')
+        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])
             ->from($table)->fullOuterJoin($table2, 'tt.col_a', $this->operator->comparison()->param()->equalTo('tt.col_a'));
 
         $query = $this->select->build([
@@ -566,7 +555,7 @@ class SelectTest extends TestCase
          * @var RepositoryInterface $table
          * @var RepositoryInterface $table2
          */
-        $this->select->cols(['col_a', 'col_b', 'col_c'], 't')->from($table)->leftJoin($table2,  function(OnFilterInterface $onFilter) {});
+        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->leftJoin($table2,  function(OnFilterInterface $onFilter) {});
 
         $query = $this->select->build();
 

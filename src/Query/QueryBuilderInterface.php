@@ -3,10 +3,6 @@
 namespace Redstraw\Hooch\Query;
 
 
-use Redstraw\Hooch\Query\Common\Operator\Operator;
-use Redstraw\Hooch\Query\Sql\Query;
-use Redstraw\Hooch\Query\Sql\Sql;
-
 /**
  * Interface QueryBuilderInterface
  * @package Redstraw\Hooch\Query

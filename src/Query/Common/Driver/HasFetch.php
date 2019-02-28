@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Redstraw\Hooch\Query\Common\Driver;
 
 
-use Redstraw\Hooch\Query\Connection\Driver\DriverInterface;
-use Redstraw\Hooch\Query\Sql\Sql;
+use Redstraw\Hooch\Query\Driver\DriverInterface;
+use Redstraw\Hooch\Query\Sql;
 
 /**
  * Trait HasFetch

@@ -6,10 +6,10 @@ namespace Redstraw\Hooch\Query\Repository;
 
 
 use Redstraw\Hooch\Query\QueryBuilderInterface;
-use Redstraw\Hooch\Query\Sql\Sql;
-use Redstraw\Hooch\Query\Sql\Statement\FilterInterface;
-use Redstraw\Hooch\Query\Sql\Statement\OnFilterInterface;
-use Redstraw\Hooch\Query\Sql\Statement\SelectInterface;
+use Redstraw\Hooch\Query\Sql;
+use Redstraw\Hooch\Query\Statement\FilterInterface;
+use Redstraw\Hooch\Query\Statement\OnFilterInterface;
+use Redstraw\Hooch\Query\Statement\SelectInterface;
 
 /**
  * Interface RepositoryInterface

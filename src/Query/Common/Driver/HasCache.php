@@ -6,7 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Driver;
 
 
 use Psr\SimpleCache\CacheInterface;
-use Redstraw\Hooch\Query\Connection\Driver\DriverInterface;
+use Redstraw\Hooch\Query\Driver\DriverInterface;
 
 /**
  * Trait HasCache

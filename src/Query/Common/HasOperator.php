@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Redstraw\Hooch\Query\Common;
 
 
-use Redstraw\Hooch\Query\Common\Operator\Operator;
+use Redstraw\Hooch\Query\Operator;
 
 /**
  * Trait HasQuery

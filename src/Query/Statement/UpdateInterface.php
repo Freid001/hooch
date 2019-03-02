@@ -51,10 +51,4 @@ interface UpdateInterface extends QueryBuilderInterface, JoinInterface
      * @return void
      */
     public function setFilter(FilterInterface $filter): void;
-
-    /**
-     * @param \Closure $callback
-     * @return UpdateInterface
-     */
-    public function onFilter(\Closure $callback): UpdateInterface;
 }

@@ -24,8 +24,8 @@ interface FilterInterface extends QueryBuilderInterface
 
     /**
      * @param FieldInterface $field
-     * @param $from
-     * @param $to
+     * @param mixed $from
+     * @param mixed $to
      * @return FilterInterface
      */
     public function orWhereBetween(FieldInterface $field, $from, $to): FilterInterface;
@@ -52,22 +52,22 @@ interface FilterInterface extends QueryBuilderInterface
 
     /**
      * @param FieldInterface $field
-     * @param $value
+     * @param mixed $value
      * @return FilterInterface
      */
     public function orWhereLike(FieldInterface $field, $value): FilterInterface;
 
     /**
      * @param FieldInterface $field
-     * @param $from
-     * @param $to
+     * @param mixed $from
+     * @param mixed $to
      * @return FilterInterface
      */
     public function orWhereNotBetween(FieldInterface $field, $from, $to): FilterInterface;
 
     /**
      * @param Sql $subQuery
-     * @return SelectInterface|FilterInterface|QueryBuilderInterface
+     * @return FilterInterface
      */
     public function orWhereNotExists(Sql $subQuery): FilterInterface;
 
@@ -87,15 +87,15 @@ interface FilterInterface extends QueryBuilderInterface
 
     /**
      * @param FieldInterface $field
-     * @param $value
+     * @param mixed $value
      * @return FilterInterface
      */
     public function orWhereNotLike(FieldInterface $field, $value): FilterInterface;
 
     /**
      * @param FieldInterface $field
-     * @param $from
-     * @param $to
+     * @param mixed $from
+     * @param mixed $to
      * @return FilterInterface
      */
     public function whereBetween(FieldInterface $field, $from, $to): FilterInterface;
@@ -122,15 +122,15 @@ interface FilterInterface extends QueryBuilderInterface
 
     /**
      * @param FieldInterface $field
-     * @param $value
+     * @param mixed $value
      * @return FilterInterface
      */
     public function whereLike(FieldInterface $field, $value): FilterInterface;
 
     /**
      * @param FieldInterface $field
-     * @param $from
-     * @param $to
+     * @param mixed $from
+     * @param mixed $to
      * @return FilterInterface
      */
     public function whereNotBetween(FieldInterface $field, $from, $to): FilterInterface;
@@ -157,7 +157,7 @@ interface FilterInterface extends QueryBuilderInterface
 
     /**
      * @param FieldInterface $field
-     * @param $value
+     * @param mixed $value
      * @return FilterInterface
      */
     public function whereNotLike(FieldInterface $field, $value): FilterInterface;

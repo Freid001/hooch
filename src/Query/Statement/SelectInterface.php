@@ -36,22 +36,16 @@ interface SelectInterface extends QueryBuilderInterface, JoinInterface
     public function setFilter(FilterInterface $filter): void;
 
     /**
-     * @param \Closure $callback
-     * @return SelectInterface
-     */
-    public function onFilter(\Closure $callback): SelectInterface;
-
-    /**
      * @param RepositoryInterface $table
      * @return SelectInterface
      */
     public function from(RepositoryInterface $table): SelectInterface;
 
     /**
-     * @param FieldInterface $column
+     * @param FieldInterface $field
      * @return SelectInterface
      */
-    public function groupBy(FieldInterface $column): SelectInterface;
+    public function groupBy(FieldInterface $field): SelectInterface;
 
     /**
      * @param int $limit
@@ -66,11 +60,11 @@ interface SelectInterface extends QueryBuilderInterface, JoinInterface
     public function offset(int $offset): SelectInterface;
 
     /**
-     * @param string $column
+     * @param FieldInterface $field
      * @param string|null $order
      * @return SelectInterface
      */
-    public function orderBy(string $column, ?string $order): SelectInterface;
+    public function orderBy(FieldInterface $field, ?string $order): SelectInterface;
 
     /**
      * @param Sql $unionSql
@@ -80,9 +74,9 @@ interface SelectInterface extends QueryBuilderInterface, JoinInterface
     public function union(Sql $unionSql, bool $all = false): SelectInterface;
 
     /**
-     * @param string $column
+     * @param FieldInterface $field
      * @param OperatorInterface $operator
      * @return SelectInterface
      */
-    public function having(string $column, OperatorInterface $operator): SelectInterface;
+    public function having(FieldInterface $field, OperatorInterface $operator): SelectInterface;
 }

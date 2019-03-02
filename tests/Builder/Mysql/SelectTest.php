@@ -17,6 +17,7 @@ use Redstraw\Hooch\Query\Field;
 use Redstraw\Hooch\Query\Operator;
 use Redstraw\Hooch\Query\Query;
 use Redstraw\Hooch\Query\Sql;
+use Redstraw\Hooch\Query\Statement\FilterInterface;
 use Redstraw\Hooch\Query\Statement\OnFilterInterface;
 use Redstraw\Hooch\Query\Statement\SelectInterface;
 
@@ -181,7 +182,7 @@ class SelectTest extends TestCase
         $table->expects($this->any())->method('getName')->will($this->returnValue('some_table_name'));
 
         /** @var RepositoryInterface $table */
-        $this->select->cols([Field::column('col_a'), Field::column('col_b'), Field::column('col_c')])->from($table)->orderBy('col_a', Sql::DESC)->orderBy('col_b', Sql::ASC);
+        $this->select->cols([Field::column('col_a'), Field::column('col_b'), Field::column('col_c')])->from($table)->orderBy(Field::column('col_a'), Sql::DESC)->orderBy(Field::column('col_b'), Sql::ASC);
         $this->assertEquals("SELECT `col_a`,`col_b`,`col_c` FROM `some_table_name` ORDER BY `col_a` DESC ,`col_b` ASC", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS,
@@ -197,7 +198,7 @@ class SelectTest extends TestCase
 
         /** @var RepositoryInterface $table */
         $this->select->cols([Field::column('col_a')])->from($table);
-        $this->select->having('col_a',$this->operator->param()->eq('some_value'));
+        $this->select->having(Field::column('col_a'),$this->operator->param()->eq('some_value'));
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -217,7 +218,7 @@ class SelectTest extends TestCase
 
         /** @var RepositoryInterface $table */
         $this->select->cols([Field::column('col_a')])->from($table);
-        $this->select->having('col_a',$this->operator->param()->eq('some_value'));
+        $this->select->having(Field::column('col_a'),$this->operator->param()->eq('some_value'));
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -343,7 +344,6 @@ class SelectTest extends TestCase
     public function testSelectColsJoinOn()
     {
         $onFilter = $this->createMock(OnFilter::class);
-        $onFilter->expects($this->once())->method('on');
         $onFilter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
                 new Sql('ON t.col_a = `tt`.`col_a`')
@@ -365,10 +365,11 @@ class SelectTest extends TestCase
          * @var RepositoryInterface $table
          * @var RepositoryInterface $table2
          */
-        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->join(Sql::JOIN, $table2)->onFilter(function() use ($operator){
-            /** @var OnFilterInterface $this */
-            $this->on('`tt`.`col_a`', $operator->field()->eq(Field::column('tt.col_a')));
-        });
+        $this->select->cols([
+            Field::column('t.col_a'),
+            Field::column('t.col_b'),
+            Field::column('t.col_c')
+        ])->from($table)->join(Sql::JOIN, $table2)->onFilter(function() use ($operator){});
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -404,7 +405,11 @@ class SelectTest extends TestCase
          * @var RepositoryInterface $table
          * @var RepositoryInterface $table2
          */
-        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->leftJoin($table2, 'tt.col_a', $this->operator->param()->eq('tt.col_a'));
+        $this->select->cols([
+            Field::column('t.col_a'),
+            Field::column('t.col_b'),
+            Field::column('t.col_c')
+        ])->from($table)->leftJoin($table2, Field::column('tt.col_a'), $this->operator->param()->eq('tt.col_a'));
 
         $query = $this->select->build([
             Sql::SELECT,

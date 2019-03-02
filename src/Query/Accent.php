@@ -37,11 +37,11 @@ class Accent
     }
 
     /**
-     * @param string $string
+     * @param string|null $string
      * @param bool $delimiter
-     * @return string
+     * @return string|null
      */
-    public function append($string, $delimiter = false)
+    public function append(?string $string, $delimiter = false)
     {
         if($this->ignoreAccentSymbol || !is_string($string)){
             return $string;

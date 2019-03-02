@@ -87,7 +87,7 @@ abstract class AbstractRepository implements RepositoryInterface
 
     /**
      * @param array $cols
-     * @return \Redstraw\Hooch\Query\Sql\Statement\SelectInterface|QueryBuilderInterface
+     * @return SelectInterface
      */
     public function select(array $cols = [Sql::SQL_STAR]): SelectInterface
     {
@@ -95,7 +95,7 @@ abstract class AbstractRepository implements RepositoryInterface
     }
 
     /**
-     * @return \Redstraw\Hooch\Query\Sql\Statement\FilterInterface
+     * @return FilterInterface
      */
     public function filter(): FilterInterface
     {

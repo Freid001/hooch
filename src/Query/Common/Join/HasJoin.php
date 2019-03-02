@@ -16,6 +16,9 @@ use Redstraw\Hooch\Query\Statement\JoinInterface;
  */
 trait HasJoin
 {
+    /**
+     * @var array
+     */
     private $joinTables = [];
 
     /**

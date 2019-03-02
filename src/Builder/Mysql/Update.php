@@ -17,6 +17,7 @@ use Redstraw\Hooch\Query\Common\Update\HasTable;
 use Redstraw\Hooch\Query\Query;
 use Redstraw\Hooch\Query\Sql;
 use Redstraw\Hooch\Query\Statement\FilterInterface;
+use Redstraw\Hooch\Query\Statement\JoinInterface;
 use Redstraw\Hooch\Query\Statement\OnFilterInterface;
 use Redstraw\Hooch\Query\Statement\UpdateInterface;
 
@@ -127,9 +128,9 @@ class Update implements UpdateInterface
 
     /**
      * @param \Closure $callback
-     * @return UpdateInterface
+     * @return JoinInterface
      */
-    public function onFilter(\Closure $callback): UpdateInterface
+    public function onFilter(\Closure $callback): JoinInterface
     {
         if(!empty($this->onFilter)){
             $callback->call($this->onFilter, $this->table);

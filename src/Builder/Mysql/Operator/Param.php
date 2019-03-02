@@ -87,8 +87,8 @@ class Param implements ParamOperatorInterface
     }
 
     /**
-     * @param $from
-     * @param $to
+     * @param mixed $from
+     * @param mixed $to
      * @return ParamOperatorInterface
      */
     public function between($from, $to): ParamOperatorInterface
@@ -130,7 +130,7 @@ class Param implements ParamOperatorInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function like($value): ParamOperatorInterface
@@ -148,7 +148,7 @@ class Param implements ParamOperatorInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function eq($value): ParamOperatorInterface
@@ -159,7 +159,7 @@ class Param implements ParamOperatorInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function notEq($value): ParamOperatorInterface
@@ -170,7 +170,7 @@ class Param implements ParamOperatorInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function gt($value): ParamOperatorInterface
@@ -181,7 +181,7 @@ class Param implements ParamOperatorInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function gtEq($value): ParamOperatorInterface
@@ -192,7 +192,7 @@ class Param implements ParamOperatorInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function lt($value): ParamOperatorInterface
@@ -203,7 +203,7 @@ class Param implements ParamOperatorInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function ltEq($value): ParamOperatorInterface
@@ -214,7 +214,7 @@ class Param implements ParamOperatorInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     private function comparison($value): ParamOperatorInterface

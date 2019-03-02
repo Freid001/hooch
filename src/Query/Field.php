@@ -21,52 +21,52 @@ class Field
      * @param string $column
      * @return Column
      */
-    public static function column(string $column)
+    public static function column(string $column): Column
     {
         return new Column($column);
     }
 
     /**
-     * @param String $column
+     * @param string $column
      * @return Avg
      */
-    public static function avg(String $column)
+    public static function avg(String $column): Avg
     {
         return new Avg($column);
     }
 
     /**
-     * @param String $column
+     * @param string $column
      * @return Count
      */
-    public static function count(String $column)
+    public static function count(String $column): Count
     {
         return new Count($column);
     }
 
     /**
-     * @param String $column
+     * @param string $column
      * @return Max
      */
-    public static function max(String $column)
+    public static function max(String $column): Max
     {
         return new Max($column);
     }
 
     /**
-     * @param String $column
-     * @return min
+     * @param string $column
+     * @return Min
      */
-    public static function min(String $column)
+    public static function min(String $column): Min
     {
         return new Min($column);
     }
 
     /**
-     * @param String $column
+     * @param string $column
      * @return Sum
      */
-    public static function sum(String $column)
+    public static function sum(String $column): Sum
     {
         return new Sum($column);
     }

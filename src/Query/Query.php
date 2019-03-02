@@ -71,7 +71,7 @@ class Query
 
     /**
      * @param array $order
-     * @return Sql|null
+     * @return Sql
      */
     public function build(array $order = []): Sql
     {
@@ -89,10 +89,10 @@ class Query
     }
 
     /**
-     * @param $clause
+     * @param string $clause
      * @return bool
      */
-    public function hasClause($clause): bool
+    public function hasClause(string $clause): bool
     {
         return !empty($this->query[$clause]);
     }

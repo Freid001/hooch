@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Select;
 
 
 use Redstraw\Hooch\Query\Exception\InterfaceException;
+use Redstraw\Hooch\Query\Field\FieldInterface;
 use Redstraw\Hooch\Query\Sql;
 use Redstraw\Hooch\Query\Statement\SelectInterface;
 
@@ -16,19 +17,21 @@ use Redstraw\Hooch\Query\Statement\SelectInterface;
 trait HasOrderBy
 {
     /**
-     * @param string $column
+     * @param FieldInterface $field
      * @param string|null $order
      * @return SelectInterface
      * @throws InterfaceException
      */
-    public function orderBy(string $column, ?string $order = SQL::DESC): SelectInterface
+    public function orderBy(FieldInterface $field, ?string $order = SQL::DESC): SelectInterface
     {
         if($this instanceof SelectInterface){
+            $field->setAccent($this->query()->accent());
+
             $this->query()->sql()
-                ->ifThenAppend(!$this->query()->hasClause(Sql::ORDER),Sql::ORDER)
-                ->ifThenAppend(!$this->query()->hasClause(Sql::ORDER),Sql::BY)
+                ->ifThenAppend(!$this->query()->hasClause(Sql::ORDER), Sql::ORDER)
+                ->ifThenAppend(!$this->query()->hasClause(Sql::ORDER), Sql::BY)
                 ->ifThenAppend($this->query()->hasClause(Sql::ORDER), ',' , [], false)
-                ->append($this->query()->accent()->append($column, '.'))
+                ->append($field->sql()->queryString())
                 ->append(strtoupper($order));
 
             $this->query()->appendSqlToClause(Sql::ORDER);

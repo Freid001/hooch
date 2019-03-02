@@ -10,8 +10,8 @@ namespace Redstraw\Hooch\Query\Operator;
 interface ParamOperatorInterface extends OperatorInterface
 {
     /**
-     * @param $from
-     * @param $to
+     * @param mixed $from
+     * @param mixed $to
      * @return ParamOperatorInterface
      */
     public function between($from, $to): ParamOperatorInterface;
@@ -23,43 +23,43 @@ interface ParamOperatorInterface extends OperatorInterface
     public function in(array $values = []): ParamOperatorInterface;
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function like($value): ParamOperatorInterface;
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function eq($value): ParamOperatorInterface;
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function notEq($value): ParamOperatorInterface;
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function gt($value): ParamOperatorInterface;
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function gtEq($value): ParamOperatorInterface;
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function lt($value): ParamOperatorInterface;
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return ParamOperatorInterface
      */
     public function ltEq($value): ParamOperatorInterface;

@@ -24,6 +24,7 @@ use Redstraw\Hooch\Query\Operator;
 use Redstraw\Hooch\Query\Query;
 use Redstraw\Hooch\Query\Sql;
 use Redstraw\Hooch\Query\Statement\FilterInterface;
+use Redstraw\Hooch\Query\Statement\JoinInterface;
 use Redstraw\Hooch\Query\Statement\OnFilterInterface;
 use Redstraw\Hooch\Query\Statement\SelectInterface;
 
@@ -113,7 +114,13 @@ class Select implements SelectInterface
     public function filter(\Closure $callback): SelectInterface
     {
         if(!empty($this->filter)){
-            $callback->call($this->filter, $this->table, ...$this->joinTables);
+            $params = [];
+//            array_push($tables, $this->table);
+//            array_map(function($table){
+//                array_push($tables, $table);
+//            }, $this->joinTables);
+            array_push($params, $this->filter);
+            call_user_func_array($callback, $params);
         }
 
         return $this;
@@ -121,12 +128,14 @@ class Select implements SelectInterface
 
     /**
      * @param \Closure $callback
-     * @return SelectInterface
+     * @return JoinInterface
      */
-    public function onFilter(\Closure $callback): SelectInterface
+    public function onFilter(\Closure $callback): JoinInterface
     {
         if(!empty($this->onFilter)){
-            $callback->call($this->onFilter, $this->table);
+            $params = [];
+            array_push($params, $this->onFilter);
+            call_user_func_array($callback, $params);
         }
 
         return $this;

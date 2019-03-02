@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Redstraw\Hooch\Query\Statement;
 
 
+use Redstraw\Hooch\Query\Field\FieldInterface;
 use Redstraw\Hooch\Query\QueryBuilderInterface;
 use Redstraw\Hooch\Query\Repository\RepositoryInterface;
 use Redstraw\Hooch\Query\Operator\OperatorInterface;
@@ -24,7 +25,7 @@ interface JoinInterface extends QueryBuilderInterface
 
     /**
      * @param RepositoryInterface $table
-     * @param $column
+     * @param FieldInterface|\Closure $column
      * @param OperatorInterface|null $operator
      * @return JoinInterface|SelectInterface|UpdateInterface
      */
@@ -32,7 +33,7 @@ interface JoinInterface extends QueryBuilderInterface
 
     /**
      * @param RepositoryInterface $table
-     * @param $column
+     * @param FieldInterface|\Closure $column
      * @param OperatorInterface|null $operator
      * @return JoinInterface|SelectInterface|UpdateInterface
      */
@@ -40,7 +41,7 @@ interface JoinInterface extends QueryBuilderInterface
 
     /**
      * @param RepositoryInterface $table
-     * @param $column
+     * @param FieldInterface|\Closure $column
      * @param OperatorInterface|null $operator
      * @return JoinInterface|SelectInterface|UpdateInterface
      */
@@ -52,4 +53,9 @@ interface JoinInterface extends QueryBuilderInterface
      */
     public function setOnFilter(OnFilterInterface $onFilter): void;
 
+    /**
+     * @param \Closure $callback
+     * @return JoinInterface
+     */
+    public function onFilter(\Closure $callback): JoinInterface;
 }

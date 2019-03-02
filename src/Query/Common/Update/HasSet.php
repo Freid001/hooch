@@ -30,7 +30,7 @@ trait HasSet
             $query = $this->query();
             $this->query()->sql()->append(implode(",",
                 array_map(function ($column) use ($query) {
-                    return $query->accent()->append($column,".") . Sql::SQL_SPACE . Sql::SQL_EQUAL . Sql::SQL_QUESTION_MARK;
+                    return $query->accent()->append($column,true) . Sql::SQL_SPACE . Sql::SQL_EQUAL . Sql::SQL_QUESTION_MARK;
                 }, array_keys($values))
             ), array_values($values), false);
 

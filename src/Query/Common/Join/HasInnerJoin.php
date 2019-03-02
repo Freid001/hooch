@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Join;
 
 
 use Redstraw\Hooch\Query\Exception\InterfaceException;
+use Redstraw\Hooch\Query\Field\FieldInterface;
 use Redstraw\Hooch\Query\Repository\RepositoryInterface;
 use Redstraw\Hooch\Query\Operator\OperatorInterface;
 use Redstraw\Hooch\Query\Sql;
@@ -20,7 +21,7 @@ trait HasInnerJoin
 {
     /**
      * @param RepositoryInterface $table
-     * @param $column
+     * @param FieldInterface|\Closure $column
      * @param OperatorInterface|null $operator
      * @return JoinInterface
      * @throws InterfaceException
@@ -28,9 +29,8 @@ trait HasInnerJoin
     public function innerJoin(RepositoryInterface $table, $column, ?OperatorInterface $operator = null): JoinInterface
     {
         if($this instanceof JoinInterface) {
-            $this->join(Sql::JOIN_INNER, $table)->onFilter(function() use($column, $operator) {
-                /** @var OnFilterInterface $this */
-                $this->on($column, $operator);
+            $this->join(Sql::JOIN_INNER, $table)->onFilter(function(OnFilterInterface $f) use($column, $operator) {
+                $f->on($column, $operator);
             });
 
             return $this;

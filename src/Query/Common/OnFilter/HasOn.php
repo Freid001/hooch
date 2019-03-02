@@ -20,7 +20,7 @@ trait HasOn
     private $on = false;
 
     /**
-     * @param $field
+     * @param mixed $field
      * @param OperatorInterface|null $operator
      * @return OnFilterInterface
      * @throws InterfaceException

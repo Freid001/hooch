@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Redstraw\Hooch\Query\Statement;
 
 
+use Redstraw\Hooch\Query\Field\FieldInterface;
 use Redstraw\Hooch\Query\Operator\OperatorInterface;
 
 /**
@@ -14,14 +15,14 @@ use Redstraw\Hooch\Query\Operator\OperatorInterface;
 interface OnFilterInterface extends FilterInterface
 {
     /**
-     * @param $column
+     * @param FieldInterface|\Closure $column
      * @param OperatorInterface|null $operator
      * @return OnFilterInterface
      */
     public function on($column, ?OperatorInterface $operator): OnFilterInterface;
 
     /**
-     * @param $column
+     * @param FieldInterface|\Closure $column
      * @param OperatorInterface|null $operator
      * @return OnFilterInterface
      */

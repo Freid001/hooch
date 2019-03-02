@@ -88,7 +88,7 @@ class Sql
     }
 
     /**
-     * @param $append
+     * @param mixed $append
      * @param array $parameters
      * @param bool $trailingSpace
      * @return Sql
@@ -194,7 +194,7 @@ class Sql
     }
 
     /**
-     * @param Int $int
+     * @param int $int
      * @param bool $trailingSpace
      * @return Sql
      */
@@ -206,8 +206,8 @@ class Sql
     }
 
     /**
-     * @param $condition
-     * @param $sql
+     * @param mixed $condition
+     * @param mixed $sql
      * @param array $parameters
      * @param bool $space
      * @return Sql

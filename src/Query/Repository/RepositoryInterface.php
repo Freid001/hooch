@@ -29,7 +29,7 @@ interface RepositoryInterface
 
     /**
      * @param array $cols
-     * @return \Redstraw\Hooch\Query\Sql\Statement\SelectInterface|QueryBuilderInterface
+     * @return SelectInterface
      */
     public function select(array $cols = [Sql::SQL_STAR]) : SelectInterface;
 

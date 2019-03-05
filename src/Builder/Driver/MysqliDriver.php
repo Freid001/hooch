@@ -19,6 +19,7 @@ use Redstraw\Hooch\Query\Common\Driver\HasFilter;
 use Redstraw\Hooch\Query\Driver\DriverInterface;
 use Redstraw\Hooch\Query\Query;
 use Redstraw\Hooch\Query\Sql;
+use Psr\SimpleCache\InvalidArgumentException;
 
 /**
  * Class MysqliDriver
@@ -77,42 +78,51 @@ class MysqliDriver implements DriverInterface
     /**
      * @param Sql $sql
      * @param string $method
-     * @return array|mixed|null
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return array|bool|mixed|null
      */
     public function execute(Sql $sql, string $method)
     {
-        $fromCache = false;
-        $cacheKey = md5(serialize($sql));
-        $time = microtime(true);
+        $result = null;
+        try{
+            $fromCache = false;
+            $cacheKey = md5(serialize($sql));
+            $time = microtime(true);
 
-        if (!empty($this->cache) && !empty($this->cache->has($cacheKey))) {
-            $fromCache = true;
-            $result = json_decode((string)$this->cache->get($cacheKey));
-        } else {
-            $query = $this->bindParameters($this->mysqli->prepare($sql->queryString()), $sql);
+            if (!empty($this->cache) && !empty($this->cache->has($cacheKey))) {
+                $fromCache = true;
+                $result = json_decode((string)$this->cache->get($cacheKey));
+            }else {
+                $prepare = $this->mysqli->prepare($sql->queryString());
+                if($prepare === false){
+                    return null;
+                }
 
-            if (!$query->execute()) {
-                $this->logger->error("Mysqli error code: " . $this->mysqli->connect_errno, [
-                    'query'     => $sql->queryString(),
-                    'message'   => $this->mysqli->error
-                ]);
+                $query = $this->bindParameters($prepare, $sql);
+                if (!$query->execute()) {
+                    $this->logger->error("Mysqli error code: " . $this->mysqli->connect_errno, [
+                        'query'     => $sql->queryString(),
+                        'message'   => $this->mysqli->error
+                    ]);
 
-                return false;
+                    return false;
+                }
+
+                $result = $this->getResult($query, $method, $cacheKey);
             }
 
-            $result = $this->getResult($query, $method, $cacheKey);
+
+            $this->query->reset();
+
+            $this->logger->info("Successfully executed query", [
+                'query'             => $sql->queryString(),
+                'parameters'        => $sql->parameters(),
+                'driver'            => $this->driverName(),
+                'execution_time'    => round(microtime(true) - $time, 4) . "s",
+                'from_cache'        => $fromCache
+            ]);
+        }catch (InvalidArgumentException $e){
+            $this->logger->error($e->getMessage());
         }
-
-        $this->query->reset();
-
-        $this->logger->info("Successfully executed query", [
-            'query'             => $sql->queryString(),
-            'parameters'        => $sql->parameters(),
-            'driver'            => $this->driverName(),
-            'execution_time'    => round(microtime(true) - $time, 4) . "s",
-            'from_cache'        => $fromCache
-        ]);
 
         return $result;
     }
@@ -157,23 +167,31 @@ class MysqliDriver implements DriverInterface
      * @param string $method
      * @param string $cacheKey
      * @return array|mixed|null
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     private function getResult(\mysqli_stmt $stmt, string $method, string $cacheKey)
     {
-        $result = [];
-        switch ($method) {
-            case DriverInterface::FETCH:
-                $result = $stmt->get_result()->fetch_assoc();
-                break;
-
-            case DriverInterface::FETCH_ALL:
-                $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-                break;
+        $mysqliResult = $stmt->get_result();
+        if($mysqliResult === false){
+            return null;
         }
 
-        if (!empty($this->cache)) {
-            $this->cache->set($cacheKey, json_encode($result), $this->ttl);
+        $result = null;
+        try {
+            switch ($method) {
+                case DriverInterface::FETCH:
+                    $result = $mysqliResult->fetch_assoc();
+                    break;
+
+                case DriverInterface::FETCH_ALL:
+                    $result = $mysqliResult->fetch_all(MYSQLI_ASSOC);
+                    break;
+            }
+
+            if (!empty($this->cache)) {
+                $this->cache->set($cacheKey, json_encode($result), $this->ttl);
+            }
+        }catch (InvalidArgumentException $e){
+            $this->logger->error($e->getMessage());
         }
 
         return $result;

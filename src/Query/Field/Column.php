@@ -47,7 +47,7 @@ class Column implements FieldInterface
     public function sql(): Sql
     {
         if(!empty($this->accent)){
-            return new Sql($this->accent->append($this->column, '.'),[],false);
+            return new Sql($this->accent->append($this->column, true),[],false);
         }
 
         return new Sql($this->column,[],false);

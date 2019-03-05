@@ -17,7 +17,7 @@ trait HasWhereLike
 {
     /**
      * @param FieldInterface $field
-     * @param $value
+     * @param mixed $value
      * @return FilterInterface
      * @throws InterfaceException
      */

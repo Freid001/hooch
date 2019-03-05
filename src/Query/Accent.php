@@ -37,25 +37,24 @@ class Accent
     }
 
     /**
-     * @param string|null $string
+     * @param string $string
      * @param bool $delimiter
-     * @return string|null
+     * @return string
      */
-    public function append(?string $string, $delimiter = false)
+    public function append(string $string, bool $delimiter = false)
     {
-        if($this->ignoreAccentSymbol || !is_string($string)){
+        if($this->ignoreAccentSymbol){
             return $string;
         }
 
         if($delimiter){
-            $strings = explode($delimiter,$string);
+            return array_reduce(explode(".", $string), function($transformedString, $stringPart){
+                if(!empty($transformedString)){
+                    return $transformedString.".".$this->append($stringPart);
+                }
 
-            $returnString = '';
-            foreach($strings as $string){
-                $returnString .= !empty($returnString) ? $delimiter . $this->append($string) : $this->append($string);
-            }
-
-            return $returnString;
+                return $this->append($stringPart);
+            }, "");
         }
 
         return $this->symbol.$string.$this->symbol;

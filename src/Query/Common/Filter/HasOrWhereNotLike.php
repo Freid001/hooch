@@ -17,7 +17,7 @@ trait HasOrWhereNotLike
 {
     /**
      * @param FieldInterface $field
-     * @param $values
+     * @param mixed $values
      * @return FilterInterface
      * @throws InterfaceException
      */

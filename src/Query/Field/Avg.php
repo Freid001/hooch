@@ -47,7 +47,7 @@ class Avg implements FieldInterface
     public function sql(): Sql
     {
         if(!empty($this->accent)){
-            $this->column = $this->accent->append($this->column, '.');
+            $this->column = $this->accent->append($this->column, true);
         }
 
         return  new Sql('AVG('.$this->column.')',[],false);

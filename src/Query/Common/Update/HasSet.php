@@ -32,7 +32,7 @@ trait HasSet
                 array_map(function ($column) use ($query) {
                     return $query->accent()->append($column,true) . Sql::SQL_SPACE . Sql::SQL_EQUAL . Sql::SQL_QUESTION_MARK;
                 }, array_keys($values))
-            ), array_values($values), false);
+            ), array_values($values));
 
             $this->query()->appendSqlToClause(Sql::SET);
 

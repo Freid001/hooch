@@ -25,7 +25,7 @@ interface RepositoryInterface
     /**
      * @return string
      */
-    public function getAlias(): ?string;
+    public function getAlias(): string;
 
     /**
      * @param array $cols

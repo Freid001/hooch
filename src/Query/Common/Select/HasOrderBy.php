@@ -18,11 +18,11 @@ trait HasOrderBy
 {
     /**
      * @param FieldInterface $field
-     * @param string|null $order
+     * @param string $order
      * @return SelectInterface
      * @throws InterfaceException
      */
-    public function orderBy(FieldInterface $field, ?string $order = SQL::DESC): SelectInterface
+    public function orderBy(FieldInterface $field, string $order = SQL::DESC): SelectInterface
     {
         if($this instanceof SelectInterface){
             $field->setAccent($this->query()->accent());

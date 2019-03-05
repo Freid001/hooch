@@ -45,9 +45,9 @@ abstract class AbstractRepository implements RepositoryInterface
     private $driver;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private $alias;
+    private $alias = '';
 
     /**
      * AbstractTable constructor.
@@ -67,18 +67,18 @@ abstract class AbstractRepository implements RepositoryInterface
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getAlias(): ?string
+    public function getAlias(): string
     {
         return $this->alias;
     }
 
     /**
-     * @param string|null $alias
+     * @param string $alias
      * @return AbstractRepository
      */
-    public function setAlias(?string $alias): AbstractRepository
+    public function setAlias(string $alias): AbstractRepository
     {
         $this->alias = $alias;
 

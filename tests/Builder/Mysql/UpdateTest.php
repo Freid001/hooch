@@ -71,7 +71,7 @@ class UpdateTest extends TestCase
             ->set(["yet_another_key"=>"yet_another_value"])
             ->build();
 
-        $this->assertEquals("UPDATE `some_table_name` SET `key` =?,`another_key` =?,`yet_another_key` =?", trim($query->queryString()));
+        $this->assertEquals("UPDATE `some_table_name` SET `key` =?,`another_key` =? ,`yet_another_key` =?", trim($query->queryString()));
         $this->assertEquals(['value','another_value','yet_another_value'], $query->parameters());
     }
 
@@ -111,9 +111,12 @@ class UpdateTest extends TestCase
 
         /** @var RepositoryInterface $table */
         /** @var RepositoryInterface $table2 */
-        $query = $this->update->table($table)->join(Sql::JOIN, $table2)->set(["t.key"=>"value", "tt.another_key"=>"another_value"])->build();
+        $query = $this->update->table($table)->join(Sql::JOIN, $table2)->set([
+            "t.key" => "value",
+            "tt.another_key" => "another_value"
+        ])->build();
 
-        $this->assertEquals("UPDATE `some_table_name` AS `t` JOIN `another_table_name` AS `tt` SET `t`.`key` =?,`tt`.`another_key` =?", trim($query->queryString()));
+        $this->assertEquals("UPDATE `some_table_name` AS `t` JOIN `another_table_name` AS `tt`  SET `t`.`key` =?,`tt`.`another_key` =?", trim($query->queryString()));
         $this->assertEquals(['value','another_value'], $query->parameters());
     }
 
@@ -131,9 +134,11 @@ class UpdateTest extends TestCase
         $table->expects($this->any())->method('filter')->will($this->returnValue($filter));
 
         /** @var RepositoryInterface $table */
-        $query = $this->update->table($table)->set(["key"=>"value"])->filter(function(){})->build();
+        $query = $this->update->table($table)->set([
+            "key" => "value"
+        ])->filter(function(){})->build();
 
-        $this->assertEquals("UPDATE `some_table_name` SET `key` =?WHERE `col_a` =?", trim($query->queryString()));
+        $this->assertEquals("UPDATE `some_table_name` SET `key` =? WHERE `col_a` =?", trim($query->queryString()));
         $this->assertEquals(['value','some_value'], $query->parameters());
     }
 }

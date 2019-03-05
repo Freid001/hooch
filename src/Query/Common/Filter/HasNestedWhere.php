@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Redstraw\Hooch\Query\Common\Filter;
 
 
-use Redstraw\Hooch\Builder\Mysql\Filter;
 use Redstraw\Hooch\Query\Exception\InterfaceException;
 use Redstraw\Hooch\Query\Sql;
 use Redstraw\Hooch\Query\Statement\FilterInterface;

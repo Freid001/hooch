@@ -6,6 +6,8 @@ namespace Redstraw\Hooch\Query\Common\Driver;
 
 
 use Redstraw\Hooch\Query\Driver\DriverInterface;
+use Redstraw\Hooch\Query\Operator;
+use Redstraw\Hooch\Query\Operator\OperatorInterface;
 use Redstraw\Hooch\Query\Statement\UpdateInterface;
 
 /**
@@ -15,33 +17,30 @@ use Redstraw\Hooch\Query\Statement\UpdateInterface;
 trait HasUpdate
 {
     /**
-     * @var UpdateInterface|null
+     * @var UpdateInterface
      */
-    private $update = null;
+    private $update;
 
     /**
-     * @return UpdateInterface|null
+     * @return UpdateInterface
      */
-    public function update(): ?UpdateInterface
+    public function update(): UpdateInterface
     {
-        if($this instanceof DriverInterface){
-            switch($this->driverName()){
-                case DriverInterface::DRIVER_MYSQL:
-                    $this->update = new \Redstraw\Hooch\Builder\Mysql\Update($this->query(), $this->operator());
-                    break;
+        switch($this->driverName()){
+            default:
+                return $this->mysqlUpdate();
+        }
+    }
 
-                case DriverInterface::DRIVER_PGSQL:
-                    break;
-
-                case DriverInterface::DRIVER_SQLITE:
-                    break;
-
-                default:
-                    $this->logger()->error(sprintf("Driver: %u not supported.", $this->driverName()));
-                    $this->update = null;
-            }
+    /**
+     * @return \Redstraw\Hooch\Builder\Mysql\Update
+     */
+    private function mysqlUpdate(): \Redstraw\Hooch\Builder\Mysql\Update
+    {
+        if($this->update instanceof \Redstraw\Hooch\Builder\Mysql\Update){
+            return $this->update;
         }
 
-        return $this->update;
+        return new \Redstraw\Hooch\Builder\Mysql\Update($this->query(), $this->operator());
     }
 }

@@ -17,8 +17,8 @@ trait HasWhereNotBetween
 {
     /**
      * @param FieldInterface $field
-     * @param $from
-     * @param $to
+     * @param mixed $from
+     * @param mixed $to
      * @return FilterInterface
      * @throws InterfaceException
      */

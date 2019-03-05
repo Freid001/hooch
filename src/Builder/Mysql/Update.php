@@ -70,12 +70,12 @@ class Update implements UpdateInterface
         Sql::WHERE
     ]): Sql
     {
-        if (in_array(Sql::WHERE, $clauses) && $this->filter) {
+        if (in_array(Sql::WHERE, $clauses) && !empty($this->filter)) {
             $this->query->sql()->append($this->filter->build([Sql::WHERE]));
             $this->query->appendSqlToClause(Sql::WHERE);
         }
 
-        if (in_array(Sql::JOIN, $clauses) && $this->onFilter) {
+        if (in_array(Sql::JOIN, $clauses) && !empty($this->onFilter)) {
             $this->query->sql()->append($this->filter->build([Sql::JOIN]));
             $this->query->appendSqlToClause(Sql::JOIN);
         }

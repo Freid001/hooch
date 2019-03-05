@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Driver;
 
 
 use Redstraw\Hooch\Query\Driver\DriverInterface;
+use Redstraw\Hooch\Query\Operator;
 use Redstraw\Hooch\Query\Statement\OnFilterInterface;
 
 /**
@@ -15,26 +16,30 @@ use Redstraw\Hooch\Query\Statement\OnFilterInterface;
 trait HasOnFilter
 {
     /**
-     * @return OnFilterInterface|null
+     * @var OnFilterInterface
      */
-    public function onFilter(): ?OnFilterInterface
+    private $onFilter;
+
+    /**
+     * @return OnFilterInterface
+     */
+    public function onFilter(): OnFilterInterface
     {
-        if($this instanceof DriverInterface){
-            switch($this->driverName()){
-                case DriverInterface::DRIVER_MYSQL:
-                    return new \Redstraw\Hooch\Builder\Mysql\OnFilter($this->query(), $this->operator());
+        switch($this->driverName()){
+            default:
+                return $this->mysqlOnFilter();
+        }
+    }
 
-                case DriverInterface::DRIVER_PGSQL:
-                    break;
-
-                case DriverInterface::DRIVER_SQLITE:
-                    break;
-
-                default:
-                    $this->logger()->error(sprintf("Driver: %u not supported.", $this->driverName()));
-            }
+    /**
+     * @return \Redstraw\Hooch\Builder\Mysql\OnFilter
+     */
+    private function mysqlOnFilter(): \Redstraw\Hooch\Builder\Mysql\OnFilter
+    {
+        if($this->onFilter instanceof \Redstraw\Hooch\Builder\Mysql\OnFilter){
+            return $this->onFilter;
         }
 
-        return null;
+        return new \Redstraw\Hooch\Builder\Mysql\OnFilter($this->query(), $this->operator());
     }
 }

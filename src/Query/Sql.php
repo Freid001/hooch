@@ -69,7 +69,7 @@ class Sql
     /**
      * @var string
      */
-    private $string;
+    private $string = '';
 
     /**
      * @var array
@@ -135,9 +135,9 @@ class Sql
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function queryString(): ?string
+    public function queryString(): string
     {
         return $this->string;
     }

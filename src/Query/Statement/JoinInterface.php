@@ -27,7 +27,7 @@ interface JoinInterface extends QueryBuilderInterface
      * @param RepositoryInterface $table
      * @param FieldInterface|\Closure $column
      * @param OperatorInterface|null $operator
-     * @return JoinInterface|SelectInterface|UpdateInterface
+     * @return JoinInterface
      */
     public function leftJoin(RepositoryInterface $table, $column, ?OperatorInterface $operator = null): JoinInterface;
 
@@ -35,7 +35,7 @@ interface JoinInterface extends QueryBuilderInterface
      * @param RepositoryInterface $table
      * @param FieldInterface|\Closure $column
      * @param OperatorInterface|null $operator
-     * @return JoinInterface|SelectInterface|UpdateInterface
+     * @return JoinInterface
      */
     public function rightJoin(RepositoryInterface $table, $column, ?OperatorInterface $operator = null): JoinInterface;
 
@@ -43,7 +43,7 @@ interface JoinInterface extends QueryBuilderInterface
      * @param RepositoryInterface $table
      * @param FieldInterface|\Closure $column
      * @param OperatorInterface|null $operator
-     * @return JoinInterface|SelectInterface|UpdateInterface
+     * @return JoinInterface
      */
     public function innerJoin(RepositoryInterface $table, $column, ?OperatorInterface $operator = null): JoinInterface;
 

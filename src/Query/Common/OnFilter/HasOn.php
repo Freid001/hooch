@@ -20,12 +20,12 @@ trait HasOn
     private $on = false;
 
     /**
-     * @param mixed $field
+     * @param FieldInterface|\Closure $field
      * @param OperatorInterface|null $operator
      * @return OnFilterInterface
      * @throws InterfaceException
      */
-    public function on($field, ?OperatorInterface $operator): OnFilterInterface
+    public function on($field, ?OperatorInterface $operator = null): OnFilterInterface
     {
         if ($this instanceof OnFilterInterface) {
             if ($field instanceof \Closure) {
@@ -33,11 +33,14 @@ trait HasOn
             } else if ($field instanceof FieldInterface) {
                 $field->setAccent($this->query()->accent());
 
-                $this->query()->sql()
-                    ->ifThenAppend(!$this->on, Sql::ON)
+                $sql = $this->query()->sql();
+                $sql->ifThenAppend(!$this->on, Sql::ON)
                     ->ifThenAppend($this->on, Sql:: AND)
-                    ->append($field->sql()->queryString())
-                    ->append($operator->sql());
+                    ->append($field->sql()->queryString());
+
+                if(!empty($operator)){
+                    $sql->append($operator->sql());
+                }
 
                 $this->on = true;
             }

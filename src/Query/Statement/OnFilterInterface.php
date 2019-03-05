@@ -15,16 +15,16 @@ use Redstraw\Hooch\Query\Operator\OperatorInterface;
 interface OnFilterInterface extends FilterInterface
 {
     /**
-     * @param FieldInterface|\Closure $column
+     * @param FieldInterface|\Closure $field
      * @param OperatorInterface|null $operator
      * @return OnFilterInterface
      */
-    public function on($column, ?OperatorInterface $operator): OnFilterInterface;
+    public function on($field, ?OperatorInterface $operator = null): OnFilterInterface;
 
     /**
-     * @param FieldInterface|\Closure $column
+     * @param FieldInterface|\Closure $field
      * @param OperatorInterface|null $operator
      * @return OnFilterInterface
      */
-    public function orOn($column, ?OperatorInterface $operator): OnFilterInterface;
+    public function orOn($field, ?OperatorInterface $operator = null): OnFilterInterface;
 }

@@ -30,24 +30,24 @@ interface DriverInterface
     public function query(): Query;
 
     /**
-     * @return FilterInterface|null
+     * @return FilterInterface
      */
-    public function filter() : ?FilterInterface;
+    public function filter() : FilterInterface;
 
     /**
-     * @return OnFilterInterface|null
+     * @return OnFilterInterface
      */
-    public function onFilter() : ?OnFilterInterface;
+    public function onFilter() : OnFilterInterface;
 
     /**
-     * @return SelectInterface|null
+     * @return SelectInterface
      */
-    public function select() : ?SelectInterface;
+    public function select() : SelectInterface;
 
     /**
-     * @return UpdateInterface|null
+     * @return UpdateInterface
      */
-    public function update() : ?UpdateInterface;
+    public function update() : UpdateInterface;
 
     /**
      * @param CacheInterface $cache
@@ -79,9 +79,9 @@ interface DriverInterface
     public function logger(): LoggerInterface;
 
     /**
-     * @return Operator|null
+     * @return Operator
      */
-    public function operator(): ?Operator;
+    public function operator(): Operator;
 
     /**
      * @param Sql $sql

@@ -19,6 +19,7 @@ use Redstraw\Hooch\Query\Driver\DriverInterface;
 use Redstraw\Hooch\Query\Operator;
 use Redstraw\Hooch\Query\Query;
 use Redstraw\Hooch\Query\Sql;
+use Psr\SimpleCache\InvalidArgumentException;
 
 /**
  * Class PdoDriver
@@ -91,42 +92,46 @@ class PdoDriver implements DriverInterface
     /**
      * @param Sql $sql
      * @param string $method
-     * @return array|bool|mixed
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return array|bool|mixed|null
      */
     public function execute(Sql $sql, string $method)
     {
-        $fromCache = false;
-        $cacheKey = md5(serialize($sql));
-        $time = microtime(true);
+        $result = null;
+        try {
+            $fromCache = false;
+            $cacheKey = md5(serialize($sql));
+            $time = microtime(true);
 
-        if(!empty($this->cache) && !empty($this->cache->has($cacheKey))) {
-            $fromCache = true;
-            $result = json_decode((string)$this->cache->get($cacheKey));
-        }else {
-            $query = $this->pdo->prepare($sql->queryString());
+            if (!empty($this->cache) && !empty($this->cache->has($cacheKey))) {
+                $fromCache = true;
+                $result = json_decode((string)$this->cache->get($cacheKey));
+            }else {
+                $query = $this->pdo->prepare($sql->queryString());
 
-            if (!$query || !$query->execute($sql->parameters())) {
-                $this->logger->error("PDO error code: " . $this->pdo->errorCode(), [
-                    'query' => $sql->queryString(),
-                    'message' => $this->pdo->errorInfo(),
-                ]);
+                if (!$query->execute($sql->parameters())) {
+                    $this->logger->error("PDO error code: " . $this->pdo->errorCode(), [
+                        'query'     => $sql->queryString(),
+                        'message'   => $this->pdo->errorInfo(),
+                    ]);
 
-                return false;
+                    return false;
+                }
+
+                $result = $this->getResult($query, $method, $cacheKey);
             }
 
-            $result = $this->getResult($query, $method, $cacheKey);
+            $this->query->reset();
+
+            $this->logger->info("Successfully executed query",[
+                'query'             => $sql->queryString(),
+                'parameters'        => $sql->parameters(),
+                'driver'            => $this->driverName(),
+                'execution_time'    => round(microtime(true) - $time,4) . "s",
+                'from_cache'        => $fromCache
+            ]);
+        }catch (InvalidArgumentException $e){
+            $this->logger->error($e->getMessage());
         }
-
-        $this->query->reset();
-
-        $this->logger->info("Successfully executed query",[
-            'query'             => $sql->queryString(),
-            'parameters'        => $sql->parameters(),
-            'driver'            => $this->driverName(),
-            'execution_time'    => round(microtime(true) - $time,4) . "s",
-            'from_cache'        => $fromCache
-        ]);
 
         return $result;
     }
@@ -139,7 +144,7 @@ class PdoDriver implements DriverInterface
      */
     private function getResult(\PDOStatement $stmt, string $method, string $cacheKey)
     {
-        $result = [];
+        $result = null;
         try {
             switch ($method) {
                 case DriverInterface::FETCH:
@@ -153,7 +158,7 @@ class PdoDriver implements DriverInterface
             if (!empty($this->cache)) {
                 $this->cache->set($cacheKey, json_encode($result), $this->ttl);
             }
-        }catch (\Psr\SimpleCache\InvalidArgumentException $e){
+        }catch (InvalidArgumentException $e){
             $this->logger->error($e->getMessage());
         }
 

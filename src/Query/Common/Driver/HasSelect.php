@@ -6,6 +6,7 @@ namespace Redstraw\Hooch\Query\Common\Driver;
 
 
 use Redstraw\Hooch\Query\Driver\DriverInterface;
+use Redstraw\Hooch\Query\Operator;
 use Redstraw\Hooch\Query\Statement\SelectInterface;
 
 /**
@@ -15,33 +16,30 @@ use Redstraw\Hooch\Query\Statement\SelectInterface;
 trait HasSelect
 {
     /**
-     * @var SelectInterface|null
+     * @var SelectInterface
      */
-    private $select = null;
+    private $select;
 
     /**
-     * @return SelectInterface|null
+     * @return SelectInterface
      */
-    public function select(): ?SelectInterface
+    public function select(): SelectInterface
     {
-        if($this instanceof DriverInterface){
-            switch($this->driverName()){
-                case DriverInterface::DRIVER_MYSQL:
-                    $this->select = new \Redstraw\Hooch\Builder\Mysql\Select($this->query(), $this->operator());
-                    break;
+        switch($this->driverName()){
+            default:
+                return $this->mysqlSelect();
+        }
+    }
 
-                case DriverInterface::DRIVER_PGSQL:
-                    break;
-
-                case DriverInterface::DRIVER_SQLITE:
-                    break;
-
-                default:
-                    $this->logger()->error(sprintf("Driver: %u not supported.", $this->driverName()));
-                    $this->select = null;
-            }
+    /**
+     * @return \Redstraw\Hooch\Builder\Mysql\Select
+     */
+    private function mysqlSelect(): \Redstraw\Hooch\Builder\Mysql\Select
+    {
+        if($this->select instanceof \Redstraw\Hooch\Builder\Mysql\Select){
+            return $this->select;
         }
 
-        return $this->select;
+        return new \Redstraw\Hooch\Builder\Mysql\Select($this->query(), $this->operator());
     }
 }

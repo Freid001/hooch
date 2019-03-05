@@ -328,7 +328,11 @@ class SelectTest extends TestCase
          * @var RepositoryInterface $table
          * @var RepositoryInterface $table2
          */
-        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->join(Sql::JOIN, $table2);
+        $this->select->cols([
+            Field::column('t.col_a'),
+            Field::column('t.col_b'),
+            Field::column('t.col_c')
+        ])->from($table)->join(Sql::JOIN, $table2);
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -346,7 +350,7 @@ class SelectTest extends TestCase
         $onFilter = $this->createMock(OnFilter::class);
         $onFilter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
-                new Sql('ON t.col_a = `tt`.`col_a`')
+                new Sql('ON `t`.`col_a` = `tt`.`col_a`')
             )
         );
 
@@ -378,7 +382,7 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` JOIN `another_table_name` AS `tt` ON t.col_a = `tt`.`col_a`", trim($query->queryString()));
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` JOIN `another_table_name` AS `tt` ON `t`.`col_a` = `tt`.`col_a`", trim($query->queryString()));
         $this->assertEquals([], $query->parameters());
     }
 
@@ -388,7 +392,7 @@ class SelectTest extends TestCase
         $onFilter->expects($this->once())->method('on');
         $onFilter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
-                new Sql('ON t.col_a =?', ['tt.col_a'])
+                new Sql('ON `t`.`col_a` = `tt`.`col_a`', [])
             )
         );
 
@@ -418,8 +422,8 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` LEFT JOIN `another_table_name` AS `tt` ON t.col_a =?", trim($query->queryString()));
-        $this->assertEquals(['tt.col_a'], $query->parameters());
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` LEFT JOIN `another_table_name` AS `tt` ON `t`.`col_a` = `tt`.`col_a`", trim($query->queryString()));
+        $this->assertEquals([], $query->parameters());
     }
 
     public function testSelectColsRightJoin()
@@ -428,7 +432,7 @@ class SelectTest extends TestCase
         $onFilter->expects($this->once())->method('on');
         $onFilter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
-                new Sql('ON t.col_a =?', ['tt.col_a'])
+                new Sql('ON `t`.`col_a` = `tt`.`col_a`', [])
             )
         );
 
@@ -445,7 +449,11 @@ class SelectTest extends TestCase
          * @var RepositoryInterface $table
          * @var RepositoryInterface $table2
          */
-        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->rightJoin($table2, 'tt.col_a', $this->operator->param()->eq('tt.col_a'));
+        $this->select->cols([
+            Field::column('t.col_a'),
+            Field::column('t.col_b'),
+            Field::column('t.col_c')]
+        )->from($table)->rightJoin($table2, Field::column('t.col_a'), $this->operator->field()->eq(Field::column('tt.col_a')));
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -454,8 +462,8 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` RIGHT JOIN `another_table_name` AS `tt` ON t.col_a =?", trim($query->queryString()));
-        $this->assertEquals(['tt.col_a'], $query->parameters());
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` RIGHT JOIN `another_table_name` AS `tt` ON `t`.`col_a` = `tt`.`col_a`", trim($query->queryString()));
+        $this->assertEquals([], $query->parameters());
     }
 
     public function testSelectColsInnerJoin()
@@ -464,7 +472,7 @@ class SelectTest extends TestCase
         $onFilter->expects($this->once())->method('on');
         $onFilter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
-                new Sql('ON t.col_a =?', ['tt.col_a'])
+                new Sql('ON `t`.`col_a` = `tt`.`col_a`', [])
             )
         );
 
@@ -481,7 +489,11 @@ class SelectTest extends TestCase
          * @var RepositoryInterface $table
          * @var RepositoryInterface $table2
          */
-        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->innerJoin($table2, 'tt.col_a', $this->operator->param()->eq('tt.col_a'));
+        $this->select->cols([
+            Field::column('t.col_a'),
+            Field::column('t.col_b'),
+            Field::column('t.col_c')]
+        )->from($table)->innerJoin($table2, Field::column('t.col_a'), $this->operator->field()->eq(Field::column('tt.col_a')));
 
         $query = $this->select->build([
             Sql::SELECT,
@@ -490,8 +502,8 @@ class SelectTest extends TestCase
             Sql::JOIN
         ]);
 
-        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` INNER JOIN `another_table_name` AS `tt` ON t.col_a =?", trim($query->queryString()));
-        $this->assertEquals(['tt.col_a'], $query->parameters());
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` INNER JOIN `another_table_name` AS `tt` ON `t`.`col_a` = `tt`.`col_a`", trim($query->queryString()));
+        $this->assertEquals([], $query->parameters());
     }
 
     public function testSelectColsAdvancedLeftJoin()
@@ -500,7 +512,7 @@ class SelectTest extends TestCase
         $onFilter->expects($this->once())->method('on');
         $onFilter->expects($this->once())->method('build')->will(
             $this->onConsecutiveCalls(
-                new Sql('ON t.col_a =? AND t.col_b =?', ['tt.col_a', 'tt.col_b'])
+                new Sql('ON `t`.`col_a` = `tt`.`col_a` AND `t`.`col_b` = `tt`.`col_b`', [])
             )
         );
 
@@ -517,11 +529,15 @@ class SelectTest extends TestCase
          * @var RepositoryInterface $table
          * @var RepositoryInterface $table2
          */
-        $this->select->cols([Field::column('t.col_a'), Field::column('t.col_b'), Field::column('t.col_c')])->from($table)->leftJoin($table2,  function(OnFilterInterface $onFilter) {});
+        $this->select->cols([
+            Field::column('t.col_a'),
+            Field::column('t.col_b'),
+            Field::column('t.col_c')]
+        )->from($table)->leftJoin($table2,  function(OnFilterInterface $onFilter) {});
 
         $query = $this->select->build();
 
-        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` LEFT JOIN `another_table_name` AS `tt` ON t.col_a =? AND t.col_b =?", trim($query->queryString()));
-        $this->assertEquals(['tt.col_a', 'tt.col_b'], $query->parameters());
+        $this->assertEquals("SELECT `t`.`col_a`,`t`.`col_b`,`t`.`col_c` FROM `some_table_name` AS `t` LEFT JOIN `another_table_name` AS `tt` ON `t`.`col_a` = `tt`.`col_a` AND `t`.`col_b` = `tt`.`col_b`", trim($query->queryString()));
+        $this->assertEquals([], $query->parameters());
     }
 }

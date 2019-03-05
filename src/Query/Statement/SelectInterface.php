@@ -61,10 +61,10 @@ interface SelectInterface extends QueryBuilderInterface, JoinInterface
 
     /**
      * @param FieldInterface $field
-     * @param string|null $order
+     * @param string $order
      * @return SelectInterface
      */
-    public function orderBy(FieldInterface $field, ?string $order): SelectInterface;
+    public function orderBy(FieldInterface $field, string $order): SelectInterface;
 
     /**
      * @param Sql $unionSql

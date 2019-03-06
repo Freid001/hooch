@@ -18,6 +18,7 @@ before_script:
   - ./cc-test-reporter before-build
 
 script:
+  - vendor/bin/phpstan analyse src --level max
   - phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
 
 after_script:

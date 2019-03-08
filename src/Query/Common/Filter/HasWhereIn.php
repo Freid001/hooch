@@ -26,9 +26,7 @@ trait HasWhereIn
         if($this instanceof FilterInterface) {
             $this->where(
                 $field,
-                $this->operator()
-                    ->param()
-                    ->in($values)
+                $this->operator()->param()->in($values)
             );
 
             return $this;

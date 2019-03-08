@@ -17,8 +17,6 @@ use Redstraw\Hooch\Query\Statement\OnFilterInterface;
  */
 trait HasOrOn
 {
-    private $on = false;
-
     /**
      * @param FieldInterface|\Closure $field
      * @param OperatorInterface|null $operator
@@ -30,19 +28,20 @@ trait HasOrOn
         if ($this instanceof OnFilterInterface) {
             if ($field instanceof \Closure) {
                 $field->call($this);
-            } else if ($field instanceof FieldInterface) {
+            }else if ($field instanceof FieldInterface) {
                 $field->setAccent($this->query()->accent());
 
-                $sql = $this->query()->sql();
-                $sql->append(Sql::OR)
-                    ->append($field->sql()->queryString());
+                $this->query()->clause(Sql::JOIN, function (Sql $sql) use ($field, $operator) {
+                    $sql->append(Sql::OR)
+                        ->append($field->sql()->queryString());
 
-                if(!empty($operator)){
-                    $sql->append($operator->sql());
-                }
+                    if(!empty($operator)){
+                        $sql->append($operator->sql());
+                    }
+
+                    return $sql;
+                });
             }
-
-            $this->query()->appendSqlToClause(Sql::JOIN);
 
             return $this;
         }else {

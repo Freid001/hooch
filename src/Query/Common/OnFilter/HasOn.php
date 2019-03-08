@@ -30,22 +30,23 @@ trait HasOn
         if ($this instanceof OnFilterInterface) {
             if ($field instanceof \Closure) {
                 $field->call($this);
-            } else if ($field instanceof FieldInterface) {
+            }else if ($field instanceof FieldInterface) {
                 $field->setAccent($this->query()->accent());
 
-                $sql = $this->query()->sql();
-                $sql->ifThenAppend(!$this->on, Sql::ON)
-                    ->ifThenAppend($this->on, Sql:: AND)
-                    ->append($field->sql()->queryString());
+                $this->query()->clause(Sql::JOIN, function (Sql $sql) use ($field, $operator) {
+                    $sql->ifThenAppend(!$this->on, Sql::ON)
+                        ->ifThenAppend($this->on, Sql:: AND)
+                        ->append($field->sql()->queryString());
 
-                if(!empty($operator)){
-                    $sql->append($operator->sql());
-                }
+                    if(!empty($operator)){
+                        $sql->append($operator->sql());
+                    }
+
+                    return $sql;
+                });
 
                 $this->on = true;
             }
-
-            $this->query()->appendSqlToClause(Sql::JOIN);
 
             return $this;
         } else {

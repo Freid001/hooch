@@ -23,11 +23,11 @@ trait HasLimit
     public function limit(int $limit): SelectInterface
     {
         if($this instanceof SelectInterface) {
-            $this->query()->sql()
-                ->append(Sql::LIMIT)
-                ->append($limit);
-
-            $this->query()->appendSqlToClause(Sql::LIMIT);
+            $this->query()->clause(Sql::LIMIT, function (Sql $sql) use ($limit) {
+                return $sql
+                    ->append(Sql::LIMIT)
+                    ->append($limit);
+            });
 
             return $this;
         }else {

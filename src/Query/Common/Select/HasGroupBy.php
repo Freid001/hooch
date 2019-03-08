@@ -26,12 +26,13 @@ trait HasGroupBy
         if($this instanceof SelectInterface) {
             $column->setAccent($this->query()->accent());
 
-            $this->query()->sql()
-                ->ifThenAppend(empty($this->query()->hasClause(Sql::GROUP)), Sql::GROUP)
-                ->ifThenAppend(!empty($this->query()->hasClause(Sql::GROUP)), ',', [], false)
-                ->append($column->sql()->queryString());
-
-            $this->query()->appendSqlToClause(Sql::GROUP);
+            $query = $this->query();
+            $this->query()->clause(Sql::GROUP, function (Sql $sql) use ($query, $column) {
+                return $sql
+                    ->ifThenAppend(empty($query->hasClause(Sql::GROUP)), Sql::GROUP)
+                    ->ifThenAppend(!empty($query->hasClause(Sql::GROUP)), ',', [], false)
+                    ->append($column->sql()->queryString());
+            });
 
             return $this;
         }else {

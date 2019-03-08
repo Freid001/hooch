@@ -25,9 +25,7 @@ trait HasOrWhereExists
         if($this instanceof FilterInterface) {
             $this->orWhere(
                 null,
-                $this->operator()
-                    ->sql()
-                    ->exists($subQuery)
+                $this->operator()->sql()->exists($subQuery)
             );
 
             return $this;

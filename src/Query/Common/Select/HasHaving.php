@@ -28,12 +28,12 @@ trait HasHaving
         if($this instanceof SelectInterface) {
             $field->setAccent($this->query()->accent());
 
-            $this->query()->sql()
-                ->append(Sql::HAVING)
-                ->append($field->sql()->queryString())
-                ->append($operator->sql());
-
-            $this->query()->appendSqlToClause(Sql::HAVING);
+            $this->query()->clause(Sql::HAVING, function (Sql $sql) use ($field, $operator) {
+                return $sql
+                    ->append(Sql::HAVING)
+                    ->append($field->sql()->queryString())
+                    ->append($operator->sql());
+            });
 
             return $this;
         }else {

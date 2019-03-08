@@ -28,11 +28,13 @@ trait HasNestedWhere
             $callback->call($this);
 
             if($this instanceof OnFilterInterface){
-                $this->query()->sql()->append(Sql::SQL_BRACKET_CLOSE);
-                $this->query()->appendSqlToClause(Sql::JOIN);
+                $this->query()->clause(Sql::JOIN, function (Sql $sql) {
+                    return $sql->append(Sql::SQL_BRACKET_CLOSE);
+                });
             }else {
-                $this->query()->sql()->append(Sql::SQL_BRACKET_CLOSE);
-                $this->query()->appendSqlToClause(Sql::WHERE);
+                $this->query()->clause(Sql::WHERE, function (Sql $sql) {
+                    return $sql->append(Sql::SQL_BRACKET_CLOSE);
+                });
             }
 
             return $this;

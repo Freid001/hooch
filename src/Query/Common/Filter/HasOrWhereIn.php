@@ -26,9 +26,7 @@ trait HasOrWhereIn
         if($this instanceof FilterInterface) {
             $this->orWhere(
                 $field,
-                $this->operator()
-                    ->param()
-                    ->in($values)
+                $this->operator()->param()->in($values)
             );
 
             return $this;

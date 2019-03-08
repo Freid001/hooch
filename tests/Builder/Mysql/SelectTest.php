@@ -74,7 +74,7 @@ class SelectTest extends TestCase
     public function testSelectCols()
     {
         $this->select->cols([Field::column('col_a')])->cols([Field::column('col_b')])->cols([Field::column('col_c')]);
-        $this->assertEquals("SELECT `col_a`,`col_b`,`col_c`", trim($this->select->build([
+        $this->assertEquals("SELECT `col_a` ,`col_b` ,`col_c`", trim($this->select->build([
             Sql::SELECT,
             Sql::COLS
         ])->queryString()));

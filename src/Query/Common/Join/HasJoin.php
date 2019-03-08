@@ -30,17 +30,17 @@ trait HasJoin
     public function join(string $type, RepositoryInterface $table): JoinInterface
     {
         if ($this instanceof JoinInterface) {
-            $this->setOnFilter($table->onFilter());
-
-            $this->query()->sql()
-                ->append($type)
-                ->append($this->query()->accent()->append($table->getName()))
-                ->ifThenAppend(!empty($table->getAlias()), Sql:: AS)
-                ->ifThenAppend(!empty($table->getAlias()), $this->query()->accent()->append($table->getAlias()));
-
-            $this->query()->appendSqlToClause(Sql::JOIN);
+            $accent = $this->query()->accent();
 
             $this->joinTables[] = $table;
+            $this->setOnFilter($table->onFilter());
+
+            $this->query()->clause(Sql::JOIN, function (Sql $sql) use ($type, $accent, $table) {
+                return $sql->append($type)
+                    ->append($accent->append($table->getName()))
+                    ->ifThenAppend(!empty($table->getAlias()), Sql:: AS)
+                    ->ifThenAppend(!empty($table->getAlias()), $accent->append($table->getAlias()));
+            });
 
             return $this;
         } else {

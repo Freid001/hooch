@@ -27,9 +27,7 @@ trait HasWhereBetween
         if($this instanceof FilterInterface) {
             $this->where(
                 $field,
-                $this->operator()
-                    ->param()
-                    ->between($from, $to)
+                $this->operator()->param()->between($from, $to)
             );
 
             return $this;

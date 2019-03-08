@@ -26,9 +26,7 @@ trait HasWhereNotIn
         if($this instanceof FilterInterface) {
             $this->whereNot(
                 $field,
-                $this->operator()
-                    ->param()
-                    ->in($values)
+                $this->operator()->param()->in($values)
             );
 
             return $this;

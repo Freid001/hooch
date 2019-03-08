@@ -68,8 +68,9 @@ class Select implements SelectInterface
     {
         $this->operator = $operator;
         $this->query = $query;
-        $this->query->sql()->append(Sql::SELECT);
-        $this->query->appendSqlToClause(Sql::SELECT);
+        $this->query->clause(Sql::SELECT, function(Sql $sql){
+            return $sql->append(Sql::SELECT);
+        });
     }
 
     /**
@@ -91,13 +92,15 @@ class Select implements SelectInterface
     ]): Sql
     {
         if (in_array(Sql::WHERE, $clauses) && !empty($this->filter)) {
-            $this->query->sql()->append($this->filter->build([Sql::WHERE]));
-            $this->query->appendSqlToClause(Sql::WHERE);
+            $this->query->clause(Sql::WHERE, function(Sql $sql){
+                return $sql->append($this->filter->build([Sql::WHERE]));
+            });
         }
 
         if (in_array(Sql::JOIN, $clauses) && !empty($this->onFilter)) {
-            $this->query->sql()->append($this->onFilter->build([Sql::JOIN]));
-            $this->query->appendSqlToClause(Sql::JOIN);
+            $this->query->clause(Sql::JOIN, function(Sql $sql){
+                return $sql->append($this->onFilter->build([Sql::JOIN]));
+            });
         }
 
         $sql = $this->query->build($clauses);

@@ -23,18 +23,18 @@ trait HasSet
     public function set(array $values): UpdateInterface
     {
         if($this instanceof UpdateInterface) {
-            $this->query()->sql()
-                ->ifThenAppend(empty($this->query()->hasClause(Sql::SET)),Sql::SET)
-                ->ifThenAppend(!empty($this->query()->hasClause(Sql::SET)),",",[],false);
 
             $query = $this->query();
-            $this->query()->sql()->append(implode(",",
-                array_map(function ($column) use ($query) {
-                    return $query->accent()->append($column,true) . Sql::SQL_SPACE . Sql::SQL_EQUAL . Sql::SQL_QUESTION_MARK;
-                }, array_keys($values))
-            ), array_values($values));
-
-            $this->query()->appendSqlToClause(Sql::SET);
+            $this->query()->clause(Sql::SET, function (Sql $sql) use ($query, $values) {
+                return $sql
+                    ->ifThenAppend(empty($query->hasClause(Sql::SET)), Sql::SET)
+                    ->ifThenAppend(!empty($query->hasClause(Sql::SET)), ",", [], false)
+                    ->append(implode(",",
+                        array_map(function ($column) use ($query) {
+                            return $query->accent()->append($column, true) . Sql::SQL_SPACE . Sql::SQL_EQUAL . Sql::SQL_QUESTION_MARK;
+                        }, array_keys($values))
+                    ), array_values($values));
+            });
 
             return $this;
         }else {

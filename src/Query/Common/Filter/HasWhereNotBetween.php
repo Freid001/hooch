@@ -27,9 +27,7 @@ trait HasWhereNotBetween
         if($this instanceof FilterInterface) {
             $this->whereNot(
                 $field,
-                $this->operator()
-                    ->param()
-                    ->between($from, $to)
+                $this->operator()->param()->between($from, $to)
             );
 
             return $this;

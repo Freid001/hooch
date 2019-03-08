@@ -26,9 +26,7 @@ trait HasOrWhereNotLike
         if ($this instanceof FilterInterface) {
             $this->orWhereNot(
                 $field,
-                $this->operator()
-                    ->param()
-                    ->like($values)
+                $this->operator()->param()->like($values)
             );
 
             return $this;

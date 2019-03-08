@@ -29,20 +29,21 @@ trait HasFrom
     public function from(RepositoryInterface $table): SelectInterface
     {
         if ($this instanceof SelectInterface) {
-            $this->setFilter($table->filter());
-
-            $this->query()->sql()
-                ->append(Sql::FROM)
-                ->append($this->query()->accent()->append($table->getName()))
-                ->ifThenAppend(!empty($table->getAlias()), Sql:: AS)
-                ->ifThenAppend(!empty($table->getAlias()), $this->query()->accent()->append($table->getAlias()));
-
-            $this->query()->appendSqlToClause(Sql::FROM);
+            $accent = $this->query()->accent();
 
             $this->table = $table;
+            $this->setFilter($this->table->filter());
+
+            $this->query()->clause(Sql::FROM, function (Sql $sql) use ($accent) {
+                return $sql
+                    ->append(Sql::FROM)
+                    ->append($accent->append($this->table->getName()))
+                    ->ifThenAppend(!empty($this->table->getAlias()), Sql:: AS)
+                    ->ifThenAppend(!empty($this->table->getAlias()), $accent->append($this->table->getAlias()));
+            });
 
             return $this;
-        }else {
+        } else {
             throw new InterfaceException(sprintf("Must invoke SelectInterface in: %s.", get_class($this)));
         }
     }

@@ -29,12 +29,9 @@ trait HasCols
 
         if($this instanceof SelectInterface) {
             $query = $this->query();
-
-            $columnArray = array_reduce(array_keys($columns), function($transformed, $key) use ($query, $columns)
-            {
+            $columnArray = array_reduce(array_keys($columns), function($transformed, $key) use ($query, $columns) {
                 $column = $columns[$key];
-                if($column instanceof Field\FieldInterface)
-                {
+                if($column instanceof Field\FieldInterface) {
                     $column->setAccent($query->accent());
 
                     if(is_string($key)){
@@ -47,11 +44,12 @@ trait HasCols
                 return $transformed;
             },[]);
 
-            $query->sql()
-                ->ifThenAppend($query->hasClause(Sql::COLS),",",[],false)
-                ->ifThenAppend(!empty($columnArray),implode(",", $columnArray));
+            $this->query()->clause(Sql::COLS, function (Sql $sql) use ($query, $columnArray) {
+                return $sql
+                    ->ifThenAppend($query->hasClause(Sql::COLS),",",[],false)
+                    ->ifThenAppend(!empty($columnArray),implode(",", $columnArray));
 
-            $query->appendSqlToClause(Sql::COLS, false);
+            });
 
             return $this;
         }else {

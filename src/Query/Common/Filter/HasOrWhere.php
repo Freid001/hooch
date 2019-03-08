@@ -27,9 +27,7 @@ trait HasOrWhere
         if($this instanceof FilterInterface) {
             $this->where(
                 null,
-                $this->operator()
-                    ->field()
-                    ->or($field, $operator)
+                $this->operator()->field()->or($field, $operator)
             );
 
             return $this;

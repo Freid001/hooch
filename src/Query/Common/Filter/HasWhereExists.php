@@ -25,9 +25,7 @@ trait HasWhereExists
         if($this instanceof FilterInterface) {
             $this->where(
                 null,
-                $this->operator()
-                    ->sql()
-                    ->exists($subQuery)
+                $this->operator()->sql()->exists($subQuery)
             );
 
             return $this;

@@ -42,11 +42,32 @@ class Query
     }
 
     /**
-     * @return Sql
+     * @param string $clause
+     * @param \Closure $callback
+     * @return Query
      */
-    public function sql(): Sql
+    public function clause(string $clause, \Closure $callback): Query
     {
-        return $this->sql;
+        $sql = $callback($this->sql);
+        if(!$sql instanceof Sql) {
+            return $this;
+        }
+
+        if (!empty($this->query[$clause])) {
+            $this->query[$clause] .= trim($sql->queryString()) . Sql::SQL_SPACE;
+            $this->parameters[$clause] = array_merge($this->parameters[$clause], $sql->parameters());
+
+            $sql->reset();
+
+            return $this;
+        }
+
+        $this->query[$clause] = trim($sql->queryString()) . Sql::SQL_SPACE;
+        $this->parameters[$clause] = $sql->parameters();
+
+        $sql->reset();
+
+        return $this;
     }
 
     /**
@@ -55,18 +76,6 @@ class Query
     public function accent(): Accent
     {
         return $this->accent;
-    }
-
-    /**
-     * @param string $clause
-     * @param bool $hasSpace
-     */
-    public function appendSqlToClause(string $clause, $hasSpace = true): void
-    {
-        $this->appendString($clause, $this->sql->queryString(), !$hasSpace);
-        $this->appendParameters($clause, $this->sql->parameters());
-
-        $this->sql->reset();
     }
 
     /**
@@ -111,38 +120,6 @@ class Query
         foreach ($clauses as $clause) {
             unset($this->query[$clause]);
             unset($this->parameters[$clause]);
-        }
-    }
-
-    /**
-     * @param string $clause
-     * @param string|null $sql
-     * @param bool $trim
-     */
-    private function appendString(string $clause, ?string $sql, bool $trim): void
-    {
-        if (!empty($this->query[$clause])) {
-            if($trim){
-                $this->query[$clause] = trim($this->query[$clause]) . $sql;
-            }else {
-                $this->query[$clause] .= $sql;
-            }
-        } else {
-            $this->query[$clause] = $sql;
-        }
-    }
-
-    /**
-     * @param string $clause
-     * @param array $parameters
-     * @return void
-     */
-    private function appendParameters(string $clause, array $parameters): void
-    {
-        if (!empty($this->parameters[$clause])) {
-            $this->parameters[$clause] = array_merge($this->parameters[$clause], $parameters);
-        } else {
-            $this->parameters[$clause] = $parameters;
         }
     }
 }

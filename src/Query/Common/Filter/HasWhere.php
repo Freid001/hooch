@@ -27,27 +27,29 @@ trait HasWhere
     public function where(?FieldInterface $field, OperatorInterface $operator): FilterInterface
     {
         if($this instanceof FilterInterface) {
+            $accent = $this->query()->accent();
+            $fieldOperator = $this->operator()->field();
+            $this->query()->clause(Sql::WHERE, function (Sql $sql) use ($field, $operator, $fieldOperator, $accent) {
+                $sql->ifThenAppend($this->noClause(), $this->whereJoin())
+                    ->ifThenAppend($this->isNested($operator), Sql::SQL_BRACKET_OPEN);
 
-            $this->query()->sql()
-                ->ifThenAppend($this->noClause(), $this->whereJoin())
-                ->ifThenAppend($this->isNested($operator), Sql::SQL_BRACKET_OPEN);
+                if(!empty($field)) {
+                    $field->setAccent($accent);
 
-            if(!empty($field)) {
-                $field->setAccent($this->query()->accent());
+                    $sql->ifThenAppend($this->noClause(), $field->sql()->queryString());
+                }
 
-                $this->query()->sql()->ifThenAppend($this->noClause(), $field->sql()->queryString());
-            }
-
-            if($this->isAnd($operator)) {
-                $this->query()->sql()->append($this->operator()->field()->and(
+                if($this->isAnd($operator)) {
+                    $sql->append($fieldOperator->and(
                         $field,
                         $operator
                     )->sql());
-            }else {
-                $this->query()->sql()->append($operator->sql());
-            }
+                }else {
+                    $sql->append($operator->sql());
+                }
 
-            $this->query()->appendSqlToClause($this->whereJoin());
+                return $sql;
+            });
 
             return $this;
         }else {

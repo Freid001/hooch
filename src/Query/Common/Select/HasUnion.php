@@ -24,12 +24,12 @@ trait HasUnion
     public function union(Sql $unionSql, bool $all = false): SelectInterface
     {
         if($this instanceof SelectInterface){
-            $this->query()->sql()
-                ->append(Sql::UNION)
-                ->ifThenAppend(!empty($all), Sql::ALL)
-                ->append($unionSql);
-
-            $this->query()->appendSqlToClause(Sql::UNION);
+            $this->query()->clause(Sql::UNION, function (Sql $sql) use ($unionSql, $all) {
+                return $sql
+                    ->append(Sql::UNION)
+                    ->ifThenAppend(!empty($all), Sql::ALL)
+                    ->append($unionSql);
+            });
 
             return $this;
         }else {

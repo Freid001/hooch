@@ -29,7 +29,7 @@ trait HasWhere
         if($this instanceof FilterInterface) {
             $accent = $this->query()->accent();
             $fieldOperator = $this->operator()->field();
-            $this->query()->clause(Sql::WHERE, function (Sql $sql) use ($field, $operator, $fieldOperator, $accent) {
+            $this->query()->clause($this->whereJoin(), function (Sql $sql) use ($field, $operator, $fieldOperator, $accent) {
                 $sql->ifThenAppend($this->noClause(), $this->whereJoin())
                     ->ifThenAppend($this->isNested($operator), Sql::SQL_BRACKET_OPEN);
 

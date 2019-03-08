@@ -11,24 +11,21 @@ namespace Redstraw\Hooch\Query;
 class Query
 {
     /**
-     * @var array
+     * @var Accent
      */
-    protected $query = [];
-
+    private $accent;
     /**
      * @var array
      */
     protected $parameters = [];
-
+    /**
+     * @var array
+     */
+    protected $query = [];
     /**
      * @var Sql
      */
     private $sql;
-
-    /**
-     * @var Accent
-     */
-    private $accent;
 
     /**
      * Query constructor.
@@ -39,35 +36,6 @@ class Query
     {
         $this->sql = $sql;
         $this->accent = $accent;
-    }
-
-    /**
-     * @param string $clause
-     * @param \Closure $callback
-     * @return Query
-     */
-    public function clause(string $clause, \Closure $callback): Query
-    {
-        $sql = $callback($this->sql);
-        if(!$sql instanceof Sql) {
-            return $this;
-        }
-
-        if (!empty($this->query[$clause])) {
-            $this->query[$clause] .= trim($sql->queryString()) . Sql::SQL_SPACE;
-            $this->parameters[$clause] = array_merge($this->parameters[$clause], $sql->parameters());
-
-            $sql->reset();
-
-            return $this;
-        }
-
-        $this->query[$clause] = trim($sql->queryString()) . Sql::SQL_SPACE;
-        $this->parameters[$clause] = $sql->parameters();
-
-        $sql->reset();
-
-        return $this;
     }
 
     /**
@@ -84,10 +52,10 @@ class Query
      */
     public function build(array $order = []): Sql
     {
-        return array_reduce($order, function(Sql $sql, $clause){
-            if($this->hasClause($clause)){
+        return array_reduce($order, function (Sql $sql, $clause) {
+            if ($this->hasClause($clause)) {
                 $sql->append(
-                    $this->query[$clause],
+                    trim($this->query[$clause]).Sql::SQL_SPACE,
                     $this->parameters[$clause],
                     false
                 );
@@ -95,6 +63,35 @@ class Query
 
             return $sql;
         }, new Sql(null, [], false));
+    }
+
+    /**
+     * @param string $clause
+     * @param \Closure $callback
+     * @return Query
+     */
+    public function clause(string $clause, \Closure $callback): Query
+    {
+        $sql = $callback($this->sql);
+        if (!$sql instanceof Sql) {
+            return $this;
+        }
+
+        if (!empty($this->query[$clause])) {
+            $this->query[$clause] .= Sql::SQL_SPACE.trim($sql->queryString());
+            $this->parameters[$clause] = array_merge($this->parameters[$clause], $sql->parameters());
+
+            $sql->reset();
+
+            return $this;
+        }
+
+        $this->query[$clause] = trim($sql->queryString());
+        $this->parameters[$clause] = $sql->parameters();
+
+        $sql->reset();
+
+        return $this;
     }
 
     /**

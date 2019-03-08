@@ -116,7 +116,7 @@ class UpdateTest extends TestCase
             "tt.another_key" => "another_value"
         ])->build();
 
-        $this->assertEquals("UPDATE `some_table_name` AS `t` JOIN `another_table_name` AS `tt`  SET `t`.`key` =?,`tt`.`another_key` =?", trim($query->queryString()));
+        $this->assertEquals("UPDATE `some_table_name` AS `t` JOIN `another_table_name` AS `tt` SET `t`.`key` =?,`tt`.`another_key` =?", trim($query->queryString()));
         $this->assertEquals(['value','another_value'], $query->parameters());
     }
 

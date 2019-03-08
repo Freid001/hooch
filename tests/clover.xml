@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1552004452">
-  <project timestamp="1552004452">
+<coverage generated="1552086118">
+  <project timestamp="1552086118">
     <package name="Redstraw\Hooch\Builder\Driver">
       <file name="/mnt/c/Users/firei/www/hooch/src/Builder/Driver/MysqliDriver.php">
         <class name="Redstraw\Hooch\Builder\Driver\MysqliDriver" namespace="Redstraw\Hooch\Builder\Driver" fullPackage="Redstraw" package="Redstraw">
@@ -541,44 +541,44 @@
         <class name="Redstraw\Hooch\Query\Query" namespace="Redstraw\Hooch\Query" fullPackage="Redstraw" package="Redstraw">
           <metrics complexity="13" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="31" coveredstatements="30" elements="37" coveredelements="35"/>
         </class>
-        <line num="38" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="86"/>
-        <line num="40" type="stmt" count="86"/>
-        <line num="41" type="stmt" count="86"/>
-        <line num="42" type="stmt" count="86"/>
-        <line num="49" type="method" name="clause" visibility="public" complexity="3" crap="3.01" count="73"/>
-        <line num="51" type="stmt" count="73"/>
-        <line num="52" type="stmt" count="73"/>
-        <line num="53" type="stmt" count="0"/>
-        <line num="56" type="stmt" count="73"/>
-        <line num="57" type="stmt" count="39"/>
-        <line num="58" type="stmt" count="39"/>
-        <line num="60" type="stmt" count="39"/>
-        <line num="62" type="stmt" count="39"/>
-        <line num="65" type="stmt" count="73"/>
-        <line num="66" type="stmt" count="73"/>
-        <line num="68" type="stmt" count="73"/>
-        <line num="70" type="stmt" count="73"/>
-        <line num="76" type="method" name="accent" visibility="public" complexity="1" crap="1" count="86"/>
-        <line num="78" type="stmt" count="86"/>
-        <line num="87" type="method" name="anonymousFunction:87#352" complexity="2" crap="2" count="69"/>
-        <line num="88" type="stmt" count="69"/>
-        <line num="89" type="stmt" count="69"/>
-        <line num="90" type="stmt" count="69"/>
-        <line num="91" type="stmt" count="69"/>
-        <line num="92" type="stmt" count="69"/>
-        <line num="96" type="stmt" count="69"/>
-        <line num="97" type="stmt" count="69"/>
-        <line num="104" type="method" name="hasClause" visibility="public" complexity="1" crap="1" count="69"/>
-        <line num="106" type="stmt" count="69"/>
-        <line num="113" type="method" name="reset" visibility="public" complexity="3" crap="3" count="77"/>
-        <line num="115" type="stmt" count="77"/>
-        <line num="116" type="stmt" count="8"/>
-        <line num="117" type="stmt" count="8"/>
-        <line num="120" type="stmt" count="77"/>
-        <line num="121" type="stmt" count="69"/>
-        <line num="122" type="stmt" count="69"/>
-        <line num="124" type="stmt" count="77"/>
-        <metrics loc="125" ncloc="84" classes="1" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="31" coveredstatements="30" elements="37" coveredelements="35"/>
+        <line num="35" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="86"/>
+        <line num="37" type="stmt" count="86"/>
+        <line num="38" type="stmt" count="86"/>
+        <line num="39" type="stmt" count="86"/>
+        <line num="44" type="method" name="accent" visibility="public" complexity="1" crap="1" count="86"/>
+        <line num="46" type="stmt" count="86"/>
+        <line num="55" type="method" name="anonymousFunction:55#159" complexity="2" crap="2" count="69"/>
+        <line num="56" type="stmt" count="69"/>
+        <line num="57" type="stmt" count="69"/>
+        <line num="58" type="stmt" count="69"/>
+        <line num="59" type="stmt" count="69"/>
+        <line num="60" type="stmt" count="69"/>
+        <line num="64" type="stmt" count="69"/>
+        <line num="65" type="stmt" count="69"/>
+        <line num="73" type="method" name="clause" visibility="public" complexity="3" crap="3.01" count="73"/>
+        <line num="75" type="stmt" count="73"/>
+        <line num="76" type="stmt" count="73"/>
+        <line num="77" type="stmt" count="0"/>
+        <line num="80" type="stmt" count="73"/>
+        <line num="81" type="stmt" count="39"/>
+        <line num="82" type="stmt" count="39"/>
+        <line num="84" type="stmt" count="39"/>
+        <line num="86" type="stmt" count="39"/>
+        <line num="89" type="stmt" count="73"/>
+        <line num="90" type="stmt" count="73"/>
+        <line num="92" type="stmt" count="73"/>
+        <line num="94" type="stmt" count="73"/>
+        <line num="101" type="method" name="hasClause" visibility="public" complexity="1" crap="1" count="69"/>
+        <line num="103" type="stmt" count="69"/>
+        <line num="110" type="method" name="reset" visibility="public" complexity="3" crap="3" count="77"/>
+        <line num="112" type="stmt" count="77"/>
+        <line num="113" type="stmt" count="8"/>
+        <line num="114" type="stmt" count="8"/>
+        <line num="117" type="stmt" count="77"/>
+        <line num="118" type="stmt" count="69"/>
+        <line num="119" type="stmt" count="69"/>
+        <line num="121" type="stmt" count="77"/>
+        <metrics loc="122" ncloc="81" classes="1" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="31" coveredstatements="30" elements="37" coveredelements="35"/>
       </file>
       <file name="/mnt/c/Users/firei/www/hooch/src/Query/Sql.php">
         <class name="Redstraw\Hooch\Query\Sql" namespace="Redstraw\Hooch\Query" fullPackage="Redstraw" package="Redstraw">
@@ -1603,7 +1603,7 @@
       <metrics loc="163" ncloc="55" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
     <file name="/mnt/c/Users/firei/www/hooch/src/Query/Statement/InsertInterface.php">
-      <metrics loc="34" ncloc="17" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      <metrics loc="36" ncloc="19" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
     <file name="/mnt/c/Users/firei/www/hooch/src/Query/Statement/JoinInterface.php">
       <metrics loc="61" ncloc="26" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
@@ -1617,6 +1617,6 @@
     <file name="/mnt/c/Users/firei/www/hooch/src/Query/Statement/UpdateInterface.php">
       <metrics loc="53" ncloc="23" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <metrics files="89" loc="5620" ncloc="3772" classes="73" methods="225" coveredmethods="128" conditionals="0" coveredconditionals="0" statements="867" coveredstatements="664" elements="1092" coveredelements="792"/>
+    <metrics files="89" loc="5619" ncloc="3771" classes="73" methods="225" coveredmethods="128" conditionals="0" coveredconditionals="0" statements="867" coveredstatements="664" elements="1092" coveredelements="792"/>
   </project>
 </coverage>

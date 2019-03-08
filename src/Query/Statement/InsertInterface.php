@@ -14,6 +14,7 @@ use Redstraw\Hooch\Query\Repository\RepositoryInterface;
  */
 interface InsertInterface extends QueryBuilderInterface
 {
+
     /**
      * @param RepositoryInterface $table
      * @param array $cols
@@ -25,11 +26,12 @@ interface InsertInterface extends QueryBuilderInterface
      * @param array $values
      * @return InsertInterface
      */
-    public function values(array $values): InsertInterface;
+    public function onDuplicateKeyUpdate(array $values): InsertInterface;
 
     /**
      * @param array $values
      * @return InsertInterface
      */
-    public function onDuplicateKeyUpdate(array $values): InsertInterface;
+    public function values(array $values): InsertInterface;
+
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1552086118">
-  <project timestamp="1552086118">
+<coverage generated="1552177546">
+  <project timestamp="1552177546">
     <package name="Redstraw\Hooch\Builder\Driver">
       <file name="/mnt/c/Users/firei/www/hooch/src/Builder/Driver/MysqliDriver.php">
         <class name="Redstraw\Hooch\Builder\Driver\MysqliDriver" namespace="Redstraw\Hooch\Builder\Driver" fullPackage="Redstraw" package="Redstraw">
@@ -258,225 +258,225 @@
     <package name="Redstraw\Hooch\Builder\Mysql\Operator">
       <file name="/mnt/c/Users/firei/www/hooch/src/Builder/Mysql/Operator/Field.php">
         <class name="Redstraw\Hooch\Builder\Mysql\Operator\Field" namespace="Redstraw\Hooch\Builder\Mysql\Operator" fullPackage="Redstraw" package="Redstraw">
-          <metrics complexity="26" methods="17" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="48" coveredstatements="38" elements="65" coveredelements="50"/>
+          <metrics complexity="26" methods="17" coveredmethods="17" conditionals="0" coveredconditionals="0" statements="48" coveredstatements="48" elements="65" coveredelements="65"/>
         </class>
-        <line num="45" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="86"/>
-        <line num="47" type="stmt" count="86"/>
-        <line num="48" type="stmt" count="86"/>
-        <line num="49" type="stmt" count="86"/>
-        <line num="54" type="method" name="accent" visibility="public" complexity="1" crap="1" count="6"/>
-        <line num="56" type="stmt" count="6"/>
-        <line num="62" type="method" name="sql" visibility="public" complexity="1" crap="1" count="34"/>
-        <line num="64" type="stmt" count="34"/>
-        <line num="70" type="method" name="operator" visibility="public" complexity="1" crap="1" count="34"/>
-        <line num="72" type="stmt" count="34"/>
-        <line num="78" type="method" name="setNested" visibility="public" complexity="1" crap="1" count="28"/>
-        <line num="80" type="stmt" count="28"/>
-        <line num="81" type="stmt" count="28"/>
-        <line num="86" type="method" name="isNested" visibility="public" complexity="1" crap="1" count="38"/>
-        <line num="88" type="stmt" count="38"/>
-        <line num="96" type="method" name="and" visibility="public" complexity="4" crap="4" count="12"/>
-        <line num="98" type="stmt" count="12"/>
-        <line num="99" type="stmt" count="12"/>
-        <line num="101" type="stmt" count="12"/>
-        <line num="109" type="method" name="not" visibility="public" complexity="2" crap="2" count="14"/>
-        <line num="111" type="stmt" count="14"/>
-        <line num="112" type="stmt" count="14"/>
-        <line num="114" type="stmt" count="14"/>
-        <line num="122" type="method" name="or" visibility="public" complexity="4" crap="4" count="11"/>
-        <line num="124" type="stmt" count="11"/>
-        <line num="125" type="stmt" count="11"/>
-        <line num="127" type="stmt" count="11"/>
-        <line num="134" type="method" name="eq" visibility="public" complexity="1" crap="1" count="6"/>
-        <line num="136" type="stmt" count="6"/>
-        <line num="138" type="stmt" count="6"/>
-        <line num="145" type="method" name="notEq" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="147" type="stmt" count="0"/>
-        <line num="149" type="stmt" count="0"/>
-        <line num="156" type="method" name="gt" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="158" type="stmt" count="0"/>
-        <line num="160" type="stmt" count="0"/>
-        <line num="167" type="method" name="gtEq" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="169" type="stmt" count="0"/>
-        <line num="171" type="stmt" count="0"/>
-        <line num="178" type="method" name="lt" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="180" type="stmt" count="0"/>
-        <line num="182" type="stmt" count="0"/>
-        <line num="189" type="method" name="ltEq" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="191" type="stmt" count="0"/>
-        <line num="193" type="stmt" count="0"/>
-        <line num="200" type="method" name="comparison" visibility="private" complexity="1" crap="1" count="6"/>
-        <line num="202" type="stmt" count="6"/>
-        <line num="204" type="stmt" count="6"/>
-        <line num="205" type="stmt" count="6"/>
-        <line num="206" type="stmt" count="6"/>
-        <line num="207" type="stmt" count="6"/>
-        <line num="209" type="stmt" count="6"/>
-        <line num="217" type="method" name="logical" visibility="private" complexity="3" crap="3" count="28"/>
-        <line num="219" type="stmt" count="28"/>
-        <line num="220" type="stmt" count="28"/>
-        <line num="222" type="stmt" count="28"/>
-        <line num="223" type="stmt" count="28"/>
-        <line num="224" type="stmt" count="28"/>
-        <line num="225" type="stmt" count="28"/>
-        <line num="227" type="stmt" count="28"/>
-        <line num="228" type="stmt" count="23"/>
-        <line num="230" type="stmt" count="23"/>
-        <line num="233" type="stmt" count="28"/>
-        <line num="235" type="stmt" count="28"/>
-        <line num="237" type="stmt" count="28"/>
-        <metrics loc="239" ncloc="155" classes="1" methods="17" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="48" coveredstatements="38" elements="65" coveredelements="50"/>
+        <line num="45" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="95"/>
+        <line num="47" type="stmt" count="95"/>
+        <line num="48" type="stmt" count="95"/>
+        <line num="49" type="stmt" count="95"/>
+        <line num="54" type="method" name="accent" visibility="public" complexity="1" crap="1" count="12"/>
+        <line num="56" type="stmt" count="12"/>
+        <line num="62" type="method" name="sql" visibility="public" complexity="1" crap="1" count="43"/>
+        <line num="64" type="stmt" count="43"/>
+        <line num="70" type="method" name="operator" visibility="public" complexity="1" crap="1" count="43"/>
+        <line num="72" type="stmt" count="43"/>
+        <line num="78" type="method" name="setNested" visibility="public" complexity="1" crap="1" count="31"/>
+        <line num="80" type="stmt" count="31"/>
+        <line num="81" type="stmt" count="31"/>
+        <line num="86" type="method" name="isNested" visibility="public" complexity="1" crap="1" count="41"/>
+        <line num="88" type="stmt" count="41"/>
+        <line num="96" type="method" name="and" visibility="public" complexity="4" crap="4" count="13"/>
+        <line num="98" type="stmt" count="13"/>
+        <line num="99" type="stmt" count="13"/>
+        <line num="101" type="stmt" count="13"/>
+        <line num="109" type="method" name="not" visibility="public" complexity="2" crap="2" count="15"/>
+        <line num="111" type="stmt" count="15"/>
+        <line num="112" type="stmt" count="15"/>
+        <line num="114" type="stmt" count="15"/>
+        <line num="122" type="method" name="or" visibility="public" complexity="4" crap="4" count="12"/>
+        <line num="124" type="stmt" count="12"/>
+        <line num="125" type="stmt" count="12"/>
+        <line num="127" type="stmt" count="12"/>
+        <line num="134" type="method" name="eq" visibility="public" complexity="1" crap="1" count="7"/>
+        <line num="136" type="stmt" count="7"/>
+        <line num="138" type="stmt" count="7"/>
+        <line num="145" type="method" name="notEq" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="147" type="stmt" count="1"/>
+        <line num="149" type="stmt" count="1"/>
+        <line num="156" type="method" name="gt" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="158" type="stmt" count="1"/>
+        <line num="160" type="stmt" count="1"/>
+        <line num="167" type="method" name="gtEq" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="169" type="stmt" count="1"/>
+        <line num="171" type="stmt" count="1"/>
+        <line num="178" type="method" name="lt" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="180" type="stmt" count="1"/>
+        <line num="182" type="stmt" count="1"/>
+        <line num="189" type="method" name="ltEq" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="191" type="stmt" count="1"/>
+        <line num="193" type="stmt" count="1"/>
+        <line num="200" type="method" name="comparison" visibility="private" complexity="1" crap="1" count="12"/>
+        <line num="202" type="stmt" count="12"/>
+        <line num="204" type="stmt" count="12"/>
+        <line num="205" type="stmt" count="12"/>
+        <line num="206" type="stmt" count="12"/>
+        <line num="207" type="stmt" count="12"/>
+        <line num="209" type="stmt" count="12"/>
+        <line num="217" type="method" name="logical" visibility="private" complexity="3" crap="3" count="31"/>
+        <line num="219" type="stmt" count="31"/>
+        <line num="220" type="stmt" count="31"/>
+        <line num="222" type="stmt" count="31"/>
+        <line num="223" type="stmt" count="31"/>
+        <line num="224" type="stmt" count="31"/>
+        <line num="225" type="stmt" count="31"/>
+        <line num="227" type="stmt" count="31"/>
+        <line num="228" type="stmt" count="26"/>
+        <line num="230" type="stmt" count="26"/>
+        <line num="233" type="stmt" count="31"/>
+        <line num="235" type="stmt" count="31"/>
+        <line num="237" type="stmt" count="31"/>
+        <metrics loc="239" ncloc="155" classes="1" methods="17" coveredmethods="17" conditionals="0" coveredconditionals="0" statements="48" coveredstatements="48" elements="65" coveredelements="65"/>
       </file>
       <file name="/mnt/c/Users/firei/www/hooch/src/Builder/Mysql/Operator/Param.php">
         <class name="Redstraw\Hooch\Builder\Mysql\Operator\Param" namespace="Redstraw\Hooch\Builder\Mysql\Operator" fullPackage="Redstraw" package="Redstraw">
-          <metrics complexity="17" methods="16" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="56" coveredstatements="45" elements="72" coveredelements="55"/>
+          <metrics complexity="17" methods="16" coveredmethods="15" conditionals="0" coveredconditionals="0" statements="56" coveredstatements="55" elements="72" coveredelements="70"/>
         </class>
-        <line num="43" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="86"/>
-        <line num="45" type="stmt" count="86"/>
-        <line num="46" type="stmt" count="86"/>
-        <line num="47" type="stmt" count="86"/>
+        <line num="43" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="95"/>
+        <line num="45" type="stmt" count="95"/>
+        <line num="46" type="stmt" count="95"/>
+        <line num="47" type="stmt" count="95"/>
         <line num="52" type="method" name="accent" visibility="public" complexity="1" crap="2.00" count="0"/>
         <line num="54" type="stmt" count="0"/>
-        <line num="60" type="method" name="sql" visibility="public" complexity="1" crap="1" count="31"/>
-        <line num="62" type="stmt" count="31"/>
-        <line num="68" type="method" name="operator" visibility="public" complexity="1" crap="1" count="31"/>
-        <line num="70" type="stmt" count="31"/>
-        <line num="76" type="method" name="setNested" visibility="public" complexity="1" crap="1" count="17"/>
-        <line num="78" type="stmt" count="17"/>
-        <line num="79" type="stmt" count="17"/>
-        <line num="84" type="method" name="isNested" visibility="public" complexity="1" crap="1" count="17"/>
-        <line num="86" type="stmt" count="17"/>
-        <line num="94" type="method" name="between" visibility="public" complexity="2" crap="2" count="6"/>
-        <line num="96" type="stmt" count="6"/>
-        <line num="97" type="stmt" count="6"/>
-        <line num="98" type="stmt" count="6"/>
-        <line num="99" type="stmt" count="6"/>
-        <line num="100" type="stmt" count="6"/>
-        <line num="101" type="stmt" count="6"/>
-        <line num="102" type="stmt" count="6"/>
-        <line num="103" type="stmt" count="6"/>
-        <line num="105" type="stmt" count="6"/>
-        <line num="107" type="stmt" count="6"/>
-        <line num="114" type="method" name="in" visibility="public" complexity="1" crap="1" count="5"/>
-        <line num="116" type="stmt" count="5"/>
-        <line num="117" type="stmt" count="5"/>
-        <line num="118" type="stmt" count="5"/>
-        <line num="119" type="stmt" count="5"/>
-        <line num="120" type="stmt" count="5"/>
-        <line num="121" type="stmt" count="5"/>
-        <line num="122" type="stmt" count="5"/>
-        <line num="123" type="stmt" count="5"/>
-        <line num="124" type="stmt" count="5"/>
-        <line num="125" type="stmt" count="5"/>
-        <line num="127" type="stmt" count="5"/>
-        <line num="129" type="stmt" count="5"/>
-        <line num="136" type="method" name="like" visibility="public" complexity="1" crap="1" count="6"/>
-        <line num="138" type="stmt" count="6"/>
-        <line num="139" type="stmt" count="6"/>
-        <line num="140" type="stmt" count="6"/>
-        <line num="141" type="stmt" count="6"/>
-        <line num="142" type="stmt" count="6"/>
-        <line num="143" type="stmt" count="6"/>
-        <line num="145" type="stmt" count="6"/>
-        <line num="147" type="stmt" count="6"/>
-        <line num="154" type="method" name="eq" visibility="public" complexity="1" crap="1" count="14"/>
-        <line num="156" type="stmt" count="14"/>
-        <line num="158" type="stmt" count="14"/>
-        <line num="165" type="method" name="notEq" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="167" type="stmt" count="0"/>
-        <line num="169" type="stmt" count="0"/>
-        <line num="176" type="method" name="gt" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="178" type="stmt" count="0"/>
-        <line num="180" type="stmt" count="0"/>
-        <line num="187" type="method" name="gtEq" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="189" type="stmt" count="0"/>
-        <line num="191" type="stmt" count="0"/>
-        <line num="198" type="method" name="lt" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="200" type="stmt" count="0"/>
-        <line num="202" type="stmt" count="0"/>
-        <line num="209" type="method" name="ltEq" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="211" type="stmt" count="0"/>
-        <line num="213" type="stmt" count="0"/>
-        <line num="220" type="method" name="comparison" visibility="private" complexity="1" crap="1" count="14"/>
-        <line num="222" type="stmt" count="14"/>
-        <line num="223" type="stmt" count="14"/>
-        <line num="224" type="stmt" count="14"/>
-        <line num="225" type="stmt" count="14"/>
-        <line num="227" type="stmt" count="14"/>
-        <metrics loc="229" ncloc="152" classes="1" methods="16" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="56" coveredstatements="45" elements="72" coveredelements="55"/>
+        <line num="60" type="method" name="sql" visibility="public" complexity="1" crap="1" count="40"/>
+        <line num="62" type="stmt" count="40"/>
+        <line num="68" type="method" name="operator" visibility="public" complexity="1" crap="1" count="40"/>
+        <line num="70" type="stmt" count="40"/>
+        <line num="76" type="method" name="setNested" visibility="public" complexity="1" crap="1" count="20"/>
+        <line num="78" type="stmt" count="20"/>
+        <line num="79" type="stmt" count="20"/>
+        <line num="84" type="method" name="isNested" visibility="public" complexity="1" crap="1" count="20"/>
+        <line num="86" type="stmt" count="20"/>
+        <line num="94" type="method" name="between" visibility="public" complexity="2" crap="2" count="7"/>
+        <line num="96" type="stmt" count="7"/>
+        <line num="97" type="stmt" count="7"/>
+        <line num="98" type="stmt" count="7"/>
+        <line num="99" type="stmt" count="7"/>
+        <line num="100" type="stmt" count="7"/>
+        <line num="101" type="stmt" count="7"/>
+        <line num="102" type="stmt" count="7"/>
+        <line num="103" type="stmt" count="7"/>
+        <line num="105" type="stmt" count="7"/>
+        <line num="107" type="stmt" count="7"/>
+        <line num="114" type="method" name="in" visibility="public" complexity="1" crap="1" count="6"/>
+        <line num="116" type="stmt" count="6"/>
+        <line num="117" type="stmt" count="6"/>
+        <line num="118" type="stmt" count="6"/>
+        <line num="119" type="stmt" count="6"/>
+        <line num="120" type="stmt" count="6"/>
+        <line num="121" type="stmt" count="6"/>
+        <line num="122" type="stmt" count="6"/>
+        <line num="123" type="stmt" count="6"/>
+        <line num="124" type="stmt" count="6"/>
+        <line num="125" type="stmt" count="6"/>
+        <line num="127" type="stmt" count="6"/>
+        <line num="129" type="stmt" count="6"/>
+        <line num="136" type="method" name="like" visibility="public" complexity="1" crap="1" count="7"/>
+        <line num="138" type="stmt" count="7"/>
+        <line num="139" type="stmt" count="7"/>
+        <line num="140" type="stmt" count="7"/>
+        <line num="141" type="stmt" count="7"/>
+        <line num="142" type="stmt" count="7"/>
+        <line num="143" type="stmt" count="7"/>
+        <line num="145" type="stmt" count="7"/>
+        <line num="147" type="stmt" count="7"/>
+        <line num="154" type="method" name="eq" visibility="public" complexity="1" crap="1" count="15"/>
+        <line num="156" type="stmt" count="15"/>
+        <line num="158" type="stmt" count="15"/>
+        <line num="165" type="method" name="notEq" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="167" type="stmt" count="1"/>
+        <line num="169" type="stmt" count="1"/>
+        <line num="176" type="method" name="gt" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="178" type="stmt" count="1"/>
+        <line num="180" type="stmt" count="1"/>
+        <line num="187" type="method" name="gtEq" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="189" type="stmt" count="1"/>
+        <line num="191" type="stmt" count="1"/>
+        <line num="198" type="method" name="lt" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="200" type="stmt" count="1"/>
+        <line num="202" type="stmt" count="1"/>
+        <line num="209" type="method" name="ltEq" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="211" type="stmt" count="1"/>
+        <line num="213" type="stmt" count="1"/>
+        <line num="220" type="method" name="comparison" visibility="private" complexity="1" crap="1" count="20"/>
+        <line num="222" type="stmt" count="20"/>
+        <line num="223" type="stmt" count="20"/>
+        <line num="224" type="stmt" count="20"/>
+        <line num="225" type="stmt" count="20"/>
+        <line num="227" type="stmt" count="20"/>
+        <metrics loc="229" ncloc="152" classes="1" methods="16" coveredmethods="15" conditionals="0" coveredconditionals="0" statements="56" coveredstatements="55" elements="72" coveredelements="70"/>
       </file>
       <file name="/mnt/c/Users/firei/www/hooch/src/Builder/Mysql/Operator/SubQuery.php">
         <class name="Redstraw\Hooch\Builder\Mysql\Operator\SubQuery" namespace="Redstraw\Hooch\Builder\Mysql\Operator" fullPackage="Redstraw" package="Redstraw">
-          <metrics complexity="18" methods="18" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="49" coveredstatements="38" elements="67" coveredelements="50"/>
+          <metrics complexity="18" methods="18" coveredmethods="17" conditionals="0" coveredconditionals="0" statements="49" coveredstatements="48" elements="67" coveredelements="65"/>
         </class>
-        <line num="43" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="86"/>
-        <line num="45" type="stmt" count="86"/>
-        <line num="46" type="stmt" count="86"/>
-        <line num="47" type="stmt" count="86"/>
+        <line num="43" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="96"/>
+        <line num="45" type="stmt" count="96"/>
+        <line num="46" type="stmt" count="96"/>
+        <line num="47" type="stmt" count="96"/>
         <line num="52" type="method" name="accent" visibility="public" complexity="1" crap="2.00" count="0"/>
         <line num="54" type="stmt" count="0"/>
-        <line num="60" type="method" name="sql" visibility="public" complexity="1" crap="1" count="10"/>
-        <line num="62" type="stmt" count="10"/>
-        <line num="68" type="method" name="operator" visibility="public" complexity="1" crap="1" count="10"/>
-        <line num="70" type="stmt" count="10"/>
-        <line num="76" type="method" name="setNested" visibility="public" complexity="1" crap="1" count="10"/>
-        <line num="78" type="stmt" count="10"/>
-        <line num="79" type="stmt" count="10"/>
-        <line num="84" type="method" name="isNested" visibility="public" complexity="1" crap="1" count="10"/>
-        <line num="86" type="stmt" count="10"/>
-        <line num="94" type="method" name="all" visibility="public" complexity="1" crap="1" count="1"/>
-        <line num="96" type="stmt" count="1"/>
-        <line num="98" type="stmt" count="1"/>
-        <line num="106" type="method" name="any" visibility="public" complexity="1" crap="1" count="1"/>
-        <line num="108" type="stmt" count="1"/>
-        <line num="110" type="stmt" count="1"/>
-        <line num="118" type="method" name="exists" visibility="public" complexity="1" crap="1" count="7"/>
-        <line num="120" type="stmt" count="7"/>
-        <line num="122" type="stmt" count="7"/>
-        <line num="130" type="method" name="some" visibility="public" complexity="1" crap="1" count="1"/>
-        <line num="132" type="stmt" count="1"/>
-        <line num="134" type="stmt" count="1"/>
-        <line num="142" type="method" name="eq" visibility="public" complexity="1" crap="1" count="4"/>
-        <line num="144" type="stmt" count="4"/>
-        <line num="146" type="stmt" count="4"/>
-        <line num="154" type="method" name="notEq" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="156" type="stmt" count="0"/>
-        <line num="158" type="stmt" count="0"/>
-        <line num="166" type="method" name="gt" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="168" type="stmt" count="0"/>
-        <line num="170" type="stmt" count="0"/>
-        <line num="178" type="method" name="gtEq" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="180" type="stmt" count="0"/>
-        <line num="182" type="stmt" count="0"/>
-        <line num="190" type="method" name="lt" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="192" type="stmt" count="0"/>
-        <line num="194" type="stmt" count="0"/>
-        <line num="202" type="method" name="ltEq" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="204" type="stmt" count="0"/>
-        <line num="206" type="stmt" count="0"/>
-        <line num="214" type="method" name="comparison" visibility="private" complexity="1" crap="1" count="4"/>
-        <line num="216" type="stmt" count="4"/>
-        <line num="217" type="stmt" count="4"/>
-        <line num="219" type="stmt" count="4"/>
-        <line num="220" type="stmt" count="4"/>
-        <line num="221" type="stmt" count="4"/>
-        <line num="222" type="stmt" count="4"/>
-        <line num="223" type="stmt" count="4"/>
-        <line num="224" type="stmt" count="4"/>
-        <line num="226" type="stmt" count="4"/>
-        <line num="234" type="method" name="logical" visibility="private" complexity="1" crap="1" count="10"/>
-        <line num="236" type="stmt" count="10"/>
-        <line num="237" type="stmt" count="10"/>
-        <line num="239" type="stmt" count="10"/>
-        <line num="240" type="stmt" count="10"/>
-        <line num="241" type="stmt" count="10"/>
-        <line num="242" type="stmt" count="10"/>
-        <line num="243" type="stmt" count="10"/>
-        <line num="244" type="stmt" count="10"/>
-        <line num="245" type="stmt" count="10"/>
-        <line num="247" type="stmt" count="10"/>
-        <line num="249" type="stmt" count="10"/>
-        <metrics loc="251" ncloc="155" classes="1" methods="18" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="49" coveredstatements="38" elements="67" coveredelements="50"/>
+        <line num="60" type="method" name="sql" visibility="public" complexity="1" crap="1" count="20"/>
+        <line num="62" type="stmt" count="20"/>
+        <line num="68" type="method" name="operator" visibility="public" complexity="1" crap="1" count="20"/>
+        <line num="70" type="stmt" count="20"/>
+        <line num="76" type="method" name="setNested" visibility="public" complexity="1" crap="1" count="14"/>
+        <line num="78" type="stmt" count="14"/>
+        <line num="79" type="stmt" count="14"/>
+        <line num="84" type="method" name="isNested" visibility="public" complexity="1" crap="1" count="14"/>
+        <line num="86" type="stmt" count="14"/>
+        <line num="94" type="method" name="all" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="96" type="stmt" count="2"/>
+        <line num="98" type="stmt" count="2"/>
+        <line num="106" type="method" name="any" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="108" type="stmt" count="2"/>
+        <line num="110" type="stmt" count="2"/>
+        <line num="118" type="method" name="exists" visibility="public" complexity="1" crap="1" count="8"/>
+        <line num="120" type="stmt" count="8"/>
+        <line num="122" type="stmt" count="8"/>
+        <line num="130" type="method" name="some" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="132" type="stmt" count="2"/>
+        <line num="134" type="stmt" count="2"/>
+        <line num="142" type="method" name="eq" visibility="public" complexity="1" crap="1" count="5"/>
+        <line num="144" type="stmt" count="5"/>
+        <line num="146" type="stmt" count="5"/>
+        <line num="154" type="method" name="notEq" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="156" type="stmt" count="1"/>
+        <line num="158" type="stmt" count="1"/>
+        <line num="166" type="method" name="gt" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="168" type="stmt" count="1"/>
+        <line num="170" type="stmt" count="1"/>
+        <line num="178" type="method" name="gtEq" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="180" type="stmt" count="1"/>
+        <line num="182" type="stmt" count="1"/>
+        <line num="190" type="method" name="lt" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="192" type="stmt" count="1"/>
+        <line num="194" type="stmt" count="1"/>
+        <line num="202" type="method" name="ltEq" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="204" type="stmt" count="1"/>
+        <line num="206" type="stmt" count="1"/>
+        <line num="214" type="method" name="comparison" visibility="private" complexity="1" crap="1" count="10"/>
+        <line num="216" type="stmt" count="10"/>
+        <line num="217" type="stmt" count="10"/>
+        <line num="219" type="stmt" count="10"/>
+        <line num="220" type="stmt" count="10"/>
+        <line num="221" type="stmt" count="10"/>
+        <line num="222" type="stmt" count="10"/>
+        <line num="223" type="stmt" count="10"/>
+        <line num="224" type="stmt" count="10"/>
+        <line num="226" type="stmt" count="10"/>
+        <line num="234" type="method" name="logical" visibility="private" complexity="1" crap="1" count="14"/>
+        <line num="236" type="stmt" count="14"/>
+        <line num="237" type="stmt" count="14"/>
+        <line num="239" type="stmt" count="14"/>
+        <line num="240" type="stmt" count="14"/>
+        <line num="241" type="stmt" count="14"/>
+        <line num="242" type="stmt" count="14"/>
+        <line num="243" type="stmt" count="14"/>
+        <line num="244" type="stmt" count="14"/>
+        <line num="245" type="stmt" count="14"/>
+        <line num="247" type="stmt" count="14"/>
+        <line num="249" type="stmt" count="14"/>
+        <metrics loc="251" ncloc="155" classes="1" methods="18" coveredmethods="17" conditionals="0" coveredconditionals="0" statements="49" coveredstatements="48" elements="67" coveredelements="65"/>
       </file>
     </package>
     <package name="Redstraw\Hooch\Query">
@@ -484,41 +484,41 @@
         <class name="Redstraw\Hooch\Query\Accent" namespace="Redstraw\Hooch\Query" fullPackage="Redstraw" package="Redstraw">
           <metrics complexity="8" methods="4" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="8" elements="15" coveredelements="10"/>
         </class>
-        <line num="26" type="method" name="setSymbol" visibility="public" complexity="1" crap="1" count="86"/>
-        <line num="28" type="stmt" count="86"/>
-        <line num="29" type="stmt" count="86"/>
+        <line num="26" type="method" name="setSymbol" visibility="public" complexity="1" crap="1" count="98"/>
+        <line num="28" type="stmt" count="98"/>
+        <line num="29" type="stmt" count="98"/>
         <line num="34" type="method" name="ignore" visibility="public" complexity="1" crap="2.00" count="0"/>
         <line num="36" type="stmt" count="0"/>
         <line num="37" type="stmt" count="0"/>
-        <line num="44" type="method" name="append" visibility="public" complexity="4" crap="4.59" count="62"/>
-        <line num="46" type="stmt" count="62"/>
+        <line num="44" type="method" name="append" visibility="public" complexity="4" crap="4.59" count="77"/>
+        <line num="46" type="stmt" count="77"/>
         <line num="47" type="stmt" count="0"/>
-        <line num="50" type="stmt" count="62"/>
-        <line num="51" type="method" name="anonymousFunction:51#155" complexity="2" crap="2" count="62"/>
-        <line num="52" type="stmt" count="62"/>
-        <line num="53" type="stmt" count="14"/>
-        <line num="56" type="stmt" count="62"/>
-        <line num="57" type="stmt" count="62"/>
-        <line num="60" type="stmt" count="62"/>
+        <line num="50" type="stmt" count="77"/>
+        <line num="51" type="method" name="anonymousFunction:51#155" complexity="2" crap="2" count="77"/>
+        <line num="52" type="stmt" count="77"/>
+        <line num="53" type="stmt" count="20"/>
+        <line num="56" type="stmt" count="77"/>
+        <line num="57" type="stmt" count="77"/>
+        <line num="60" type="stmt" count="77"/>
         <metrics loc="62" ncloc="41" classes="1" methods="4" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="9" elements="16" coveredelements="11"/>
       </file>
       <file name="/mnt/c/Users/firei/www/hooch/src/Query/Field.php">
         <class name="Redstraw\Hooch\Query\Field" namespace="Redstraw\Hooch\Query" fullPackage="Redstraw" package="Redstraw">
-          <metrics complexity="6" methods="6" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="1" elements="12" coveredelements="2"/>
+          <metrics complexity="6" methods="6" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="12" coveredelements="12"/>
         </class>
-        <line num="24" type="method" name="column" visibility="public" complexity="1" crap="1" count="57"/>
-        <line num="26" type="stmt" count="57"/>
-        <line num="33" type="method" name="avg" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="35" type="stmt" count="0"/>
-        <line num="42" type="method" name="count" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="44" type="stmt" count="0"/>
-        <line num="51" type="method" name="max" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="53" type="stmt" count="0"/>
-        <line num="60" type="method" name="min" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="62" type="stmt" count="0"/>
-        <line num="69" type="method" name="sum" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="71" type="stmt" count="0"/>
-        <metrics loc="73" ncloc="45" classes="1" methods="6" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="1" elements="12" coveredelements="2"/>
+        <line num="24" type="method" name="column" visibility="public" complexity="1" crap="1" count="68"/>
+        <line num="26" type="stmt" count="68"/>
+        <line num="33" type="method" name="avg" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="35" type="stmt" count="2"/>
+        <line num="42" type="method" name="count" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="44" type="stmt" count="2"/>
+        <line num="51" type="method" name="max" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="53" type="stmt" count="2"/>
+        <line num="60" type="method" name="min" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="62" type="stmt" count="2"/>
+        <line num="69" type="method" name="sum" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="71" type="stmt" count="2"/>
+        <metrics loc="73" ncloc="45" classes="1" methods="6" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="12" coveredelements="12"/>
       </file>
       <file name="/mnt/c/Users/firei/www/hooch/src/Query/Operator.php">
         <class name="Redstraw\Hooch\Query\Operator" namespace="Redstraw\Hooch\Query" fullPackage="Redstraw" package="Redstraw">
@@ -584,53 +584,53 @@
         <class name="Redstraw\Hooch\Query\Sql" namespace="Redstraw\Hooch\Query" fullPackage="Redstraw" package="Redstraw">
           <metrics complexity="18" methods="10" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="37" coveredstatements="31" elements="47" coveredelements="39"/>
         </class>
-        <line num="85" type="method" name="__construct" visibility="public" complexity="2" crap="2" count="91"/>
-        <line num="87" type="stmt" count="91"/>
-        <line num="88" type="stmt" count="91"/>
-        <line num="96" type="method" name="append" visibility="public" complexity="6" crap="6.03" count="91"/>
-        <line num="98" type="stmt" count="91"/>
+        <line num="85" type="method" name="__construct" visibility="public" complexity="2" crap="2" count="131"/>
+        <line num="87" type="stmt" count="131"/>
+        <line num="88" type="stmt" count="131"/>
+        <line num="96" type="method" name="append" visibility="public" complexity="6" crap="6.03" count="131"/>
+        <line num="98" type="stmt" count="131"/>
         <line num="99" type="stmt" count="0"/>
-        <line num="102" type="stmt" count="91"/>
+        <line num="102" type="stmt" count="131"/>
         <line num="103" type="stmt" count="58"/>
-        <line num="106" type="stmt" count="91"/>
-        <line num="107" type="stmt" count="75"/>
-        <line num="110" type="stmt" count="91"/>
+        <line num="106" type="stmt" count="131"/>
+        <line num="107" type="stmt" count="115"/>
+        <line num="110" type="stmt" count="131"/>
         <line num="111" type="stmt" count="2"/>
-        <line num="114" type="stmt" count="91"/>
-        <line num="115" type="stmt" count="39"/>
-        <line num="118" type="stmt" count="91"/>
+        <line num="114" type="stmt" count="131"/>
+        <line num="115" type="stmt" count="48"/>
+        <line num="118" type="stmt" count="131"/>
         <line num="126" type="method" name="appendQueryBuilder" visibility="public" complexity="1" crap="2.00" count="0"/>
         <line num="128" type="stmt" count="0"/>
         <line num="129" type="stmt" count="0"/>
         <line num="130" type="stmt" count="0"/>
         <line num="131" type="stmt" count="0"/>
         <line num="134" type="stmt" count="0"/>
-        <line num="140" type="method" name="queryString" visibility="public" complexity="1" crap="1" count="88"/>
-        <line num="142" type="stmt" count="88"/>
-        <line num="148" type="method" name="parameters" visibility="public" complexity="1" crap="1" count="86"/>
-        <line num="150" type="stmt" count="86"/>
-        <line num="156" type="method" name="reset" visibility="public" complexity="1" crap="1" count="73"/>
-        <line num="158" type="stmt" count="73"/>
-        <line num="159" type="stmt" count="73"/>
-        <line num="161" type="stmt" count="73"/>
+        <line num="140" type="method" name="queryString" visibility="public" complexity="1" crap="1" count="128"/>
+        <line num="142" type="stmt" count="128"/>
+        <line num="148" type="method" name="parameters" visibility="public" complexity="1" crap="1" count="108"/>
+        <line num="150" type="stmt" count="108"/>
+        <line num="156" type="method" name="reset" visibility="public" complexity="1" crap="1" count="101"/>
+        <line num="158" type="stmt" count="101"/>
+        <line num="159" type="stmt" count="101"/>
+        <line num="161" type="stmt" count="101"/>
         <line num="169" type="method" name="appendSql" visibility="public" complexity="1" crap="1" count="59"/>
         <line num="171" type="stmt" count="59"/>
         <line num="172" type="stmt" count="59"/>
         <line num="173" type="stmt" count="59"/>
         <line num="174" type="stmt" count="59"/>
         <line num="177" type="stmt" count="59"/>
-        <line num="185" type="method" name="appendString" visibility="public" complexity="2" crap="2" count="77"/>
-        <line num="187" type="stmt" count="77"/>
-        <line num="189" type="stmt" count="77"/>
-        <line num="190" type="stmt" count="73"/>
-        <line num="193" type="stmt" count="77"/>
+        <line num="185" type="method" name="appendString" visibility="public" complexity="2" crap="2" count="117"/>
+        <line num="187" type="stmt" count="117"/>
+        <line num="189" type="stmt" count="117"/>
+        <line num="190" type="stmt" count="95"/>
+        <line num="193" type="stmt" count="117"/>
         <line num="201" type="method" name="appendInt" visibility="public" complexity="1" crap="1" count="3"/>
         <line num="203" type="stmt" count="3"/>
         <line num="205" type="stmt" count="3"/>
-        <line num="215" type="method" name="ifThenAppend" visibility="public" complexity="2" crap="2" count="68"/>
-        <line num="217" type="stmt" count="68"/>
-        <line num="218" type="stmt" count="68"/>
-        <line num="221" type="stmt" count="68"/>
+        <line num="215" type="method" name="ifThenAppend" visibility="public" complexity="2" crap="2" count="84"/>
+        <line num="217" type="stmt" count="84"/>
+        <line num="218" type="stmt" count="81"/>
+        <line num="221" type="stmt" count="84"/>
         <metrics loc="223" ncloc="165" classes="1" methods="10" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="37" coveredstatements="31" elements="47" coveredelements="39"/>
       </file>
     </package>
@@ -1443,67 +1443,67 @@
     <package name="Redstraw\Hooch\Query\Field">
       <file name="/mnt/c/Users/firei/www/hooch/src/Query/Field/Avg.php">
         <class name="Redstraw\Hooch\Query\Field\Avg" namespace="Redstraw\Hooch\Query\Field" fullPackage="Redstraw" package="Redstraw">
-          <metrics complexity="4" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="10" coveredelements="0"/>
+          <metrics complexity="4" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
         </class>
-        <line num="31" type="method" name="__construct" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="33" type="stmt" count="0"/>
-        <line num="34" type="stmt" count="0"/>
-        <line num="39" type="method" name="setAccent" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="41" type="stmt" count="0"/>
-        <line num="42" type="stmt" count="0"/>
-        <line num="47" type="method" name="sql" visibility="public" complexity="2" crap="6.00" count="0"/>
-        <line num="49" type="stmt" count="0"/>
-        <line num="50" type="stmt" count="0"/>
-        <line num="53" type="stmt" count="0"/>
-        <metrics loc="55" ncloc="35" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="10" coveredelements="0"/>
+        <line num="31" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="33" type="stmt" count="2"/>
+        <line num="34" type="stmt" count="2"/>
+        <line num="39" type="method" name="setAccent" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="41" type="stmt" count="1"/>
+        <line num="42" type="stmt" count="1"/>
+        <line num="47" type="method" name="sql" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="49" type="stmt" count="2"/>
+        <line num="50" type="stmt" count="1"/>
+        <line num="53" type="stmt" count="2"/>
+        <metrics loc="55" ncloc="35" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
       </file>
       <file name="/mnt/c/Users/firei/www/hooch/src/Query/Field/Column.php">
         <class name="Redstraw\Hooch\Query\Field\Column" namespace="Redstraw\Hooch\Query\Field" fullPackage="Redstraw" package="Redstraw">
-          <metrics complexity="4" methods="3" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="6" elements="10" coveredelements="8"/>
+          <metrics complexity="4" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
         </class>
-        <line num="31" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="57"/>
-        <line num="33" type="stmt" count="57"/>
-        <line num="34" type="stmt" count="57"/>
-        <line num="39" type="method" name="setAccent" visibility="public" complexity="1" crap="1" count="57"/>
-        <line num="41" type="stmt" count="57"/>
-        <line num="42" type="stmt" count="57"/>
-        <line num="47" type="method" name="sql" visibility="public" complexity="2" crap="2.15" count="57"/>
-        <line num="49" type="stmt" count="57"/>
-        <line num="50" type="stmt" count="57"/>
-        <line num="53" type="stmt" count="0"/>
-        <metrics loc="55" ncloc="35" classes="1" methods="3" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="6" elements="10" coveredelements="8"/>
+        <line num="31" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="68"/>
+        <line num="33" type="stmt" count="68"/>
+        <line num="34" type="stmt" count="68"/>
+        <line num="39" type="method" name="setAccent" visibility="public" complexity="1" crap="1" count="67"/>
+        <line num="41" type="stmt" count="67"/>
+        <line num="42" type="stmt" count="67"/>
+        <line num="47" type="method" name="sql" visibility="public" complexity="2" crap="2" count="68"/>
+        <line num="49" type="stmt" count="68"/>
+        <line num="50" type="stmt" count="67"/>
+        <line num="53" type="stmt" count="1"/>
+        <metrics loc="55" ncloc="35" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
       </file>
       <file name="/mnt/c/Users/firei/www/hooch/src/Query/Field/Count.php">
         <class name="Redstraw\Hooch\Query\Field\Count" namespace="Redstraw\Hooch\Query\Field" fullPackage="Redstraw" package="Redstraw">
-          <metrics complexity="4" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="10" coveredelements="0"/>
+          <metrics complexity="4" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
         </class>
-        <line num="31" type="method" name="__construct" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="33" type="stmt" count="0"/>
-        <line num="34" type="stmt" count="0"/>
-        <line num="39" type="method" name="setAccent" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="41" type="stmt" count="0"/>
-        <line num="42" type="stmt" count="0"/>
-        <line num="47" type="method" name="sql" visibility="public" complexity="2" crap="6.00" count="0"/>
-        <line num="49" type="stmt" count="0"/>
-        <line num="50" type="stmt" count="0"/>
-        <line num="53" type="stmt" count="0"/>
-        <metrics loc="55" ncloc="35" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="10" coveredelements="0"/>
+        <line num="31" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="33" type="stmt" count="2"/>
+        <line num="34" type="stmt" count="2"/>
+        <line num="39" type="method" name="setAccent" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="41" type="stmt" count="1"/>
+        <line num="42" type="stmt" count="1"/>
+        <line num="47" type="method" name="sql" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="49" type="stmt" count="2"/>
+        <line num="50" type="stmt" count="1"/>
+        <line num="53" type="stmt" count="2"/>
+        <metrics loc="55" ncloc="35" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
       </file>
       <file name="/mnt/c/Users/firei/www/hooch/src/Query/Field/Max.php">
         <class name="Redstraw\Hooch\Query\Field\Max" namespace="Redstraw\Hooch\Query\Field" fullPackage="Redstraw" package="Redstraw">
-          <metrics complexity="4" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="10" coveredelements="0"/>
+          <metrics complexity="4" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
         </class>
-        <line num="31" type="method" name="__construct" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="33" type="stmt" count="0"/>
-        <line num="34" type="stmt" count="0"/>
-        <line num="39" type="method" name="setAccent" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="41" type="stmt" count="0"/>
-        <line num="42" type="stmt" count="0"/>
-        <line num="47" type="method" name="sql" visibility="public" complexity="2" crap="6.00" count="0"/>
-        <line num="49" type="stmt" count="0"/>
-        <line num="50" type="stmt" count="0"/>
-        <line num="53" type="stmt" count="0"/>
-        <metrics loc="55" ncloc="35" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="10" coveredelements="0"/>
+        <line num="31" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="33" type="stmt" count="2"/>
+        <line num="34" type="stmt" count="2"/>
+        <line num="39" type="method" name="setAccent" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="41" type="stmt" count="1"/>
+        <line num="42" type="stmt" count="1"/>
+        <line num="47" type="method" name="sql" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="49" type="stmt" count="2"/>
+        <line num="50" type="stmt" count="1"/>
+        <line num="53" type="stmt" count="2"/>
+        <metrics loc="55" ncloc="35" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
       </file>
     </package>
     <file name="/mnt/c/Users/firei/www/hooch/src/Query/Field/FieldInterface.php">
@@ -1512,35 +1512,35 @@
     <package name="Redstraw\Hooch\Query\Sql">
       <file name="/mnt/c/Users/firei/www/hooch/src/Query/Field/Min.php">
         <class name="Redstraw\Hooch\Query\Sql\Min" namespace="Redstraw\Hooch\Query\Sql" fullPackage="Redstraw" package="Redstraw">
-          <metrics complexity="4" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="10" coveredelements="0"/>
+          <metrics complexity="4" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
         </class>
-        <line num="32" type="method" name="__construct" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="34" type="stmt" count="0"/>
-        <line num="35" type="stmt" count="0"/>
-        <line num="40" type="method" name="setAccent" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="42" type="stmt" count="0"/>
-        <line num="43" type="stmt" count="0"/>
-        <line num="48" type="method" name="sql" visibility="public" complexity="2" crap="6.00" count="0"/>
-        <line num="50" type="stmt" count="0"/>
-        <line num="51" type="stmt" count="0"/>
-        <line num="54" type="stmt" count="0"/>
-        <metrics loc="56" ncloc="36" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="10" coveredelements="0"/>
+        <line num="32" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="34" type="stmt" count="2"/>
+        <line num="35" type="stmt" count="2"/>
+        <line num="40" type="method" name="setAccent" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="42" type="stmt" count="1"/>
+        <line num="43" type="stmt" count="1"/>
+        <line num="48" type="method" name="sql" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="50" type="stmt" count="2"/>
+        <line num="51" type="stmt" count="1"/>
+        <line num="54" type="stmt" count="2"/>
+        <metrics loc="56" ncloc="36" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
       </file>
       <file name="/mnt/c/Users/firei/www/hooch/src/Query/Field/Sum.php">
         <class name="Redstraw\Hooch\Query\Sql\Sum" namespace="Redstraw\Hooch\Query\Sql" fullPackage="Redstraw" package="Redstraw">
-          <metrics complexity="4" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="10" coveredelements="0"/>
+          <metrics complexity="4" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
         </class>
-        <line num="32" type="method" name="__construct" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="34" type="stmt" count="0"/>
-        <line num="35" type="stmt" count="0"/>
-        <line num="40" type="method" name="setAccent" visibility="public" complexity="1" crap="2.00" count="0"/>
-        <line num="42" type="stmt" count="0"/>
-        <line num="43" type="stmt" count="0"/>
-        <line num="48" type="method" name="sql" visibility="public" complexity="2" crap="6.00" count="0"/>
-        <line num="50" type="stmt" count="0"/>
-        <line num="51" type="stmt" count="0"/>
-        <line num="54" type="stmt" count="0"/>
-        <metrics loc="56" ncloc="36" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="10" coveredelements="0"/>
+        <line num="32" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="34" type="stmt" count="2"/>
+        <line num="35" type="stmt" count="2"/>
+        <line num="40" type="method" name="setAccent" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="42" type="stmt" count="1"/>
+        <line num="43" type="stmt" count="1"/>
+        <line num="48" type="method" name="sql" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="50" type="stmt" count="2"/>
+        <line num="51" type="stmt" count="1"/>
+        <line num="54" type="stmt" count="2"/>
+        <metrics loc="56" ncloc="36" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
       </file>
     </package>
     <file name="/mnt/c/Users/firei/www/hooch/src/Query/Operator/FieldOperatorInterface.php">
@@ -1617,6 +1617,6 @@
     <file name="/mnt/c/Users/firei/www/hooch/src/Query/Statement/UpdateInterface.php">
       <metrics loc="53" ncloc="23" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <metrics files="89" loc="5619" ncloc="3771" classes="73" methods="225" coveredmethods="128" conditionals="0" coveredconditionals="0" statements="867" coveredstatements="664" elements="1092" coveredelements="792"/>
+    <metrics files="89" loc="5619" ncloc="3771" classes="73" methods="225" coveredmethods="164" conditionals="0" coveredconditionals="0" statements="867" coveredstatements="735" elements="1092" coveredelements="899"/>
   </project>
 </coverage>

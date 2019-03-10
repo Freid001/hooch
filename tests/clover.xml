@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1552177546">
-  <project timestamp="1552177546">
+<coverage generated="1552177948">
+  <project timestamp="1552177948">
     <package name="Redstraw\Hooch\Builder\Driver">
       <file name="/mnt/c/Users/firei/www/hooch/src/Builder/Driver/MysqliDriver.php">
         <class name="Redstraw\Hooch\Builder\Driver\MysqliDriver" namespace="Redstraw\Hooch\Builder\Driver" fullPackage="Redstraw" package="Redstraw">
